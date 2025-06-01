@@ -1,0 +1,7 @@
+
+
+
+
+class Archivo: ElementoSistemaArchivos {
+    
+}

@@ -1,0 +1,6 @@
+
+
+
+class Coleccion: ElementoSistemaArchivos {
+    
+}

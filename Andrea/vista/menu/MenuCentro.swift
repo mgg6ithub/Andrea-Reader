@@ -1,0 +1,80 @@
+//
+//  CenterMenu.swift
+//  Andrea
+//
+//  Created by mgg on 30/5/25.
+//
+
+import SwiftUI
+
+struct MenuCentro: View {
+    
+    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var menuEstado: MenuEstado
+    
+    var body: some View {
+        
+        HStack {
+            
+            Button(action: {
+                //ACTION
+            }) {
+                Image("custom.hand.grid")
+                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                    .contentTransition(.symbolEffect(.replace))
+                    .fontWeight(appEstado.constantes.iconWeight)
+            }
+            
+            Button(action: {
+                //ACTION
+            }) {
+                Image(systemName: "tray.and.arrow.down")
+                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                    .fontWeight(appEstado.constantes.iconWeight)
+            }
+            
+            Button(action: {
+                //ACTION
+            }) {
+                Image(systemName: "folder.badge.plus")
+                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                    .fontWeight(appEstado.constantes.iconWeight)
+            }
+            
+            
+            Button(action: {
+                //ACTION
+            }) {
+                Image(systemName: "square.grid.3x3.square")
+                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                    .fontWeight(appEstado.constantes.iconWeight)
+            }
+            
+            Button(action: {
+                //ACTION
+                self.menuEstado.isGlobalSettingsPressed.toggle()
+            }) {
+                Image(systemName: "slider.horizontal.3")
+                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                    .fontWeight(appEstado.constantes.iconWeight)
+            }
+            .sheet(isPresented: $menuEstado.isGlobalSettingsPressed) {
+                AjustesGlobales()
+                    .background(appEstado.temaActual.backgroundColor)
+            }
+            
+        }
+        
+    }
+    
+}

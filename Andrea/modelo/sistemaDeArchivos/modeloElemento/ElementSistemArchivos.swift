@@ -1,0 +1,54 @@
+
+import SwiftUI
+import UniformTypeIdentifiers
+
+class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
+    
+    var id: UUID
+    var name: String
+    var description: String?
+    var url: URL
+    var relativeURL: String = "something"
+    var creationDate: Date
+    var modificationDate: Date
+    var firstTimeAccessedDate: Date?
+    var lastAccessDate: Date?
+    
+    init() {
+        self.id = UUID()
+        self.name = "Untitled"
+        self.description = nil
+        self.url = URL(fileURLWithPath: "/default/path")
+        self.relativeURL = "something"
+        self.creationDate = Date()
+        self.modificationDate = Date()
+        self.firstTimeAccessedDate = nil
+        self.lastAccessDate = nil
+    }
+    
+    init(name: String, url: URL, creationDate: Date, modificationDate: Date) {
+        
+        self.id = UUID(uuidString: url.path) ?? UUID()
+        self.name = name
+        self.url = url
+        self.relativeURL = StringManipulation().relativizeURL(elementURL: url)
+        self.creationDate = creationDate
+        self.modificationDate = modificationDate
+        
+    }
+    
+//    func handleTap(elementModel: ElementModel) -> AnyView? {
+//        print("Handling tap")
+//        return nil
+//    }
+    
+    func getConcreteInstance() -> Self {
+        return self
+    }
+    
+    
+    static func == (lhs: ElementoSistemaArchivos, rhs: ElementoSistemaArchivos) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+}
