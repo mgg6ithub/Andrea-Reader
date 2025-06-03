@@ -50,8 +50,8 @@ struct AjustesGlobales: View {
         }
     }
 
-    private let paddingHorizontal: CGFloat = ConstantesValores().horizontalPadding // 15
-    private var paddingVertical: CGFloat  { ConstantesValores().verticalPadding  * appEstado.constantes.scaleFactor}// 20
+    private let paddingHorizontal: CGFloat = ConstantesPorDefecto().horizontalPadding // 15
+    private var paddingVertical: CGFloat  { ConstantesPorDefecto().verticalPadding  * appEstado.constantes.scaleFactor}// 20
     
     var body: some View {
             
@@ -218,7 +218,7 @@ struct Punto: View {
     var body: some View {
         
         VStack(spacing: 0) {
-            HStack(spacing: ConstantesValores().paddingCorto - 2) {
+            HStack(spacing: ConstantesPorDefecto().paddingCorto - 2) {
                 Text(menuEstado.sectionTitle(section))
                     .font(.system(size: appEstado.constantes.smallTitleSize))
                     .foregroundColor(selectedSection == section ? appEstado.constantes.iconColor : .primary)

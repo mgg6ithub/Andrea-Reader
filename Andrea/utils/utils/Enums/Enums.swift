@@ -62,5 +62,8 @@ enum EnumTemas: String, CaseIterable {
     }
 }
 
-//MARK: COLOR PRINCIPAL
+//MARK: - COLOR PRINCIPAL
 
+
+
+//MARK: - TIPOS DE ARCHIVOS

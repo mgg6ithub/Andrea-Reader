@@ -87,9 +87,9 @@ class SistemaArchivosUtilidades {
     }
     
     
-//    public func getFileType(fileURL: URL) -> EnumFileTypes {
-//        return EnumFileTypes(rawValue: fileURL.pathExtension) ?? .unknown
-//    }
+    public func getFileType(fileURL: URL) -> EnumTipoArchivos {
+        return EnumTipoArchivos(rawValue: fileURL.pathExtension) ?? .unknown
+    }
     
 
     public func getFileSize(fileURL: URL) -> Int {

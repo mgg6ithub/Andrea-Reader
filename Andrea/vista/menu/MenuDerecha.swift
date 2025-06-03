@@ -18,6 +18,18 @@ struct MenuDerecha: View {
             Spacer()
             
             Button(action: {
+                
+            }) {
+                Image(systemName: "checkmark.rectangle.stack")
+                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                    .contentTransition(.symbolEffect(.replace))
+                    .fontWeight(appEstado.constantes.iconWeight)
+            }
+            
+            
+            Button(action: {
 //                withAnimation {
 //                    self.isMultipleSelectionPressed = true
 //                }

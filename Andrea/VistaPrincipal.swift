@@ -20,7 +20,7 @@ struct VistaPrincipal: View {
                 VStack {
                     
                     MenuVista()
-                        .padding(.horizontal, ConstantesValores().horizontalPadding)
+                        .padding(.horizontal, ConstantesPorDefecto().horizontalPadding)
                     
                     
                     ZStack {

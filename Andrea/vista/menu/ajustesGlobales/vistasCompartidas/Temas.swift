@@ -34,7 +34,7 @@ struct RectangleFormView: View {
     private var ancho: CGFloat { appEstado.resolucionLogica == .big ? anchoConstante : anchoConstante * scala }
     private var alto: CGFloat { appEstado.resolucionLogica == .big ? altoConstante : altoConstante * scala }
     
-    private var iconSize: CGFloat { (ConstantesValores().iconSize + 20) * scala }
+    private var iconSize: CGFloat { (ConstantesPorDefecto().iconSize + 20) * scala }
     
     var body: some View {
         

@@ -7,7 +7,15 @@ class SistemaArchivos: ObservableObject {
     
     // MARK: – Instancia singleton (perezosa + protegida con queue de sincronización)
     private static var sistemaArchivos: SistemaArchivos? = nil
+    
+    //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual
+    private(set) var coleccionActual: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
+
+    
     private static let sistemaArchivosQueue = DispatchQueue(label: "com.miApp.singletonSistemaArchivos")
+    
+    //MARK: - INICIAMOS LA STACK PERSONALIZADA PARA CONTROLAR EL ACCESO DE LAS COLECCIONES
+    private let pilaColecciones = PilaColecciones.getPilaColeccionesSingleton
     
     /// Getter público que comprueba si la instancia es nula; si lo es, la crea una sola vez.
     public static var getSistemaArchivosSingleton: SistemaArchivos {
@@ -20,7 +28,7 @@ class SistemaArchivos: ObservableObject {
     }
     
     //MARK: - LISTAS Y CACHES
-    // MARK: – Cola para proteger acceso a propiedades internas (lectura/escritura concurrente)
+    //MARK: – Cola para proteger acceso a propiedades internas (lectura/escritura concurrente)
     private let fileQueue = DispatchQueue(label: "com.miApp.sistemaArchivos.queue", attributes: .concurrent)
     
     /**
@@ -35,17 +43,20 @@ class SistemaArchivos: ObservableObject {
     
     @Published var listaElementos: [any ElementoSistemaArchivosProtocolo] = [] //Es es la lista publica que se vinculara a la vista de la libreria.
     
-    private var coleccionPrincipalURL: URL
-    
+    //MARK: - CONSTRUCTOR
+    /**
+     1. Se obtiene el directorio actual
+     2. Se asigna en la pila para inicializar la coleccion del usuario
+     3. Se realiza el primer indexado de dicha coleccion
+     */
     private init() {
         
-        //Inicializamos los ayudantes del sistema de archivos
-        self.coleccionPrincipalURL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
+        //Cargamos desde memoria la URL de la coleccion actual
         
         //Comenzar indexacion del directorio actual
         self.refreshIndex()
 //        self.crearArchivosPrueba()
-        self.obtenerURLSDirectorio(coleccionURL: self.coleccionPrincipalURL)
+        self.obtenerURLSDirectorio(coleccionURL: self.coleccionActual)
         
     }
     
@@ -62,30 +73,27 @@ class SistemaArchivos: ObservableObject {
             
             //Iniciamos el indexado
             //2. Primero escaneamos el directorio para saber el total de elementos que habra. Para cargar en la vista los placeholders.
-            let totalElements = self.obtenerURLSDirectorio(coleccionURL: self.coleccionPrincipalURL)
+            let totalElements = self.obtenerURLSDirectorio(coleccionURL: self.coleccionActual)
             //Como en swiftui no se puede definir el tamaño de la lista antes de introducir nada hay que introducir objetos dummys hasta el tamaño que queramos
             DispatchQueue.main.async { self.listaElementos = Array(repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo, count: totalElements.count) }
             
             for (index, element) in totalElements.enumerated() {
-                let elementInstance = ElementoSistemaArchivos(
-                    name: element.lastPathComponent,
-                    url: element,
-                    creationDate: Date(),
-                    modificationDate: Date()
-                )
                 
-                print(elementInstance.name, "CARGADO")
-                
-                DispatchQueue.main.async {
-                    self.listaElementos[index] = elementInstance
+                if let archivo: (any ProtocoloArchivo) = self.crearArchivo(archivoURL: element) {
+                    print(archivo.name, "CARGADO")
+                    
+                    DispatchQueue.main.async {
+                        self.listaElementos[index] = archivo
+                    }
                 }
                 
                 Thread.sleep(forTimeInterval: 0.07) // Simula carga escalonada
             }
+        
 
             
             //3. Si hay 50 archivos se cargaran 50 placeholders en la vista
-//            if let cacheColecciones = self.cacheColecciones[self.coleccionPrincipalURL] {
+//            if let cacheColecciones = self.cacheColecciones[self.coleccionActual] {
 //                //Si esta en el cache actualizamos
 //                self.actualizarCache()
 //            } else {
@@ -100,6 +108,14 @@ class SistemaArchivos: ObservableObject {
         }
         
     }
+    
+    public func crearArchivo(archivoURL: URL, coleccionDestinoURL: URL? = nil) -> (any ProtocoloArchivo)? {
+        
+        let destinoURL: URL = coleccionDestinoURL ?? self.coleccionActual
+        
+        return FactoryArchivo().crearArchivo(fileName: SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.getFileName(fileURL: archivoURL), fileURL: archivoURL, destionationURL: destinoURL, currentDirectory: self.coleccionActual)
+    }
+    
     
     /**
      Solamente agregar los nuevos elementos a la coleccion que fue previamente indexada y esta en cache.
@@ -134,9 +150,9 @@ class SistemaArchivos: ObservableObject {
                 true
             }
             
-            print("En total hay para el directorio: ", self.coleccionPrincipalURL)
-            print(filteredURLs.count)
-            print(filteredURLs)
+//            print("En total hay para el directorio: ", self.coleccionActual)
+//            print(filteredURLs.count)
+//            print(filteredURLs)
             
             return filteredURLs
         } catch {

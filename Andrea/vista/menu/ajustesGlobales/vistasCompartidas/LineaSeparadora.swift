@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LineaSeparadora: View {
     
-    private let paddingHorizontal: CGFloat = ConstantesValores().horizontalPadding
+    private let paddingHorizontal: CGFloat = ConstantesPorDefecto().horizontalPadding
     
     var body: some View {
         

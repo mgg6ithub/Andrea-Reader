@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct ConstantesValores {
+struct ConstantesPorDefecto {
     
     /**
-        VALORES POR DEFECTO DE LAS VARIABLES MAS USADAS
+            VALORES POR DEFECTO DE LAS VARIABLES MAS USADAS
      */
     
     //MARK: - PADDING GENERAL
@@ -29,6 +29,15 @@ struct ConstantesValores {
     var subTitleSize: CGFloat = 16
     var smallTitleSize: CGFloat = 10
     
+    /**
+            PERSISTENCIA
+     */
+    
+    //MARK: - Nombres clave para los archivos de la persistencia
+    //MARK: - USERDEFAULTS
+    
+    //almacena las url de las colecciones de la pila en el mismo orden.
+    var pilaColeccionesClave: String = "pilaGuardada"
 }
 
 
@@ -52,13 +61,15 @@ struct Constantes {
         
         self.scaleFactor = scaleFactor
         
-        self.iconSize = ConstantesValores().iconSize * scaleFactor
-        self.iconWeight = ConstantesValores().iconWeight
-        self.iconColor = ConstantesValores().iconColor
+        let cpd = ConstantesPorDefecto()
         
-        self.titleSize = ConstantesValores().titleSize * scaleFactor
-        self.subTitleSize = ConstantesValores().subTitleSize * scaleFactor
-        self.smallTitleSize = ConstantesValores().smallTitleSize * scaleFactor
+        self.iconSize = cpd.iconSize * scaleFactor
+        self.iconWeight = cpd.iconWeight
+        self.iconColor = cpd.iconColor
+        
+        self.titleSize = cpd.titleSize * scaleFactor
+        self.subTitleSize = cpd.subTitleSize * scaleFactor
+        self.smallTitleSize = cpd.smallTitleSize * scaleFactor
     }
     
 }

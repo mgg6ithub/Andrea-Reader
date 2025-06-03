@@ -22,13 +22,14 @@ struct AjustesTema: View {
     //FIJAS
     
     //Subtitulo
+    private let cpd = ConstantesPorDefecto()
     private var subTitle: CGFloat { appEstado.constantes.subTitleSize }
     
-    private var paddingHorizontal: CGFloat { (ConstantesValores().horizontalPadding + 20) * appEstado.constantes.scaleFactor}
-    private var paddingVertical: CGFloat {ConstantesValores().verticalPadding * appEstado.constantes.scaleFactor} // 20
+    private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * appEstado.constantes.scaleFactor}
+    private var paddingVertical: CGFloat {cpd.verticalPadding * appEstado.constantes.scaleFactor} // 20
     private var altoRectanguloFondo: CGFloat {menuEstado.altoRectanguloFondo * appEstado.constantes.scaleFactor}
     
-    private var paddingCorto: CGFloat { ConstantesValores().paddingCorto }
+    private var paddingCorto: CGFloat { cpd.paddingCorto }
     
     //VARIABLES
     private var iconSize: CGFloat  { appEstado.constantes.iconSize }

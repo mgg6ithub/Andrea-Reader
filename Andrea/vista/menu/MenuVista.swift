@@ -12,7 +12,7 @@ struct MenuVista: View {
     @State private var isExpanded = false // Animación de la línea del menú
     @State private var menuCentroWidth: CGFloat = 0 // Ancho dinámico del menú central
     
-    private var horizontalPadding: CGFloat = ConstantesValores().horizontalPadding
+    private var horizontalPadding: CGFloat = ConstantesPorDefecto().horizontalPadding
     
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
