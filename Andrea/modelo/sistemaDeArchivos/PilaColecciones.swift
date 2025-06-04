@@ -12,7 +12,7 @@ class PilaColecciones: ObservableObject {
     
     //Cola personalizada donde se almacenaran en el orden en el que el usuario entre a las colecciones
     //(final) Coleccion1 -> Coleccion2 -> Coleccion3 (principio)
-    private(set) var colecciones: [URL] = []
+    @Published private(set) var colecciones: [Coleccion] = []
     
     //Constructor privado
     private init() {}
@@ -44,5 +44,48 @@ class PilaColecciones: ObservableObject {
         let coleccionPrincipal = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
         
     }
+    
+    /**
+     Mete una coleccion en la parte de arriba de la pila.
+     */
+    public func meterColeccion(coleccion: Coleccion) {
+        colecciones.append(coleccion)
+        print("Has metido: ", coleccion.name)
+    }
+    
+    /**
+     Saca la primera coleccion de la pila, es decir, la coleccion de la parte de arriba de pila.
+     */
+    public func sacarColeccion() {
+        colecciones.popLast()
+    }
+    
+    /**
+     Obtener la priemera coleccion de la pila de colecciones.
+     */
+    public func coleccionActual() -> Coleccion {
+        return self.colecciones.last!
+    }
+    
+    /**
+     Metodo para comprobar si la coleccion es la primera de la pila.
+     */
+    public func esColeccionActual(coleccion: Coleccion) -> Bool {
+        return self.coleccionActual() == coleccion
+    }
+    
+    /**
+     Saca de la pila todos los elementos posteriores al seleccionado.
+     */
+    public func sacarHastaEncontrarColeccion(coleccion: Coleccion) {
+        while let ultima = colecciones.last {
+            if ultima == coleccion {
+                // Si quieres mantener la colección encontrada, simplemente haz break aquí
+                break
+            }
+            colecciones.removeLast()
+        }
+    }
+
     
 }

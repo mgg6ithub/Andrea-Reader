@@ -24,13 +24,23 @@ struct RealElementView: View {
                 .lineLimit(1)
                 .frame(width: 120, alignment: .center)
 
-            HStack(spacing: 6) {
-                ForEach(["Dato 1", "Dato 2", "Dato 3"], id: \.self) { dato in
-                    Text(dato)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                        .frame(width: 36, alignment: .leading)
+            if let coleccion = element as? Coleccion {
+                
+                Button(action: {
+                    coleccion.meterColeccion(coleccion: coleccion)
+                }) {
+                    Text("Entrar")
+                }
+                
+            } else {
+                HStack(spacing: 6) {
+                    ForEach(["Dato 1", "Dato 2", "Dato 3"], id: \.self) { dato in
+                        Text(dato)
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                            .frame(width: 36, alignment: .leading)
+                    }
                 }
             }
 

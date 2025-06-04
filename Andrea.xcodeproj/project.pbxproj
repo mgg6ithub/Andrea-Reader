@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */; };
 		D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF72DE7A772001F816A /* AndreaApp.swift */; };
 		D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */; };
 		D45E6FFC2DE7A773001F816A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D45E6FFB2DE7A773001F816A /* Assets.xcassets */; };
@@ -19,7 +20,7 @@
 		D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */; };
 		D46E94352DEA287000ABD9EE /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E94342DEA287000ABD9EE /* Toggle.swift */; };
 		D48589662DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589652DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift */; };
-		D48589682DEB9D7E0074DB8E /* ElementSistemArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589672DEB9D7E0074DB8E /* ElementSistemArchivos.swift */; };
+		D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589672DEB9D7E0074DB8E /* ElementSistemaArchivos.swift */; };
 		D485896A2DEB9DC30074DB8E /* Extensiones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589692DEB9DC30074DB8E /* Extensiones.swift */; };
 		D485896C2DEB9DF10074DB8E /* Utilidades.swift in Sources */ = {isa = PBXBuildFile; fileRef = D485896B2DEB9DF10074DB8E /* Utilidades.swift */; };
 		D485896F2DEB9E4E0074DB8E /* ManipulacionCadenas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D485896E2DEB9E4E0074DB8E /* ManipulacionCadenas.swift */; };
@@ -43,7 +44,7 @@
 		D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AECEBA2DEE33620032917F /* PilaColecciones.swift */; };
 		D4B5CA912DE89489006F8FA6 /* BookReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */; };
 		D4BF0B1F2DEF493500152333 /* FabricaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B1E2DEF493500152333 /* FabricaArchivo.swift */; };
-		D4BF0B212DEF494000152333 /* FactoryColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B202DEF494000152333 /* FactoryColeccion.swift */; };
+		D4BF0B212DEF494000152333 /* FabricaColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B202DEF494000152333 /* FabricaColeccion.swift */; };
 		D4BF0B232DEF4AA000152333 /* ProtocoloArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B222DEF4AA000152333 /* ProtocoloArchivo.swift */; };
 		D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */; };
 		D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */; };
@@ -57,6 +58,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorialColecciones.swift; sourceTree = "<group>"; };
 		D45E6FF42DE7A772001F816A /* Andrea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Andrea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D45E6FF72DE7A772001F816A /* AndreaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AndreaApp.swift; sourceTree = "<group>"; };
 		D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VistaPrincipal.swift; sourceTree = "<group>"; };
@@ -70,7 +72,7 @@
 		D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesMenu.swift; sourceTree = "<group>"; };
 		D46E94342DEA287000ABD9EE /* Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toggle.swift; sourceTree = "<group>"; };
 		D48589652DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementoSistemaArchivosProtocolo.swift; sourceTree = "<group>"; };
-		D48589672DEB9D7E0074DB8E /* ElementSistemArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementSistemArchivos.swift; sourceTree = "<group>"; };
+		D48589672DEB9D7E0074DB8E /* ElementSistemaArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementSistemaArchivos.swift; sourceTree = "<group>"; };
 		D48589692DEB9DC30074DB8E /* Extensiones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensiones.swift; sourceTree = "<group>"; };
 		D485896B2DEB9DF10074DB8E /* Utilidades.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilidades.swift; sourceTree = "<group>"; };
 		D485896E2DEB9E4E0074DB8E /* ManipulacionCadenas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManipulacionCadenas.swift; sourceTree = "<group>"; };
@@ -95,7 +97,7 @@
 		D4AECEBA2DEE33620032917F /* PilaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilaColecciones.swift; sourceTree = "<group>"; };
 		D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookReadingView.swift; sourceTree = "<group>"; };
 		D4BF0B1E2DEF493500152333 /* FabricaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabricaArchivo.swift; sourceTree = "<group>"; };
-		D4BF0B202DEF494000152333 /* FactoryColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactoryColeccion.swift; sourceTree = "<group>"; };
+		D4BF0B202DEF494000152333 /* FabricaColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabricaColeccion.swift; sourceTree = "<group>"; };
 		D4BF0B222DEF4AA000152333 /* ProtocoloArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocoloArchivo.swift; sourceTree = "<group>"; };
 		D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTipoArchivos.swift; sourceTree = "<group>"; };
 		D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TXTArchivo.swift; sourceTree = "<group>"; };
@@ -176,7 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				D48589652DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift */,
-				D48589672DEB9D7E0074DB8E /* ElementSistemArchivos.swift */,
+				D48589672DEB9D7E0074DB8E /* ElementSistemaArchivos.swift */,
 				D4DF31782DEC7362000D15CC /* ElementoPlaceholderDummy.swift */,
 				D4BF0B1C2DEF48E300152333 /* coleccion */,
 				D4BF0B1B2DEF48DD00152333 /* archivoModelo */,
@@ -257,6 +259,7 @@
 		D4ADDB7F2DE9BE730097A010 /* historial */ = {
 			isa = PBXGroup;
 			children = (
+				D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */,
 			);
 			path = historial;
 			sourceTree = "<group>";
@@ -299,7 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				D48589752DEBA1C50074DB8E /* Coleccion.swift */,
-				D4BF0B202DEF494000152333 /* FactoryColeccion.swift */,
+				D4BF0B202DEF494000152333 /* FabricaColeccion.swift */,
 			);
 			path = coleccion;
 			sourceTree = "<group>";
@@ -449,12 +452,13 @@
 				D4B5CA912DE89489006F8FA6 /* BookReadingView.swift in Sources */,
 				D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */,
 				D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */,
+				D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */,
 				D4ADDB842DE9C06C0097A010 /* LibreriaEstado.swift in Sources */,
 				D4A6C7272DEA216400E7451F /* Temas.swift in Sources */,
 				D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */,
-				D4BF0B212DEF494000152333 /* FactoryColeccion.swift in Sources */,
+				D4BF0B212DEF494000152333 /* FabricaColeccion.swift in Sources */,
 				D485896C2DEB9DF10074DB8E /* Utilidades.swift in Sources */,
-				D48589682DEB9D7E0074DB8E /* ElementSistemArchivos.swift in Sources */,
+				D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */,
 				D45E70082DE7A7DF001F816A /* AppEstado.swift in Sources */,
 				D4ADDB7E2DE9B9FA0097A010 /* MenuDerecha.swift in Sources */,
 				D4DF31792DEC7362000D15CC /* ElementoPlaceholderDummy.swift in Sources */,

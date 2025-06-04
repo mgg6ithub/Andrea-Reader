@@ -17,10 +17,14 @@ struct VistaPrincipal: View {
                 appEstado.temaActual.backgroundColor
                     .edgesIgnoringSafeArea(.all)
                 
+                
                 VStack {
                     
                     MenuVista()
-                        .padding(.horizontal, ConstantesPorDefecto().horizontalPadding)
+                    
+                    
+                    HistorialColecciones()
+                        .frame(height: 30)
                     
                     
                     ZStack {
@@ -33,6 +37,7 @@ struct VistaPrincipal: View {
                     Spacer()
                     
                 }
+                .padding(.horizontal, ConstantesPorDefecto().horizontalPadding)
             }
             .foregroundColor(appEstado.temaActual.textColor)
             .animation(.easeInOut, value: appEstado.temaActual)

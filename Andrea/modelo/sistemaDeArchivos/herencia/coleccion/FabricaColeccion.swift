@@ -1,0 +1,29 @@
+
+
+import SwiftUI
+
+struct FabricaColeccion {
+    
+    let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
+    
+    func crearColeccion(collectionName: String, collectionURL: URL) -> Coleccion? {
+        
+//        let directoryType = sau.getDirectoryType(directoryURL: collectionURL)
+        let creationDate = sau.getElementCreationDate(elementURL: collectionURL)
+        let modificationDate = sau.getElementModificationDate(elementURL: collectionURL)
+        
+        return Coleccion(directoryName: collectionName, directoryURL: collectionURL, creationDate: creationDate, modificationDate: modificationDate, elementList: [])
+        
+//        var elementList: [String] = []
+        
+//        for content in fs.fsu.getUrlsSubdirectoryContents(urlPath: directoryURL) {
+//            
+//            let contentRemovePrivate = StringManipulation().normalizeURL(content)
+//            let rootRemovePrivate = StringManipulation().normalizeURL(fs.fsu.getRootDirectoryPath().deletingLastPathComponent())
+//            
+//            let relativePath = contentRemovePrivate.path.replacingOccurrences(of: rootRemovePrivate.path, with: "")
+//            
+//            elementList.append(relativePath)
+//        }
+    }
+}

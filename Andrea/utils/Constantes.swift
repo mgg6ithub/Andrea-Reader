@@ -38,6 +38,21 @@ struct ConstantesPorDefecto {
     
     //almacena las url de las colecciones de la pila en el mismo orden.
     var pilaColeccionesClave: String = "pilaGuardada"
+    
+    //MARK: - COLORES
+    let lista: [Color] = [
+        .blue,
+        .green,
+        .orange,
+        .pink,
+        .purple,
+        .red,
+        .teal,
+        .yellow,
+        .mint,
+        .indigo
+    ]
+    
 }
 
 

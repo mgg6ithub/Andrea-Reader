@@ -1,6 +1,6 @@
 import SwiftUI
 
-protocol ElementoSistemaArchivosProtocolo: Transferable {
+protocol ElementoSistemaArchivosProtocolo: Transferable, Hashable {
     
     var id: UUID { get }
     var name: String { get set }
@@ -13,7 +13,6 @@ protocol ElementoSistemaArchivosProtocolo: Transferable {
     var lastAccessDate: Date? { get set }
     
     //DEFAULT ELEMENT ACTIONS
-//    func handleTap(elementModel: ElementModel) -> AnyView?
     func getConcreteInstance() -> Self
     
 }

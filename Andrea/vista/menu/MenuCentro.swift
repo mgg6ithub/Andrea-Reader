@@ -38,7 +38,11 @@ struct MenuCentro: View {
             }
             
             Button(action: {
-                //ACTION
+                //CREAR COLECCION NUEVA
+                
+                let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
+                sa.crearCarpeta("The Beggining After The End", en: sa.coleccionActual)
+                
             }) {
                 Image(systemName: "folder.badge.plus")
                     .font(.system(size: appEstado.constantes.iconSize * 1.3))

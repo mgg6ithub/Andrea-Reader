@@ -17,6 +17,7 @@ struct AndreaAppView: View {
 //    @StateObject private var appEstado = AppEstado1(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
     @StateObject private var menuEstado = MenuEstado()
     @StateObject private var sa = SistemaArchivos.getSistemaArchivosSingleton //Inicalizamos el sistema de archivos
+    @StateObject private var pc = PilaColecciones.getPilaColeccionesSingleton //Inicalizamos la pila de las colecciones
     
     @State private var sideMenuVisible: Bool = false
     
@@ -27,6 +28,7 @@ struct AndreaAppView: View {
                 .environmentObject(appEstado)
                 .environmentObject(menuEstado)
                 .environmentObject(sa)
+                .environmentObject(pc)
             
             if sideMenuVisible {
                 Color.black.opacity(0.3)

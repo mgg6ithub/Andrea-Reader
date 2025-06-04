@@ -44,6 +44,24 @@ enum EnumDescripcionArchivo: String {
     }
 }
 
+//MARK: - TEMPORAL PARA PODER
+
+enum EnumDirectoryTypes: String {
+    
+    case cbz = "cbz_dir"
+    case cbr = "cbr_dir"
+    
+    case normal = "normal"
+    
+    // Método para obtener la cadena asociada al tipo
+    func directoryName() -> String {
+        return self.rawValue
+    }
+    
+}
+
+//MARK: - TEMPORAL PARA PODER
+
 //enum FileDefaultImage: String {
 //    
 //    case epub = "archivo-epub"

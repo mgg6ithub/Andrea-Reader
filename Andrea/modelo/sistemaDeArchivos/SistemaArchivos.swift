@@ -34,7 +34,7 @@ class SistemaArchivos: ObservableObject {
     /**
      *Diccinario de directorios cache para almacenar objetos previamente creados por cada directorio. Para una navegacion rapida entre el sistema de archivos.*
      */
-    private var cacheColecciones: [URL: [URL : any ElementoSistemaArchivosProtocolo]] = [:] //Solo accesible desde el (sa)
+    private var cacheColecciones: [URL : ColeccionValor] = [:] //Solo accesible desde el (sa). Clave -> Direccion unica URL, Valor -> Estructura con una instancia de la coleccion y la lista de sus elementos.
     
     /**
      La idea es mantener privado el cache y la lista publica. Porque la lista se puede ordenar con facilidad y iterar.
@@ -46,18 +46,55 @@ class SistemaArchivos: ObservableObject {
     //MARK: - CONSTRUCTOR
     /**
      1. Se obtiene el directorio actual
-     2. Se asigna en la pila para inicializar la coleccion del usuario
-     3. Se realiza el primer indexado de dicha coleccion
+     2. Metodo recursivo para calcular todos las colecciones.
+     3. Se asigna en la pila para inicializar la coleccion del usuario
+     4. Se realiza el primer indexado de dicha coleccion
      */
     private init() {
         
-        //Cargamos desde memoria la URL de la coleccion actual
+        //Creamos el cache de colecciones
+        self.indexamientoRecursivoColecciones(desde: self.coleccionActual)
+        
+        guard let coleccionValor: ColeccionValor = self.cacheColecciones[self.coleccionActual] else { return }
+        
+        //Cargamos el estado de la pila de colecciones de memoria
+        self.pilaColecciones.meterColeccion(coleccion: coleccionValor.coleccion)
+        
+//        for (_, coleccionValor) in cacheColecciones {
+//            print(coleccionValor.coleccion.name)
+//        }
         
         //Comenzar indexacion del directorio actual
         self.refreshIndex()
-//        self.crearArchivosPrueba()
-        self.obtenerURLSDirectorio(coleccionURL: self.coleccionActual)
+
         
+    }
+    
+    /**
+     Recorre recursivamente todas las colecciones.
+     */
+    private func indexamientoRecursivoColecciones(desde coleccionURL: URL) {
+        let sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
+
+        // Verificamos que es un directorio válido antes de continuar
+        guard sau.isDirectory(elementURL: coleccionURL) else { return }
+
+        // Si no está ya cacheado, lo agregamos al cache con una lista vacía de elementos
+        if cacheColecciones[coleccionURL] == nil {
+            if let coleccion = FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: coleccionURL), collectionURL: coleccionURL) {
+                cacheColecciones[coleccionURL] = ColeccionValor(coleccion: coleccion, listaElementos: [])
+            }
+        }
+
+        guard var coleccionValor = cacheColecciones[coleccionURL] else { return }
+        // Filtramos solo los directorios
+        let subdirectorios = obtenerURLSDirectorio(coleccionURL: coleccionURL).filter { sau.isDirectory(elementURL: $0) }
+        
+        // Llamamos recursivamente sobre cada subdirectorio
+        for subdir in subdirectorios {
+            coleccionValor.subColecciones.insert(subdir)
+            indexamientoRecursivoColecciones(desde: subdir)
+        }
     }
     
     
@@ -79,17 +116,15 @@ class SistemaArchivos: ObservableObject {
             
             for (index, element) in totalElements.enumerated() {
                 
-                if let archivo: (any ProtocoloArchivo) = self.crearArchivo(archivoURL: element) {
-                    print(archivo.name, "CARGADO")
+                if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: element) {
                     
                     DispatchQueue.main.async {
-                        self.listaElementos[index] = archivo
+                        self.listaElementos[index] = elemento
                     }
                 }
                 
                 Thread.sleep(forTimeInterval: 0.07) // Simula carga escalonada
             }
-        
 
             
             //3. Si hay 50 archivos se cargaran 50 placeholders en la vista
@@ -109,11 +144,21 @@ class SistemaArchivos: ObservableObject {
         
     }
     
-    public func crearArchivo(archivoURL: URL, coleccionDestinoURL: URL? = nil) -> (any ProtocoloArchivo)? {
+    public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> (any ElementoSistemaArchivosProtocolo)? {
         
+        let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
         let destinoURL: URL = coleccionDestinoURL ?? self.coleccionActual
         
-        return FactoryArchivo().crearArchivo(fileName: SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.getFileName(fileURL: archivoURL), fileURL: archivoURL, destionationURL: destinoURL, currentDirectory: self.coleccionActual)
+        let elemento: (any ElementoSistemaArchivosProtocolo)
+        
+        if sau.isDirectory(elementURL: elementoURL) {
+            if let coleccionValor: ColeccionValor = self.cacheColecciones[elementoURL] {
+                return coleccionValor.coleccion
+            }
+            return FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: elementoURL), collectionURL: elementoURL)
+        } else {
+            return FactoryArchivo().crearArchivo(fileName: sau.getFileName(fileURL: elementoURL), fileURL: elementoURL, destionationURL: destinoURL, currentDirectory: self.coleccionActual)
+        }
     }
     
     
@@ -183,22 +228,6 @@ class SistemaArchivos: ObservableObject {
 //    }
     
     
-    // MARK: – Ejemplo de método que modifica `elements` (protegido por fileQueue)
-    public func indexarCarpeta(_ carpeta: URL) {
-        // Usamos fileQueue.async para hacer trabajo en background
-        fileQueue.async { [weak self] in
-            guard let self = self else { return }
-            // --- Aquí iría la lógica real de leer el contenido de “carpeta” ---
-            // Supongamos que construimos un array provisional:
-            let nuevos: [Any] = [] // <-- reemplaza con tu propio modelo
-            
-            // Cuando ya tenemos el array completo, publicamos en el hilo principal:
-//            DispatchQueue.main.async {
-//                self.elementList = nuevos
-//            }
-        }
-    }
-    
     // MARK: – Ejemplo de método para borrar un elemento (protegido por fileQueue)
     public func borrarElemento(_ elemento: Any) throws {
         try fileQueue.sync {
@@ -234,13 +263,13 @@ class SistemaArchivos: ObservableObject {
     public func crearCarpeta(_ nombre: String, en carpetaPadre: URL) {
         fileQueue.async {
             // --- Lógica para crear carpeta en disco ---
-            // let urlNueva = carpetaPadre.appendingPathComponent(nombre, isDirectory: true)
-            // try? FileManager.default.createDirectory(at: urlNueva, withIntermediateDirectories: true)
+             let urlNueva = carpetaPadre.appendingPathComponent(nombre, isDirectory: true)
+             try? FileManager.default.createDirectory(at: urlNueva, withIntermediateDirectories: true)
             //
             // Luego reindexar o actualizar caches, y publicar en main:
             
             DispatchQueue.main.async {
-                // Por ejemplo: self.indexarCarpeta(carpetaPadre)
+                self.refreshIndex()
             }
         }
     }

@@ -2,7 +2,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
+class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Hashable, Equatable {
     
     var id: UUID
     var name: String
@@ -37,6 +37,17 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
         
     }
     
+    //MARK: - HACER HASHABLE y TRASNFERABLE
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(url)
+    }
+
+    static func == (lhs: ElementoSistemaArchivos, rhs: ElementoSistemaArchivos) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    
 //    func handleTap(elementModel: ElementModel) -> AnyView? {
 //        print("Handling tap")
 //        return nil
@@ -44,11 +55,6 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
     
     func getConcreteInstance() -> Self {
         return self
-    }
-    
-    
-    static func == (lhs: ElementoSistemaArchivos, rhs: ElementoSistemaArchivos) -> Bool {
-        return lhs.id == rhs.id
     }
     
 }

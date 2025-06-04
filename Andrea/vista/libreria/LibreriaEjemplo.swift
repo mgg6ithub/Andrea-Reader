@@ -30,7 +30,6 @@ struct LibreriaEjemplo: View {
                             }
                         }
 
-
                     }
                 }
             }
