@@ -12,6 +12,8 @@ struct MenuCentro: View {
     @EnvironmentObject var appEstado: AppEstado1
     @EnvironmentObject var menuEstado: MenuEstado
     
+    @State private var mostrarDocumentPicker: Bool = false
+    
     var body: some View {
         
         HStack {
@@ -28,13 +30,26 @@ struct MenuCentro: View {
             }
             
             Button(action: {
-                //ACTION
+                self.mostrarDocumentPicker.toggle()
             }) {
                 Image(systemName: "tray.and.arrow.down")
                     .font(.system(size: appEstado.constantes.iconSize * 1.3))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
+            }
+            .sheet(isPresented: $mostrarDocumentPicker) {
+                DocumentPicker(
+                    onPick: { urls in
+                        print("Seleccionado: \(urls)")
+                        // Aquí puedes copiar los archivos, moverlos, etc.
+                    },
+                    onCancel: {
+                        print("Cancelado")
+                    },
+                    allowMultipleSelection: true,
+                    contentTypes: [.item]
+                )
             }
             
             Button(action: {

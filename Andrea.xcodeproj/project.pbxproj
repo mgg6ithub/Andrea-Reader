@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */; };
+		D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440162D2DF1CB490025832B /* DocumentPicker.swift */; };
 		D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF72DE7A772001F816A /* AndreaApp.swift */; };
 		D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */; };
 		D45E6FFC2DE7A773001F816A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D45E6FFB2DE7A773001F816A /* Assets.xcassets */; };
@@ -59,6 +60,7 @@
 
 /* Begin PBXFileReference section */
 		D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorialColecciones.swift; sourceTree = "<group>"; };
+		D440162D2DF1CB490025832B /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		D45E6FF42DE7A772001F816A /* Andrea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Andrea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D45E6FF72DE7A772001F816A /* AndreaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AndreaApp.swift; sourceTree = "<group>"; };
 		D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VistaPrincipal.swift; sourceTree = "<group>"; };
@@ -121,6 +123,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D440162C2DF1CB3B0025832B /* picker */ = {
+			isa = PBXGroup;
+			children = (
+				D440162D2DF1CB490025832B /* DocumentPicker.swift */,
+			);
+			path = picker;
+			sourceTree = "<group>";
+		};
 		D45E6FEB2DE7A772001F816A = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +155,7 @@
 				D45E6FF72DE7A772001F816A /* AndreaApp.swift */,
 				D45E70052DE7A7C4001F816A /* AndreaAppView.swift */,
 				D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */,
+				D4ADDB802DE9C03F0097A010 /* environment */,
 				D4ADDB702DE9B4AD0097A010 /* utils */,
 				D4ADDB6F2DE9B4A50097A010 /* modelo */,
 				D4ADDB6E2DE9B4A00097A010 /* vista */,
@@ -199,6 +210,7 @@
 		D4ADDB6E2DE9B4A00097A010 /* vista */ = {
 			isa = PBXGroup;
 			children = (
+				D440162C2DF1CB3B0025832B /* picker */,
 				D4ADDB732DE9B69C0097A010 /* principal */,
 				D4ADDB722DE9B4E90097A010 /* menu */,
 				D4ADDB7F2DE9BE730097A010 /* historial */,
@@ -211,7 +223,6 @@
 			isa = PBXGroup;
 			children = (
 				D4ADDB852DE9C0820097A010 /* sistemaDeArchivos */,
-				D4ADDB802DE9C03F0097A010 /* environment */,
 			);
 			path = modelo;
 			sourceTree = "<group>";
@@ -445,6 +456,7 @@
 				D48589712DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift in Sources */,
 				D4DF317E2DEC77D1000D15CC /* PlaceholderElementView.swift in Sources */,
 				D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */,
+				D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */,
 				D4ADDB872DE9C1150097A010 /* HistorialEstado.swift in Sources */,
 				D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */,
 				D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */,
