@@ -149,8 +149,6 @@ class SistemaArchivos: ObservableObject {
         let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
         let destinoURL: URL = coleccionDestinoURL ?? self.coleccionActual
         
-        let elemento: (any ElementoSistemaArchivosProtocolo)
-        
         if sau.isDirectory(elementURL: elementoURL) {
             if let coleccionValor: ColeccionValor = self.cacheColecciones[elementoURL] {
                 return coleccionValor.coleccion

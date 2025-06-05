@@ -17,14 +17,16 @@ struct VistaPrincipal: View {
                 appEstado.temaActual.backgroundColor
                     .edgesIgnoringSafeArea(.all)
                 
-                
                 VStack {
                     
                     MenuVista()
+                        .padding(.vertical, 10)
+                        .padding(.bottom, 10)
                     
                     
                     HistorialColecciones()
-                        .frame(height: 30)
+                        .frame(height: 50)
+//                        .border(.red)
                     
                     
                     ZStack {
@@ -37,6 +39,7 @@ struct VistaPrincipal: View {
                     Spacer()
                     
                 }
+                .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
                 .padding(.horizontal, ConstantesPorDefecto().horizontalPadding)
             }
             .foregroundColor(appEstado.temaActual.textColor)

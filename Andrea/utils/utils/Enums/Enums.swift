@@ -21,8 +21,8 @@ enum EnumTemas: String, CaseIterable {
     
     var backgroundColor: Color {
         switch self {
-        case .light: return .white.opacity(0.5)
-        case .dark: return .black.opacity(0.5)
+        case .light: return Color(UIColor.systemGray6)
+        case .dark: return Color(UIColor.systemGray5)
         case .dayNight: return .black.opacity(0.5)
         case .blue: return .blue.opacity(0.2)
         case .green: return .green.opacity(0.2)

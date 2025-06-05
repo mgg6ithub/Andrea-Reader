@@ -12,7 +12,7 @@ class AppEstado1: ObservableObject {
     @Published var isFirstTimeLaunch: Bool = false
     @Published var resolucionLogica: EnumResolucionesLogicas
     
-    @Published var temaActual: EnumTemas = .light
+    @Published var temaActual: EnumTemas = .dark
     @Published var shadows: Bool = true
     @Published var animaciones: Bool = true
     
