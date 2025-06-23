@@ -55,17 +55,16 @@ class PilaColecciones: ObservableObject {
             // 2. Obtenemos el cache
             let cache = SistemaArchivos.getSistemaArchivosSingleton.cacheColecciones
             
-//            print(coleccionesGuardadas)
-//            print()
-//            print(cache)
             
             // 3. Extraemos las colecciones en el orden dado
             self.colecciones = coleccionesGuardadas.compactMap { url in
                 cache[url]?.coleccion
             }
             
-//            print("PILA DE COLECCIONES")
-//            print(self.colecciones)
+            //4. pila cargada
+            for coleccion in self.colecciones {
+                print(coleccion.name)
+            }
             
         }
     }
@@ -129,6 +128,13 @@ class PilaColecciones: ObservableObject {
             colecciones.removeLast()
         }
     }
-
+    
+    /**
+     Metodo para sacar todas las colecciones de la pila porque se quiere ir a la raiz.
+     */
+    public func sacarTodasColecciones() {
+        self.colecciones.removeAll() //Limpiar todas
+        SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: self.coleccionRaiz) // Refrescar con la URL de documents
+    }
     
 }

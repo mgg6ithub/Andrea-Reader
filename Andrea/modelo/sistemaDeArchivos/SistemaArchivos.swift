@@ -100,8 +100,7 @@ class SistemaArchivos: ObservableObject {
             //Iniciamos el indexado
             //2. Primero escaneamos el directorio para saber el total de elementos que habra. Para cargar en la vista los placeholders.
             let totalElements = self.obtenerURLSDirectorio(coleccionURL: coleccionActual)
-            print("Elementos obtenidos")
-            print(totalElements)
+
             //Como en swiftui no se puede definir el tamaño de la lista antes de introducir nada hay que introducir objetos dummys hasta el tamaño que queramos
             DispatchQueue.main.async {
                 self.listaElementos = Array(repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo, count: totalElements.count)

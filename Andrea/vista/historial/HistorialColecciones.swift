@@ -6,47 +6,73 @@ struct HistorialColecciones: View {
     
     @Namespace private var breadcrumb
     @EnvironmentObject var pc: PilaColecciones
+    @EnvironmentObject var appEstado: AppEstado1
+    
+    private var iconSize: CGFloat  { appEstado.constantes.iconSize }
     
     var body: some View {
         HStack {
+            
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 8) {
                     
-                    ForEach(Array(pc.colecciones.enumerated()), id: \.1.url) { index, coleccion in
+                    if pc.colecciones.isEmpty {
+                        ColeccionRectanguloAvanzado(
+                            nombreColeccion: "Documents",
+                            textoSize: 21,
+                            colorPrimario: .primary,
+                            color: Color.gray,
+                            isActive: true,
+                            animationDelay: Double(1.5) * 0.1
+                        )
+                        .matchedGeometryEffect(id: 3123131321, in: breadcrumb)
+                    }
+                    else {
                         
-                        if pc.esColeccionActual(coleccion: coleccion) {
+                        Button(action: {
+                            pc.sacarTodasColecciones()
+                        }) {
+                            Image(systemName: "chevron.backward")
+                                .font(.system(size: iconSize * 0.65))
+                        }
+                        
+                        ForEach(Array(pc.colecciones.enumerated()), id: \.1.url) { index, coleccion in
                             
-                            ColeccionRectanguloAvanzado(
-                                nombreColeccion: coleccion.name,
-                                textoSize: 21,
-                                colorPrimario: .primary,
-                                color: coleccion.directoryColor,
-                                isActive: true,
-                                animationDelay: Double(index) * 0.1
-                            )
-                            .matchedGeometryEffect(id: coleccion.url, in: breadcrumb)
-                            
-                        } else {
-                            Button(action: {
-                                withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                                    pc.sacarHastaEncontrarColeccion(coleccion: coleccion)
-                                }
-                            }) {
+                            if pc.esColeccionActual(coleccion: coleccion) {
                                 
                                 ColeccionRectanguloAvanzado(
                                     nombreColeccion: coleccion.name,
-                                    textoSize: 14,
-                                    colorPrimario: .secondary,
+                                    textoSize: 21,
+                                    colorPrimario: .primary,
                                     color: coleccion.directoryColor,
-                                    isActive: false,
+                                    isActive: true,
                                     animationDelay: Double(index) * 0.1
                                 )
                                 .matchedGeometryEffect(id: coleccion.url, in: breadcrumb)
                                 
+                            } else {
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                                        pc.sacarHastaEncontrarColeccion(coleccion: coleccion)
+                                    }
+                                }) {
+                                    
+                                    ColeccionRectanguloAvanzado(
+                                        nombreColeccion: coleccion.name,
+                                        textoSize: 14,
+                                        colorPrimario: .secondary,
+                                        color: coleccion.directoryColor,
+                                        isActive: false,
+                                        animationDelay: Double(index) * 0.1
+                                    )
+                                    .matchedGeometryEffect(id: coleccion.url, in: breadcrumb)
+                                    
+                                }
+                                .buttonStyle(ColeccionButtonStyle())
                             }
-                            .buttonStyle(ColeccionButtonStyle())
                         }
-                    }
+                    } //FIN ELSE empty
+
                 }
                 .padding(.horizontal)
             }
