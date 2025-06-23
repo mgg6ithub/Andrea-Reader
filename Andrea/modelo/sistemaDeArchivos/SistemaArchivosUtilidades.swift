@@ -246,7 +246,7 @@ class SistemaArchivosUtilidades {
             
             for i in contents {
                 
-                newList.append(StringManipulation().removeExtensionFromString(name: i))
+                newList.append(ManipulacionCadenas().removeExtensionFromString(name: i))
                 
             }
             
@@ -271,7 +271,7 @@ class SistemaArchivosUtilidades {
                     continue
                 }
                 
-                newList.append(StringManipulation().removeExtensionFromString(name: i))
+                newList.append(ManipulacionCadenas().removeExtensionFromString(name: i))
                 
             }
             

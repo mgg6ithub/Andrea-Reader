@@ -28,6 +28,9 @@
 		D48589712DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589702DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift */; };
 		D48589742DEBA1A80074DB8E /* Archivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589732DEBA1A80074DB8E /* Archivo.swift */; };
 		D48589762DEBA1C50074DB8E /* Coleccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589752DEBA1C50074DB8E /* Coleccion.swift */; };
+		D48B459F2DF248310088F40E /* Unrar in Frameworks */ = {isa = PBXBuildFile; productRef = D48B459E2DF248310088F40E /* Unrar */; };
+		D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */; };
+		D48B45A42DF250720088F40E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D48B45A32DF250720088F40E /* ZIPFoundation */; };
 		D4A0FF3D2DEB3FD300195018 /* LineaSeparadora.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */; };
 		D4A0FF3F2DEB6F1500195018 /* MasTemas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */; };
 		D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */; };
@@ -81,6 +84,7 @@
 		D48589702DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SistemaArchivosUtilidades.swift; sourceTree = "<group>"; };
 		D48589732DEBA1A80074DB8E /* Archivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Archivo.swift; sourceTree = "<group>"; };
 		D48589752DEBA1C50074DB8E /* Coleccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coleccion.swift; sourceTree = "<group>"; };
+		D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBZArchivo.swift; sourceTree = "<group>"; };
 		D49D2AF02DEC5D7400AC8E36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineaSeparadora.swift; sourceTree = "<group>"; };
 		D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasTemas.swift; sourceTree = "<group>"; };
@@ -117,6 +121,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D48B459F2DF248310088F40E /* Unrar in Frameworks */,
+				D48B45A42DF250720088F40E /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */,
+				D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */,
 			);
 			path = archivos;
 			sourceTree = "<group>";
@@ -380,6 +387,10 @@
 			dependencies = (
 			);
 			name = Andrea;
+			packageProductDependencies = (
+				D48B459E2DF248310088F40E /* Unrar */,
+				D48B45A32DF250720088F40E /* ZIPFoundation */,
+			);
 			productName = Andrea;
 			productReference = D45E6FF42DE7A772001F816A /* Andrea.app */;
 			productType = "com.apple.product-type.application";
@@ -408,6 +419,10 @@
 				Base,
 			);
 			mainGroup = D45E6FEB2DE7A772001F816A;
+			packageReferences = (
+				D48B459D2DF248310088F40E /* XCRemoteSwiftPackageReference "Unrar" */,
+				D48B45A22DF250720088F40E /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+			);
 			productRefGroup = D45E6FF52DE7A772001F816A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -472,6 +487,7 @@
 				D485896C2DEB9DF10074DB8E /* Utilidades.swift in Sources */,
 				D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */,
 				D45E70082DE7A7DF001F816A /* AppEstado.swift in Sources */,
+				D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */,
 				D4ADDB7E2DE9B9FA0097A010 /* MenuDerecha.swift in Sources */,
 				D4DF31792DEC7362000D15CC /* ElementoPlaceholderDummy.swift in Sources */,
 				D46E94352DEA287000ABD9EE /* Toggle.swift in Sources */,
@@ -690,6 +706,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D48B459D2DF248310088F40E /* XCRemoteSwiftPackageReference "Unrar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mtgto/Unrar.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.2;
+			};
+		};
+		D48B45A22DF250720088F40E /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D48B459E2DF248310088F40E /* Unrar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D48B459D2DF248310088F40E /* XCRemoteSwiftPackageReference "Unrar" */;
+			productName = Unrar;
+		};
+		D48B45A32DF250720088F40E /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D48B45A22DF250720088F40E /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D45E6FEC2DE7A772001F816A /* Project object */;
 }

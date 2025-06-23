@@ -3,6 +3,7 @@ import SwiftUI
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
+    
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
     var dirName: String = ""

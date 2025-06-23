@@ -66,4 +66,3 @@ enum EnumTemas: String, CaseIterable {
 
 
 
-//MARK: - TIPOS DE ARCHIVOS

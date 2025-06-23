@@ -8,14 +8,10 @@ class SistemaArchivos: ObservableObject {
     // MARK: – Instancia singleton (perezosa + protegida con queue de sincronización)
     private static var sistemaArchivos: SistemaArchivos? = nil
     
-    //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual
-    private(set) var coleccionActual: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
-
-    
     private static let sistemaArchivosQueue = DispatchQueue(label: "com.miApp.singletonSistemaArchivos")
     
-    //MARK: - INICIAMOS LA STACK PERSONALIZADA PARA CONTROLAR EL ACCESO DE LAS COLECCIONES
-    private let pilaColecciones = PilaColecciones.getPilaColeccionesSingleton
+    //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual (Documents) coelccion raiz
+    private(set) var coleccionRaiz: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
     
     /// Getter público que comprueba si la instancia es nula; si lo es, la crea una sola vez.
     public static var getSistemaArchivosSingleton: SistemaArchivos {
@@ -34,7 +30,7 @@ class SistemaArchivos: ObservableObject {
     /**
      *Diccinario de directorios cache para almacenar objetos previamente creados por cada directorio. Para una navegacion rapida entre el sistema de archivos.*
      */
-    private var cacheColecciones: [URL : ColeccionValor] = [:] //Solo accesible desde el (sa). Clave -> Direccion unica URL, Valor -> Estructura con una instancia de la coleccion y la lista de sus elementos.
+    private(set) var cacheColecciones: [URL : ColeccionValor] = [:] //Solo accesible desde el (sa). Clave -> Direccion unica URL, Valor -> Estructura con una instancia de la coleccion y la lista de sus elementos.
     
     /**
      La idea es mantener privado el cache y la lista publica. Porque la lista se puede ordenar con facilidad y iterar.
@@ -42,6 +38,8 @@ class SistemaArchivos: ObservableObject {
      */
     
     @Published var listaElementos: [any ElementoSistemaArchivosProtocolo] = [] //Es es la lista publica que se vinculara a la vista de la libreria.
+    
+    private let fm: FileManager = FileManager.default
     
     //MARK: - CONSTRUCTOR
     /**
@@ -52,21 +50,8 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         
-        //Creamos el cache de colecciones
-        self.indexamientoRecursivoColecciones(desde: self.coleccionActual)
-        
-        guard let coleccionValor: ColeccionValor = self.cacheColecciones[self.coleccionActual] else { return }
-        
-        //Cargamos el estado de la pila de colecciones de memoria
-        self.pilaColecciones.meterColeccion(coleccion: coleccionValor.coleccion)
-        
-//        for (_, coleccionValor) in cacheColecciones {
-//            print(coleccionValor.coleccion.name)
-//        }
-        
-        //Comenzar indexacion del directorio actual
-        self.refreshIndex()
-
+        //Creamos el cache de colecciones -> Instanciando todas las colecciones posibles
+        self.indexamientoRecursivoColecciones(desde: SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory)
         
     }
     
@@ -98,11 +83,15 @@ class SistemaArchivos: ObservableObject {
     }
     
     
-    public func refreshIndex(completion: (() -> Void)? = nil) {
+    public func refreshIndex(coleccionActual: URL, completion: (() -> Void)? = nil) {
         
         //1. Borramos lo que hubiera anteriormente
         DispatchQueue.main.async {
             self.listaElementos.removeAll()
+            
+            //Si ya esta en cache actualizamos la lista con los elementos del cache y retornamos
+            
+            
         }
         
         //Creamos un hilo en el background para el indexado
@@ -110,9 +99,13 @@ class SistemaArchivos: ObservableObject {
             
             //Iniciamos el indexado
             //2. Primero escaneamos el directorio para saber el total de elementos que habra. Para cargar en la vista los placeholders.
-            let totalElements = self.obtenerURLSDirectorio(coleccionURL: self.coleccionActual)
+            let totalElements = self.obtenerURLSDirectorio(coleccionURL: coleccionActual)
+            print("Elementos obtenidos")
+            print(totalElements)
             //Como en swiftui no se puede definir el tamaño de la lista antes de introducir nada hay que introducir objetos dummys hasta el tamaño que queramos
-            DispatchQueue.main.async { self.listaElementos = Array(repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo, count: totalElements.count) }
+            DispatchQueue.main.async {
+                self.listaElementos = Array(repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo, count: totalElements.count)
+            }
             
             for (index, element) in totalElements.enumerated() {
                 
@@ -123,23 +116,9 @@ class SistemaArchivos: ObservableObject {
                     }
                 }
                 
-                Thread.sleep(forTimeInterval: 0.07) // Simula carga escalonada
             }
-
             
-            //3. Si hay 50 archivos se cargaran 50 placeholders en la vista
-//            if let cacheColecciones = self.cacheColecciones[self.coleccionActual] {
-//                //Si esta en el cache actualizamos
-//                self.actualizarCache()
-//            } else {
-//                //si no esta en cache indexamos desde 0
-//                self.indexarColeccion()
-//            }
-            
-            //4. Ordenamos el cache y construimos la lista tempListSorted
-            
-            //5. Asignamos las instancias a listaElementos
-            
+            DispatchQueue.main.async { completion?() }
         }
         
     }
@@ -147,7 +126,7 @@ class SistemaArchivos: ObservableObject {
     public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> (any ElementoSistemaArchivosProtocolo)? {
         
         let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
-        let destinoURL: URL = coleccionDestinoURL ?? self.coleccionActual
+        let destinoURL: URL = coleccionDestinoURL ?? self.coleccionRaiz
         
         if sau.isDirectory(elementURL: elementoURL) {
             if let coleccionValor: ColeccionValor = self.cacheColecciones[elementoURL] {
@@ -155,7 +134,7 @@ class SistemaArchivos: ObservableObject {
             }
             return FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: elementoURL), collectionURL: elementoURL)
         } else {
-            return FactoryArchivo().crearArchivo(fileName: sau.getFileName(fileURL: elementoURL), fileURL: elementoURL, destionationURL: destinoURL, currentDirectory: self.coleccionActual)
+            return FactoryArchivo().crearArchivo(fileName: sau.getFileName(fileURL: elementoURL), fileURL: elementoURL, destionationURL: destinoURL, currentDirectory: self.coleccionRaiz)
         }
     }
     
@@ -193,9 +172,9 @@ class SistemaArchivos: ObservableObject {
                 true
             }
             
-//            print("En total hay para el directorio: ", self.coleccionActual)
-//            print(filteredURLs.count)
-//            print(filteredURLs)
+            //            print("En total hay para el directorio: ", self.coleccionRaiz)
+            //            print(filteredURLs.count)
+            //            print(filteredURLs)
             
             return filteredURLs
         } catch {
@@ -203,27 +182,6 @@ class SistemaArchivos: ObservableObject {
             return []
         }
     }
-
-//    func crearArchivosPrueba() {
-//        let fileManager = FileManager.default
-//        guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-//            print("No se pudo obtener el directorio de documentos")
-//            return
-//        }
-//
-//        for i in 1...40 {
-//            let nombreArchivo = "archivo\(i).txt"
-//            let contenidoArchivo = "Contenido del archivo \(i)"
-//            let fileURL = documentsURL.appendingPathComponent(nombreArchivo)
-//
-//            do {
-//                try contenidoArchivo.write(to: fileURL, atomically: true, encoding: .utf8)
-//                print("Archivo creado: \(fileURL.path)")
-//            } catch {
-//                print("Error al crear el archivo \(nombreArchivo): \(error)")
-//            }
-//        }
-//    }
     
     
     // MARK: – Ejemplo de método para borrar un elemento (protegido por fileQueue)
@@ -257,19 +215,86 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
-    // MARK: – Ejemplo de método para crear una carpeta nueva (protegido)
-    public func crearCarpeta(_ nombre: String, en carpetaPadre: URL) {
+    /**
+     Crea un archivo en la coleccion de destino indicada. Si no se pasa la coleccion de destino lo creara en la actual.
+     
+        - Parameters:
+        - nombre: Nombre del archivo que se creara.
+        - coleccionDestino:  Destino de la coleccion donde se creara el archivo.
+     */
+    public func crearArchivo(archivoURL: URL, coleccionDestino: URL? = nil) {
+        
+        fileQueue.async {
+            
+            // --- Construimos la URL del nuevo archivo
+            
+            // 1. Obtenenmos el nombre de la url
+            let nombreArchivo: String = archivoURL.lastPathComponent
+            // 2. Verificamos si se ha pasado un destino concreto. Si no se creara en la colecciona actual.
+            let coleccionDestinoURL = coleccionDestino ?? self.coleccionRaiz
+            // 3. Construimos la nueva URL
+            let nuevoArchivoURL = coleccionDestinoURL.appendingPathComponent(nombreArchivo)
+            
+            // --- Agregamos el archivo a la carpeta Andrea para la persistencia ---
+            if !SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.fileExists(elementURL: nuevoArchivoURL) {
+                
+                do {
+                    guard archivoURL.startAccessingSecurityScopedResource() else {
+                        print("No se pudo acceder al archivo de manera segura.")
+                        return
+                    }
+                    defer { archivoURL.stopAccessingSecurityScopedResource() }
+                    
+                    try self.fm.copyItem(at: archivoURL, to: nuevoArchivoURL)
+                } catch {
+                    print("Error a la hora de crear el archivo -> ", nombreArchivo)
+                }
+                
+            }
+            
+            // --- Agregamos el archivo a la listaElementos para actualizar la UI solo con ese elemento
+            self.actualizarUISoloElemento(elementoURL: nuevoArchivoURL)
+            
+        }
+        
+    }
+    
+    
+    /**
+     Crea una nueva carpeta dentro del sistema de archivos en una ruta determinada o, por defecto, en la colección actual.
+     
+     - Parameters:
+        - nombre: Nombre de la carpeta que se desea crear.
+        - direccionNuevaColeccion: Ruta opcional donde se desea crear la nueva carpeta. Si no se proporciona, se usará `coleccionActual`.
+     */
+    public func crearColeccion(nombre: String, en direccionNuevaColeccion: URL? = nil) {
         fileQueue.async {
             // --- Lógica para crear carpeta en disco ---
-             let urlNueva = carpetaPadre.appendingPathComponent(nombre, isDirectory: true)
-             try? FileManager.default.createDirectory(at: urlNueva, withIntermediateDirectories: true)
-            //
-            // Luego reindexar o actualizar caches, y publicar en main:
+            let coleccionDestino = direccionNuevaColeccion ?? self.coleccionRaiz
+            let nuevaColeccionURL = coleccionDestino.appendingPathComponent(nombre, isDirectory: true)
+            try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
             
-            DispatchQueue.main.async {
-                self.refreshIndex()
-            }
+            // --- Creamos la instancia de la coleccion ---
+            self.actualizarUISoloElemento(elementoURL: nuevaColeccionURL)
+
         }
+    }
+    
+    
+    /**
+     Agregar en el hilo principal un elemento a la listaElementos para actualizar la UI solo con ese elemento. Puede ser un archivo o una coleccion.
+     - Parameters:
+        - elementoURL: URL
+     */
+    private func actualizarUISoloElemento(elementoURL: URL) {
+        
+        // --- Introducir el elemento en la lista en el hilo principal
+        if let coleccion: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: elementoURL) {
+            DispatchQueue.main.async { self.listaElementos.append(coleccion) }
+        }
+        
+        //Actualizar todas las instancias dependientes de dicho elemento
+        
     }
     
     

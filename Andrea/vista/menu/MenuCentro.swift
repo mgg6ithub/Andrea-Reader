@@ -1,10 +1,3 @@
-//
-//  CenterMenu.swift
-//  Andrea
-//
-//  Created by mgg on 30/5/25.
-//
-
 import SwiftUI
 
 struct MenuCentro: View {
@@ -13,7 +6,9 @@ struct MenuCentro: View {
     @EnvironmentObject var menuEstado: MenuEstado
     
     @State private var mostrarDocumentPicker: Bool = false
-    
+    @State private var esNuevaColeccionPresionado: Bool = false
+    @State private var nuevaColeccionNombre: String = ""
+
     var body: some View {
         
         HStack {
@@ -42,7 +37,9 @@ struct MenuCentro: View {
                 DocumentPicker(
                     onPick: { urls in
                         print("Seleccionado: \(urls)")
-                        // Aquí puedes copiar los archivos, moverlos, etc.
+                        for url in urls {
+                            SistemaArchivos.getSistemaArchivosSingleton.crearArchivo(archivoURL: url)
+                        }
                     },
                     onCancel: {
                         print("Cancelado")
@@ -53,11 +50,7 @@ struct MenuCentro: View {
             }
             
             Button(action: {
-                //CREAR COLECCION NUEVA
-                
-                let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
-                sa.crearCarpeta("The Beggining After The End", en: sa.coleccionActual)
-                
+                self.esNuevaColeccionPresionado.toggle()
             }) {
                 Image(systemName: "folder.badge.plus")
                     .font(.system(size: appEstado.constantes.iconSize * 1.3))
@@ -65,7 +58,13 @@ struct MenuCentro: View {
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
             }
-            
+            .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
+                TextField("Nombre de colección", text: $nuevaColeccionNombre)
+                Button("Aceptar") {
+                    SistemaArchivos.getSistemaArchivosSingleton.crearColeccion(nombre: nuevaColeccionNombre)
+                }
+                Button("Cancelar", role: .cancel) {}
+            }
             
             Button(action: {
                 //ACTION
@@ -78,7 +77,6 @@ struct MenuCentro: View {
             }
             
             Button(action: {
-                //ACTION
                 self.menuEstado.isGlobalSettingsPressed.toggle()
             }) {
                 Image(systemName: "slider.horizontal.3")
@@ -93,7 +91,6 @@ struct MenuCentro: View {
             }
             
         }
-        
     }
-    
 }
+

@@ -7,7 +7,6 @@ struct ColeccionValor {
     var subColecciones: Set<URL> =  []
     var listaElementos: [(any ElementoSistemaArchivosProtocolo)] = []
     
-    
 }
 
 class Coleccion: ElementoSistemaArchivos {

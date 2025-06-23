@@ -1,4 +1,60 @@
 
-
 import SwiftUI
+
+struct Utilidades {
+    
+    //MARK: - ALGORITMOS DE ORDENACION
+    /**
+     *Ordenamiento de URL*
+     */
+    
+    public func simpleSorting(contentFiles: [URL]) -> [URL] {
+        
+        let sortedFiles = contentFiles.sorted { url1, url2 in
+            url1.lastPathComponent < url2.lastPathComponent
+        }
+        
+        return sortedFiles
+        
+    }
+
+    
+    /**
+     *Ordenamiento de Strings*
+     */
+    
+    public func simpleSorting(contentFiles: [String]) -> [String] {
+        
+        let mc = ManipulacionCadenas()
+        
+        return contentFiles.sorted { file1, file2 in
+            let nums1 = mc.extractNumbers(from: file1)
+            let nums2 = mc.extractNumbers(from: file2)
+
+            // Si file1 no tiene números y file2 sí, file1 va después
+            if nums1.isEmpty && !nums2.isEmpty {
+                return false
+            }
+            // Si file1 tiene números y file2 no, file1 va antes
+            if !nums1.isEmpty && nums2.isEmpty {
+                return true
+            }
+            // Si ambos no tienen números, ordenar alfabéticamente
+            if nums1.isEmpty && nums2.isEmpty {
+                return file1 < file2
+            }
+
+            // Ambos tienen números: comparar número a número
+            for (n1, n2) in zip(nums1, nums2) {
+                if n1 != n2 {
+                    return n1 < n2
+                }
+            }
+            // Si todos los números comparados son iguales, el que tiene menos números va primero
+            return nums1.count < nums2.count
+        }
+    }
+    
+    
+}
 

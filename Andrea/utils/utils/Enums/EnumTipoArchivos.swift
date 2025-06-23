@@ -4,8 +4,13 @@ import SwiftUI
 
 enum EnumTipoArchivos: String {
     
+    //LIBRO ELECTRONICO
     case epub = "epub"
+    
+    //PDF
     case pdf = "pdf"
+    
+    // COMICS
     case cbz = "cbz"
     case cbr = "cbr"
     
@@ -26,8 +31,13 @@ enum EnumTipoArchivos: String {
 
 enum EnumDescripcionArchivo: String {
     
+    //LIBRO ELECTRONICO
     case epub = "Electronic Publishing"
+    
+    //PDF
     case pdf = "Portable Document Format"
+    
+    // COMICS
     case cbz = "Comic Book Zip"
     case cbr = "Comic Book Rar"
     

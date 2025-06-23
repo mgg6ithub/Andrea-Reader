@@ -31,7 +31,7 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Hashable, Equat
         self.id = UUID(uuidString: url.path) ?? UUID()
         self.name = name
         self.url = url
-        self.relativeURL = StringManipulation().relativizeURL(elementURL: url)
+        self.relativeURL = ManipulacionCadenas().relativizeURL(elementURL: url)
         self.creationDate = creationDate
         self.modificationDate = modificationDate
         

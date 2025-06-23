@@ -5,7 +5,7 @@
 import SwiftUI
 
 
-struct StringManipulation {
+struct ManipulacionCadenas {
     
     /**
      Metodo para calcular la altura del texto usado
@@ -49,7 +49,7 @@ struct StringManipulation {
     public func handleDuplicateElement(elementURL: URL, directoryURL: URL) -> String {
         
         let elementExtension = elementURL.pathExtension
-        var newName = StringManipulation().removeExtensionFromString(name: elementURL.lastPathComponent)
+        var newName = ManipulacionCadenas().removeExtensionFromString(name: elementURL.lastPathComponent)
         
         if let hasNumber = self.extractNumberFromString(newName) {
             newName = self.deleteDuplicateNumberFromString(newName)
@@ -58,7 +58,7 @@ struct StringManipulation {
         var highestDuplicate = getHighestDuplicate(newName, SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.getListSubdirectoryContentsWithNoExtensions(urlPath: directoryURL))
         highestDuplicate += 1
         
-        return StringManipulation().joinNameWithExtension(name: newName + " (" + String(highestDuplicate) + ")", ext: elementExtension)
+        return ManipulacionCadenas().joinNameWithExtension(name: newName + " (" + String(highestDuplicate) + ")", ext: elementExtension)
     }
     
     /**
@@ -137,7 +137,7 @@ struct StringManipulation {
      Metodo para normalizar una URL eliminando de su path la palabra "private"
      */
     
-    func normalizeURL(_ url: URL) -> URL {
+    func normalizarURL(_ url: URL) -> URL {
         
         if url.path.hasPrefix("/private") {
             // Eliminar el prefijo "/private" de la ruta
@@ -152,7 +152,7 @@ struct StringManipulation {
         Metodo apra agregar private al path
      */
     
-    func addPrivateToPath(_ url: URL) -> URL {
+    func agregarPrivate(_ url: URL) -> URL {
         if !url.path.hasPrefix("/private") {
             return URL(fileURLWithPath: "/private" + url.path)
         }
@@ -177,7 +177,7 @@ struct StringManipulation {
     }
     
     func absolutivizeURL(elementSTRING: String) -> URL {
-        let rootPath = StringManipulation().addPrivateToPath(SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.getRootDirectoryPath())
+        let rootPath = ManipulacionCadenas().agregarPrivate(SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.getRootDirectoryPath())
         return URL(fileURLWithPath: rootPath.deletingLastPathComponent().path).appendingPathComponent(elementSTRING)
     }
 
@@ -280,6 +280,25 @@ struct StringManipulation {
         }
         
         return nil
+    }
+    
+    public func extractNumbers(from string: String) -> [Int] {
+        let pattern = "\\d+"
+        var numbers: [Int] = []
+
+        if let regex = try? NSRegularExpression(pattern: pattern) {
+            let results = regex.matches(in: string, range: NSRange(string.startIndex..., in: string))
+            for match in results {
+                if let range = Range(match.range, in: string) {
+                    let numStr = String(string[range])
+                    if let number = Int(numStr) {
+                        numbers.append(number)
+                    }
+                }
+            }
+        }
+
+        return numbers
     }
     
 }

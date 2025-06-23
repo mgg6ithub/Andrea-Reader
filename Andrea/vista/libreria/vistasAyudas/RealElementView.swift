@@ -5,47 +5,60 @@ struct RealElementView: View {
     @State private var isVisible = false
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 0) {
+            
+            // --- Imagen (75% de alto)
             ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.gray.opacity(0.15))
-                    .frame(width: 100, height: 140)
-
-                Image(systemName: "book.closed")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(.gray.opacity(0.5))
-            }
-
-            Text(element.name)
-                .font(.headline)
-                .foregroundColor(.primary)
-                .lineLimit(1)
-                .frame(width: 120, alignment: .center)
-
-            if let coleccion = element as? Coleccion {
-                
-                Button(action: {
-                    coleccion.meterColeccion(coleccion: coleccion)
-                }) {
-                    Text("Entrar")
+                if let cbz = element as? CBZArchivo,
+                   let imagen = cbz.imagenMiniatura {
+                    Image(uiImage: imagen)
+                        .resizable()
+                        .scaledToFill()
+                        .clipped()
+                } else {
+                    // Placeholder si no hay imagen
+                    Image(systemName: "photo")
+                        .resizable()
+                        .scaledToFit()
+                        .padding()
+                        .foregroundColor(.gray.opacity(0.5))
                 }
-                
-            } else {
-                HStack(spacing: 6) {
-                    ForEach(["Dato 1", "Dato 2", "Dato 3"], id: \.self) { dato in
-                        Text(dato)
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
-                            .lineLimit(1)
-                            .frame(width: 36, alignment: .leading)
+            }
+            .frame(height: 165) // 75% de 220
+            
+            // --- Texto e info (25% de alto)
+            VStack(spacing: 4) {
+                Text(element.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity, alignment: .center)
+
+                if let coleccion = element as? Coleccion {
+                    Button(action: {
+                        coleccion.meterColeccion(coleccion: coleccion)
+                    }) {
+                        Text("Entrar")
+                            .font(.caption)
+                            .padding(.top, 2)
+                    }
+                } else {
+                    HStack(spacing: 6) {
+                        ForEach(["Dato 1", "Dato 2", "Dato 3"], id: \.self) { dato in
+                            Text(dato)
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity)
+                        }
                     }
                 }
             }
+            .frame(height: 55) // 25% de 220
+            .padding(.horizontal, 6)
+            .padding(.top, 6)
 
         }
-        .padding()
         .frame(width: 150, height: 220)
         .background(Color(.systemBackground))
         .cornerRadius(18)
@@ -57,6 +70,8 @@ struct RealElementView: View {
                 isVisible = true
             }
         }
+        .clipped()
     }
 }
+
 
