@@ -318,14 +318,14 @@ class SistemaArchivosUtilidades {
         print()
         
         do {
-            if let attributes = try FileManager.default.attributesOfItem(atPath: elementURL.path) as? [FileAttributeKey: Any] {
-                for (key, value) in attributes {
-                    print("\(key): \(value)")
-                }
+            let attributes = try FileManager.default.attributesOfItem(atPath: elementURL.path)
+            for (key, value) in attributes {
+                print("\(key): \(value)")
             }
         } catch {
             print("Error obteniendo atributos: \(error)")
         }
+
     }
     
 }

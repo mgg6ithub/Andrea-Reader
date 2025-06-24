@@ -191,6 +191,23 @@
 			path = vistasCompartidas;
 			sourceTree = "<group>";
 		};
+		D47139B62E0ACD9800B5FA35 /* ModoVistas */ = {
+			isa = PBXGroup;
+			children = (
+				D47139B72E0ACDB300B5FA35 /* Cuadricula */,
+			);
+			path = ModoVistas;
+			sourceTree = "<group>";
+		};
+		D47139B72E0ACDB300B5FA35 /* Cuadricula */ = {
+			isa = PBXGroup;
+			children = (
+				D45E700D2DE7A840001F816A /* GridView.swift */,
+				D4DF317A2DEC74F0000D15CC /* LibreriaEjemplo.swift */,
+			);
+			path = Cuadricula;
+			sourceTree = "<group>";
+		};
 		D48589642DEB9CB50074DB8E /* herencia */ = {
 			isa = PBXGroup;
 			children = (
@@ -246,9 +263,8 @@
 		D4ADDB712DE9B4DB0097A010 /* libreria */ = {
 			isa = PBXGroup;
 			children = (
+				D47139B62E0ACD9800B5FA35 /* ModoVistas */,
 				D4DF317C2DEC77BD000D15CC /* vistasAyudas */,
-				D45E700D2DE7A840001F816A /* GridView.swift */,
-				D4DF317A2DEC74F0000D15CC /* LibreriaEjemplo.swift */,
 			);
 			path = libreria;
 			sourceTree = "<group>";

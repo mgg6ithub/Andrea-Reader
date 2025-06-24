@@ -53,14 +53,9 @@ class SistemaArchivos: ObservableObject {
     private init() {
         
         let coleccionHomeURL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
-//        self.coleccionHome = ColeccionValor(coleccion: FabricaColeccion().crearColeccion(collectionName: coleccionHomeURL.lastPathComponent, collectionURL: coleccionHomeURL)!)
         
         //Creamos el cache de colecciones -> Instanciando todas las colecciones posibles
         self.indexamientoRecursivoColecciones(desde: coleccionHomeURL)
-        
-//        if let coleccionValor = self.cacheColecciones[coleccionHomeURL] {
-//            self.coleccionHome = coleccionValor
-//        }
         
     }
     
@@ -80,7 +75,7 @@ class SistemaArchivos: ObservableObject {
             }
         }
 
-        guard var coleccionValor = cacheColecciones[coleccionURL] else { return }
+        guard let coleccionValor = cacheColecciones[coleccionURL] else { return }
         // Filtramos solo los directorios
         let subdirectorios = obtenerURLSDirectorio(coleccionURL: coleccionURL).filter { sau.isDirectory(elementURL: $0) }
         

@@ -51,7 +51,7 @@ struct ManipulacionCadenas {
         let elementExtension = elementURL.pathExtension
         var newName = ManipulacionCadenas().removeExtensionFromString(name: elementURL.lastPathComponent)
         
-        if let hasNumber = self.extractNumberFromString(newName) {
+        if self.extractNumberFromString(newName) != nil {
             newName = self.deleteDuplicateNumberFromString(newName)
         }
         

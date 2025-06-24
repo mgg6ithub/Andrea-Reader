@@ -18,68 +18,64 @@ class CBZArchivo: Archivo {
     }
     
     func cargarPaginas() -> [String] {
-        guard let archive = Archive(url: self.url, accessMode: .read) else {
-            print("Error al abrir el archivo CBZ")
+        do {
+            let archive = try Archive(url: self.url, accessMode: .read)
+            
+            // Filtra solo las imágenes dentro del archivo CBZ
+            let comicImages = archive.compactMap { entry in
+                if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
+                    return entry.path
+                }
+                return nil
+            }
+            
+            let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
+            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+            
+        } catch {
+            print("Error al abrir el archivo CBZ: \(error)")
             return []
         }
-        
-        var comicPages: [String] = []
-
-        // Filtra solo las imágenes dentro del archivo CBZ
-        let comicImages = archive.compactMap { entry in
-
-            if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
-                return entry.path
-            }
-            return nil
-        }
-        
-        comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
-        return ManipulacionCadenas().filterImagesWithIndex(files: comicPages) //FILTRAR CONTENIDO DEL ARCHIVO COMPRIMIDO
     }
+
     
     func crearMiniatura() -> UIImage? {
-        guard let primeraImagen = self.pages.first else { return nil }
+        guard let primeraImagen = self.pages.first else { return nil }
         return cargarImagen(nombreImagen: primeraImagen)
     }
     
     func cargarImagen(nombreImagen: String) -> UIImage? {
         let startTime = CFAbsoluteTimeGetCurrent()  // ⏳ Tiempo inicial
-                
-        guard let archive = Archive(url: self.url, accessMode: .read),
-              let entry = archive[nombreImagen] else {
-            print("Error al cargar la imagen \(nombreImagen)")
-            return nil
-        }
+        
         do {
+            let archive = try Archive(url: self.url, accessMode: .read)
+
+            guard let entry = archive[nombreImagen] else {
+                print("Entrada no encontrada en el archivo: \(nombreImagen)")
+                return nil
+            }
+
             var data = Data()
-            try archive.extract(entry, consumer: { data.append($0) })
-            
-//            let originalData = data.count
-            
-            let uiImage = UIImage(data: data)
-            let imageJPEG = self.convertToJPEG(image: uiImage!, quality: 1.0)
-//            guard let image = uiImage else {
-//                print("No se pudo cargar la imagen.")
-//                return nil
-//            }
-            
-//            let decompressedSize = image.size.width * image.size.height * 3
-//            let compressionRatio = Double(originalData) / Double(decompressedSize)
-            
-//            let endTime = CFAbsoluteTimeGetCurrent()
-//            print()
-//            print("| \(data.count) ~\(data.count / 1024) KB | IMAGEN \(nombreImagen) \((nombreImagen as NSString).pathExtension.lowercased())-> \(endTime - startTime) s| Image Size: \(uiImage!.size.width) x \(uiImage!.size.height) |")
-//            print("decompresion: \(decompressedSize)")
-//            print("compresion: \(compressionRatio)")
-//            print()
-            
+            _ = try archive.extract(entry) { data.append($0) }
+
+            guard let uiImage = UIImage(data: data) else {
+                print("No se pudo convertir a UIImage: \(nombreImagen)")
+                return nil
+            }
+
+            let imageJPEG = self.convertToJPEG(image: uiImage, quality: 1.0)
+
+            let endTime = CFAbsoluteTimeGetCurrent()
+            print("| \(data.count) B ~\(data.count / 1024) KB | \(nombreImagen) -> \(endTime - startTime) s |")
+
             return imageJPEG
+
         } catch {
-            print("Error al extraer la imagen \(nombreImagen): \(error)")
+            print("Error al cargar o extraer imagen \(nombreImagen): \(error)")
             return nil
         }
     }
+
     
     func convertToJPEG(image: UIImage, quality: CGFloat = 0.8) -> UIImage? {
         guard let jpegData = image.jpegData(compressionQuality: quality) else { return nil }

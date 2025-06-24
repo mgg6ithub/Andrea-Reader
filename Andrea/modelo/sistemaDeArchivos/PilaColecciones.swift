@@ -104,7 +104,7 @@ class PilaColecciones: ObservableObject {
      Saca la primera coleccion de la pila, es decir, la coleccion de la parte de arriba de pila.
      */
     public func sacarColeccion() {
-        colecciones.popLast()
+        _ = colecciones.popLast()
     }
     
     /**
