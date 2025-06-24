@@ -19,7 +19,7 @@ class SistemaArchivosUtilidades {
     }
     
     //Variables locales del SISTEMA DE ARCHIVOS
-//    public var indexingFilters: Set<EnumElementsFilter> = [.excludeTrash, .excludeHiddenFiles]
+    public var filtrosIndexado: Set<EnumFiltroArchivos> = [.excludeTrash, .excludeHiddenFiles]
     
     public var fm: FileManager // Intancia global de FileManager para interactuar con el sistema de archivos
     

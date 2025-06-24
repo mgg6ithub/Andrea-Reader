@@ -118,31 +118,43 @@ class SistemaArchivos: ObservableObject {
         //Creamos un hilo en el background para el indexado
         DispatchQueue.global().async {
             
-            //Iniciamos el indexado
-            //2. Primero escaneamos el directorio para saber el total de elementos que habra. Para cargar en la vista los placeholders.
-            let totalElements = self.obtenerURLSDirectorio(coleccionURL: coleccionActual)
+            // 1. Escaneamos el directorio
+            let allURLs = self.obtenerURLSDirectorio(coleccionURL: coleccionActual)
 
-            //Como en swiftui no se puede definir el tamaño de la lista antes de introducir nada hay que introducir objetos dummys hasta el tamaño que queramos
-            DispatchQueue.main.async {
-                self.listaElementos = Array(repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo, count: totalElements.count)
+            // 2. Filtramos los archivos no deseados
+            let filteredElements = allURLs.filter { url in
+                SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.filtrosIndexado
+                    .allSatisfy { filtro in
+                        filtro.shouldInclude(url: url) // ✅ Aquí sí pasamos la URL al filtro
+                    }
             }
-            
-            for (index, element) in totalElements.enumerated() {
-                if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: element) {
+
+            // 3. Creamos los placeholders sólo para los válidos
+            DispatchQueue.main.async {
+                self.listaElementos = Array(
+                    repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo,
+                    count: filteredElements.count
+                )
+            }
+
+            // 4. Creamos los elementos
+            for (index, url) in filteredElements.enumerated() {
+                if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: url) {
                     DispatchQueue.main.async {
                         self.listaElementos[index] = elemento
                     }
                 }
             }
-            
-            DispatchQueue.main.async { 
+
+            // 5. Guardamos en el caché
+            DispatchQueue.main.async {
                 if let coleccionValor = self.cacheColecciones[coleccionActual] {
                     coleccionValor.listaElementos = self.listaElementos
                 }
                 completion?()
             }
-            
         }
+
         
     }
     

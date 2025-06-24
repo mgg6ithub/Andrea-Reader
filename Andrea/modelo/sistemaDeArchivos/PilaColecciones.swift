@@ -20,8 +20,6 @@ class PilaColecciones: ObservableObject {
     //Constructor privado
     private init() {
         
-        //0. Creamos una variable para contener la coleccion
-        
         //1. Inicializamos el estado de la pila anteriormente guardado
         //  1.1 Introducimos los valores en colecciones y actualizamos coleccionActual con la ultima coleccion
         //2. Si no se puede coleccionActual = coleccionHomeURL (Documents)
@@ -75,11 +73,6 @@ class PilaColecciones: ObservableObject {
                 cache[url]?.coleccion
             }
             
-            //4. pila cargada
-//            for coleccion in self.colecciones {
-//                print(coleccion.name)
-//            }
-            
         }
     }
     
@@ -122,15 +115,6 @@ class PilaColecciones: ObservableObject {
             ?? SistemaArchivos.getSistemaArchivosSingleton.cacheColecciones[self.coleccionHomeURL]?.coleccion
             ?? Coleccion(directoryName: "Inicio", directoryURL: coleccionHomeURL, creationDate: .now, modificationDate: .now, elementList: [])
     }
-
-    
-//    /**
-//     Obtiene la url de la coleccion actual y si no la url de home
-//     */
-//    public func getColeccionActualURL() -> URL {
-//        return self.getColeccionActual().url ?? self.coleccionHomeURL
-//    }
-    
     
     
     /**

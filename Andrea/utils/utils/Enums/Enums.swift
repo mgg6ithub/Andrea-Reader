@@ -7,6 +7,29 @@
 
 import SwiftUI
 
+//MARK: - FILTROS DE ARCHIVOS NO DESEADOS
+enum EnumFiltroArchivos {
+    case excludeTrash
+    case excludeHiddenFiles
+    case none  // Puedes agregar más filtros en el futuro
+    
+    // Método que evalúa si un archivo o directorio debe ser excluido según los filtros aplicados
+    func shouldInclude(url: URL) -> Bool {
+        switch self {
+        
+        case .excludeTrash:
+            return url.lastPathComponent != ".Trash"
+        
+        case .excludeHiddenFiles:
+            return !url.lastPathComponent.hasPrefix(".")  // Filtra archivos ocultos
+        
+        case .none:
+            return true
+        }
+    }
+}
+
+
 //MARK: - RESOLUCIONES LOGICAS
 enum EnumResolucionesLogicas {
     case small
