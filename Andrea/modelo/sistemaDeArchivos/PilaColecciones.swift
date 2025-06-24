@@ -11,7 +11,7 @@ class PilaColecciones: ObservableObject {
     private static var pilaColecciones: PilaColecciones? = nil
     
     //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual (Documents) coelccion raiz
-    private(set) var coleccionRaiz: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
+    private(set) var coleccionHomeURL: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
     
     //Cola personalizada donde se almacenaran en el orden en el que el usuario entre a las colecciones
     //(final) Coleccion1 -> Coleccion2 -> Coleccion3 (principio)
@@ -19,12 +19,26 @@ class PilaColecciones: ObservableObject {
     
     //Constructor privado
     private init() {
+        
+        //0. Creamos una variable para contener la coleccion
+        
         //1. Inicializamos el estado de la pila anteriormente guardado
         //  1.1 Introducimos los valores en colecciones y actualizamos coleccionActual con la ultima coleccion
-        //2. Si no se puede coleccionActual = coleccionRaiz (Documents)
+        //2. Si no se puede coleccionActual = coleccionHomeURL (Documents)
         self.cargarPila()
         
-        SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: self.coleccionRaiz)
+        var coleccionActual: URL
+        
+        //2.5 comprobamos si la pila esta vacia para cargar desde documents
+        if self.colecciones.isEmpty {
+            coleccionActual = coleccionHomeURL
+        }
+        else {
+            coleccionActual = self.getColeccionActual().url
+        }
+        
+        //3. Hacemos un indexado de la colecciona actual
+        SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: coleccionActual)
     }
     
     //Metodo principal para obtener la unica instancia del singleton
@@ -42,13 +56,13 @@ class PilaColecciones: ObservableObject {
      */
     public func cargarPila() {
         
-        let coleccionRaizStripped = self.coleccionRaiz.deletingLastPathComponent()
+        let coleccionHomeURLStripped = self.coleccionHomeURL.deletingLastPathComponent()
         
         if let pilaGuardada = UserDefaults.standard.array(forKey: ConstantesPorDefecto().pilaColeccionesClave) as? [String] {
             
             // 1. Convertimos los paths relativos guardados a URLs absolutas
             let coleccionesGuardadas: [URL] = pilaGuardada.compactMap { col in
-                let absolutaURL = coleccionRaizStripped.appendingPathComponent(col)
+                let absolutaURL = coleccionHomeURLStripped.appendingPathComponent(col)
                 return ManipulacionCadenas().agregarPrivate(absolutaURL)
             }
 
@@ -62,9 +76,9 @@ class PilaColecciones: ObservableObject {
             }
             
             //4. pila cargada
-            for coleccion in self.colecciones {
-                print(coleccion.name)
-            }
+//            for coleccion in self.colecciones {
+//                print(coleccion.name)
+//            }
             
         }
     }
@@ -74,11 +88,11 @@ class PilaColecciones: ObservableObject {
      Guarda el nombre de las colecciones en el orden en el que estan.
      */
     public func guardarPila() {
-        let coleccionRaizStripped = self.coleccionRaiz.deletingLastPathComponent().path
+        let coleccionHomeURLStripped = self.coleccionHomeURL.deletingLastPathComponent().path
         
         let rutasRelativas = self.colecciones.map { col in
             let normalizarURL = ManipulacionCadenas().normalizarURL(col.url).path
-            return normalizarURL.replacingOccurrences(of: coleccionRaizStripped, with: "").trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+            return normalizarURL.replacingOccurrences(of: coleccionHomeURLStripped, with: "").trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         }
         UserDefaults.standard.set(rutasRelativas, forKey: ConstantesPorDefecto().pilaColeccionesClave)
     }
@@ -104,8 +118,20 @@ class PilaColecciones: ObservableObject {
      Obtener la priemera coleccion de la pila de colecciones.
      */
     public func getColeccionActual() -> Coleccion {
-        return self.colecciones.last!
+        self.colecciones.last
+            ?? SistemaArchivos.getSistemaArchivosSingleton.cacheColecciones[self.coleccionHomeURL]?.coleccion
+            ?? Coleccion(directoryName: "Inicio", directoryURL: coleccionHomeURL, creationDate: .now, modificationDate: .now, elementList: [])
     }
+
+    
+//    /**
+//     Obtiene la url de la coleccion actual y si no la url de home
+//     */
+//    public func getColeccionActualURL() -> URL {
+//        return self.getColeccionActual().url ?? self.coleccionHomeURL
+//    }
+    
+    
     
     /**
      Metodo para comprobar si la coleccion es la primera de la pila.
@@ -134,7 +160,8 @@ class PilaColecciones: ObservableObject {
      */
     public func sacarTodasColecciones() {
         self.colecciones.removeAll() //Limpiar todas
-        SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: self.coleccionRaiz) // Refrescar con la URL de documents
+        SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: self.coleccionHomeURL) // Refrescar con la URL de documents
+        self.guardarPila()
     }
     
 }

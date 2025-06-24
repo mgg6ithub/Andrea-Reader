@@ -4,6 +4,7 @@ struct MenuCentro: View {
     
     @EnvironmentObject var appEstado: AppEstado1
     @EnvironmentObject var menuEstado: MenuEstado
+    @EnvironmentObject var sa: SistemaArchivos
     
     @State private var mostrarDocumentPicker: Bool = false
     @State private var esNuevaColeccionPresionado: Bool = false
@@ -24,6 +25,8 @@ struct MenuCentro: View {
                     .fontWeight(appEstado.constantes.iconWeight)
             }
             
+            //MARK: - IMPORTAR
+            
             Button(action: {
                 self.mostrarDocumentPicker.toggle()
             }) {
@@ -38,7 +41,7 @@ struct MenuCentro: View {
                     onPick: { urls in
                         print("Seleccionado: \(urls)")
                         for url in urls {
-                            SistemaArchivos.getSistemaArchivosSingleton.crearArchivo(archivoURL: url)
+                            sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().url)
                         }
                     },
                     onCancel: {
@@ -48,6 +51,8 @@ struct MenuCentro: View {
                     contentTypes: [.item]
                 )
             }
+            
+            //MARK: - CREAR COLECCION
             
             Button(action: {
                 self.esNuevaColeccionPresionado.toggle()
@@ -61,7 +66,7 @@ struct MenuCentro: View {
             .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)
                 Button("Aceptar") {
-                    SistemaArchivos.getSistemaArchivosSingleton.crearColeccion(nombre: nuevaColeccionNombre)
+                    sa.crearColeccion(nombre: nuevaColeccionNombre)
                 }
                 Button("Cancelar", role: .cancel) {}
             }

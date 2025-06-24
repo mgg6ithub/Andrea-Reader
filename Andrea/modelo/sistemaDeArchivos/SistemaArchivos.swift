@@ -11,7 +11,9 @@ class SistemaArchivos: ObservableObject {
     private static let sistemaArchivosQueue = DispatchQueue(label: "com.miApp.singletonSistemaArchivos")
     
     //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual (Documents) coelccion raiz
-    private(set) var coleccionRaiz: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
+    private(set) var coleccionHomeURL: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
+    
+//    private(set) var coleccionHome: ColeccionValor
     
     /// Getter público que comprueba si la instancia es nula; si lo es, la crea una sola vez.
     public static var getSistemaArchivosSingleton: SistemaArchivos {
@@ -50,8 +52,15 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         
+        let coleccionHomeURL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
+//        self.coleccionHome = ColeccionValor(coleccion: FabricaColeccion().crearColeccion(collectionName: coleccionHomeURL.lastPathComponent, collectionURL: coleccionHomeURL)!)
+        
         //Creamos el cache de colecciones -> Instanciando todas las colecciones posibles
-        self.indexamientoRecursivoColecciones(desde: SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory)
+        self.indexamientoRecursivoColecciones(desde: coleccionHomeURL)
+        
+//        if let coleccionValor = self.cacheColecciones[coleccionHomeURL] {
+//            self.coleccionHome = coleccionValor
+//        }
         
     }
     
@@ -67,7 +76,7 @@ class SistemaArchivos: ObservableObject {
         // Si no está ya cacheado, lo agregamos al cache con una lista vacía de elementos
         if cacheColecciones[coleccionURL] == nil {
             if let coleccion = FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: coleccionURL), collectionURL: coleccionURL) {
-                cacheColecciones[coleccionURL] = ColeccionValor(coleccion: coleccion, listaElementos: [])
+                cacheColecciones[coleccionURL] = ColeccionValor(coleccion: coleccion)
             }
         }
 
@@ -80,6 +89,9 @@ class SistemaArchivos: ObservableObject {
             coleccionValor.subColecciones.insert(subdir)
             indexamientoRecursivoColecciones(desde: subdir)
         }
+        
+        
+        
     }
     
     
@@ -88,10 +100,19 @@ class SistemaArchivos: ObservableObject {
         //1. Borramos lo que hubiera anteriormente
         DispatchQueue.main.async {
             self.listaElementos.removeAll()
+        }
+        
+        //Si ya esta en cache actualizamos la lista con los elementos del cache y retornamos
+        if let coleccionValor = self.cacheColecciones[coleccionActual],
+           !coleccionValor.listaElementos.isEmpty {
             
-            //Si ya esta en cache actualizamos la lista con los elementos del cache y retornamos
-            
-            
+            DispatchQueue.main.async {
+                print("Ya esta en cache: ", coleccionValor.coleccion.name)
+                print(coleccionValor.listaElementos)
+                self.listaElementos = coleccionValor.listaElementos
+                completion?()
+            }
+            return
         }
         
         //Creamos un hilo en el background para el indexado
@@ -107,17 +128,20 @@ class SistemaArchivos: ObservableObject {
             }
             
             for (index, element) in totalElements.enumerated() {
-                
                 if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: element) {
-                    
                     DispatchQueue.main.async {
                         self.listaElementos[index] = elemento
                     }
                 }
-                
             }
             
-            DispatchQueue.main.async { completion?() }
+            DispatchQueue.main.async { 
+                if let coleccionValor = self.cacheColecciones[coleccionActual] {
+                    coleccionValor.listaElementos = self.listaElementos
+                }
+                completion?()
+            }
+            
         }
         
     }
@@ -125,7 +149,7 @@ class SistemaArchivos: ObservableObject {
     public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> (any ElementoSistemaArchivosProtocolo)? {
         
         let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
-        let destinoURL: URL = coleccionDestinoURL ?? self.coleccionRaiz
+        let destinoURL: URL = coleccionDestinoURL ?? self.coleccionHomeURL
         
         if sau.isDirectory(elementURL: elementoURL) {
             if let coleccionValor: ColeccionValor = self.cacheColecciones[elementoURL] {
@@ -133,7 +157,7 @@ class SistemaArchivos: ObservableObject {
             }
             return FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: elementoURL), collectionURL: elementoURL)
         } else {
-            return FactoryArchivo().crearArchivo(fileName: sau.getFileName(fileURL: elementoURL), fileURL: elementoURL, destionationURL: destinoURL, currentDirectory: self.coleccionRaiz)
+            return FactoryArchivo().crearArchivo(fileName: sau.getFileName(fileURL: elementoURL), fileURL: elementoURL, destionationURL: destinoURL, currentDirectory: self.coleccionHomeURL)
         }
     }
     
@@ -171,7 +195,7 @@ class SistemaArchivos: ObservableObject {
                 true
             }
             
-            //            print("En total hay para el directorio: ", self.coleccionRaiz)
+            //            print("En total hay para el directorio: ", self.coleccionHomeURL)
             //            print(filteredURLs.count)
             //            print(filteredURLs)
             
@@ -230,7 +254,7 @@ class SistemaArchivos: ObservableObject {
             // 1. Obtenenmos el nombre de la url
             let nombreArchivo: String = archivoURL.lastPathComponent
             // 2. Verificamos si se ha pasado un destino concreto. Si no se creara en la colecciona actual.
-            let coleccionDestinoURL = coleccionDestino ?? self.coleccionRaiz
+            let coleccionDestinoURL = coleccionDestino ?? self.coleccionHomeURL
             // 3. Construimos la nueva URL
             let nuevoArchivoURL = coleccionDestinoURL.appendingPathComponent(nombreArchivo)
             
@@ -269,7 +293,7 @@ class SistemaArchivos: ObservableObject {
     public func crearColeccion(nombre: String, en direccionNuevaColeccion: URL? = nil) {
         fileQueue.async {
             // --- Lógica para crear carpeta en disco ---
-            let coleccionDestino = direccionNuevaColeccion ?? self.coleccionRaiz
+            let coleccionDestino = direccionNuevaColeccion ?? self.coleccionHomeURL
             let nuevaColeccionURL = coleccionDestino.appendingPathComponent(nombre, isDirectory: true)
             try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
             

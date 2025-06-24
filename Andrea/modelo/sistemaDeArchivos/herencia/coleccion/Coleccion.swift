@@ -1,11 +1,15 @@
 
 import SwiftUI
 
-struct ColeccionValor {
+class ColeccionValor {
     
     var coleccion: Coleccion
     var subColecciones: Set<URL> =  []
     var listaElementos: [(any ElementoSistemaArchivosProtocolo)] = []
+    
+    init(coleccion: Coleccion) {
+        self.coleccion = coleccion
+    }
     
 }
 

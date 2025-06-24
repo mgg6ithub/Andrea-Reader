@@ -18,13 +18,15 @@ struct HistorialColecciones: View {
                     
                     if pc.colecciones.isEmpty {
                         ColeccionRectanguloAvanzado(
-                            nombreColeccion: "Documents",
                             textoSize: 21,
                             colorPrimario: .primary,
                             color: Color.gray,
                             isActive: true,
                             animationDelay: Double(1.5) * 0.1
-                        )
+                        ) {
+                            Image(systemName: "house")
+                                .opacity(0.75)
+                        }
                         .matchedGeometryEffect(id: 3123131321, in: breadcrumb)
                     }
                     else {
@@ -41,13 +43,14 @@ struct HistorialColecciones: View {
                             if pc.esColeccionActual(coleccion: coleccion) {
                                 
                                 ColeccionRectanguloAvanzado(
-                                    nombreColeccion: coleccion.name,
                                     textoSize: 21,
                                     colorPrimario: .primary,
                                     color: coleccion.directoryColor,
                                     isActive: true,
                                     animationDelay: Double(index) * 0.1
-                                )
+                                ) {
+                                    Text(coleccion.name)
+                                }
                                 .matchedGeometryEffect(id: coleccion.url, in: breadcrumb)
                                 
                             } else {
@@ -58,13 +61,15 @@ struct HistorialColecciones: View {
                                 }) {
                                     
                                     ColeccionRectanguloAvanzado(
-                                        nombreColeccion: coleccion.name,
                                         textoSize: 14,
                                         colorPrimario: .secondary,
                                         color: coleccion.directoryColor,
                                         isActive: false,
                                         animationDelay: Double(index) * 0.1
                                     )
+                                    {
+                                        Text(coleccion.name)
+                                    }
                                     .matchedGeometryEffect(id: coleccion.url, in: breadcrumb)
                                     
                                 }
@@ -80,22 +85,21 @@ struct HistorialColecciones: View {
     }
 }
 
-struct ColeccionRectanguloAvanzado: View {
+struct ColeccionRectanguloAvanzado<Content: View>: View {
     
-    let nombreColeccion: String
     let textoSize: CGFloat
     let colorPrimario: Color
     let color: Color
     let isActive: Bool
     let animationDelay: Double
-    
+    let content: () -> Content
+
     @State private var isVisible: Bool = false
     @State private var scale: CGFloat = 0.8
     @State private var offset: CGFloat = 20
-    
+
     var body: some View {
-        
-        Text(nombreColeccion)
+        content()
             .font(.system(size: textoSize, weight: isActive ? .semibold : .regular))
             .foregroundColor(colorPrimario)
             .padding(.horizontal, 11)
@@ -140,6 +144,7 @@ struct ColeccionRectanguloAvanzado: View {
             }
     }
 }
+
 
 // Estilo de botón personalizado para mejor interacción
 struct ColeccionButtonStyle: ButtonStyle {
