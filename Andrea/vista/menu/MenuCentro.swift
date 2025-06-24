@@ -66,7 +66,7 @@ struct MenuCentro: View {
             .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)
                 Button("Aceptar") {
-                    sa.crearColeccion(nombre: nuevaColeccionNombre)
+                    sa.crearColeccion(nombre: nuevaColeccionNombre, en: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().url)
                 }
                 Button("Cancelar", role: .cancel) {}
             }

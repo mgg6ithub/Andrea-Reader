@@ -45,7 +45,7 @@ class CBZArchivo: Archivo {
     }
     
     func cargarImagen(nombreImagen: String) -> UIImage? {
-        let startTime = CFAbsoluteTimeGetCurrent()  // ⏳ Tiempo inicial
+//        let startTime = CFAbsoluteTimeGetCurrent()  // ⏳ Tiempo inicial
         
         do {
             let archive = try Archive(url: self.url, accessMode: .read)
@@ -65,8 +65,8 @@ class CBZArchivo: Archivo {
 
             let imageJPEG = self.convertToJPEG(image: uiImage, quality: 1.0)
 
-            let endTime = CFAbsoluteTimeGetCurrent()
-            print("| \(data.count) B ~\(data.count / 1024) KB | \(nombreImagen) -> \(endTime - startTime) s |")
+//            let endTime = CFAbsoluteTimeGetCurrent()
+//            print("| \(data.count) B ~\(data.count / 1024) KB | \(nombreImagen) -> \(endTime - startTime) s |")
 
             return imageJPEG
 
