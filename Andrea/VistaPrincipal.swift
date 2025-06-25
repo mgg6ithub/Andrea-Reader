@@ -31,8 +31,7 @@ struct VistaPrincipal: View {
                     
                     ZStack {
                         
-                        LibreriaEjemplo()
-                            .padding()
+                        CuadriculaVista()
                         
                     }
                     

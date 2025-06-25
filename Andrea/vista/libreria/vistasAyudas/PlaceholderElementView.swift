@@ -3,33 +3,58 @@ import SwiftUI
 
 struct PlaceholderElementView: View {
     @State private var isVisible = false
+    var width: CGFloat = 180
+    var height: CGFloat = 310
 
     var body: some View {
-        VStack(spacing: 12) {
-            // Imagen de portada simulada
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.gray.opacity(0.5))
-                .frame(width: 100, height: 140)
-                .shimmering()
+        VStack(spacing: 0) {
+            // Parte superior: simula imagen completa
+            ZStack {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.5))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .clipShape(RoundedCorner(radius: 18, corners: [.topLeft, .topRight]))
+                    .shimmering()
+            }
+            .border(.green)
+            .frame(width: width)
 
-            // Título simulado
-            RoundedRectangle(cornerRadius: 6)
-                .fill(Color.gray.opacity(0.5))
-                .frame(width: 90, height: 14)
-                .shimmering()
+            // Parte inferior: título + metadatos
+            VStack {
+                // Simulación del nombre del archivo
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(Color.gray.opacity(0.5))
+                    .frame(height: 16)
+                    .shimmering()
 
-            // Metadatos simulados
-            HStack(spacing: 6) {
-                ForEach(0..<3) { _ in
+                // Simulación de metadatos
+                HStack {
+                    
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
-                        .frame(width: 24, height: 10)
+                        .frame(width: 25, height: 14)
+                        .shimmering()
+                    
+                    Spacer()
+                    
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 25, height: 14)
+                        .shimmering()
+                    
+                    Spacer()
+                    
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 25, height: 14)
                         .shimmering()
                 }
             }
+            .frame(height: 30)
+            .border(.red)
+            .padding(8)
         }
-        .padding()
-        .frame(width: 150, height: 220)
+        .frame(width: width, height: height)
         .background(Color(.systemGray6))
         .cornerRadius(18)
         .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
@@ -42,6 +67,21 @@ struct PlaceholderElementView: View {
         }
     }
 }
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
+
 
 
 struct ShimmerModifier: ViewModifier {

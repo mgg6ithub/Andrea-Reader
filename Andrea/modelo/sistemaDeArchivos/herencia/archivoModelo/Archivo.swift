@@ -92,11 +92,15 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     func getTotalPages() -> Int {
-        return 0
+        return self.fileTotalPages
     }
     
     func setCurrentPage(currentPage: Int) {
-        
+        self.currentSavedPage = currentPage
+        //al setear la pagina calculamos automaticamente el porcentaje
+        self.fileProgressPercentage = Int((Double(currentPage) / Double(getTotalPages())) * 100)
+        self.fileProgressPercentageEntero = Double(currentPage) / Double(getTotalPages())
+
     }
     
 }

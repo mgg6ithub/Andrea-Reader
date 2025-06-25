@@ -32,6 +32,10 @@ struct FactoryArchivo {
             return nil
         }
         
+        // --- PAGINAS Y PORCENTAJE ---
+        archivo.fileTotalPages = Int.random(in: 20...50)
+        archivo.setCurrentPage(currentPage: Int.random(in: 1...50))
+        
         return archivo
     }
     
