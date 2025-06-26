@@ -3,11 +3,11 @@ import SwiftUI
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
-    
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
     var dirName: String = ""
     var dirColor: UIColor = .gray
+    
     
     //ATRIBUTOS
     var isDirectory = false
@@ -109,47 +109,55 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
         print("Creando una miniatura por defecto para: ", tipoArchivo)
         var tempImagen = createDefaultThumbnail(defaultFileThumbnail: EnumMiniaturasArchivos.uiImage(for: tipoArchivo))?.uiImage
-        var tempBackImagen = tempImagen
+        //        var tempBackImagen = tempImagen
         
         var tempImageAbsoluteURL = URL(fileURLWithPath: "")
-        var tempBackImagenAbsoluteURL = URL(fileURLWithPath: "")
+        //        var tempBackImagenAbsoluteURL = URL(fileURLWithPath: "")
         
         if let mPortada = miniaturaPortada {
             tempImagen = mPortada.resized(to: ConstantesPorDefecto().dComicSize)
             tempImageAbsoluteURL = self.url
         }
         
-        if let mContraPortada = miniaturaContraPortada {
-            tempBackImagen = mContraPortada.resized(to: ConstantesPorDefecto().dComicSize)
-            tempBackImagenAbsoluteURL = self.url
-        }
+        //        if let mContraPortada = miniaturaContraPortada {
+        //            tempBackImagen = mContraPortada.resized(to: ConstantesPorDefecto().dComicSize)
+        //            tempBackImagenAbsoluteURL = self.url
+        //        }
         
         //2. Creamos la instancia de ImagenArchivo con las imagenes y sus URLs
         
         let sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
         let mc = ManipulacionCadenas()
         
+        //        return ImagenArchivo(
+        //            id: UUID(),
+        //
+        //            imageName: sau.getFileName(fileURL: tempImageAbsoluteURL),
+        //            backImageName: sau.getFileName(fileURL: tempBackImagenAbsoluteURL),
+        //
+        //            uiImage: tempImagen!,
+        //            backuiImage: tempBackImagen!,
+        //
+        //            absoluteImageURL: tempImageAbsoluteURL,
+        //            relativeImageURL: mc.relativizeURLNOextension(elementURL: tempImageAbsoluteURL),
+        //
+        //            absoluteBackImageURL: tempBackImagenAbsoluteURL,
+        //            relativeBackImageURL: mc.relativizeURLNOextension(elementURL: tempBackImagenAbsoluteURL),
+        //
+        //            imageSize: sau.getFileSize(fileURL: tempImageAbsoluteURL),
+        //            backImageSize: sau.getFileSize(fileURL: tempBackImagenAbsoluteURL),
+        //
+        //            imageDimensions: ImagenArchivoModelo().calculateUIImageDimensions(uiImage: tempImagen),
+        //            backImageDimensions: ImagenArchivoModelo().calculateUIImageDimensions(uiImage: tempBackImagen)
+        //        )
         return ImagenArchivo(
             id: UUID(),
-            
             imageName: sau.getFileName(fileURL: tempImageAbsoluteURL),
-            backImageName: sau.getFileName(fileURL: tempBackImagenAbsoluteURL),
-            
             uiImage: tempImagen!,
-            backuiImage: tempBackImagen!,
-            
             absoluteImageURL: tempImageAbsoluteURL,
             relativeImageURL: mc.relativizeURLNOextension(elementURL: tempImageAbsoluteURL),
-            
-            absoluteBackImageURL: tempBackImagenAbsoluteURL,
-            relativeBackImageURL: mc.relativizeURLNOextension(elementURL: tempBackImagenAbsoluteURL),
-            
             imageSize: sau.getFileSize(fileURL: tempImageAbsoluteURL),
-            backImageSize: sau.getFileSize(fileURL: tempBackImagenAbsoluteURL),
-            
-            imageDimensions: ImagenArchivoModelo().calculateUIImageDimensions(uiImage: tempImagen),
-            backImageDimensions: ImagenArchivoModelo().calculateUIImageDimensions(uiImage: tempBackImagen)
-        )
+            imageDimensions: ImagenArchivoModelo().calculateUIImageDimensions(uiImage: tempImagen))
     }
     
     func createDefaultThumbnail(defaultFileThumbnail: UIImage, color: UIColor? = nil) -> (uiImage: UIImage, imageData: Data?, imageDimensions: (width: Int, height: Int))? {

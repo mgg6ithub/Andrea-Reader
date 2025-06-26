@@ -75,6 +75,28 @@ class ImagenArchivo: ObservableObject  {
         self.backImage = ImagenArchivoModelo().convertToImage(uiImage: backuiImage)
         self.tipoMiniatura = EnumTipoMiniatura.firstPage
     }
+    
+    //CONSTRUCTOR SOLAMENTE CON MINIATURA DE DELANTE
+    init(id: UUID, imageName: String, uiImage: UIImage, absoluteImageURL: URL, relativeImageURL: String, imageSize: Int, imageDimensions: (width: Int, height: Int)) {
+        self.id = id
+        self.imageName = imageName
+        self.backImageName = "dafault"
+        self.uiImage = uiImage
+        self.backuiImage = defaultImage
+        self.image = ImagenArchivoModelo().convertToImage(uiImage: uiImage)
+        self.backImage = ImagenArchivoModelo().convertToImage(uiImage: defaultImage)
+        
+        self.absoluteImageURL = absoluteImageURL
+        self.relativeImageURL = relativeImageURL
+        self.absoluteBackImageURL = URL(fileURLWithPath: "")
+        self.relativeBackImageURL = ""
+        
+        self.imageSize = imageSize
+        self.backImageSize = 0
+        self.imageDimensions = imageDimensions
+        self.backImageDimensions = (width: 0, height: 0)
+        self.tipoMiniatura = EnumTipoMiniatura.firstPage
+    }
    
    // Constructor para File (con backImage) - SE QUITAN LOS VALORES POR DEFECTO
     init(id: UUID, imageName: String, backImageName: String, uiImage: UIImage, backuiImage: UIImage, absoluteImageURL: URL, relativeImageURL: String, absoluteBackImageURL: URL, relativeBackImageURL: String, imageSize: Int, backImageSize: Int, imageDimensions: (width: Int, height: Int), backImageDimensions: (width: Int, height: Int)) {

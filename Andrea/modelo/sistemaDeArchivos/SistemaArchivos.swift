@@ -231,6 +231,7 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
+    
     // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
     public func moverElemento(_ elemento: Any, a nuevaURL: URL) throws {
         try fileQueue.sync {
