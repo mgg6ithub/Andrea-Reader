@@ -5,29 +5,16 @@ struct ImagenArchivoModelo {
     
     // Método que convierte UIImage a Image de SwiftUI, manejando nil
     public func convertToImageOptional(uiImage: UIImage?) -> Image? {
-        // Si la imagen es nil, usamos un ícono de advertencia predeterminado
         if let uiImage = uiImage {
-            do {
-                return Image(uiImage: uiImage)
-            }
-            catch {
-                print("ERROR en la conversión de UIImage a Image: \(error.localizedDescription)")
-                return ConstantesPorDefecto().dNotFoundImage
-            }
+            return Image(uiImage: uiImage)
         }
         return nil
     }
-    
-    public func convertToImage(uiImage: UIImage) -> Image {
 
-        do {
-            return Image(uiImage: uiImage)
-        }
-        catch {
-            print("ERROR en la conversión de UIImage a Image: \(error.localizedDescription)")
-            return ConstantesPorDefecto().dNotFoundImage
-        }
+    public func convertToImage(uiImage: UIImage) -> Image {
+        return Image(uiImage: uiImage)
     }
+
     
     public func calculateUIImageDimensions(uiImage: UIImage?) -> (width: Int, height: Int) {
         guard let uiImage = uiImage else {
