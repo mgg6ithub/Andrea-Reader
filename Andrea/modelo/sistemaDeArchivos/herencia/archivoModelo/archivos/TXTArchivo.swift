@@ -4,7 +4,7 @@ import SwiftUI
 
 class TXTArchivo: Archivo {
     
-    override init(fileName: String, fileURL: URL, creationDate: Date, modificationDate: Date, fileType: String, fileExtension: String, fileSize: Int) {
+    override init(fileName: String, fileURL: URL, creationDate: Date, modificationDate: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int) {
         
         //SE HACEN COSAS
         

@@ -11,20 +11,24 @@ struct CuadriculaArchivo: View {
 
             // --- Imagen ---
             ZStack {
-                if let cbz = archivo as? CBZArchivo,
-                   let imagen = cbz.imagenMiniatura {
-                    Image(uiImage: imagen)
-                        .resizable()
-//                        .scaledToFit() // << Imagen completa sin recorte
-                        .frame(maxWidth: .infinity)
-                } else {
-                    Image(systemName: "photo")
-                        .resizable()
-                        .scaledToFit()
-                        .padding()
-                        .foregroundColor(.gray.opacity(0.5))
-                        .frame(maxWidth: .infinity)
-                }
+//                if let cbz = archivo as? CBZArchivo,
+//                   let imagen = cbz.imagenMiniatura {
+//                    Image(uiImage: imagen)
+//                        .resizable()
+////                        .scaledToFit() // << Imagen completa sin recorte
+//                        .frame(maxWidth: .infinity)
+//                } else {
+//                    Image(systemName: "photo")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .padding()
+//                        .foregroundColor(.gray.opacity(0.5))
+//                        .frame(maxWidth: .infinity)
+//                }
+                
+                Image(uiImage: archivo.imagenArchivo.uiImage)
+                    .resizable()
+                    .frame(maxWidth: .infinity)
                 
                 // --- Progreso ---
                 VStack {

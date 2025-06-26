@@ -9,7 +9,7 @@ import SwiftUI
 
 protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     var fileTotalPages: Int { get set }
-    var fileType: String { get }
+    var fileType: EnumTipoArchivos { get }
     var fileSize: Int { get }
     var isProtected: Bool { get set }
     
@@ -21,9 +21,9 @@ protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     var colectionCurrentIssue: Int? { get set }
     var colectionTotalIssues: Int? { get set }
     
-//    var fileImageModel: FileImageModel { get set }
+    var imagenArchivo: ImagenArchivo { get set }
     
-//    func createFileImageModel() -> FileImageModel
+    func crearImagenArchivo(tipoArchivo: EnumTipoArchivos, miniaturaPortada: UIImage?, miniaturaContraPortada: UIImage?) -> ImagenArchivo //Se crea un modelo con dos miniaturas la de delante y atras del archivo
     
     func viewContent() -> AnyView
 //    func showViewContentMenu(elementModel: ElementModel) -> AnyView

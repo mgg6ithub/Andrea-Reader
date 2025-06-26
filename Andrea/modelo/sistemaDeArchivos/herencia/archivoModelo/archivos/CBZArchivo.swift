@@ -6,15 +6,14 @@ class CBZArchivo: Archivo {
     var pages: [String] = []
     var imagenMiniatura: UIImage? = nil
     
-    override init(fileName: String, fileURL: URL, creationDate: Date, modificationDate: Date, fileType: String, fileExtension: String, fileSize: Int) {
+    override init(fileName: String, fileURL: URL, creationDate: Date, modificationDate: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int) {
         
         //SE HACEN COSAS
         
         super.init(fileName: fileName, fileURL: fileURL, creationDate: creationDate, modificationDate: modificationDate, fileType: fileType, fileExtension: fileExtension, fileSize: fileSize)
         
         self.pages = cargarPaginas()
-        self.imagenMiniatura = crearMiniatura()
-        
+        self.imagenArchivo = self.crearImagenArchivo(tipoArchivo: self.fileType, miniaturaPortada: self.crearMiniaturaPortada(), miniaturaContraPortada: self.crearMiniaturaContraPortada())
     }
     
     func cargarPaginas() -> [String] {
@@ -37,11 +36,15 @@ class CBZArchivo: Archivo {
             return []
         }
     }
-
     
-    func crearMiniatura() -> UIImage? {
+    func crearMiniaturaPortada() -> UIImage? {
         guard let primeraImagen = self.pages.first else { return nil }
         return cargarImagen(nombreImagen: primeraImagen)
+    }
+    
+    func crearMiniaturaContraPortada() -> UIImage? {
+        guard let ultimaImagen = self.pages.last else { return nil }
+        return cargarImagen(nombreImagen: ultimaImagen)
     }
     
     func cargarImagen(nombreImagen: String) -> UIImage? {

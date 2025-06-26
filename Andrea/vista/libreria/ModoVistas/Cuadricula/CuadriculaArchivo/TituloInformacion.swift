@@ -18,7 +18,7 @@ struct TituloInformacion: View {
                 .frame(maxWidth: .infinity)
             
             HStack {
-                Text("\(archivo.fileType)")
+                Text("\(archivo.fileType.rawValue)")
                     .font(.system(size: ConstantesPorDefecto().subTitleSize))
                     .foregroundColor(.gray)
                     .font(.system(size: 8))

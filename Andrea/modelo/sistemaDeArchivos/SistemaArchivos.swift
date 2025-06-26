@@ -138,7 +138,6 @@ class SistemaArchivos: ObservableObject {
                     DispatchQueue.main.async {
                         self.listaElementos[index] = elemento
                     }
-                    Thread.sleep(forTimeInterval: 2)
                 }
             }
 

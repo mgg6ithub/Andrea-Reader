@@ -53,6 +53,13 @@ struct ConstantesPorDefecto {
         .indigo
     ]
     
+    //MARK: - IMAGENES
+    public let dComicSize: CGSize = CGSize(width: 190, height: 260)
+        
+    public let dNotFoundUIImage: UIImage = UIImage(systemName: "exclamationmark.triangle.fill")! //Fallo al cargar la UIImage
+    public let dNotFoundImage: Image = Image(systemName: "exclamationmark.triangle.fill") //Fallo al cargar la Image
+    public let dFolderIcon: Image = Image("folder-icon") //ICONO CARPETA
+    
 }
 
 
