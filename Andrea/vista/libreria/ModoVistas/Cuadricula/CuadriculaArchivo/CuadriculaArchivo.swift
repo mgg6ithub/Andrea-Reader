@@ -40,7 +40,7 @@ struct CuadriculaArchivo: View {
             .frame(width: width) // solo limitamos ancho
             
             // --- Titulo e informacion ---
-            TituloInformacion(archivo: archivo)
+            TituloInformacion(archivo: archivo, colorColeccion: colorColeccion)
             
             
         }

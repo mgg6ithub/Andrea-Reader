@@ -360,8 +360,8 @@
 			isa = PBXGroup;
 			children = (
 				D47139C62E0AE76500B5FA35 /* CuadriculaArchivo.swift */,
-				D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */,
 				D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */,
+				D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */,
 			);
 			path = CuadriculaArchivo;
 			sourceTree = "<group>";

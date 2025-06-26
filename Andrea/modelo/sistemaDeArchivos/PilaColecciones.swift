@@ -73,6 +73,8 @@ class PilaColecciones: ObservableObject {
                 cache[url]?.coleccion
             }
             
+            print("Historial de colecciones restaurado")
+            
         }
     }
     

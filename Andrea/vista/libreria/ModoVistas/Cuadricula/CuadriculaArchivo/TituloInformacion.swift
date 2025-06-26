@@ -5,17 +5,29 @@ import SwiftUI
 struct TituloInformacion: View {
     
     let archivo: Archivo
+    let colorColeccion: Color
+    
+    var progreso: Int { archivo.fileProgressPercentage }
     
     var body: some View {
         
         VStack(spacing: 4) {
-            Text(archivo.name)
-                .font(.system(size: ConstantesPorDefecto().titleSize))
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
-                .minimumScaleFactor(0.6)
-                .lineLimit(1)
-                .frame(maxWidth: .infinity)
+            HStack(spacing: 0) {
+                Text(archivo.name)
+                    .font(.system(size: ConstantesPorDefecto().titleSize))
+                    .foregroundColor(.primary)
+                    .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.6)
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity)
+                
+                Color.clear
+                    .animatedProgressText1(progreso)
+                    .foregroundColor(colorColeccion)
+                    .font(.system(size: ConstantesPorDefecto().subTitleSize))
+                    .bold()
+            }
+            .padding(0)
             
             HStack {
                 Text("\(archivo.fileType.rawValue)")

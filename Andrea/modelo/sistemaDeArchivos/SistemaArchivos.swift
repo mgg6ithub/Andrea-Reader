@@ -52,10 +52,8 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         
-        let coleccionHomeURL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
-        
         //Creamos el cache de colecciones -> Instanciando todas las colecciones posibles
-        self.indexamientoRecursivoColecciones(desde: coleccionHomeURL)
+        self.indexamientoRecursivoColecciones(desde: SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory)
         
     }
     
@@ -85,7 +83,7 @@ class SistemaArchivos: ObservableObject {
             indexamientoRecursivoColecciones(desde: subdir)
         }
         
-        
+        print("Indexado de coleccion completado en SA")
         
     }
     
@@ -147,10 +145,10 @@ class SistemaArchivos: ObservableObject {
                     coleccionValor.listaElementos = self.listaElementos
                 }
                 completion?()
+                print("Terminamos el indexado")
             }
         }
 
-        
     }
     
     public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> (any ElementoSistemaArchivosProtocolo)? {

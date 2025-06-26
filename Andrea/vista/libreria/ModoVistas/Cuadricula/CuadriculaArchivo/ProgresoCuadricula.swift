@@ -10,16 +10,16 @@ struct ProgresoCuadricula: View {
     
     var body: some View {
         VStack(spacing: 6) {
-            HStack {
-                Spacer()
-                
-                Color.clear
-                    .animatedProgressText1(progreso)
-                    .foregroundColor(colorColeccion)
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize))
-                    .bold()
-            }
-            .padding(.trailing, 10)
+//            HStack {
+//                Spacer()
+//                
+//                Color.clear
+//                    .animatedProgressText1(progreso)
+//                    .foregroundColor(colorColeccion)
+//                    .font(.system(size: ConstantesPorDefecto().subTitleSize))
+//                    .bold()
+//            }
+//            .padding(.trailing, 10)
             
             HStack(alignment: .center) {
                 ZStack(alignment: .leading) {
