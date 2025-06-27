@@ -32,9 +32,6 @@ struct FactoryArchivo {
             return nil
         }
         
-        // --- CREACION DE LA IMAGEN ---
-        archivo.crearImagenArchivo()
-        
         // --- PAGINAS Y PORCENTAJE ---
         archivo.fileTotalPages = Int.random(in: 20...50)
         archivo.setCurrentPage(currentPage: Int.random(in: 1...50))

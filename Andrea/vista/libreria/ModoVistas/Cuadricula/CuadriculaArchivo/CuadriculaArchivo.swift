@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct CuadriculaArchivo: View {
-    let archivo: Archivo
+    
+    @ObservedObject var archivo: Archivo
     let colorColeccion: Color
     @State private var isVisible = false
     var width: CGFloat = 180  // Esto lo puedes inyectar dinámicamente
@@ -11,20 +12,6 @@ struct CuadriculaArchivo: View {
 
             // --- Imagen ---
             ZStack {
-//                if let cbz = archivo as? CBZArchivo,
-//                   let imagen = cbz.imagenMiniatura {
-//                    Image(uiImage: imagen)
-//                        .resizable()
-////                        .scaledToFit() // << Imagen completa sin recorte
-//                        .frame(maxWidth: .infinity)
-//                } else {
-//                    Image(systemName: "photo")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .padding()
-//                        .foregroundColor(.gray.opacity(0.5))
-//                        .frame(maxWidth: .infinity)
-//                }
                 
                 Image(uiImage: archivo.imagenArchivo.uiImage)
                     .resizable()
@@ -42,7 +29,6 @@ struct CuadriculaArchivo: View {
             // --- Titulo e informacion ---
             TituloInformacion(archivo: archivo, colorColeccion: colorColeccion)
             
-            
         }
         .frame(width: width, height: 310)
         .background(Color(.systemGray6))
@@ -51,6 +37,9 @@ struct CuadriculaArchivo: View {
         .scaleEffect(isVisible ? 1 : 0.95)
         .opacity(isVisible ? 1 : 0)
         .onAppear {
+            
+            archivo.crearMiniaturaPortada()
+            
             withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0...0.2))) {
                 isVisible = true
             }

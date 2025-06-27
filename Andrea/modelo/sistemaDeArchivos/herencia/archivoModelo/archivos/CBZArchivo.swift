@@ -3,9 +3,6 @@ import ZIPFoundation
 
 class CBZArchivo: Archivo {
     
-    var pages: [String] = []
-    var imagenMiniatura: UIImage? = nil
-    
     override init(fileName: String, fileURL: URL, creationDate: Date, modificationDate: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int) {
         
         //SE HACEN COSAS
@@ -37,15 +34,20 @@ class CBZArchivo: Archivo {
         }
     }
     
-    func crearMiniaturaPortada() -> UIImage? {
-        guard let primeraImagen = self.pages.first else { return nil }
-        return cargarImagen(nombreImagen: primeraImagen)
+    override func crearMiniaturaPortada() {
+        guard let primeraImagen = self.pages.first else { return }
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let portada = self.cargarImagen(nombreImagen: primeraImagen) {
+                DispatchQueue.main.async {
+                    let nuevaImagen = ImagenArchivo(tipoArchivo: self.fileType, colorColeccion: .green)
+                    nuevaImagen.uiImage = portada
+                    self.imagenArchivo = nuevaImagen
+                }
+            }
+        }
     }
-    
-    func crearMiniaturaContraPortada() -> UIImage? {
-        guard let ultimaImagen = self.pages.last else { return nil }
-        return cargarImagen(nombreImagen: ultimaImagen)
-    }
+
     
     func cargarImagen(nombreImagen: String) -> UIImage? {
 //        let startTime = CFAbsoluteTimeGetCurrent()  // ⏳ Tiempo inicial

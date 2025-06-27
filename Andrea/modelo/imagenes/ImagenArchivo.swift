@@ -9,11 +9,14 @@ import SwiftUI
 
 class ImagenArchivo: ObservableObject  {
     
+    var tipoArchivo: EnumTipoArchivos
+    var colorColeccion: Color
+    
     var id: UUID
     var imageName: String
     var backImageName: String
 
-    var uiImage: UIImage
+    @Published var uiImage: UIImage
     var backuiImage: UIImage
     
     var absoluteImageURL: URL
@@ -35,12 +38,15 @@ class ImagenArchivo: ObservableObject  {
     @Published var tipoMiniatura: EnumTipoMiniatura
     
     // Constructor por defecto
-    init() {
+    init(tipoArchivo: EnumTipoArchivos, colorColeccion: Color) {
+        self.tipoArchivo = tipoArchivo
+        self.colorColeccion = colorColeccion
         self.id = UUID()
         self.imageName = "default"
         self.backImageName = "default"
-        self.uiImage = UIImage(systemName: "photo")!  // Imagen por defecto, usa un ícono del sistema
-        self.backuiImage = UIImage(systemName: "photo")!
+        let defaultUIImage = EnumMiniaturasArchivos.uiImage(for: .cbz)
+        self.uiImage = defaultUIImage
+        self.backuiImage = defaultUIImage
         self.absoluteImageURL = URL(fileURLWithPath: "")
         self.relativeImageURL = ""
         self.absoluteBackImageURL = URL(fileURLWithPath: "")
@@ -49,35 +55,39 @@ class ImagenArchivo: ObservableObject  {
         self.backImageSize = 0
         self.imageDimensions = (width: 0, height: 0)
         self.backImageDimensions = (width: 0, height: 0)
+        self.tipoMiniatura = .firstPage
         
-        self.image = ImagenArchivoModelo().convertToImage(uiImage: uiImage)
-        self.backImage = ImagenArchivoModelo().convertToImage(uiImage: backuiImage)
-        self.tipoMiniatura = EnumTipoMiniatura.firstPage
+        // Solo después de todo esto puedes usar self:
+        self.image = ImagenArchivoModelo().convertToImage(uiImage: defaultUIImage)
+        self.backImage = ImagenArchivoModelo().convertToImage(uiImage: defaultUIImage)
     }
     
     //CONSTRUCTOR PASANDO LA FOTO POR DEFECTO
-    init(tempImage: UIImage, tempBackImage: UIImage) {
-        self.id = UUID()
-        self.imageName = "default"
-        self.backImageName = "default"
-        self.uiImage = tempImage  // Imagen por defecto, usa un ícono del sistema
-        self.backuiImage = tempBackImage
-        self.absoluteImageURL = URL(fileURLWithPath: "")
-        self.relativeImageURL = ""
-        self.absoluteBackImageURL = URL(fileURLWithPath: "")
-        self.relativeBackImageURL = ""
-        self.imageSize = 0
-        self.backImageSize = 0
-        self.imageDimensions = (width: 0, height: 0)
-        self.backImageDimensions = (width: 0, height: 0)
-        
-        self.image = ImagenArchivoModelo().convertToImage(uiImage: uiImage)
-        self.backImage = ImagenArchivoModelo().convertToImage(uiImage: backuiImage)
-        self.tipoMiniatura = EnumTipoMiniatura.firstPage
-    }
+//    init(tempImage: UIImage, tempBackImage: UIImage) {
+//        self.id = UUID()
+//        self.imageName = "default"
+//        self.backImageName = "default"
+//        self.uiImage = tempImage
+//        self.backuiImage = tempBackImage
+//        self.absoluteImageURL = URL(fileURLWithPath: "")
+//        self.relativeImageURL = ""
+//        self.absoluteBackImageURL = URL(fileURLWithPath: "")
+//        self.relativeBackImageURL = ""
+//        self.imageSize = 0
+//        self.backImageSize = 0
+//        self.imageDimensions = (width: 0, height: 0)
+//        self.backImageDimensions = (width: 0, height: 0)
+//        self.tipoMiniatura = .firstPage
+//
+//        self.image = ImagenArchivoModelo().convertToImage(uiImage: tempImage)
+//        self.backImage = ImagenArchivoModelo().convertToImage(uiImage: tempBackImage)
+//    }
+
     
     //CONSTRUCTOR SOLAMENTE CON MINIATURA DE DELANTE
     init(id: UUID, imageName: String, uiImage: UIImage, absoluteImageURL: URL, relativeImageURL: String, imageSize: Int, imageDimensions: (width: Int, height: Int)) {
+        self.tipoArchivo = .cbz
+        self.colorColeccion = .gray
         self.id = id
         self.imageName = imageName
         self.backImageName = "dafault"
@@ -100,6 +110,8 @@ class ImagenArchivo: ObservableObject  {
    
    // Constructor para File (con backImage) - SE QUITAN LOS VALORES POR DEFECTO
     init(id: UUID, imageName: String, backImageName: String, uiImage: UIImage, backuiImage: UIImage, absoluteImageURL: URL, relativeImageURL: String, absoluteBackImageURL: URL, relativeBackImageURL: String, imageSize: Int, backImageSize: Int, imageDimensions: (width: Int, height: Int), backImageDimensions: (width: Int, height: Int)) {
+        self.tipoArchivo = .cbz
+        self.colorColeccion = .gray
        self.id = id
        self.imageName = imageName
        self.backImageName = backImageName
@@ -121,6 +133,8 @@ class ImagenArchivo: ObservableObject  {
     
     // Constructor para File (con backImage) - SE QUITAN LOS VALORES POR DEFECTO
     init(id: UUID, imageName: String, backImageName: String, uiImage: UIImage, backuiImage: UIImage, absoluteImageURL: URL, relativeImageURL: String, absoluteBackImageURL: URL, relativeBackImageURL: String, imageSize: Int, backImageSize: Int, imageDimensions: (width: Int, height: Int), backImageDimensions: (width: Int, height: Int), defaultImage: UIImage) {
+        self.tipoArchivo = .cbz
+        self.colorColeccion = .gray
         self.id = id
         self.imageName = imageName
         self.backImageName = backImageName
@@ -162,7 +176,7 @@ class ImagenArchivo: ObservableObject  {
         default:
             return false  // Si el color no está en la lista, retorna false
         }
-        
+    
 //        print("COLOR ACTUAIZADO")
 //        print(file.dirColor)
         
@@ -175,5 +189,47 @@ class ImagenArchivo: ObservableObject  {
 //        self.image = ImagenArchivoModelo().convertToImage(uiImage: self.uiImage)
         return true
     }
+        
+    func createDefaultThumbnail(defaultFileThumbnail: UIImage, color: UIColor? = nil) -> (uiImage: UIImage, imageData: Data?, imageDimensions: (width: Int, height: Int))? {
+            let thumbnailSize: CGSize = ConstantesPorDefecto().dComicSize
+            
+    //        if let archivoPDFImage = UIImage(named: defaultFileThumbnail) {
+                
+    //                let azulSuave = UIColor(red: 0.5, green: 0.7, blue: 1.0, alpha: 1.0)
+                    let verdeSuave = UIColor(red: 0.4, green: 0.7, blue: 0.4, alpha: 1.0) // Verde suave
+    //            let rojoSuave = UIColor(red: 0.9, green: 0.5, blue: 0.5, alpha: 1.0) // Rojo suave
+
+
+                let negroGrisAzul = UIColor(red: 51/255.0, green: 62/255.0, blue: 72/255.0, alpha: 1.0)
+                let blanco = UIColor(red: 228/255.0, green: 228/255.0, blue: 228/255.0, alpha: 1.0)
+            
+            var ternariColor: UIColor = color!
+                
+            let symbolColorConfig = UIImage.SymbolConfiguration(paletteColors: [negroGrisAzul, blanco, ternariColor])  // Ajusta los colores según sea necesario
+                let coloredImage = defaultFileThumbnail.applyingSymbolConfiguration(symbolColorConfig)
+                
+                let size = CGSize(width: 247, height: 304)
+                
+                // Ajusta la posición de la imagen moviéndola hacia arriba (cambia el valor del origen 'y')
+                let offsetY: CGFloat = -20  // Ajusta este valor para mover la imagen hacia arriba o abajo
+                let offsetX: CGFloat = -28  // Ajusta este valor para mover la imagen hacia arriba o abajo
+                
+                // Redibujar la imagen manteniendo sus proporciones pero desplazada hacia arriba
+                UIGraphicsBeginImageContextWithOptions(thumbnailSize, false, 0.0)
+                coloredImage?.draw(in: CGRect(origin: CGPoint(x: offsetX, y: offsetY), size: size))  // Aplica el desplazamiento en Y
+                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                
+                // Obtener los datos de la imagen redimensionada
+                let imageData = resizedImage?.jpegData(compressionQuality: 1.0)
+                let imageDimensions = (width: Int(resizedImage?.size.width ?? 0), height: Int(resizedImage?.size.height ?? 0))
+                
+                return (resizedImage ?? defaultFileThumbnail, imageData, imageDimensions)
+    //        } else {
+    //            print("No se pudo cargar la imagen de archivo-pdf desde los assets")
+    //        }
+    //        return nil
+        }
+        
     
 }

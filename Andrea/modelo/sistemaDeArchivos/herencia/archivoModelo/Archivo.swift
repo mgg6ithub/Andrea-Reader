@@ -1,8 +1,10 @@
 
 import SwiftUI
 
-class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
+class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     
+    //ARRAY CON LOS NOMBRES DE LAS PAGINAS 1,2,3,4...
+    var pages: [String] = []
     
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
@@ -43,7 +45,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     var sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
     
     //IMAGENES
-    var imagenArchivo: ImagenArchivo = ImagenArchivo()
+    @Published var imagenArchivo: ImagenArchivo
     
     override init() {
         self.dirURL = URL(fileURLWithPath: "")
@@ -64,6 +66,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.fileProgressPercentage = 0
         self.currentSavedPage = 0
         self.finisheReadingDate = nil
+        
+        self.imagenArchivo = ImagenArchivo(tipoArchivo: fileType, colorColeccion: .green)
 
         super.init()
     }
@@ -80,6 +84,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.isReadable = permissions.readable
         self.isWritable = permissions.readable
         self.isExecutable = permissions.readable
+        
+        self.imagenArchivo = ImagenArchivo(tipoArchivo: fileType, colorColeccion: .green)
         
         super.init(name: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate)
         
@@ -102,8 +108,10 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     func crearImagenArchivo() -> ImagenArchivo {
-        return ImagenArchivo()
+        return ImagenArchivo(tipoArchivo: self.fileType, colorColeccion: .green)
     }
+    
+    func crearMiniaturaPortada() {}
     
 //    func crearImagenArchivo(tipoArchivo: EnumTipoArchivos, miniaturaPortada: UIImage?, miniaturaContraPortada: UIImage?) -> ImagenArchivo {
 //        
@@ -133,45 +141,5 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
 //            imageDimensions: ImagenArchivoModelo().calculateUIImageDimensions(uiImage: tempImagen))
 //    }
     
-    func createDefaultThumbnail(defaultFileThumbnail: UIImage, color: UIColor? = nil) -> (uiImage: UIImage, imageData: Data?, imageDimensions: (width: Int, height: Int))? {
-            let thumbnailSize: CGSize = ConstantesPorDefecto().dComicSize
-            
-    //        if let archivoPDFImage = UIImage(named: defaultFileThumbnail) {
-                
-    //                let azulSuave = UIColor(red: 0.5, green: 0.7, blue: 1.0, alpha: 1.0)
-                    let verdeSuave = UIColor(red: 0.4, green: 0.7, blue: 0.4, alpha: 1.0) // Verde suave
-    //            let rojoSuave = UIColor(red: 0.9, green: 0.5, blue: 0.5, alpha: 1.0) // Rojo suave
-
-
-                let negroGrisAzul = UIColor(red: 51/255.0, green: 62/255.0, blue: 72/255.0, alpha: 1.0)
-                let blanco = UIColor(red: 228/255.0, green: 228/255.0, blue: 228/255.0, alpha: 1.0)
-            
-            var ternariColor: UIColor = color ?? self.dirColor
-                
-            let symbolColorConfig = UIImage.SymbolConfiguration(paletteColors: [negroGrisAzul, blanco, ternariColor])  // Ajusta los colores según sea necesario
-                let coloredImage = defaultFileThumbnail.applyingSymbolConfiguration(symbolColorConfig)
-                
-                let size = CGSize(width: 247, height: 304)
-                
-                // Ajusta la posición de la imagen moviéndola hacia arriba (cambia el valor del origen 'y')
-                let offsetY: CGFloat = -20  // Ajusta este valor para mover la imagen hacia arriba o abajo
-                let offsetX: CGFloat = -28  // Ajusta este valor para mover la imagen hacia arriba o abajo
-                
-                // Redibujar la imagen manteniendo sus proporciones pero desplazada hacia arriba
-                UIGraphicsBeginImageContextWithOptions(thumbnailSize, false, 0.0)
-                coloredImage?.draw(in: CGRect(origin: CGPoint(x: offsetX, y: offsetY), size: size))  // Aplica el desplazamiento en Y
-                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
-                
-                // Obtener los datos de la imagen redimensionada
-                let imageData = resizedImage?.jpegData(compressionQuality: 1.0)
-                let imageDimensions = (width: Int(resizedImage?.size.width ?? 0), height: Int(resizedImage?.size.height ?? 0))
-                
-                return (resizedImage ?? defaultFileThumbnail, imageData, imageDimensions)
-    //        } else {
-    //            print("No se pudo cargar la imagen de archivo-pdf desde los assets")
-    //        }
-    //        return nil
-        }
     
 }

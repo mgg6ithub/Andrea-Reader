@@ -8,6 +8,8 @@
 import SwiftUI
 
 protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
+    
+    var pages: [String] { get set }
     var fileTotalPages: Int { get set }
     var fileType: EnumTipoArchivos { get }
     var fileSize: Int { get }

@@ -107,7 +107,7 @@ enum EnumMiniaturasArchivos: String {
         default:
             imageName = EnumMiniaturasArchivos.unknown.rawValue
         }
-
+        print("Se ejecuta este metodo")
         // Intenta cargar la imagen desde el asset catalog
         if let image = UIImage(named: imageName) {
             return image
