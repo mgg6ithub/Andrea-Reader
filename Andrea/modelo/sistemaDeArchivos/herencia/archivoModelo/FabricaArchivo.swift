@@ -36,6 +36,9 @@ struct FactoryArchivo {
         archivo.fileTotalPages = Int.random(in: 20...50)
         archivo.setCurrentPage(currentPage: Int.random(in: 1...50))
         
+        // --- GENERAR MINIATURA ---
+//        ThumbnailService.shared.generateThumbnail(for: archivo)
+        
         return archivo
     }
     

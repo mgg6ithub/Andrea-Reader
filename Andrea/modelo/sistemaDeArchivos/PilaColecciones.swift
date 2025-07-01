@@ -99,6 +99,9 @@ class PilaColecciones: ObservableObject {
         colecciones.append(coleccion) //agregamos la coleccion a la pila
         print("Has metido: ", coleccion.name)
         self.guardarPila() //guardamos persistencia
+        
+        ThumbnailService.shared.clearCache()
+        
         SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: coleccion.url) //hacemos un refresh sobre esa coleccion
     }
     
@@ -135,6 +138,7 @@ class PilaColecciones: ObservableObject {
                 // Si quieres mantener la colección encontrada, simplemente haz break aquí
                 self.guardarPila()
                 SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: coleccion.url) //hacemos un refresh sobre esa coleccion
+                ThumbnailService.shared.clearCache()
                 break
             }
             colecciones.removeLast()

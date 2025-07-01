@@ -3,6 +3,7 @@ import SwiftUI
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     
+    
     //ARRAY CON LOS NOMBRES DE LAS PAGINAS 1,2,3,4...
     var pages: [String] = []
     
@@ -32,7 +33,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     var colectionCurrentIssue: Int?
     var colectionTotalIssues: Int?
     
-    
     //PROGRESO
     var fileTotalPages: Int = 0
     @Published var fileProgressPercentage: Int = 0
@@ -40,12 +40,15 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     @Published var currentSavedPage: Int = 0
     var finisheReadingDate: Date?
     
-    
     //MODELOS NECESARIOS
     var sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
     
-    //IMAGENES
-    @Published var imagenArchivo: ImagenArchivo
+    var hasThumbnail: Bool {
+        let thumbURL = ThumbnailService.shared.cacheDir
+            .appendingPathComponent("\(url.lastPathComponent).jpg")
+        return FileManager.default.fileExists(atPath: thumbURL.path)
+    }
+
     
     override init() {
         self.dirURL = URL(fileURLWithPath: "")
@@ -66,8 +69,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         self.fileProgressPercentage = 0
         self.currentSavedPage = 0
         self.finisheReadingDate = nil
-        
-        self.imagenArchivo = ImagenArchivo(tipoArchivo: fileType, colorColeccion: .green)
 
         super.init()
     }
@@ -84,8 +85,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         self.isReadable = permissions.readable
         self.isWritable = permissions.readable
         self.isExecutable = permissions.readable
-        
-        self.imagenArchivo = ImagenArchivo(tipoArchivo: fileType, colorColeccion: .green)
         
         super.init(name: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate)
         
@@ -107,39 +106,9 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
 
     }
     
-    func crearImagenArchivo() -> ImagenArchivo {
-        return ImagenArchivo(tipoArchivo: self.fileType, colorColeccion: .green)
+    func extractPageData(named name: String) -> Data? {
+        return nil
     }
-    
-    func crearMiniaturaPortada() {}
-    
-//    func crearImagenArchivo(tipoArchivo: EnumTipoArchivos, miniaturaPortada: UIImage?, miniaturaContraPortada: UIImage?) -> ImagenArchivo {
-//        
-////        print("Creando una miniatura por defecto para: ", tipoArchivo)
-//        var tempImagen = createDefaultThumbnail(defaultFileThumbnail: EnumMiniaturasArchivos.uiImage(for: tipoArchivo))?.uiImage
-////        var tempImagen = ConstantesPorDefecto().dNotFoundUIImage
-//        //        var tempBackImagen = tempImagen
-//        
-//        var tempImageAbsoluteURL = URL(fileURLWithPath: "")
-//        //        var tempBackImagenAbsoluteURL = URL(fileURLWithPath: "")
-//        
-////        if let mPortada = miniaturaPortada {
-////            tempImagen = mPortada.resized(to: ConstantesPorDefecto().dComicSize)
-////            tempImageAbsoluteURL = self.url
-////        }
-//        
-//        let sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
-//        let mc = ManipulacionCadenas()
-//
-//        return ImagenArchivo(
-//            id: UUID(),
-//            imageName: sau.getFileName(fileURL: tempImageAbsoluteURL),
-//            uiImage: tempImagen!,
-//            absoluteImageURL: tempImageAbsoluteURL,
-//            relativeImageURL: mc.relativizeURLNOextension(elementURL: tempImageAbsoluteURL),
-//            imageSize: sau.getFileSize(fileURL: tempImageAbsoluteURL),
-//            imageDimensions: ImagenArchivoModelo().calculateUIImageDimensions(uiImage: tempImagen))
-//    }
     
     
 }

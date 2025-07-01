@@ -34,17 +34,16 @@ class CBZArchivo: Archivo {
         }
     }
     
-    override func crearMiniaturaPortada() {
-        guard let primeraImagen = self.pages.first else { return }
-
-        DispatchQueue.global(qos: .userInitiated).async {
-            if let portada = self.cargarImagen(nombreImagen: primeraImagen) {
-                DispatchQueue.main.async {
-                    let nuevaImagen = ImagenArchivo(tipoArchivo: self.fileType, colorColeccion: .green)
-                    nuevaImagen.uiImage = portada
-                    self.imagenArchivo = nuevaImagen
-                }
-            }
+    override func extractPageData(named name: String) -> Data? {
+        do {
+            let archive = try Archive(url: url, accessMode: .read)
+            guard let entry = archive[name] else { return nil }
+            var data = Data()
+            _ = try archive.extract(entry) { data.append($0) }
+            return data
+        } catch {
+            print("Error extrayendo página:", error)
+            return nil
         }
     }
 

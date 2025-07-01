@@ -53,6 +53,7 @@
 		D4ADDB892DE9C2E30097A010 /* AppEstado1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB882DE9C2E30097A010 /* AppEstado1.swift */; };
 		D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AECEBA2DEE33620032917F /* PilaColecciones.swift */; };
 		D4B5CA912DE89489006F8FA6 /* BookReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */; };
+		D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8B3882E1324B200585A6D /* ThumbnailService.swift */; };
 		D4BA32F12E0BDD1300CF3219 /* TituloInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */; };
 		D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */; };
 		D4BF0B1F2DEF493500152333 /* FabricaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B1E2DEF493500152333 /* FabricaArchivo.swift */; };
@@ -115,6 +116,7 @@
 		D4ADDB882DE9C2E30097A010 /* AppEstado1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado1.swift; sourceTree = "<group>"; };
 		D4AECEBA2DEE33620032917F /* PilaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilaColecciones.swift; sourceTree = "<group>"; };
 		D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookReadingView.swift; sourceTree = "<group>"; };
+		D4B8B3882E1324B200585A6D /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
 		D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TituloInformacion.swift; sourceTree = "<group>"; };
 		D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCuadricula.swift; sourceTree = "<group>"; };
 		D4BF0B1E2DEF493500152333 /* FabricaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabricaArchivo.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 			children = (
 				D49DE74D2E0D3481002FDB7A /* ImagenArchivo.swift */,
 				D49DE74F2E0D348F002FDB7A /* ImagenArchivoModelo.swift */,
+				D4B8B3882E1324B200585A6D /* ThumbnailService.swift */,
 			);
 			path = imagenes;
 			sourceTree = "<group>";
@@ -532,6 +535,7 @@
 				D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */,
 				D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */,
 				D4BA32F12E0BDD1300CF3219 /* TituloInformacion.swift in Sources */,
+				D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */,
 				D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */,
 				D48589742DEBA1A80074DB8E /* Archivo.swift in Sources */,
 				D48589762DEBA1C50074DB8E /* Coleccion.swift in Sources */,

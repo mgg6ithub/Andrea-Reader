@@ -19,27 +19,18 @@ struct CuadriculaVista: View {
             ScrollViewReader { scrollProxy in
                 ScrollView(.vertical) {
                     LazyVGrid(
-                        columns: Array(repeating: GridItem(.adaptive(minimum: 165)), count: Int(outerGeometry.size.width / 165)),
-                        spacing: 20
+                        columns: [GridItem(.adaptive(minimum: 165), spacing: 20)]
                     ) {
-                        ForEach(sa.listaElementos.indices, id: \.self) { index in
-                            let elemento = sa.listaElementos[index]
+                        ForEach(sa.listaElementos, id: \.id) { elemento in
 
-                            AnyView(
-                                elemento is ElementoPlaceholder
-                                ? AnyView(PlaceholderElementView())
-                                : AnyView(
-                                    ElementoVista(element: elemento) {
-                                        if let coleccion = elemento as? Coleccion {
-                                            CuadriculaColeccion(coleccion: coleccion)
-                                        } else {
-                                            if let archivo = elemento as? Archivo {
-                                                CuadriculaArchivo(archivo: archivo, colorColeccion: colorColeccion)
-                                            }
-                                        }
-                                    }
-                                )
-                            )
+                            if let placeholder = elemento as? ElementoPlaceholder {
+                                PlaceholderElementView()
+                            } else if let coleccion = elemento as? Coleccion {
+                                CuadriculaColeccion(coleccion: coleccion)
+                            } else if let archivo = elemento as? Archivo {
+                                CuadriculaArchivo(archivo: archivo, colorColeccion: colorColeccion)
+                            }
+
                         }
 
 

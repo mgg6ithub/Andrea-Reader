@@ -23,14 +23,11 @@ protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     var colectionCurrentIssue: Int? { get set }
     var colectionTotalIssues: Int? { get set }
     
-    var imagenArchivo: ImagenArchivo { get set }
-    
-//    func crearImagenArchivo(tipoArchivo: EnumTipoArchivos, miniaturaPortada: UIImage?, miniaturaContraPortada: UIImage?) -> ImagenArchivo //Se crea un modelo con dos miniaturas la de delante y atras del archivo
-    func crearImagenArchivo() -> ImagenArchivo
-    
     func viewContent() -> AnyView
 //    func showViewContentMenu(elementModel: ElementModel) -> AnyView
     
     func getTotalPages() -> Int
     func setCurrentPage(currentPage: Int) -> Void
+    
+    func extractPageData(named: String) -> Data?
 }
