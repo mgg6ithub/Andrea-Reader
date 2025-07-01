@@ -61,6 +61,7 @@
 		D4BF0B232DEF4AA000152333 /* ProtocoloArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B222DEF4AA000152333 /* ProtocoloArchivo.swift */; };
 		D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */; };
 		D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */; };
+		D4C232FD2E1455AA00C8DBA4 /* IndexarOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */; };
 		D4DEBBEC2DE9CCD500F06C30 /* AjustesGlobales.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */; };
 		D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */; };
 		D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */; };
@@ -124,6 +125,7 @@
 		D4BF0B222DEF4AA000152333 /* ProtocoloArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocoloArchivo.swift; sourceTree = "<group>"; };
 		D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTipoArchivos.swift; sourceTree = "<group>"; };
 		D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TXTArchivo.swift; sourceTree = "<group>"; };
+		D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexarOperation.swift; sourceTree = "<group>"; };
 		D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesGlobales.swift; sourceTree = "<group>"; };
 		D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesTema.swift; sourceTree = "<group>"; };
 		D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesColor.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 				D48589702DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift */,
 				D4AECEBA2DEE33620032917F /* PilaColecciones.swift */,
 				D48589642DEB9CB50074DB8E /* herencia */,
+				D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */,
 			);
 			path = sistemaDeArchivos;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 				D4DF31792DEC7362000D15CC /* ElementoPlaceholderDummy.swift in Sources */,
 				D46E94352DEA287000ABD9EE /* Toggle.swift in Sources */,
 				D485896A2DEB9DC30074DB8E /* Extensiones.swift in Sources */,
+				D4C232FD2E1455AA00C8DBA4 /* IndexarOperation.swift in Sources */,
 				D4BF0B232DEF4AA000152333 /* ProtocoloArchivo.swift in Sources */,
 				D48589662DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift in Sources */,
 				D4A6C7292DEA21C200E7451F /* Enums.swift in Sources */,

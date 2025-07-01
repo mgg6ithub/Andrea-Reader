@@ -87,69 +87,41 @@ class SistemaArchivos: ObservableObject {
         
     }
     
+    private let indexacionQueue = OperationQueue()
     
     public func refreshIndex(coleccionActual: URL, completion: (() -> Void)? = nil) {
         
-        //1. Borramos lo que hubiera anteriormente
-        DispatchQueue.main.async {
-            self.listaElementos.removeAll()
-        }
+        // Cancelar indexaciones anteriores
+        indexacionQueue.cancelAllOperations()
         
-        //Si ya esta en cache actualizamos la lista con los elementos del cache y retornamos
+        // Si ya está cacheado, actualizamos y terminamos rápido
         if let coleccionValor = self.cacheColecciones[coleccionActual],
            !coleccionValor.listaElementos.isEmpty {
             
             DispatchQueue.main.async {
-                print("Ya esta en cache: ", coleccionValor.coleccion.name)
-                print(coleccionValor.listaElementos)
                 self.listaElementos = coleccionValor.listaElementos
                 completion?()
             }
             return
         }
         
-        //Creamos un hilo en el background para el indexado
-        DispatchQueue.global().async {
+        let operation = IndexarOperation(coleccionURL: coleccionActual, sistemaArchivos: self)
+        
+        operation.completionBlock = { [weak operation, weak self] in
+            guard let self = self, let op = operation, !op.isCancelled else { return }
             
-            // 1. Escaneamos el directorio
-            let allURLs = self.obtenerURLSDirectorio(coleccionURL: coleccionActual)
-
-            // 2. Filtramos los archivos no deseados
-            let filteredElements = allURLs.filter { url in
-                SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.filtrosIndexado
-                    .allSatisfy { filtro in
-                        filtro.shouldInclude(url: url) // ✅ Aquí sí pasamos la URL al filtro
-                    }
-            }
-
-            // 3. Creamos los placeholders sólo para los válidos
-            DispatchQueue.main.async {
-                self.listaElementos = Array(
-                    repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo,
-                    count: filteredElements.count
-                )
-            }
-
-            // 4. Creamos los elementos
-            for (index, url) in filteredElements.enumerated() {
-                if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: url) {
-                    DispatchQueue.main.async {
-                        self.listaElementos[index] = elemento
-                    }
-                }
-            }
-
-            // 5. Guardamos en el caché
             DispatchQueue.main.async {
                 if let coleccionValor = self.cacheColecciones[coleccionActual] {
-                    coleccionValor.listaElementos = self.listaElementos
+                    coleccionValor.listaElementos = op.elementosFinales
                 }
                 completion?()
                 print("Terminamos el indexado")
             }
         }
-
+        
+        indexacionQueue.addOperation(operation)
     }
+
     
     public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> (any ElementoSistemaArchivosProtocolo)? {
         
@@ -189,7 +161,7 @@ class SistemaArchivos: ObservableObject {
      - Parameter coleccionURL: La URL del directorio a escanear.
      - Returns: Un array de URLs que representan los elementos en el directorio.
      */
-    private func obtenerURLSDirectorio(coleccionURL: URL) -> [URL] {
+    func obtenerURLSDirectorio(coleccionURL: URL) -> [URL] {
         do {
             // Obtén todas las URLs en el directorio
             let contentsURLs = try FileManager.default.contentsOfDirectory(at: coleccionURL, includingPropertiesForKeys: nil)

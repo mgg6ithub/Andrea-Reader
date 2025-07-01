@@ -139,6 +139,7 @@ class PilaColecciones: ObservableObject {
                 self.guardarPila()
                 SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: coleccion.url) //hacemos un refresh sobre esa coleccion
                 ThumbnailService.shared.clearCache()
+                
                 break
             }
             colecciones.removeLast()

@@ -84,7 +84,7 @@ class ArchivoThumbnailViewModel: ObservableObject {
                 self?.thumbnail = image
                 if let image = image {
                     let size = self?.sizeInMB(of: image) ?? "N/A"
-                    print("✅ Loaded thumbnail for \(archivo.name) - size: \(size)")
+//                    print("✅ Loaded thumbnail for \(archivo.name) - size: \(size)")
                 }
             }
         }
@@ -95,7 +95,7 @@ class ArchivoThumbnailViewModel: ObservableObject {
         let before = sizeInMB(of: thumbnail)
         thumbnail = nil
         pendingKey = nil
-        print("🗑️ ViewModel: thumbnail nil for \(archivo.name) (was \(before))")
+//        print("🗑️ ViewModel: thumbnail nil for \(archivo.name) (was \(before))")
 
         // 2) Elimina del cache en memoria
         ThumbnailService.shared.removeCache(for: archivo)
