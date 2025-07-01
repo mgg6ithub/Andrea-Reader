@@ -17,7 +17,7 @@ struct CuadriculaArchivo: View {
                 if let img = viewModel.thumbnail {
                     Image(uiImage: img)
                         .resizable()
-                        .frame(maxWidth: .infinity)
+//                        .frame(maxWidth: .infinity)
                 } else {
                     ProgressView()
                 }

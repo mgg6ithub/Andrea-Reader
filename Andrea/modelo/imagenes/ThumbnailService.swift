@@ -45,7 +45,7 @@ class ThumbnailService {
         let scaledSize = CGSize(width: image.size.width * scaleFactor, height: image.size.height * scaleFactor)
         
         let format = UIGraphicsImageRendererFormat.default()
-        format.scale = 1  // para controlar uso de memoria
+        format.scale = 0.5  // para controlar uso de memoria
         let renderer = UIGraphicsImageRenderer(size: scaledSize, format: format)
         
         return renderer.image { _ in
@@ -89,7 +89,7 @@ class ThumbnailService {
             }
 
             let thumbnail = self.resizedThumbnail(from: original)
-            guard let jpegData = thumbnail.jpegData(compressionQuality: 0.1) else {
+            guard let jpegData = thumbnail.jpegData(compressionQuality: 0.2) else {
                 DispatchQueue.main.async { completion(nil) }
                 return
             }
