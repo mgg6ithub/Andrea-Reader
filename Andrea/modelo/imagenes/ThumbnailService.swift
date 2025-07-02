@@ -141,12 +141,12 @@ class ThumbnailService {
     func removeCache(for archivo: Archivo) {
         let key = archivo.url.path as NSString
         cache.removeObject(forKey: key)
-        print("🗑️ ThumbnailService: cache removed for \(archivo.name)")
+//        print("🗑️ ThumbnailService: cache removed for \(archivo.name)")
     }
     
     func clearCache() {
         cache.removeAllObjects()
-        print("🗑️ Cache cleared")
+//        print("🗑️ Cache cleared")
     }
 
 

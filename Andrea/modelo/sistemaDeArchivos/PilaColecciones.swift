@@ -73,7 +73,7 @@ class PilaColecciones: ObservableObject {
                 cache[url]?.coleccion
             }
             
-            print("Historial de colecciones restaurado")
+//            print("Historial de colecciones restaurado")
             
         }
     }
@@ -97,7 +97,7 @@ class PilaColecciones: ObservableObject {
      */
     public func meterColeccion(coleccion: Coleccion) {
         colecciones.append(coleccion) //agregamos la coleccion a la pila
-        print("Has metido: ", coleccion.name)
+//        print("Has metido: ", coleccion.name)
         self.guardarPila() //guardamos persistencia
         
         ThumbnailService.shared.clearCache()

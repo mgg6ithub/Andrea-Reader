@@ -31,6 +31,8 @@ class Coleccion: ElementoSistemaArchivos {
     
     @State private var showIconAlert = false
     
+    var scrollPosition: Int?
+    
     init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, elementList: [String]) {
         
         self.elementList = elementList

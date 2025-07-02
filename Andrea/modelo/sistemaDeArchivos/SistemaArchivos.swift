@@ -83,7 +83,7 @@ class SistemaArchivos: ObservableObject {
             indexamientoRecursivoColecciones(desde: subdir)
         }
         
-        print("Indexado de coleccion completado en SA")
+//        print("Indexado de coleccion completado en SA")
         
     }
     
@@ -115,7 +115,7 @@ class SistemaArchivos: ObservableObject {
                     coleccionValor.listaElementos = op.elementosFinales
                 }
                 completion?()
-                print("Terminamos el indexado")
+//                print("Terminamos el indexado")
             }
         }
         
