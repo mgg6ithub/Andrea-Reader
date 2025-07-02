@@ -30,7 +30,7 @@ struct ProgresoCuadricula: View {
                         .padding(.horizontal, 10)
                     
                     // Barra de progreso real
-                    ProgressView(value: progresoEntero)
+                    ProgressView(value: 0.8)
                         .progressViewStyle(LinearProgressViewStyle(tint: colorColeccion))
                         .frame(height: 4)
                         .padding(.horizontal, 10)
