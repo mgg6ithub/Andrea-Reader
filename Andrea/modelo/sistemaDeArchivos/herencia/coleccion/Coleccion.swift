@@ -31,7 +31,7 @@ class Coleccion: ElementoSistemaArchivos {
     
     @State private var showIconAlert = false
     
-    var scrollPosition: Int?
+    var scrollPosition: Int? = 0
     
     init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, elementList: [String]) {
         
@@ -51,6 +51,14 @@ class Coleccion: ElementoSistemaArchivos {
     
     public func meterColeccion(coleccion: Coleccion) {
         PilaColecciones.getPilaColeccionesSingleton.meterColeccion(coleccion: coleccion)
+    }
+    
+    public func guardarPosicionScroll(scrollPosition: Int) {
+        
+    }
+    
+    public func obtenerPosicionScroll() -> Int {
+        return 0
     }
     
 }

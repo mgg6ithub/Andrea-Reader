@@ -25,7 +25,15 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
-    @Published var coleccionActual: Coleccion
+    
+    @Published var coleccionActual: Coleccion {
+        willSet {
+            print("➡️ coleccionActual va a cambiar de \(coleccionActual.name) a \(newValue.name)")
+            // Aquí puedes guardar scrollPosition actual, etc.
+            PersistenciaDatos().guardarPosicionScroll(coleccion: coleccionActual)
+        }
+    }
+
     
     //MARK: - LISTAS Y CACHES
     //MARK: – Cola para proteger acceso a propiedades internas (lectura/escritura concurrente)

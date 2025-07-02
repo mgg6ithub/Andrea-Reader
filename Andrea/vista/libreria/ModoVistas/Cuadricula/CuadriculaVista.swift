@@ -29,7 +29,11 @@ struct CuadriculaVista: View {
                         }
                     }
                 }
+                .onAppear {
+                    hacerScrollSiEsPosible(proxy: proxy)
+                }
                 .onChange(of: sa.coleccionActual) { newColeccion in
+                    
                     print("Cambiando a ", sa.coleccionActual.name)
                     hacerScrollSiEsPosible(proxy: proxy)
                 }
@@ -47,6 +51,8 @@ struct CuadriculaVista: View {
             print("Scroll automático a índice \(index) y id \(targetID) en colección \(sa.coleccionActual.name)")
         }
     }
+
+    
 }
 
 

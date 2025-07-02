@@ -53,6 +53,7 @@
 		D4ADDB892DE9C2E30097A010 /* AppEstado1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB882DE9C2E30097A010 /* AppEstado1.swift */; };
 		D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AECEBA2DEE33620032917F /* PilaColecciones.swift */; };
 		D4B5CA912DE89489006F8FA6 /* BookReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */; };
+		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
 		D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8B3882E1324B200585A6D /* ThumbnailService.swift */; };
 		D4BA32F12E0BDD1300CF3219 /* TituloInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */; };
 		D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */; };
@@ -117,6 +118,7 @@
 		D4ADDB882DE9C2E30097A010 /* AppEstado1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado1.swift; sourceTree = "<group>"; };
 		D4AECEBA2DEE33620032917F /* PilaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilaColecciones.swift; sourceTree = "<group>"; };
 		D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookReadingView.swift; sourceTree = "<group>"; };
+		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
 		D4B8B3882E1324B200585A6D /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
 		D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TituloInformacion.swift; sourceTree = "<group>"; };
 		D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCuadricula.swift; sourceTree = "<group>"; };
@@ -354,10 +356,11 @@
 			isa = PBXGroup;
 			children = (
 				D45E70092DE7A7F3001F816A /* SistemaArchivos.swift */,
+				D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */,
 				D48589702DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift */,
 				D4AECEBA2DEE33620032917F /* PilaColecciones.swift */,
+				D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */,
 				D48589642DEB9CB50074DB8E /* herencia */,
-				D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */,
 			);
 			path = sistemaDeArchivos;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */,
 				D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */,
 				D4ADDB872DE9C1150097A010 /* HistorialEstado.swift in Sources */,
+				D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */,
 				D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */,
 				D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */,
 				D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */,

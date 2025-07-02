@@ -12,7 +12,11 @@ struct FabricaColeccion {
         let creationDate = sau.getElementCreationDate(elementURL: collectionURL)
         let modificationDate = sau.getElementModificationDate(elementURL: collectionURL)
         
-        return Coleccion(directoryName: collectionName, directoryURL: collectionURL, creationDate: creationDate, modificationDate: modificationDate, elementList: [])
+        let coleccion = Coleccion(directoryName: collectionName, directoryURL: collectionURL, creationDate: creationDate, modificationDate: modificationDate, elementList: [])
+        
+        coleccion.scrollPosition = PersistenciaDatos().obtenerPosicionScroll(coleccion: coleccion)
+        
+        return coleccion
         
 //        var elementList: [String] = []
         

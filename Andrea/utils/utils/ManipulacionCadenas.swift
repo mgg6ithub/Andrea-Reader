@@ -182,6 +182,17 @@ struct ManipulacionCadenas {
     }
 
     
+    /**
+     Metodo para quitar la parte de la URL local del sistem de la URL
+     */
+    public func borrarURLLOCAL(url: URL) -> String {
+        
+        let homeURL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory.deletingLastPathComponent().path
+        
+        return self.normalizarURL(url).path.replacingOccurrences(of: homeURL, with: "").trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        
+    }
+    
     
     func getFirstChars(pdfName: String, max: Int) -> String {
         
