@@ -25,6 +25,8 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
+    @Published var coleccionActual: Coleccion
+    
     //MARK: - LISTAS Y CACHES
     //MARK: – Cola para proteger acceso a propiedades internas (lectura/escritura concurrente)
     private let fileQueue = DispatchQueue(label: "com.miApp.sistemaArchivos.queue", attributes: .concurrent)
@@ -51,16 +53,21 @@ class SistemaArchivos: ObservableObject {
      4. Se realiza el primer indexado de dicha coleccion
      */
     private init() {
+        // Crear la coleccion raiz y asignarla
+        self.coleccionActual = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.coleccionHomeURL)!
         
-        //Creamos el cache de colecciones -> Instanciando todas las colecciones posibles
-        self.indexamientoRecursivoColecciones(desde: SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory)
+        // Añadirla explícitamente al cache
+        cacheColecciones[coleccionHomeURL] = ColeccionValor(coleccion: coleccionActual)
         
+        // Indexar recursivamente a partir de la raiz
+        self.indexamientoRecursivoColecciones(desde: coleccionHomeURL)
     }
     
     /**
      Recorre recursivamente todas las colecciones.
      */
     private func indexamientoRecursivoColecciones(desde coleccionURL: URL) {
+        
         let sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
 
         // Verificamos que es un directorio válido antes de continuar
@@ -89,31 +96,35 @@ class SistemaArchivos: ObservableObject {
     
     private let indexacionQueue = OperationQueue()
     
-    public func refreshIndex(coleccionActual: URL, completion: (() -> Void)? = nil) {
+    public func refreshIndex(coleccionActual: Coleccion, completion: (() -> Void)? = nil) {
+        
+        let coleccionURL = coleccionActual.url
         
         // Cancelar indexaciones anteriores
         indexacionQueue.cancelAllOperations()
         
         // Si ya está cacheado, actualizamos y terminamos rápido
-        if let coleccionValor = self.cacheColecciones[coleccionActual],
+        if let coleccionValor = self.cacheColecciones[coleccionURL],
            !coleccionValor.listaElementos.isEmpty {
             
             DispatchQueue.main.async {
                 self.listaElementos = coleccionValor.listaElementos
+                self.coleccionActual = coleccionActual
                 completion?()
             }
             return
         }
         
-        let operation = IndexarOperation(coleccionURL: coleccionActual, sistemaArchivos: self)
+        let operation = IndexarOperation(coleccionURL: coleccionURL, sistemaArchivos: self)
         
         operation.completionBlock = { [weak operation, weak self] in
             guard let self = self, let op = operation, !op.isCancelled else { return }
             
             DispatchQueue.main.async {
-                if let coleccionValor = self.cacheColecciones[coleccionActual] {
+                if let coleccionValor = self.cacheColecciones[coleccionURL] {
                     coleccionValor.listaElementos = op.elementosFinales
                 }
+                self.coleccionActual = coleccionActual
                 completion?()
 //                print("Terminamos el indexado")
             }

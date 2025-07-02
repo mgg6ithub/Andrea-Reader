@@ -1,10 +1,8 @@
 import SwiftUI
 
 struct CuadriculaVista: View {
+    
     @EnvironmentObject var sa: SistemaArchivos
-    @EnvironmentObject var pc: PilaColecciones
-
-    var coleccionActual: Coleccion { pc.getColeccionActual() }
 
     @State private var scrollProxy: ScrollViewProxy? = nil
 
@@ -21,46 +19,32 @@ struct CuadriculaVista: View {
                                 } else if let coleccion = elemento as? Coleccion {
                                     CuadriculaColeccion(coleccion: coleccion)
                                 } else if let archivo = elemento as? Archivo {
-                                    CuadriculaArchivo(archivo: archivo, colorColeccion: coleccionActual.directoryColor)
+                                    CuadriculaArchivo(archivo: archivo, colorColeccion: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().directoryColor)
                                 }
                             }
                             .id(elemento.id)
                             .onAppear {
-                                coleccionActual.scrollPosition = index
+                                sa.coleccionActual.scrollPosition = index
                             }
                         }
                     }
                 }
-                .onAppear {
-                    // Guardamos el proxy para usarlo luego
-                    scrollProxy = proxy
-
-                    // Lanzamos el refresco de la colección actual (la que está en pc)
-                    sa.refreshIndex(coleccionActual: coleccionActual.url) {
-                        // Cuando termine el refresh, hacemos scroll
-                        hacerScrollSiEsPosible(proxy: proxy)
-                    }
-                }
-                .onChange(of: pc.colecciones) { _ in
-                    // Cuando cambia la colección, refrescamos la lista y hacemos scroll
-                    sa.refreshIndex(coleccionActual: coleccionActual.url) {
-                        if let proxy = scrollProxy {
-                            hacerScrollSiEsPosible(proxy: proxy)
-                        }
-                    }
+                .onChange(of: sa.coleccionActual) { newColeccion in
+                    print("Cambiando a ", sa.coleccionActual.name)
+                    hacerScrollSiEsPosible(proxy: proxy)
                 }
             }
         }
     }
 
     private func hacerScrollSiEsPosible(proxy: ScrollViewProxy) {
-        guard let index = coleccionActual.scrollPosition,
+        guard let index = sa.coleccionActual.scrollPosition,
               index < sa.listaElementos.count else { return }
 
         let targetID = sa.listaElementos[index].id
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             proxy.scrollTo(targetID, anchor: .top)
-            print("Scroll automático a índice \(index) y id \(targetID) en colección \(coleccionActual.name)")
+            print("Scroll automático a índice \(index) y id \(targetID) en colección \(sa.coleccionActual.name)")
         }
     }
 }

@@ -17,6 +17,8 @@ class PilaColecciones: ObservableObject {
     //(final) Coleccion1 -> Coleccion2 -> Coleccion3 (principio)
     @Published private(set) var colecciones: [Coleccion] = []
     
+    private let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
+    
     //Constructor privado
     private init() {
         
@@ -25,18 +27,20 @@ class PilaColecciones: ObservableObject {
         //2. Si no se puede coleccionActual = coleccionHomeURL (Documents)
         self.cargarPila()
         
-        var coleccionActual: URL
+        var coleccionActual: Coleccion
         
         //2.5 comprobamos si la pila esta vacia para cargar desde documents
         if self.colecciones.isEmpty {
-            coleccionActual = coleccionHomeURL
+            guard let homeColeccion = sa.cacheColecciones[coleccionHomeURL]?.coleccion ?? FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: coleccionHomeURL) else {
+                fatalError("No se pudo crear la colección HOME")
+            }
+            coleccionActual = homeColeccion
         }
         else {
-            coleccionActual = self.getColeccionActual().url
+            coleccionActual = self.getColeccionActual()
         }
         
-        //3. Hacemos un indexado de la colecciona actual
-        SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: coleccionActual)
+        sa.refreshIndex(coleccionActual: coleccionActual)
     }
     
     //Metodo principal para obtener la unica instancia del singleton
@@ -65,7 +69,7 @@ class PilaColecciones: ObservableObject {
             }
 
             // 2. Obtenemos el cache
-            let cache = SistemaArchivos.getSistemaArchivosSingleton.cacheColecciones
+            let cache = sa.cacheColecciones
             
             
             // 3. Extraemos las colecciones en el orden dado
@@ -102,7 +106,7 @@ class PilaColecciones: ObservableObject {
         
         ThumbnailService.shared.clearCache()
         
-        SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: coleccion.url) //hacemos un refresh sobre esa coleccion
+        sa.refreshIndex(coleccionActual: coleccion) //hacemos un refresh sobre esa coleccion
     }
     
     /**
@@ -117,7 +121,7 @@ class PilaColecciones: ObservableObject {
      */
     public func getColeccionActual() -> Coleccion {
         self.colecciones.last
-            ?? SistemaArchivos.getSistemaArchivosSingleton.cacheColecciones[self.coleccionHomeURL]?.coleccion
+            ?? sa.cacheColecciones[self.coleccionHomeURL]?.coleccion
             ?? Coleccion(directoryName: "Inicio", directoryURL: coleccionHomeURL, creationDate: .now, modificationDate: .now, elementList: [])
     }
     
@@ -137,7 +141,7 @@ class PilaColecciones: ObservableObject {
             if ultima == coleccion {
                 // Si quieres mantener la colección encontrada, simplemente haz break aquí
                 self.guardarPila()
-                SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: coleccion.url) //hacemos un refresh sobre esa coleccion
+                sa.refreshIndex(coleccionActual: coleccion) //hacemos un refresh sobre esa coleccion
                 ThumbnailService.shared.clearCache()
                 
                 break
@@ -151,7 +155,9 @@ class PilaColecciones: ObservableObject {
      */
     public func sacarTodasColecciones() {
         self.colecciones.removeAll() //Limpiar todas
-        SistemaArchivos.getSistemaArchivosSingleton.refreshIndex(coleccionActual: self.coleccionHomeURL) // Refrescar con la URL de documents
+        guard let homeColeccion = sa.cacheColecciones[coleccionHomeURL]?.coleccion else { return }
+        //3. Hacemos un indexado de la colecciona actual
+        sa.refreshIndex(coleccionActual: homeColeccion)
         self.guardarPila()
     }
     
