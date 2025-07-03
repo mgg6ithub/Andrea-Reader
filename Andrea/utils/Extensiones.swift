@@ -45,3 +45,4 @@ struct ProgressTextModifier1: AnimatableModifier {
         Text("% \(Int(value))")
     }
 }
+

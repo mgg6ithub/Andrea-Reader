@@ -3,12 +3,12 @@ import SwiftUI
 
 class IndexarOperation: Operation {
     
-    let coleccionURL: URL
+    let coleccionActual: Coleccion
     weak var sistemaArchivos: SistemaArchivos?
     var elementosFinales: [any ElementoSistemaArchivosProtocolo] = []
     
-    init(coleccionURL: URL, sistemaArchivos: SistemaArchivos) {
-        self.coleccionURL = coleccionURL
+    init(coleccionActual: Coleccion, sistemaArchivos: SistemaArchivos) {
+        self.coleccionActual = coleccionActual
         self.sistemaArchivos = sistemaArchivos
     }
     
@@ -23,7 +23,7 @@ class IndexarOperation: Operation {
         if isCancelled { return }
         
         // 2. Obtener URLs directorio
-        let allURLs = sistemaArchivos.obtenerURLSDirectorio(coleccionURL: coleccionURL)
+        let allURLs = sistemaArchivos.obtenerURLSDirectorio(coleccionURL: coleccionActual.url)
         if isCancelled { return }
         
         // 3. Filtrar elementos
@@ -34,29 +34,44 @@ class IndexarOperation: Operation {
         }
         if isCancelled { return }
         
+        print("hay un total de", filteredElements.count)
+        
         // 4. Crear placeholders y asignar (en main queue)
         DispatchQueue.main.sync {
-            sistemaArchivos.listaElementos = Array(
-                repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo,
-                count: filteredElements.count
-            )
+            sistemaArchivos.listaElementos = (0..<filteredElements.count).map { _ in
+                ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
+            }
         }
+        
+        // --- CAMBIAR COLECCION DEL SA PARA TRIGGEAR LA VISTA ---
+        SistemaArchivos.getSistemaArchivosSingleton.coleccionActual = coleccionActual
+        
         if isCancelled { return }
         
-        // 5. Crear instancias de elementos
+        //5. Crear instancias de elementos
         var tempElementos: [any ElementoSistemaArchivosProtocolo] = Array(
             repeating: ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo,
             count: filteredElements.count
         )
         
-        for (index, url) in filteredElements.enumerated() {
+        print("Coleccion al terminar el indexado de los placeholders: ", PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().name)
+//        print("Indice de la coleccion guardado: ", PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().scrollPosition)
+        
+        let startIndex = PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().scrollPosition ?? 0
+        print("Indice de comienzo -> ", startIndex)// Esto deberías recibirlo de algún estado externo
+
+        let totalCount = filteredElements.count
+        let indices = Algoritmos().generarIndicesDesdeCentro(startIndex, total: totalCount)
+
+        for index in indices {
             if isCancelled { return }
+
+            let url = filteredElements[index]
             
             if let elemento = sistemaArchivos.crearInstancia(elementoURL: url) {
                 tempElementos[index] = elemento
                 
                 DispatchQueue.main.async {
-                    // Aseguramos que la lista no cambió
                     if index < sistemaArchivos.listaElementos.count {
                         sistemaArchivos.listaElementos[index] = elemento
                     }

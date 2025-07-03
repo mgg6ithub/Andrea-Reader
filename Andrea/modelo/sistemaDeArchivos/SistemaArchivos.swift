@@ -29,6 +29,7 @@ class SistemaArchivos: ObservableObject {
     @Published var coleccionActual: Coleccion {
         willSet {
             print("➡️ coleccionActual va a cambiar de \(coleccionActual.name) a \(newValue.name)")
+            print("Guardando en \(coleccionActual.name) el indice \(coleccionActual.scrollPosition)")
             // Aquí puedes guardar scrollPosition actual, etc.
             PersistenciaDatos().guardarPosicionScroll(coleccion: coleccionActual)
         }
@@ -115,26 +116,48 @@ class SistemaArchivos: ObservableObject {
         if let coleccionValor = self.cacheColecciones[coleccionURL],
            !coleccionValor.listaElementos.isEmpty {
             
+            print("Esta cacheado")
+            let total = coleccionValor.listaElementos.count
+
             DispatchQueue.main.async {
-                self.listaElementos = coleccionValor.listaElementos
-                self.coleccionActual = coleccionActual
+                // Crear placeholders temporales con mismo tamaño
+                self.listaElementos = (0..<coleccionValor.listaElementos.count).map { _ in
+                    ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
+                }
+            }
+            
+            // Scroll inmediato
+            self.coleccionActual = coleccionActual
+            
+            let centro = coleccionActual.scrollPosition ?? 0
+            let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: total)
+
+            // Luego, una animación suave para reemplazar con reales (opcional)
+            DispatchQueue.main.async {
+                for index in indices {
+                    if index < coleccionValor.listaElementos.count {
+                        self.listaElementos[index] = coleccionValor.listaElementos[index]
+                    }
+                }
                 completion?()
             }
+
             return
         }
         
-        let operation = IndexarOperation(coleccionURL: coleccionURL, sistemaArchivos: self)
+        print("No esta cacheado")
+        
+        let operation = IndexarOperation(coleccionActual: coleccionActual, sistemaArchivos: self)
         
         operation.completionBlock = { [weak operation, weak self] in
             guard let self = self, let op = operation, !op.isCancelled else { return }
             
             DispatchQueue.main.async {
                 if let coleccionValor = self.cacheColecciones[coleccionURL] {
+                    print("La coleccion ya existe en cache ", coleccionValor.coleccion.name)
                     coleccionValor.listaElementos = op.elementosFinales
                 }
-                self.coleccionActual = coleccionActual
                 completion?()
-//                print("Terminamos el indexado")
             }
         }
         

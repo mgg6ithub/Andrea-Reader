@@ -62,6 +62,7 @@
 		D4BF0B232DEF4AA000152333 /* ProtocoloArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B222DEF4AA000152333 /* ProtocoloArchivo.swift */; };
 		D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */; };
 		D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */; };
+		D4BF4B1C2E168D1400224C71 /* Algoritmos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4B1B2E168D1400224C71 /* Algoritmos.swift */; };
 		D4C232FD2E1455AA00C8DBA4 /* IndexarOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */; };
 		D4DEBBEC2DE9CCD500F06C30 /* AjustesGlobales.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */; };
 		D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */; };
@@ -127,6 +128,7 @@
 		D4BF0B222DEF4AA000152333 /* ProtocoloArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocoloArchivo.swift; sourceTree = "<group>"; };
 		D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTipoArchivos.swift; sourceTree = "<group>"; };
 		D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TXTArchivo.swift; sourceTree = "<group>"; };
+		D4BF4B1B2E168D1400224C71 /* Algoritmos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algoritmos.swift; sourceTree = "<group>"; };
 		D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexarOperation.swift; sourceTree = "<group>"; };
 		D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesGlobales.swift; sourceTree = "<group>"; };
 		D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesTema.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				D485896B2DEB9DF10074DB8E /* Utilidades.swift */,
+				D4BF4B1B2E168D1400224C71 /* Algoritmos.swift */,
 				D485896E2DEB9E4E0074DB8E /* ManipulacionCadenas.swift */,
 				D4BF0B242DEF4B2B00152333 /* Enums */,
 			);
@@ -571,6 +574,7 @@
 				D485896C2DEB9DF10074DB8E /* Utilidades.swift in Sources */,
 				D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */,
 				D45E70082DE7A7DF001F816A /* AppEstado.swift in Sources */,
+				D4BF4B1C2E168D1400224C71 /* Algoritmos.swift in Sources */,
 				D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */,
 				D4ADDB7E2DE9B9FA0097A010 /* MenuDerecha.swift in Sources */,
 				D47139C52E0AE47C00B5FA35 /* ElementoVista.swift in Sources */,

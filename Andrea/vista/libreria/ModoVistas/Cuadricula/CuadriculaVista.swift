@@ -5,6 +5,8 @@ struct CuadriculaVista: View {
     @EnvironmentObject var sa: SistemaArchivos
 
     @State private var scrollProxy: ScrollViewProxy? = nil
+    
+    private let pc: PilaColecciones = PilaColecciones.getPilaColeccionesSingleton
 
     var body: some View {
         GeometryReader { outerGeometry in
@@ -15,44 +17,49 @@ struct CuadriculaVista: View {
                             ElementoVista(element: elemento) {
                                 // tu contenido condicional aquí
                                 if let _ = elemento as? ElementoPlaceholder {
-                                    PlaceholderElementView()
+                                    ZStack {
+                                        PlaceholderElementView()
+                                        VStack {
+                                            Spacer()
+                                            HStack {
+                                                Spacer()
+                                                Text("#\(index)")
+                                                    .foregroundColor(.red)
+                                                    .padding(4)
+                                                    .background(Color.black.opacity(0.6))
+                                                    .cornerRadius(5)
+                                                Spacer()
+                                            }
+                                            Spacer()
+                                        }
+                                    }
                                 } else if let coleccion = elemento as? Coleccion {
                                     CuadriculaColeccion(coleccion: coleccion)
                                 } else if let archivo = elemento as? Archivo {
-                                    CuadriculaArchivo(archivo: archivo, colorColeccion: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().directoryColor)
+                                    CuadriculaArchivo(archivo: archivo, colorColeccion: pc.getColeccionActual().directoryColor)
                                 }
                             }
-                            .id(elemento.id)
+                            .id(index)
                             .onAppear {
+                                print("Guardando \(sa.coleccionActual.name) -> \(index)")
                                 sa.coleccionActual.scrollPosition = index
                             }
                         }
                     }
                 }
-                .onAppear {
-                    hacerScrollSiEsPosible(proxy: proxy)
-                }
                 .onChange(of: sa.coleccionActual) { newColeccion in
                     
                     print("Cambiando a ", sa.coleccionActual.name)
-                    hacerScrollSiEsPosible(proxy: proxy)
+                    print("Indice de la coleccion de la vista: ", sa.coleccionActual.scrollPosition)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        proxy.scrollTo(sa.coleccionActual.scrollPosition ?? 0, anchor: .top) // Por ejemplo, scroll hasta el índice 50
+                    }
+                    
                 }
             }
         }
     }
 
-    private func hacerScrollSiEsPosible(proxy: ScrollViewProxy) {
-        guard let index = sa.coleccionActual.scrollPosition,
-              index < sa.listaElementos.count else { return }
-
-        let targetID = sa.listaElementos[index].id
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            proxy.scrollTo(targetID, anchor: .top)
-            print("Scroll automático a índice \(index) y id \(targetID) en colección \(sa.coleccionActual.name)")
-        }
-    }
-
-    
 }
 
 

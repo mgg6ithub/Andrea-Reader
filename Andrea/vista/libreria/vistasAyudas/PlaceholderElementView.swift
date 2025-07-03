@@ -14,9 +14,9 @@ struct PlaceholderElementView: View {
                     .fill(Color.gray.opacity(0.5))
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .clipShape(RoundedCorner(radius: 18, corners: [.topLeft, .topRight]))
-                    .shimmering()
+//                    .shimmering()
             }
-            .border(.green)
+//            .border(.green)
             .frame(width: width)
 
             // Parte inferior: título + metadatos
@@ -25,7 +25,7 @@ struct PlaceholderElementView: View {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(Color.gray.opacity(0.5))
                     .frame(height: 16)
-                    .shimmering()
+//                    .shimmering()
 
                 // Simulación de metadatos
                 HStack {
@@ -33,25 +33,25 @@ struct PlaceholderElementView: View {
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-                        .shimmering()
+//                        .shimmering()
                     
                     Spacer()
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-                        .shimmering()
+//                        .shimmering()
                     
                     Spacer()
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-                        .shimmering()
+//                        .shimmering()
                 }
             }
             .frame(height: 30)
-            .border(.red)
+//            .border(.red)
             .padding(8)
         }
         .frame(width: width, height: height)
