@@ -14,11 +14,7 @@ class IndexarOperation: Operation {
     
     override func main() {
         guard let sistemaArchivos = sistemaArchivos else { return }
-        
-        // 1. Limpiar lista elementos antes de comenzar (en main queue)
-        DispatchQueue.main.sync {
-            sistemaArchivos.listaElementos.removeAll()
-        }
+    
         
         if isCancelled { return }
         
@@ -44,7 +40,7 @@ class IndexarOperation: Operation {
         }
         
         // --- CAMBIAR COLECCION DEL SA PARA TRIGGEAR LA VISTA ---
-        SistemaArchivos.getSistemaArchivosSingleton.coleccionActual = coleccionActual
+//        SistemaArchivos.getSistemaArchivosSingleton.coleccionActual = coleccionActual
         
         if isCancelled { return }
         
@@ -54,11 +50,11 @@ class IndexarOperation: Operation {
             count: filteredElements.count
         )
         
-        print("Coleccion al terminar el indexado de los placeholders: ", PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().name)
-//        print("Indice de la coleccion guardado: ", PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().scrollPosition)
+//        print("Coleccion al terminar el indexado de los placeholders: ", PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().name)
         
-        let startIndex = PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().scrollPosition ?? 0
-        print("Indice de comienzo -> ", startIndex)// Esto deberías recibirlo de algún estado externo
+        let startIndex = coleccionActual.scrollPosition ?? 0
+        
+        print("Indice de comienzo -> ", 0)
 
         let totalCount = filteredElements.count
         let indices = Algoritmos().generarIndicesDesdeCentro(startIndex, total: totalCount)

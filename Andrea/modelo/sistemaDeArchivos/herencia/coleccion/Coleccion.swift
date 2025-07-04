@@ -50,7 +50,9 @@ class Coleccion: ElementoSistemaArchivos {
     }
     
     public func meterColeccion(coleccion: Coleccion) {
-        PilaColecciones.getPilaColeccionesSingleton.meterColeccion(coleccion: coleccion)
+        DispatchQueue.main.async {
+            PilaColecciones.getPilaColeccionesSingleton.meterColeccion(coleccion: coleccion)
+        }
     }
     
     public func guardarPosicionScroll(scrollPosition: Int) {

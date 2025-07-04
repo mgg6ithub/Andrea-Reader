@@ -34,6 +34,7 @@
 		D48B459F2DF248310088F40E /* Unrar in Frameworks */ = {isa = PBXBuildFile; productRef = D48B459E2DF248310088F40E /* Unrar */; };
 		D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */; };
 		D48B45A42DF250720088F40E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D48B45A32DF250720088F40E /* ZIPFoundation */; };
+		D49BE6D52E17AF2500FEDB99 /* ColeccionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49BE6D42E17AF2500FEDB99 /* ColeccionViewModel.swift */; };
 		D49DE74B2E0D33F1002FDB7A /* CBRArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49DE74A2E0D33F1002FDB7A /* CBRArchivo.swift */; };
 		D49DE74E2E0D3481002FDB7A /* ImagenArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49DE74D2E0D3481002FDB7A /* ImagenArchivo.swift */; };
 		D49DE7502E0D348F002FDB7A /* ImagenArchivoModelo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49DE74F2E0D348F002FDB7A /* ImagenArchivoModelo.swift */; };
@@ -99,6 +100,7 @@
 		D48589732DEBA1A80074DB8E /* Archivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Archivo.swift; sourceTree = "<group>"; };
 		D48589752DEBA1C50074DB8E /* Coleccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coleccion.swift; sourceTree = "<group>"; };
 		D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBZArchivo.swift; sourceTree = "<group>"; };
+		D49BE6D42E17AF2500FEDB99 /* ColeccionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColeccionViewModel.swift; sourceTree = "<group>"; };
 		D49D2AF02DEC5D7400AC8E36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D49DE74A2E0D33F1002FDB7A /* CBRArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBRArchivo.swift; sourceTree = "<group>"; };
 		D49DE74D2E0D3481002FDB7A /* ImagenArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagenArchivo.swift; sourceTree = "<group>"; };
@@ -264,6 +266,14 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
+		D49BE6D32E17AF0400FEDB99 /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				D49BE6D42E17AF2500FEDB99 /* ColeccionViewModel.swift */,
+			);
+			path = MVVM;
+			sourceTree = "<group>";
+		};
 		D49DE74C2E0D3458002FDB7A /* imagenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -358,6 +368,7 @@
 		D4ADDB852DE9C0820097A010 /* sistemaDeArchivos */ = {
 			isa = PBXGroup;
 			children = (
+				D49BE6D32E17AF0400FEDB99 /* MVVM */,
 				D45E70092DE7A7F3001F816A /* SistemaArchivos.swift */,
 				D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */,
 				D48589702DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift */,
@@ -536,6 +547,7 @@
 				D4BF0B1F2DEF493500152333 /* FabricaArchivo.swift in Sources */,
 				D45E700A2DE7A7F3001F816A /* SistemaArchivos.swift in Sources */,
 				D485896F2DEB9E4E0074DB8E /* ManipulacionCadenas.swift in Sources */,
+				D49BE6D52E17AF2500FEDB99 /* ColeccionViewModel.swift in Sources */,
 				D4DF317B2DEC74F0000D15CC /* CuadriculaVista.swift in Sources */,
 				D4ADDB892DE9C2E30097A010 /* AppEstado1.swift in Sources */,
 				D4ADDB7A2DE9B9E60097A010 /* MenuIzquierda.swift in Sources */,

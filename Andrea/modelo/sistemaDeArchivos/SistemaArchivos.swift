@@ -26,14 +26,14 @@ class SistemaArchivos: ObservableObject {
     }
     
     
-    @Published var coleccionActual: Coleccion {
-        willSet {
-            print("➡️ coleccionActual va a cambiar de \(coleccionActual.name) a \(newValue.name)")
-            print("Guardando en \(coleccionActual.name) el indice \(coleccionActual.scrollPosition)")
-            // Aquí puedes guardar scrollPosition actual, etc.
-            PersistenciaDatos().guardarPosicionScroll(coleccion: coleccionActual)
-        }
-    }
+//    @Published var coleccionActual: Coleccion {
+//        willSet {
+//            print("➡️ coleccionActual va a cambiar de \(coleccionActual.name) a \(newValue.name)")
+//            print("Guardando en \(coleccionActual.name) el indice \(coleccionActual.scrollPosition)")
+//            // Aquí puedes guardar scrollPosition actual, etc.
+//            PersistenciaDatos().guardarPosicionScroll(coleccion: coleccionActual)
+//        }
+//    }
 
     
     //MARK: - LISTAS Y CACHES
@@ -63,10 +63,10 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         // Crear la coleccion raiz y asignarla
-        self.coleccionActual = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.coleccionHomeURL)!
-        
-        // Añadirla explícitamente al cache
-        cacheColecciones[coleccionHomeURL] = ColeccionValor(coleccion: coleccionActual)
+//        self.coleccionActual = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.coleccionHomeURL)!
+//        
+//        // Añadirla explícitamente al cache
+//        cacheColecciones[coleccionHomeURL] = ColeccionValor(coleccion: coleccionActual)
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: coleccionHomeURL)
@@ -107,43 +107,48 @@ class SistemaArchivos: ObservableObject {
     
     public func refreshIndex(coleccionActual: Coleccion, completion: (() -> Void)? = nil) {
         
+        // 1. Limpiar lista elementos antes de comenzar (en main queue)
+        DispatchQueue.main.async {
+            self.listaElementos.removeAll()
+        }
+        
         let coleccionURL = coleccionActual.url
         
         // Cancelar indexaciones anteriores
         indexacionQueue.cancelAllOperations()
         
         // Si ya está cacheado, actualizamos y terminamos rápido
-        if let coleccionValor = self.cacheColecciones[coleccionURL],
-           !coleccionValor.listaElementos.isEmpty {
-            
-            print("Esta cacheado")
-            let total = coleccionValor.listaElementos.count
-
-            DispatchQueue.main.async {
-                // Crear placeholders temporales con mismo tamaño
-                self.listaElementos = (0..<coleccionValor.listaElementos.count).map { _ in
-                    ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
-                }
-            }
-            
-            // Scroll inmediato
-            self.coleccionActual = coleccionActual
-            
-            let centro = coleccionActual.scrollPosition ?? 0
-            let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: total)
-
-            // Luego, una animación suave para reemplazar con reales (opcional)
-            DispatchQueue.main.async {
-                for index in indices {
-                    if index < coleccionValor.listaElementos.count {
-                        self.listaElementos[index] = coleccionValor.listaElementos[index]
-                    }
-                }
-                completion?()
-            }
-
-            return
-        }
+//        if let coleccionValor = self.cacheColecciones[coleccionURL],
+//           !coleccionValor.listaElementos.isEmpty {
+//            
+//            print("Esta cacheado")
+//            let total = coleccionValor.listaElementos.count
+//
+//            DispatchQueue.main.async {
+//                // Crear placeholders temporales con mismo tamaño
+//                self.listaElementos = (0..<coleccionValor.listaElementos.count).map { _ in
+//                    ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
+//                }
+//            }
+//            
+//            // Scroll inmediato
+//            self.coleccionActual = coleccionActual
+//            
+//            let centro = coleccionActual.scrollPosition ?? 0
+//            let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: total)
+//
+//            // Luego, una animación suave para reemplazar con reales (opcional)
+//            DispatchQueue.main.async {
+//                for index in indices {
+//                    if index < coleccionValor.listaElementos.count {
+//                        self.listaElementos[index] = coleccionValor.listaElementos[index]
+//                    }
+//                }
+//                completion?()
+//            }
+//
+//            return
+//        }
         
         print("No esta cacheado")
         
@@ -152,13 +157,13 @@ class SistemaArchivos: ObservableObject {
         operation.completionBlock = { [weak operation, weak self] in
             guard let self = self, let op = operation, !op.isCancelled else { return }
             
-            DispatchQueue.main.async {
-                if let coleccionValor = self.cacheColecciones[coleccionURL] {
-                    print("La coleccion ya existe en cache ", coleccionValor.coleccion.name)
-                    coleccionValor.listaElementos = op.elementosFinales
-                }
-                completion?()
-            }
+//            DispatchQueue.main.async {
+//                if let coleccionValor = self.cacheColecciones[coleccionURL] {
+//                    print("La coleccion ya existe en cache ", coleccionValor.coleccion.name)
+//                    coleccionValor.listaElementos = op.elementosFinales
+//                }
+//                completion?()
+//            }
         }
         
         indexacionQueue.addOperation(operation)

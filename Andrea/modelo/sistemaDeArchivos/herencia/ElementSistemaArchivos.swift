@@ -28,7 +28,7 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Hashable, Equat
     
     init(name: String, url: URL, creationDate: Date, modificationDate: Date) {
         
-        self.id = UUID(uuidString: url.path) ?? UUID()
+        self.id = UUID()
         self.name = name
         self.url = url
         self.relativeURL = ManipulacionCadenas().relativizeURL(elementURL: url)

@@ -41,7 +41,7 @@ struct MenuCentro: View {
                     onPick: { urls in
                         print("Seleccionado: \(urls)")
                         for url in urls {
-                            sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().url)
+                            sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().coleccion.url)
                         }
                     },
                     onCancel: {
@@ -66,7 +66,7 @@ struct MenuCentro: View {
             .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)
                 Button("Aceptar") {
-                    sa.crearColeccion(nombre: nuevaColeccionNombre, en: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().url)
+                    sa.crearColeccion(nombre: nuevaColeccionNombre, en: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().coleccion.url)
                 }
                 Button("Cancelar", role: .cancel) {}
             }

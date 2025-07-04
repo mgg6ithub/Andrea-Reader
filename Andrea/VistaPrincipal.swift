@@ -10,6 +10,7 @@ import SwiftUI
 struct VistaPrincipal: View {
     
     @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var pc: PilaColecciones
     
     var body: some View {
         NavigationStack {
@@ -29,10 +30,9 @@ struct VistaPrincipal: View {
 //                        .border(.red)
                     
                     
-                    ZStack {
-                        
-                        CuadriculaVista()
-                        
+//                    ZStack {
+                    if let lastVM = pc.coleccionActualVM {
+                        CuadriculaVista(vm: lastVM)
                     }
                     
                     Spacer()

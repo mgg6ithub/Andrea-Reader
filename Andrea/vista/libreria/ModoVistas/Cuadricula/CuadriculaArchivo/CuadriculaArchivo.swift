@@ -46,7 +46,7 @@ struct CuadriculaArchivo: View {
             
             viewModel.loadThumbnail(for: archivo, allowGeneration: !archivo.hasThumbnail)
 
-            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0...0.2))) {
+            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.0...0.2))) {
                 isVisible = true
             }
         }

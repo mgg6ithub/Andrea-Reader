@@ -14,7 +14,7 @@ struct PlaceholderElementView: View {
                     .fill(Color.gray.opacity(0.5))
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .clipShape(RoundedCorner(radius: 18, corners: [.topLeft, .topRight]))
-//                    .shimmering()
+                    .shimmering()
             }
 //            .border(.green)
             .frame(width: width)
@@ -25,7 +25,7 @@ struct PlaceholderElementView: View {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(Color.gray.opacity(0.5))
                     .frame(height: 16)
-//                    .shimmering()
+                    .shimmering()
 
                 // Simulación de metadatos
                 HStack {
@@ -33,21 +33,21 @@ struct PlaceholderElementView: View {
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
+                        .shimmering()
                     
                     Spacer()
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
+                        .shimmering()
                     
                     Spacer()
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
+                        .shimmering()
                 }
             }
             .frame(height: 30)
@@ -57,7 +57,7 @@ struct PlaceholderElementView: View {
         .frame(width: width, height: height)
         .background(Color(.systemGray6))
         .cornerRadius(18)
-        .shadow(color: Color.black.opacity(0.03), radius: 4, x: 0, y: 2)
+        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
         .scaleEffect(isVisible ? 1 : 0.95)
         .opacity(isVisible ? 1 : 0)
         .onAppear {

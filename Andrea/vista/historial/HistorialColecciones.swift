@@ -32,45 +32,45 @@ struct HistorialColecciones: View {
                     else {
                         
                         Button(action: {
-                            pc.sacarTodasColecciones()
+//                            pc.sacarTodasColecciones()
                         }) {
                             Image(systemName: "chevron.backward")
                                 .font(.system(size: iconSize * 0.65))
                         }
                         
-                        ForEach(Array(pc.colecciones.enumerated()), id: \.1.url) { index, coleccion in
+                        ForEach(Array(pc.colecciones.enumerated()), id: \.1.coleccion.url) { index, vm in
                             
-                            if pc.esColeccionActual(coleccion: coleccion) {
+                            if pc.esColeccionActual(coleccion: vm.coleccion) {
                                 
                                 ColeccionRectanguloAvanzado(
                                     textoSize: 21,
                                     colorPrimario: .primary,
-                                    color: coleccion.directoryColor,
+                                    color: vm.coleccion.directoryColor,
                                     isActive: true,
                                     animationDelay: Double(index) * 0.1
                                 ) {
-                                    Text(coleccion.name)
+                                    Text(vm.coleccion.name)
                                 }
-                                .matchedGeometryEffect(id: coleccion.url, in: breadcrumb)
+                                .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
                                 
                             } else {
                                 Button(action: {
                                     withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                                        pc.sacarHastaEncontrarColeccion(coleccion: coleccion)
+                                        pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
                                     }
                                 }) {
                                     
                                     ColeccionRectanguloAvanzado(
                                         textoSize: 14,
                                         colorPrimario: .secondary,
-                                        color: coleccion.directoryColor,
+                                        color: vm.coleccion.directoryColor,
                                         isActive: false,
                                         animationDelay: Double(index) * 0.1
                                     )
                                     {
-                                        Text(coleccion.name)
+                                        Text(vm.coleccion.name)
                                     }
-                                    .matchedGeometryEffect(id: coleccion.url, in: breadcrumb)
+                                    .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
                                     
                                 }
                                 .buttonStyle(ColeccionButtonStyle())

@@ -83,8 +83,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         let permissions = sau.getFilePermissions(for: fileURL)
         
         self.isReadable = permissions.readable
-        self.isWritable = permissions.readable
-        self.isExecutable = permissions.readable
+        self.isWritable = permissions.writable
+        self.isExecutable = permissions.executable
         
         super.init(name: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate)
         
