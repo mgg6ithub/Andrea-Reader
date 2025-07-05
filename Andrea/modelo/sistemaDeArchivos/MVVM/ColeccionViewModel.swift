@@ -11,11 +11,15 @@ class ColeccionViewModel: ObservableObject {
   @Published var scrollPosition: Int
   @Published var isPerformingAutoScroll = false
 
-  init(_ coleccion: Coleccion) {
-    self.coleccion = coleccion
-    self.scrollPosition = PersistenciaDatos().obtenerPosicionScroll(coleccion: coleccion)
-    cargarElementos()
-  }
+    init(_ coleccion: Coleccion) {
+        self.coleccion = coleccion
+        self.scrollPosition = PersistenciaDatos().obtenerPosicionScroll(coleccion: coleccion)
+
+        print("🟠 Inicializando VM para colección: \(coleccion.name) con scrollPosition: \(self.scrollPosition)")
+
+//        cargarElementos()
+    }
+
 
     func cargarElementos() {
         isLoading = true
@@ -33,17 +37,18 @@ class ColeccionViewModel: ObservableObject {
             ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
         }
 
+        print("Placeholders cargados")
+        print("Indice en ", self.scrollPosition)
+        
         // 2. Scroll automático (lo activará la vista si isPerformingAutoScroll = true)
-        isPerformingAutoScroll = true
+        self.isPerformingAutoScroll = true
 
         // 3. Indexado asincrónico y centrado
         Task.detached { [weak self] in
             guard let self = self else { return }
-
-            let centro = await MainActor.run { self.scrollPosition }
             
-            print("Coleccion ", self.coleccion.name)
-            print(centro)
+            let centro = await MainActor.run { self.scrollPosition }
+            print("Rellenando placeholders desde ", centro)
             
             let urls = filteredURLs
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)
@@ -61,15 +66,20 @@ class ColeccionViewModel: ObservableObject {
 
             await MainActor.run {
                 self.isLoading = false
-                self.isPerformingAutoScroll = false
             }
         }
 
 
     }
+    
+    func actualizarScroll(_ nuevo: Int) {
+//        print("🟡 Scroll actualizado a: \(nuevo) para colección: \(coleccion.name)")
 
-  func guardarScroll() {
-    PersistenciaDatos().guardarPosicionScroll(coleccion: coleccion)
-  }
+        scrollPosition = nuevo
+        coleccion.scrollPosition = nuevo
+
+        PersistenciaDatos().guardarPosicionScroll(coleccion: coleccion)
+    }
+    
 }
 

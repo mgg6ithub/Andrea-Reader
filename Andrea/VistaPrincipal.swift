@@ -12,6 +12,8 @@ struct VistaPrincipal: View {
     @EnvironmentObject var appEstado: AppEstado1
     @EnvironmentObject var pc: PilaColecciones
     
+    @State private var ultimaID: UUID? = nil
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -33,6 +35,9 @@ struct VistaPrincipal: View {
 //                    ZStack {
                     if let lastVM = pc.coleccionActualVM {
                         CuadriculaVista(vm: lastVM)
+                            .onAppear {
+                                lastVM.cargarElementos()
+                            }
                     }
                     
                     Spacer()
@@ -43,6 +48,15 @@ struct VistaPrincipal: View {
             }
             .foregroundColor(appEstado.temaActual.textColor)
             .animation(.easeInOut, value: appEstado.temaActual)
+        }
+        .onChange(of: pc.coleccionActualVM?.coleccion.id) { nuevaID in
+            guard let nuevaID else { return }
+            if nuevaID != ultimaID {
+                ultimaID = nuevaID
+                if let vm = pc.coleccionActualVM, vm.elementos.isEmpty {
+                    vm.cargarElementos()
+                }
+            }
         }
     }
 }
