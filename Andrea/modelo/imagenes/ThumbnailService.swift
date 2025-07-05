@@ -37,7 +37,7 @@ class ThumbnailService {
     }
 
     /// 🖼️ Redimensiona una imagen a tamaño de thumbnail
-    private func resizedThumbnail(from image: UIImage, targetSize: CGSize = CGSize(width: 100, height: 100)) -> UIImage {
+    private func resizedThumbnail(from image: UIImage, targetSize: CGSize = CGSize(width: 1000, height: 1000)) -> UIImage {
         let aspectWidth = targetSize.width / image.size.width
         let aspectHeight = targetSize.height / image.size.height
         let scaleFactor = min(aspectWidth, aspectHeight)
@@ -45,7 +45,7 @@ class ThumbnailService {
         let scaledSize = CGSize(width: image.size.width * scaleFactor, height: image.size.height * scaleFactor)
         
         let format = UIGraphicsImageRendererFormat.default()
-        format.scale = 0.5  // para controlar uso de memoria
+        format.scale = 1.0  // para controlar uso de memoria
         let renderer = UIGraphicsImageRenderer(size: scaledSize, format: format)
         
         return renderer.image { _ in
@@ -55,6 +55,7 @@ class ThumbnailService {
 
 
     func thumbnail(for archivo: Archivo, allowGeneration: Bool = true, completion: @escaping (UIImage?) -> Void) {
+        
         let key = archivo.url.path as NSString
         let thumbURL = cacheDir.appendingPathComponent("\(archivo.url.lastPathComponent).jpg")
 
@@ -84,13 +85,25 @@ class ThumbnailService {
             guard let firstPage = archivo.pages.first,
                   let data = archivo.extractPageData(named: firstPage),
                   let original = UIImage(data: data) else {
-                DispatchQueue.main.async { completion(nil) }
+                
+                print("Falla para el archivo: ", archivo.name)
+                
+                // ❗ Si falla, usar miniatura por tipo de archivo
+                let fallback = EnumMiniaturasArchivos.uiImage(for: archivo.fileType.rawValue)
+                print(fallback)
+                DispatchQueue.main.async {
+                    completion(fallback)
+                }
                 return
             }
 
             let thumbnail = self.resizedThumbnail(from: original)
-            guard let jpegData = thumbnail.jpegData(compressionQuality: 0.2) else {
-                DispatchQueue.main.async { completion(nil) }
+            guard let jpegData = thumbnail.jpegData(compressionQuality: 1.0) else {
+                // ❗ También puede fallar aquí
+                let fallback = EnumMiniaturasArchivos.uiImage(for: archivo.fileType.rawValue)
+                DispatchQueue.main.async {
+                    completion(fallback)
+                }
                 return
             }
 
@@ -103,9 +116,10 @@ class ThumbnailService {
             }
 
             DispatchQueue.main.async {
-                completion(image)
+                completion(image ?? EnumMiniaturasArchivos.uiImage(for: archivo.fileType.rawValue))
             }
         }
+
     }
 
     /// ⚙️ Precarga (puedes llamarla al crear el archivo)
@@ -125,7 +139,7 @@ class ThumbnailService {
             }
 
             let thumbnail = self.resizedThumbnail(from: original)
-            guard let jpeg = thumbnail.jpegData(compressionQuality: 0.7) else {
+            guard let jpeg = thumbnail.jpegData(compressionQuality: 1.0) else {
                 return
             }
 

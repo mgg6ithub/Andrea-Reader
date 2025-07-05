@@ -15,9 +15,13 @@ struct CuadriculaArchivo: View {
             ZStack {
                 
                 if let img = viewModel.thumbnail {
-                    Image(uiImage: img)
-                        .resizable()
+//                    Image(uiImage: img)
+//                        .resizable()
 //                        .frame(maxWidth: .infinity)
+                    if let dImage = ImagenArchivoModelo().createDefaultThumbnail(defaultFileThumbnail: EnumMiniaturasArchivos.uiImage(for: .cbz))?.uiImage {
+                        Image(uiImage: dImage)
+                            .resizable()
+                    }
                 } else {
                     ProgressView()
                 }

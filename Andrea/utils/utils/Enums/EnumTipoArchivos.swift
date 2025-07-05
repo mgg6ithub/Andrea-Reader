@@ -150,23 +150,23 @@ enum EnumMiniaturasArchivos: String {
     static func image(for fileExtension: EnumTipoArchivos) -> Image {
         switch fileExtension {
         case .epub:
-            return Image(systemName: EnumMiniaturasArchivos.epub.rawValue)
+            return Image(EnumMiniaturasArchivos.epub.rawValue)
         case .pdf:
-            return Image(systemName: EnumMiniaturasArchivos.pdf.rawValue)
+            return Image(EnumMiniaturasArchivos.pdf.rawValue)
         case .cbz:
-            return Image(systemName: EnumMiniaturasArchivos.cbz.rawValue)
+            return Image(EnumMiniaturasArchivos.cbz.rawValue)
         case .cbr:
-            return Image(systemName: EnumMiniaturasArchivos.cbr.rawValue)
+            return Image(EnumMiniaturasArchivos.cbr.rawValue)
         case .txt:
-            return Image(systemName: EnumMiniaturasArchivos.txt.rawValue)
+            return Image(EnumMiniaturasArchivos.txt.rawValue)
         case .xml:
-            return Image(systemName: EnumMiniaturasArchivos.xml.rawValue)
+            return Image(EnumMiniaturasArchivos.xml.rawValue)
         case .md:
-            return Image(systemName: EnumMiniaturasArchivos.md.rawValue)
+            return Image(EnumMiniaturasArchivos.md.rawValue)
         case .json:
-            return Image(systemName: EnumMiniaturasArchivos.json.rawValue)
+            return Image(EnumMiniaturasArchivos.json.rawValue)
         default:
-            return Image(systemName: EnumMiniaturasArchivos.unknown.rawValue)
+            return Image(EnumMiniaturasArchivos.unknown.rawValue)
         }
     }
 }

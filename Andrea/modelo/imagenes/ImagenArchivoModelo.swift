@@ -35,6 +35,48 @@ struct ImagenArchivoModelo {
 
     }
     
+    
+    func createDefaultThumbnail(defaultFileThumbnail: UIImage, color: UIColor? = nil) -> (uiImage: UIImage, imageData: Data?, imageDimensions: (width: Int, height: Int))? {
+            let thumbnailSize: CGSize = CGSize(width: 190, height: 260)
+            
+    //        if let archivoPDFImage = UIImage(named: defaultFileThumbnail) {
+                
+    //                let azulSuave = UIColor(red: 0.5, green: 0.7, blue: 1.0, alpha: 1.0)
+                    let verdeSuave = UIColor(red: 0.4, green: 0.7, blue: 0.4, alpha: 1.0) // Verde suave
+    //            let rojoSuave = UIColor(red: 0.9, green: 0.5, blue: 0.5, alpha: 1.0) // Rojo suave
+
+
+                let negroGrisAzul = UIColor(red: 51/255.0, green: 62/255.0, blue: 72/255.0, alpha: 1.0)
+                let blanco = UIColor(red: 228/255.0, green: 228/255.0, blue: 228/255.0, alpha: 1.0)
+            
+            var ternariColor: UIColor = color ?? UIColor(Color.blue)
+                
+            let symbolColorConfig = UIImage.SymbolConfiguration(paletteColors: [negroGrisAzul, blanco, ternariColor])  // Ajusta los colores según sea necesario
+                let coloredImage = defaultFileThumbnail.applyingSymbolConfiguration(symbolColorConfig)
+                
+                let size = CGSize(width: 247, height: 304)
+                
+                // Ajusta la posición de la imagen moviéndola hacia arriba (cambia el valor del origen 'y')
+                let offsetY: CGFloat = -20  // Ajusta este valor para mover la imagen hacia arriba o abajo
+                let offsetX: CGFloat = -28  // Ajusta este valor para mover la imagen hacia arriba o abajo
+                
+                // Redibujar la imagen manteniendo sus proporciones pero desplazada hacia arriba
+                UIGraphicsBeginImageContextWithOptions(thumbnailSize, false, 0.0)
+                coloredImage?.draw(in: CGRect(origin: CGPoint(x: offsetX, y: offsetY), size: size))  // Aplica el desplazamiento en Y
+                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                
+                // Obtener los datos de la imagen redimensionada
+                let imageData = resizedImage?.jpegData(compressionQuality: 1.0)
+                let imageDimensions = (width: Int(resizedImage?.size.width ?? 0), height: Int(resizedImage?.size.height ?? 0))
+                
+                return (resizedImage ?? defaultFileThumbnail, imageData, imageDimensions)
+    //        } else {
+    //            print("No se pudo cargar la imagen de archivo-pdf desde los assets")
+    //        }
+    //        return nil
+        }
+    
 }
 
 //Extension para poder redimensionar imagenes
