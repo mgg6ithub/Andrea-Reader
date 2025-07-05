@@ -89,11 +89,12 @@ class ThumbnailService {
                 print("Falla para el archivo: ", archivo.name)
                 
                 // ❗ Si falla, usar miniatura por tipo de archivo
-                let fallback = EnumMiniaturasArchivos.uiImage(for: archivo.fileType.rawValue)
-                print(fallback)
-                DispatchQueue.main.async {
-                    completion(fallback)
+                if let dImage = ImagenArchivoModelo().createDefaultThumbnail(defaultFileThumbnail: EnumMiniaturasArchivos.uiImage(for: archivo.fileType), color: UIColor(.blue))?.uiImage {
+                    DispatchQueue.main.async {
+                        completion(dImage)
+                    }
                 }
+                
                 return
             }
 

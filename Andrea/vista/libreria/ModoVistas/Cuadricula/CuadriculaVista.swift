@@ -37,7 +37,7 @@ struct CuadriculaVista: View {
                                 } else if let coleccion = elemento as? Coleccion {
                                     CuadriculaColeccion(coleccion: coleccion)
                                 } else if let archivo = elemento as? Archivo {
-                                    CuadriculaArchivo(archivo: archivo, colorColeccion: vm.coleccion.directoryColor)
+                                    CuadriculaArchivo(archivo: archivo, coleccion: vm.coleccion)
                                 }
                             }
                             .id(index) // importante: asegúrate de que este `.id` sea consistente con scrollTo

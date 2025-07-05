@@ -4,7 +4,7 @@ struct CuadriculaArchivo: View {
     
     @ObservedObject var archivo: Archivo
     @StateObject private var viewModel = ArchivoThumbnailViewModel()
-    let colorColeccion: Color
+    let coleccion: Coleccion
     @State private var isVisible = false
     var width: CGFloat = 180  // Esto lo puedes inyectar dinámicamente
 
@@ -15,13 +15,13 @@ struct CuadriculaArchivo: View {
             ZStack {
                 
                 if let img = viewModel.thumbnail {
-//                    Image(uiImage: img)
-//                        .resizable()
-//                        .frame(maxWidth: .infinity)
-                    if let dImage = ImagenArchivoModelo().createDefaultThumbnail(defaultFileThumbnail: EnumMiniaturasArchivos.uiImage(for: .cbz))?.uiImage {
-                        Image(uiImage: dImage)
-                            .resizable()
-                    }
+                    Image(uiImage: img)
+                        .resizable()
+                        .frame(maxWidth: .infinity)
+//                    if let dImage = ImagenArchivoModelo().createDefaultThumbnail(defaultFileThumbnail: EnumMiniaturasArchivos.uiImage(for: archivo.fileType), color: UIColor(coleccion.directoryColor))?.uiImage {
+//                        Image(uiImage: dImage)
+//                            .resizable()
+//                    }
                 } else {
                     ProgressView()
                 }
@@ -29,14 +29,14 @@ struct CuadriculaArchivo: View {
                 // --- Progreso ---
                 VStack {
                     Spacer()
-                    ProgresoCuadricula(archivo: archivo, colorColeccion: colorColeccion)
+                    ProgresoCuadricula(archivo: archivo, colorColeccion: coleccion.directoryColor)
                 }
                 
             }
             .frame(width: width) // solo limitamos ancho
             
             // --- Titulo e informacion ---
-            TituloInformacion(archivo: archivo, colorColeccion: colorColeccion)
+            TituloInformacion(archivo: archivo, colorColeccion: coleccion.directoryColor)
             
         }
         .frame(width: width, height: 310)
