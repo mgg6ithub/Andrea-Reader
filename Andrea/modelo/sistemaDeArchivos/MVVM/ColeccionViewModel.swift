@@ -31,14 +31,25 @@ class ColeccionViewModel: ObservableObject {
                 $0.shouldInclude(url: url)
             }
         }
+        
+        print("cargando archivos para la coleccion ", self.coleccion.name)
+        print("URLS: ", filteredURLs)
 
         let total = filteredURLs.count
+        
+//        await MainActor.run {
+            if self.scrollPosition >= total || self.scrollPosition < 0 {
+                print("⚠️ Scroll position fuera de rango. Reiniciando a 0.")
+                self.scrollPosition = 0
+            }
+//        }
+        
         elementos = (0..<total).map { _ in
             ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
         }
 
-        print("Placeholders cargados")
-        print("Indice en ", self.scrollPosition)
+//        print("Placeholders cargados")
+//        print("Indice en ", self.scrollPosition)
         
         // 2. Scroll automático (lo activará la vista si isPerformingAutoScroll = true)
         self.isPerformingAutoScroll = true
@@ -48,7 +59,7 @@ class ColeccionViewModel: ObservableObject {
             guard let self = self else { return }
             
             let centro = await MainActor.run { self.scrollPosition }
-            print("Rellenando placeholders desde ", centro)
+//            print("Rellenando placeholders desde ", centro)
             
             let urls = filteredURLs
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)

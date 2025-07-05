@@ -63,10 +63,8 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         // Crear la coleccion raiz y asignarla
-//        self.coleccionActual = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.coleccionHomeURL)!
-//        
-//        // Añadirla explícitamente al cache
-//        cacheColecciones[coleccionHomeURL] = ColeccionValor(coleccion: coleccionActual)
+        let home = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.coleccionHomeURL)!
+        cacheColecciones[coleccionHomeURL] = ColeccionValor(coleccion: home)
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: coleccionHomeURL)
@@ -337,8 +335,9 @@ class SistemaArchivos: ObservableObject {
     private func actualizarUISoloElemento(elementoURL: URL) {
         
         // --- Introducir el elemento en la lista en el hilo principal
-        if let coleccion: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: elementoURL) {
-            DispatchQueue.main.async { self.listaElementos.append(coleccion) }
+        if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: elementoURL) {
+            DispatchQueue.main.async { PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().elementos.append(elemento)
+            }
         }
         
         //Actualizar todas las instancias dependientes de dicho elemento

@@ -16,7 +16,7 @@ struct HistorialColecciones: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 8) {
                     
-                    if pc.colecciones.isEmpty {
+                    if pc.getColeccionActual().coleccion.name == "HOME" {
                         ColeccionRectanguloAvanzado(
                             textoSize: 21,
                             colorPrimario: .primary,
@@ -32,13 +32,13 @@ struct HistorialColecciones: View {
                     else {
                         
                         Button(action: {
-//                            pc.sacarTodasColecciones()
+                            pc.conservarSoloHome()
                         }) {
                             Image(systemName: "chevron.backward")
                                 .font(.system(size: iconSize * 0.65))
                         }
                         
-                        ForEach(Array(pc.colecciones.enumerated()), id: \.1.coleccion.url) { index, vm in
+                        ForEach(Array(pc.colecciones.enumerated()).filter { $0.1.coleccion.name != "HOME" }, id: \.1.coleccion.url) { index, vm in
                             
                             if pc.esColeccionActual(coleccion: vm.coleccion) {
                                 

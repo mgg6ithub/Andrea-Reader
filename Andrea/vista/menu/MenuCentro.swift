@@ -4,7 +4,8 @@ struct MenuCentro: View {
     
     @EnvironmentObject var appEstado: AppEstado1
     @EnvironmentObject var menuEstado: MenuEstado
-    @EnvironmentObject var sa: SistemaArchivos
+    
+    private let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
     
     @State private var mostrarDocumentPicker: Bool = false
     @State private var esNuevaColeccionPresionado: Bool = false

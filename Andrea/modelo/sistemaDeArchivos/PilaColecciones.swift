@@ -41,13 +41,31 @@ class PilaColecciones: ObservableObject {
 
             let cache = sa.cacheColecciones
 
-            self.colecciones = coleccionesGuardadas.compactMap { url in
+            var vistaModelos = coleccionesGuardadas.compactMap { url in
                 cache[url]?.coleccion
             }.map { coleccion in
                 ColeccionViewModel(coleccion)
             }
+
+            // ✅ Añadir siempre la colección HOME como primera en la pila
+            if let home = cache[self.coleccionHomeURL]?.coleccion {
+                let homeVM = ColeccionViewModel(home)
+
+                // Evita duplicarla si ya estaba
+                if !vistaModelos.contains(where: { $0.coleccion.url == home.url }) {
+                    vistaModelos.insert(homeVM, at: 0)
+                } else {
+                    // O si ya estaba, la mueves al principio
+                    vistaModelos.removeAll(where: { $0.coleccion.url == home.url })
+                    vistaModelos.insert(homeVM, at: 0)
+                }
+            }
+
+            self.colecciones = vistaModelos
         }
     }
+
+
 
     public func guardarPila() {
         let coleccionHomeURLStripped = self.coleccionHomeURL.deletingLastPathComponent().path
@@ -110,6 +128,36 @@ class PilaColecciones: ObservableObject {
             }
             colecciones.removeLast()
         }
+    }
+    
+    /// Conserva solo la primera colección (HOME),
+    /// actualiza la colección actual y guarda la pila.
+    public func conservarSoloHome() {
+        guard !colecciones.isEmpty else { return }
+
+        // 1. Conservar solo la primera (HOME)
+        let home = colecciones.first!
+        colecciones = [home]
+
+        // 2. Establecer como actual
+        actualizarColeccionActual()
+
+        // 3. Guardar en persistencia
+        guardarPila()
+
+        // 4. Limpiar caché de miniaturas
+//        ThumbnailService.shared.clearCache()
+
+        print("🏠 Solo se conservó la colección HOME:")
+        for col in self.colecciones {
+            print(col.coleccion.name)
+        }
+    }
+
+
+    
+    public func sacarTodasColecciones() {
+        self.colecciones.removeAll()
     }
 }
 
