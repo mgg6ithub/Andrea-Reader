@@ -11,24 +11,31 @@ struct MenuIzquierda: View {
     
     @EnvironmentObject var appEstado: AppEstado1
     @EnvironmentObject var menuEstado: MenuEstado
+    @EnvironmentObject var pc: PilaColecciones
+    
+//    private let pc: PilaColecciones = PilaColecciones.getPilaColeccionesSingleton
     
     var body: some View {
         
         HStack {
             
-            if menuEstado.menuIzquierdaFlechaLateral {
-                Button(action: {
-                                            
-    //                isSideMenuVisible.toggle()
-                    
-                }) {
-                    Image(systemName: "arrow.backward")
-                        .font(.system(size: appEstado.constantes.iconSize))
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(appEstado.constantes.iconColor.gradient)
-                        .fontWeight(appEstado.constantes.iconWeight)
+            if pc.getColeccionActual().coleccion.name != "HOME" {
+                if menuEstado.menuIzquierdaFlechaLateral {
+                    Button(action: {
+                                                
+                        pc.sacarColeccion()
+                        
+                    }) {
+                        Image(systemName: "arrow.backward")
+                            .font(.system(size: appEstado.constantes.iconSize))
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                            .fontWeight(appEstado.constantes.iconWeight)
+                    }
                 }
             }
+                
+                
             
             if menuEstado.menuIzquierdaSideMenuIcono {
                 Button(action: {
