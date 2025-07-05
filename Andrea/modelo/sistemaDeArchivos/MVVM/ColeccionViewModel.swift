@@ -35,7 +35,7 @@ class ColeccionViewModel: ObservableObject {
         print("cargando archivos para la coleccion ", self.coleccion.name)
         print("URLS: ", filteredURLs)
 
-        let total = filteredURLs.count
+        let total = filteredURLs.count	
         
 //        await MainActor.run {
             if self.scrollPosition >= total || self.scrollPosition < 0 {

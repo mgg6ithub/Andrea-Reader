@@ -11,14 +11,34 @@ struct CuadriculaColeccion: View {
     
     let coleccion: Coleccion
     
+    @State private var isExpanded = false
+    
     var body: some View {
         
         Button(action: {
             coleccion.meterColeccion(coleccion: coleccion)
         }) {
-            Text("Entrar")
-                .font(.caption)
-                .padding(.top, 2)
+            VStack {
+                ZStack {
+                    Image("CARPETA-ATRAS")
+                        .resizable()
+                        .frame(width: 120, height: 125)
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(Color.cyan, Color.blue)
+                        .zIndex(1)
+                    
+                    Image(isExpanded ? "CARPETA-ALANTE-ABIERTA" : "CARPETA-DELANTE")
+                        .resizable()
+                        .frame(width: isExpanded ? 125 : 120, height: 72.5)
+                        .foregroundColor(Color.cyan)
+                        .zIndex(2)
+                        .animation(.easeInOut(duration: 0.3), value: isExpanded)
+                }
+                
+                Text(coleccion.name)
+                    .font(.title)
+                    .frame(alignment: .center)
+            }
         }
         
     }
