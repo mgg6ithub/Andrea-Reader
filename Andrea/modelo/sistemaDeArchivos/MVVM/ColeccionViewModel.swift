@@ -15,7 +15,7 @@ class ColeccionViewModel: ObservableObject {
         self.coleccion = coleccion
         self.scrollPosition = PersistenciaDatos().obtenerPosicionScroll(coleccion: coleccion)
 
-        print("🟠 Inicializando VM para colección: \(coleccion.name) con scrollPosition: \(self.scrollPosition)")
+//        print("🟠 Inicializando VM para colección: \(coleccion.name) con scrollPosition: \(self.scrollPosition)")
 
 //        cargarElementos()
     }
@@ -31,25 +31,16 @@ class ColeccionViewModel: ObservableObject {
                 $0.shouldInclude(url: url)
             }
         }
-        
-        print("cargando archivos para la coleccion ", self.coleccion.name)
-        print("URLS: ", filteredURLs)
 
-        let total = filteredURLs.count	
-        
-//        await MainActor.run {
-            if self.scrollPosition >= total || self.scrollPosition < 0 {
-                print("⚠️ Scroll position fuera de rango. Reiniciando a 0.")
-                self.scrollPosition = 0
-            }
-//        }
+        let total = filteredURLs.count
+        if self.scrollPosition >= total || self.scrollPosition < 0 {
+//            print("⚠️ Scroll position fuera de rango. Reiniciando a 0.")
+            self.scrollPosition = 0
+        }
         
         elementos = (0..<total).map { _ in
             ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
         }
-
-//        print("Placeholders cargados")
-//        print("Indice en ", self.scrollPosition)
         
         // 2. Scroll automático (lo activará la vista si isPerformingAutoScroll = true)
         self.isPerformingAutoScroll = true
@@ -59,7 +50,6 @@ class ColeccionViewModel: ObservableObject {
             guard let self = self else { return }
             
             let centro = await MainActor.run { self.scrollPosition }
-//            print("Rellenando placeholders desde ", centro)
             
             let urls = filteredURLs
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)
@@ -84,7 +74,6 @@ class ColeccionViewModel: ObservableObject {
     }
     
     func actualizarScroll(_ nuevo: Int) {
-//        print("🟡 Scroll actualizado a: \(nuevo) para colección: \(coleccion.name)")
 
         scrollPosition = nuevo
         coleccion.scrollPosition = nuevo

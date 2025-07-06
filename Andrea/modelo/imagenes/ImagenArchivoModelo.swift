@@ -36,10 +36,10 @@ struct ImagenArchivoModelo {
     }
     
     
-    func createDefaultThumbnail(defaultFileThumbnail: UIImage, color: UIColor? = nil) -> (uiImage: UIImage, imageData: Data?, imageDimensions: (width: Int, height: Int))? {
+    func crearMiniaturaPorDefecto(miniatura: UIImage, color: UIColor? = nil) -> (uiImage: UIImage, imageData: Data?, imageDimensions: (width: Int, height: Int))? {
             let thumbnailSize: CGSize = CGSize(width: 190, height: 260)
             
-    //        if let archivoPDFImage = UIImage(named: defaultFileThumbnail) {
+    //        if let archivoPDFImage = UIImage(named: miniatura) {
                 
     //                let azulSuave = UIColor(red: 0.5, green: 0.7, blue: 1.0, alpha: 1.0)
                     let verdeSuave = UIColor(red: 0.4, green: 0.7, blue: 0.4, alpha: 1.0) // Verde suave
@@ -52,7 +52,7 @@ struct ImagenArchivoModelo {
             var ternariColor: UIColor = color ?? UIColor(Color.blue)
                 
             let symbolColorConfig = UIImage.SymbolConfiguration(paletteColors: [negroGrisAzul, blanco, ternariColor])  // Ajusta los colores según sea necesario
-                let coloredImage = defaultFileThumbnail.applyingSymbolConfiguration(symbolColorConfig)
+                let coloredImage = miniatura.applyingSymbolConfiguration(symbolColorConfig)
                 
                 let size = CGSize(width: 247, height: 304)
                 
@@ -70,7 +70,7 @@ struct ImagenArchivoModelo {
                 let imageData = resizedImage?.jpegData(compressionQuality: 1.0)
                 let imageDimensions = (width: Int(resizedImage?.size.width ?? 0), height: Int(resizedImage?.size.height ?? 0))
                 
-                return (resizedImage ?? defaultFileThumbnail, imageData, imageDimensions)
+                return (resizedImage ?? miniatura, imageData, imageDimensions)
     //        } else {
     //            print("No se pudo cargar la imagen de archivo-pdf desde los assets")
     //        }

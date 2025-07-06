@@ -43,12 +43,11 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     //MODELOS NECESARIOS
     var sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
     
-    var hasThumbnail: Bool {
-        let thumbURL = ThumbnailService.shared.cacheDir
-            .appendingPathComponent("\(url.lastPathComponent).jpg")
-        return FileManager.default.fileExists(atPath: thumbURL.path)
-    }
-
+//    var hasThumbnail: Bool {
+//        let thumbURL = ThumbnailService.shared.cacheDir
+//            .appendingPathComponent("\(url.lastPathComponent).jpg")
+//        return FileManager.default.fileExists(atPath: thumbURL.path)
+//    }
     
     override init() {
         self.dirURL = URL(fileURLWithPath: "")
@@ -107,6 +106,10 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     }
     
     func extractPageData(named name: String) -> Data? {
+        return nil
+    }
+    
+    func cargarImagen(nombreImagen: String) -> UIImage? {
         return nil
     }
     

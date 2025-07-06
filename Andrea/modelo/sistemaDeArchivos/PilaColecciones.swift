@@ -148,10 +148,10 @@ class PilaColecciones: ObservableObject {
         // 4. Limpiar caché de miniaturas
 //        ThumbnailService.shared.clearCache()
 
-        print("🏠 Solo se conservó la colección HOME:")
-        for col in self.colecciones {
-            print(col.coleccion.name)
-        }
+//        print("🏠 Solo se conservó la colección HOME:")
+//        for col in self.colecciones {
+//            print(col.coleccion.name)
+//        }
     }
 
 

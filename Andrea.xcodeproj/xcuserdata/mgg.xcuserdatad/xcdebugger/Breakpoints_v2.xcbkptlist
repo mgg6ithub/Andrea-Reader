@@ -3,4 +3,54 @@
    uuid = "32F5E340-91B5-4B15-AA98-3D864B2B9FDD"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "48556486-839A-43BD-88E2-681C0CAB3943"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Andrea/modelo/sistemaDeArchivos/SistemaArchivos.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "5"
+            endingLineNumber = "5"
+            landmarkName = "unknown"
+            landmarkType = "0">
+            <Locations>
+               <Location
+                  uuid = "48556486-839A-43BD-88E2-681C0CAB3943 - 6f596509756ebb16"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Andrea.SistemaArchivos.deinit"
+                  moduleName = "Andrea"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mgg/Desktop/Andrea/Andrea/modelo/sistemaDeArchivos/SistemaArchivos.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "48556486-839A-43BD-88E2-681C0CAB3943 - 1ab53b35148e2229"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Andrea.SistemaArchivos.__deallocating_deinit"
+                  moduleName = "Andrea"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mgg/Desktop/Andrea/Andrea/modelo/sistemaDeArchivos/SistemaArchivos.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

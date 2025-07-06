@@ -15,25 +15,7 @@ struct CuadriculaVista: View {
                             ElementoVista(element: elemento) {
                                 // tu contenido condicional aquí
                                 if let _ = elemento as? ElementoPlaceholder {
-//                                    ZStack {
-                                        PlaceholderElementView()
-//                                                .zIndex(0)
-//
-//                                            VStack {
-//                                                Spacer()
-//                                                HStack {
-//                                                    Spacer()
-//                                                    Text("\(index)") // <— así lo evitas el error
-//                                                        .foregroundColor(.red)
-//                                                        .padding(4)
-//                                                        .background(Color.white.opacity(0.8))
-//                                                        .clipShape(Circle())
-//                                                    Spacer()
-//                                                }
-//                                                Spacer()
-//                                            }
-//                                            .zIndex(1)
-//                                    }
+                                    PlaceholderElementView()
                                 } else if let coleccion = elemento as? Coleccion {
                                     CuadriculaColeccion(coleccion: coleccion)
                                 } else if let archivo = elemento as? Archivo {
@@ -42,7 +24,6 @@ struct CuadriculaVista: View {
                             }
                             .id(index) // importante: asegúrate de que este `.id` sea consistente con scrollTo
                             .onAppear {
-//                                print("⚫️ Vista \(index) apareció, actualizando posición")
                                 if !vm.isPerformingAutoScroll {
                                     vm.actualizarScroll(index)
                                 }
@@ -56,22 +37,12 @@ struct CuadriculaVista: View {
                     
                     if auto {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            print("Haciendo scroll a ", vm.scrollPosition)
                             proxy.scrollTo(vm.scrollPosition, anchor: .top)
                             vm.isPerformingAutoScroll = false
                         }
                     }
                     
                 }
-//                .onAppear {
-//                    print("Aparecer la coleccion ", vm.scrollPosition)
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                        print("Haciendo scroll a ", vm.scrollPosition)
-//                        proxy.scrollTo(vm.scrollPosition, anchor: .top)
-//                        vm.isPerformingAutoScroll = false
-//                    }
-//                    
-//                }
 
             }
         }

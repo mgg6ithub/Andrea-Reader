@@ -29,26 +29,26 @@ class CBZArchivo: Archivo {
             return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
             
         } catch {
-            print("Error al abrir el archivo CBZ: \(error)")
+//            print("Error al abrir el archivo CBZ: \(error)")
             return []
         }
     }
     
-    override func extractPageData(named name: String) -> Data? {
-        do {
-            let archive = try Archive(url: url, accessMode: .read)
-            guard let entry = archive[name] else { return nil }
-            var data = Data()
-            _ = try archive.extract(entry) { data.append($0) }
-            return data
-        } catch {
-            print("Error extrayendo página:", error)
-            return nil
-        }
-    }
+//    override func extractPageData(named name: String) -> Data? {
+//        do {
+//            let archive = try Archive(url: url, accessMode: .read)
+//            guard let entry = archive[name] else { return nil }
+//            var data = Data()
+//            _ = try archive.extract(entry) { data.append($0) }
+//            return data
+//        } catch {
+//            print("Error extrayendo página:", error)
+//            return nil
+//        }
+//    }
 
     
-    func cargarImagen(nombreImagen: String) -> UIImage? {
+    override func cargarImagen(nombreImagen: String) -> UIImage? {
 //        let startTime = CFAbsoluteTimeGetCurrent()  // ⏳ Tiempo inicial
         
         do {

@@ -14,14 +14,10 @@ struct CuadriculaArchivo: View {
             // --- Imagen ---
             ZStack {
                 
-                if let img = viewModel.thumbnail {
+                if let img = viewModel.miniatura {
                     Image(uiImage: img)
                         .resizable()
-                        .frame(maxWidth: .infinity)
-//                    if let dImage = ImagenArchivoModelo().createDefaultThumbnail(defaultFileThumbnail: EnumMiniaturasArchivos.uiImage(for: archivo.fileType), color: UIColor(coleccion.directoryColor))?.uiImage {
-//                        Image(uiImage: dImage)
-//                            .resizable()
-//                    }
+                    
                 } else {
                     ProgressView()
                 }
@@ -46,9 +42,9 @@ struct CuadriculaArchivo: View {
         .scaleEffect(isVisible ? 1 : 0.95)
         .opacity(isVisible ? 1 : 0)
         .onAppear {
-            guard viewModel.thumbnail == nil else { return }
+            guard viewModel.miniatura == nil else { return }
             
-            viewModel.loadThumbnail(for: archivo, allowGeneration: !archivo.hasThumbnail)
+            viewModel.loadThumbnail(coleccion: coleccion, for: archivo)
 
             withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.0...0.2))) {
                 isVisible = true
@@ -64,45 +60,44 @@ struct CuadriculaArchivo: View {
 
 
 class ArchivoThumbnailViewModel: ObservableObject {
-    @Published var thumbnail: UIImage? = nil
-    private var pendingKey: NSString? = nil
+    @Published var miniatura: UIImage? = nil
+    
+    private let mm: ModeloMiniatura = ModeloMiniatura.getModeloMiniaturaSingleton
 
-    func loadThumbnail(for archivo: Archivo, allowGeneration: Bool = true) {
-        let key = archivo.url.path as NSString
-        pendingKey = key
-
-        // Primero intentamos del cache de ThumbnailService
-        if let cached = ThumbnailService.shared.cache.object(forKey: key) {
+    func loadThumbnail(coleccion: Coleccion, for archivo: Archivo, allowGeneration: Bool = true) {
+        
+        //1. Comprobamos cache de miniaturas
+        if let miniaturaCacheada = mm.obtenerMiniatura(archivo: archivo) {
+            
+            print("Esta en cache para: ", archivo.name)
+            print()
+            
             DispatchQueue.main.async {
-                self.thumbnail = cached
+                self.miniatura = miniaturaCacheada
             }
             return
         }
-
-        ThumbnailService.shared.thumbnail(for: archivo, allowGeneration: allowGeneration) { [weak self] image in
-            DispatchQueue.main.async {
-                guard self?.pendingKey == key else {
-                    // Si ya cancelamos o la celda se recicla, no asignamos
-                    return
-                }
-                self?.thumbnail = image
-                if let image = image {
-                    let size = self?.sizeInMB(of: image) ?? "N/A"
-//                    print("✅ Loaded thumbnail for \(archivo.name) - size: \(size)")
-                }
-            }
-        }
+        
+        //2. Creamos desde 0
+        mm.construirMiniatura(coleccion: coleccion, archivo: archivo) { [weak self] image in
+           guard let self = self, let img = image else { return }
+           // Ya dentro de construirMiniatura haces DispatchQueue.main.async para el completion
+           // Si no, asegúrate de hacerlo aquí:
+           DispatchQueue.main.async {
+               self.miniatura = img
+           }
+       }
+        
     }
 
     func unloadThumbnail(for archivo: Archivo) {
         // 1) Limpia la imagen en la ViewModel
-        let before = sizeInMB(of: thumbnail)
-        thumbnail = nil
-        pendingKey = nil
+//        let before = sizeInMB(of: miniatura)
+        miniatura = nil
 //        print("🗑️ ViewModel: thumbnail nil for \(archivo.name) (was \(before))")
 
         // 2) Elimina del cache en memoria
-        ThumbnailService.shared.removeCache(for: archivo)
+//        mm.eliminarMiniatura(archivo: archivo)
     }
 
     private func sizeInMB(of image: UIImage?) -> String {
