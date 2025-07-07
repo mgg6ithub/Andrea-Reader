@@ -74,25 +74,28 @@ struct AjustesTema: View {
                 
                 HStack(spacing: 0) {
                     
-                    RectangleFormView(
+                    RectangleFormView<EnumTemas>(
                         titulo: "Claro",
                         icono: "sun.max.fill",
                         coloresIcono: [Color.yellow],
-                        temaSeleccionado: .light
+                        opcionSeleccionada: .light,
+                        opcionActual: $appEstado.temaActual
                     )
                     
-                    RectangleFormView(
+                    RectangleFormView<EnumTemas>(
                         titulo: "Oscuro",
                         icono: "moon.fill",
                         coloresIcono: [Color.blue],
-                        temaSeleccionado: .dark
+                        opcionSeleccionada: .dark,
+                        opcionActual: $appEstado.temaActual
                     )
                     
-                    RectangleFormView(
+                    RectangleFormView<EnumTemas>(
                         titulo: "Dia/Noche",
                         icono: "custom.dayNight",
                         coloresIcono: [Color.white, Color.white],
-                        temaSeleccionado: .dayNight,
+                        opcionSeleccionada: .dayNight,
+                        opcionActual: $appEstado.temaActual,
                         isCustomImage: true
                     )
                 }

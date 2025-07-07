@@ -30,6 +30,13 @@ enum EnumFiltroArchivos {
 }
 
 
+//MARK: - TIPOS DE SISTEMA DE ARCHIVOS
+enum EnumTipoSistemaArchivos {
+    case tradicional
+    case arbol
+}
+
+
 //MARK: - RESOLUCIONES LOGICAS
 enum EnumResolucionesLogicas {
     case small

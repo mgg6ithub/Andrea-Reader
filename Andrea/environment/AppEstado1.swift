@@ -13,6 +13,7 @@ class AppEstado1: ObservableObject {
     @Published var resolucionLogica: EnumResolucionesLogicas
     
     @Published var temaActual: EnumTemas = .dark
+    @Published var tipoSistemaArchivos: EnumTipoSistemaArchivos = .tradicional
     @Published var shadows: Bool = true
     @Published var animaciones: Bool = true
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */; };
+		D40E28AE2E1C24050024DF2E /* AjustesSistemaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */; };
 		D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440162D2DF1CB490025832B /* DocumentPicker.swift */; };
 		D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF72DE7A772001F816A /* AndreaApp.swift */; };
 		D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */; };
@@ -41,7 +42,7 @@
 		D4A0FF3D2DEB3FD300195018 /* LineaSeparadora.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */; };
 		D4A0FF3F2DEB6F1500195018 /* MasTemas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */; };
 		D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */; };
-		D4A6C7272DEA216400E7451F /* Temas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7262DEA216400E7451F /* Temas.swift */; };
+		D4A6C7272DEA216400E7451F /* RectangleFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7262DEA216400E7451F /* RectangleFormView.swift */; };
 		D4A6C7292DEA21C200E7451F /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7282DEA21C200E7451F /* Enums.swift */; };
 		D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ACC9B12E1AB8C4006778AE /* ModeloMiniatura.swift */; };
 		D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB742DE9B6A50097A010 /* SideMenu.swift */; };
@@ -76,6 +77,7 @@
 
 /* Begin PBXFileReference section */
 		D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorialColecciones.swift; sourceTree = "<group>"; };
+		D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesSistemaColecciones.swift; sourceTree = "<group>"; };
 		D440162D2DF1CB490025832B /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		D45E6FF42DE7A772001F816A /* Andrea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Andrea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D45E6FF72DE7A772001F816A /* AndreaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AndreaApp.swift; sourceTree = "<group>"; };
@@ -109,7 +111,7 @@
 		D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineaSeparadora.swift; sourceTree = "<group>"; };
 		D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasTemas.swift; sourceTree = "<group>"; };
 		D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirculoActivo.swift; sourceTree = "<group>"; };
-		D4A6C7262DEA216400E7451F /* Temas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temas.swift; sourceTree = "<group>"; };
+		D4A6C7262DEA216400E7451F /* RectangleFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleFormView.swift; sourceTree = "<group>"; };
 		D4A6C7282DEA21C200E7451F /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		D4ACC9B12E1AB8C4006778AE /* ModeloMiniatura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloMiniatura.swift; sourceTree = "<group>"; };
 		D4ADDB742DE9B6A50097A010 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
@@ -208,7 +210,7 @@
 		D46E94332DEA284A00ABD9EE /* vistasCompartidas */ = {
 			isa = PBXGroup;
 			children = (
-				D4A6C7262DEA216400E7451F /* Temas.swift */,
+				D4A6C7262DEA216400E7451F /* RectangleFormView.swift */,
 				D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */,
 				D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */,
 				D46E94342DEA287000ABD9EE /* Toggle.swift */,
@@ -454,6 +456,7 @@
 				D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */,
 				D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */,
 				D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */,
+				D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */,
 			);
 			path = ajustesSeccion;
 			sourceTree = "<group>";
@@ -583,7 +586,7 @@
 				D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */,
 				D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */,
 				D4ADDB842DE9C06C0097A010 /* LibreriaEstado.swift in Sources */,
-				D4A6C7272DEA216400E7451F /* Temas.swift in Sources */,
+				D4A6C7272DEA216400E7451F /* RectangleFormView.swift in Sources */,
 				D47139C72E0AE76500B5FA35 /* CuadriculaArchivo.swift in Sources */,
 				D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */,
 				D4BF0B212DEF494000152333 /* FabricaColeccion.swift in Sources */,
@@ -594,6 +597,7 @@
 				D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */,
 				D4ADDB7E2DE9B9FA0097A010 /* MenuDerecha.swift in Sources */,
 				D47139C52E0AE47C00B5FA35 /* ElementoVista.swift in Sources */,
+				D40E28AE2E1C24050024DF2E /* AjustesSistemaColecciones.swift in Sources */,
 				D4DF31792DEC7362000D15CC /* ElementoPlaceholderDummy.swift in Sources */,
 				D46E94352DEA287000ABD9EE /* Toggle.swift in Sources */,
 				D485896A2DEB9DC30074DB8E /* Extensiones.swift in Sources */,

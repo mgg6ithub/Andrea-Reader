@@ -148,6 +148,10 @@ struct AjustesGlobales: View {
                                                     
                                                     case "AjustesMenu":
                                                         AjustesMenu()
+                                                    
+                                                case "SistemaArchivos":
+                                                        AjustesSistemaColecciones(isSection: selectedSection == section)
+                                                    
                                                     default:
                                                         EmptyView()
                                                 }
