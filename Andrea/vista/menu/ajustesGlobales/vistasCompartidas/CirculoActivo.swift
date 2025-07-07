@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CirculoActivo: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
 
     var isSection: Bool
     

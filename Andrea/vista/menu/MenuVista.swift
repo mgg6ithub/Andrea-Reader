@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MenuVista: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @State private var isSettingsPressed = false
     
     var dynamicIconColor: Color {

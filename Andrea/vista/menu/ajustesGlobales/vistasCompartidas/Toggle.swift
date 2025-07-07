@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CurrentSettingToggle: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     
     var titulo: String
     var descripcion: String

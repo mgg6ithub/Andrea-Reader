@@ -24,6 +24,24 @@ extension Archivo {
     }
 }
 
+//MARK: --- PERSISTENCIA PARA LOS AJUSTES GENERALES DE USUARIO ---
+/**
+ Modificacion para poder guardar enums en UserDefaults
+ */
+extension UserDefaults {
+    func setEnum<T: RawRepresentable>(_ value: T, forKey key: String) where T.RawValue == String {
+        set(value.rawValue, forKey: key)
+    }
+
+    func getEnum<T: RawRepresentable>(forKey key: String, default defaultValue: T) -> T where T.RawValue == String {
+        guard let rawValue = string(forKey: key), let value = T(rawValue: rawValue) else {
+            return defaultValue
+        }
+        return value
+    }
+}
+
+
 
 //MARK: - MODELO HERENCIA PARA EL SISTEMA DE ARCHVIOS
 

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct VistaPrincipal: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var pc: PilaColecciones
     
     @State private var ultimaID: UUID? = nil

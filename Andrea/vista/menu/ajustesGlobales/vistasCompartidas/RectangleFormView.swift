@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RectangleFormView<T: Equatable>: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
 
     // Parámetros externos

@@ -15,7 +15,6 @@
 		D45E6FFC2DE7A773001F816A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D45E6FFB2DE7A773001F816A /* Assets.xcassets */; };
 		D45E6FFF2DE7A773001F816A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D45E6FFE2DE7A773001F816A /* Preview Assets.xcassets */; };
 		D45E70062DE7A7C4001F816A /* AndreaAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E70052DE7A7C4001F816A /* AndreaAppView.swift */; };
-		D45E70082DE7A7DF001F816A /* AppEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E70072DE7A7DF001F816A /* AppEstado.swift */; };
 		D45E700A2DE7A7F3001F816A /* SistemaArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E70092DE7A7F3001F816A /* SistemaArchivos.swift */; };
 		D45E700C2DE7A803001F816A /* MenuVista.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E700B2DE7A803001F816A /* MenuVista.swift */; };
 		D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */; };
@@ -53,9 +52,8 @@
 		D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB812DE9C0530097A010 /* MenuEstado.swift */; };
 		D4ADDB842DE9C06C0097A010 /* LibreriaEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB832DE9C06C0097A010 /* LibreriaEstado.swift */; };
 		D4ADDB872DE9C1150097A010 /* HistorialEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB862DE9C1150097A010 /* HistorialEstado.swift */; };
-		D4ADDB892DE9C2E30097A010 /* AppEstado1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB882DE9C2E30097A010 /* AppEstado1.swift */; };
+		D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB882DE9C2E30097A010 /* AppEstado.swift */; };
 		D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AECEBA2DEE33620032917F /* PilaColecciones.swift */; };
-		D4B5CA912DE89489006F8FA6 /* BookReadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */; };
 		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
 		D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8B3882E1324B200585A6D /* ThumbnailService.swift */; };
 		D4BA32F12E0BDD1300CF3219 /* TituloInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */; };
@@ -85,7 +83,6 @@
 		D45E6FFB2DE7A773001F816A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D45E6FFE2DE7A773001F816A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D45E70052DE7A7C4001F816A /* AndreaAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AndreaAppView.swift; sourceTree = "<group>"; };
-		D45E70072DE7A7DF001F816A /* AppEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado.swift; sourceTree = "<group>"; };
 		D45E70092DE7A7F3001F816A /* SistemaArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SistemaArchivos.swift; sourceTree = "<group>"; };
 		D45E700B2DE7A803001F816A /* MenuVista.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVista.swift; sourceTree = "<group>"; };
 		D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesMenu.swift; sourceTree = "<group>"; };
@@ -122,9 +119,8 @@
 		D4ADDB812DE9C0530097A010 /* MenuEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEstado.swift; sourceTree = "<group>"; };
 		D4ADDB832DE9C06C0097A010 /* LibreriaEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreriaEstado.swift; sourceTree = "<group>"; };
 		D4ADDB862DE9C1150097A010 /* HistorialEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorialEstado.swift; sourceTree = "<group>"; };
-		D4ADDB882DE9C2E30097A010 /* AppEstado1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado1.swift; sourceTree = "<group>"; };
+		D4ADDB882DE9C2E30097A010 /* AppEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado.swift; sourceTree = "<group>"; };
 		D4AECEBA2DEE33620032917F /* PilaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilaColecciones.swift; sourceTree = "<group>"; };
-		D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookReadingView.swift; sourceTree = "<group>"; };
 		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
 		D4B8B3882E1324B200585A6D /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
 		D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TituloInformacion.swift; sourceTree = "<group>"; };
@@ -194,7 +190,6 @@
 				D4ADDB6F2DE9B4A50097A010 /* modelo */,
 				D4ADDB6E2DE9B4A00097A010 /* vista */,
 				D45E6FFD2DE7A773001F816A /* Preview Content */,
-				D4B5CA902DE89489006F8FA6 /* BookReadingView.swift */,
 			);
 			path = Andrea;
 			sourceTree = "<group>";
@@ -361,8 +356,7 @@
 		D4ADDB802DE9C03F0097A010 /* environment */ = {
 			isa = PBXGroup;
 			children = (
-				D45E70072DE7A7DF001F816A /* AppEstado.swift */,
-				D4ADDB882DE9C2E30097A010 /* AppEstado1.swift */,
+				D4ADDB882DE9C2E30097A010 /* AppEstado.swift */,
 				D4ADDB812DE9C0530097A010 /* MenuEstado.swift */,
 				D4ADDB832DE9C06C0097A010 /* LibreriaEstado.swift */,
 				D4ADDB862DE9C1150097A010 /* HistorialEstado.swift */,
@@ -555,7 +549,7 @@
 				D485896F2DEB9E4E0074DB8E /* ManipulacionCadenas.swift in Sources */,
 				D49BE6D52E17AF2500FEDB99 /* ColeccionViewModel.swift in Sources */,
 				D4DF317B2DEC74F0000D15CC /* CuadriculaVista.swift in Sources */,
-				D4ADDB892DE9C2E30097A010 /* AppEstado1.swift in Sources */,
+				D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */,
 				D4ADDB7A2DE9B9E60097A010 /* MenuIzquierda.swift in Sources */,
 				D45E70062DE7A7C4001F816A /* AndreaAppView.swift in Sources */,
 				D4ADDB7C2DE9B9F10097A010 /* MenuCentro.swift in Sources */,
@@ -580,7 +574,6 @@
 				D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */,
 				D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */,
 				D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */,
-				D4B5CA912DE89489006F8FA6 /* BookReadingView.swift in Sources */,
 				D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */,
 				D49DE74E2E0D3481002FDB7A /* ImagenArchivo.swift in Sources */,
 				D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */,
@@ -592,7 +585,6 @@
 				D4BF0B212DEF494000152333 /* FabricaColeccion.swift in Sources */,
 				D485896C2DEB9DF10074DB8E /* Utilidades.swift in Sources */,
 				D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */,
-				D45E70082DE7A7DF001F816A /* AppEstado.swift in Sources */,
 				D4BF4B1C2E168D1400224C71 /* Algoritmos.swift in Sources */,
 				D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */,
 				D4ADDB7E2DE9B9FA0097A010 /* MenuDerecha.swift in Sources */,

@@ -63,6 +63,13 @@ struct ConstantesPorDefecto {
 }
 
 
+struct ClavesPersistenciaAjustesGenerales {
+    
+    public let temaActual: String = "TemaActual"
+    
+}
+
+
 struct Constantes {
     
     var scaleFactor: CGFloat

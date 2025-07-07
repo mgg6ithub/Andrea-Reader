@@ -10,7 +10,7 @@ import SwiftUI
 struct AjustesGlobales_Previews: PreviewProvider {
     static var previews: some View {
         // Instancias de ejemplo para los objetos de entorno
-        let appEstadoPreview = AppEstado1() // Reemplaza con la inicialización adecuada
+        let appEstadoPreview = AppEstado() // Reemplaza con la inicialización adecuada
         let menuEstadoPreview = MenuEstado() // Reemplaza con la inicialización adecuada
 
         return AjustesGlobales()
@@ -23,7 +23,7 @@ struct AjustesGlobales_Previews: PreviewProvider {
 
 struct AjustesGlobales: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     private var padding: CGFloat = 20
@@ -208,7 +208,7 @@ struct AjustesGlobales: View {
 
 struct Punto: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     let index: Int

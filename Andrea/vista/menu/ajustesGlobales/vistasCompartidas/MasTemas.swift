@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MasTemas: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     private var escala: CGFloat { appEstado.constantes.scaleFactor }

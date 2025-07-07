@@ -5,7 +5,7 @@ import SwiftUI
 
 struct AjustesSistemaColecciones: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     var isSection: Bool

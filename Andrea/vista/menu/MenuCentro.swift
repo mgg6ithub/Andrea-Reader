@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MenuCentro: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     private let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton

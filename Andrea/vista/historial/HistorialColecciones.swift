@@ -6,7 +6,7 @@ struct HistorialColecciones: View {
     
     @Namespace private var breadcrumb
     @EnvironmentObject var pc: PilaColecciones
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     
     private var iconSize: CGFloat  { appEstado.constantes.iconSize }
     

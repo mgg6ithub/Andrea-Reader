@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MenuDerecha: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     
     var body: some View {
         

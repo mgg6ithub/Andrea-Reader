@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AjustesTema: View {
     
-    @EnvironmentObject var appEstado: AppEstado1
+    @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     
