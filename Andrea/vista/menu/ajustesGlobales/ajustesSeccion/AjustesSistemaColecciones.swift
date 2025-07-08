@@ -61,7 +61,7 @@ struct AjustesSistemaColecciones: View {
                         icono: "folder.fill",
                         coloresIcono: [Color.black],
                         opcionSeleccionada: .tradicional,
-                        opcionActual: $appEstado.tipoSistemaArchivos
+                        opcionActual: $appEstado.sistemaArchivos
                     )
                     
                     RectangleFormView<EnumTipoSistemaArchivos>(
@@ -69,7 +69,7 @@ struct AjustesSistemaColecciones: View {
                         icono: "tree.fill",
                         coloresIcono: [Color.black],
                         opcionSeleccionada: .arbol,
-                        opcionActual: $appEstado.tipoSistemaArchivos
+                        opcionActual: $appEstado.sistemaArchivos
                     )
                     
                 }

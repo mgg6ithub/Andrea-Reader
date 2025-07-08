@@ -39,6 +39,12 @@ extension UserDefaults {
         }
         return value
     }
+    
+    // Si también usas enums con Int
+    func getEnum<T: RawRepresentable>(forKey key: String, default defaultValue: T) -> T where T.RawValue == Int {
+        let rawValue = self.integer(forKey: key)
+        return T(rawValue: rawValue) ?? defaultValue
+    }
 }
 
 

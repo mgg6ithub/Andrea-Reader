@@ -6,6 +6,8 @@ import SwiftUI
 class ColeccionViewModel: ObservableObject {
     
   let coleccion: Coleccion
+  var appEstado: AppEstado?
+    
   @Published var elementos: [any ElementoSistemaArchivosProtocolo] = []
   @Published var isLoading = false
   @Published var scrollPosition: Int
@@ -19,16 +21,27 @@ class ColeccionViewModel: ObservableObject {
 
 //        cargarElementos()
     }
-
+    
+    //Inyectamos appEstado desde CuadriculaVista
+    func setAppEstado(_ appEstado: AppEstado) {
+        self.appEstado = appEstado
+    }
 
     func cargarElementos() {
         isLoading = true
 
         // 1. Obtener las URLs y filtrarlas SINCRÓNICAMENTE para crear los placeholders
         let allURLs = SistemaArchivos.getSistemaArchivosSingleton.obtenerURLSDirectorio(coleccionURL: coleccion.url)
-        let filteredURLs = allURLs.filter { url in
+        var filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.filtrosIndexado.allSatisfy {
                 $0.shouldInclude(url: url)
+            }
+        }
+        
+        //2.1 Si el sistema de archivos estan en modo arbol tambien hay que filtrar las urls que sean de colecciones (directorios)
+        if self.appEstado?.sistemaArchivos == .arbol {
+            filteredURLs = filteredURLs.filter { url in
+                !SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.isDirectory(elementURL: url)
             }
         }
 
@@ -50,12 +63,13 @@ class ColeccionViewModel: ObservableObject {
             guard let self = self else { return }
             
             let centro = await MainActor.run { self.scrollPosition }
-            
-            let urls = filteredURLs
+            let urls: [URL] = await MainActor.run { filteredURLs }
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)
 
             for idx in indices {
                 let url = urls[idx]
+                
+                //2. Si no la creamos
                 if let elem = SistemaArchivos.getSistemaArchivosSingleton.crearInstancia(elementoURL: url) {
                     await MainActor.run {
                         var nuevos = self.elementos

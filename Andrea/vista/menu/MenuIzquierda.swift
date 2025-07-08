@@ -19,6 +19,8 @@ struct MenuIzquierda: View {
         
         HStack {
             
+            //MARK: --- FLECHA TRADICIONAL PARA IR ATRAS UNA COLECCION ---
+            
             if pc.getColeccionActual().coleccion.name != "HOME" {
                 if menuEstado.menuIzquierdaFlechaLateral {
                     Button(action: {
@@ -35,7 +37,7 @@ struct MenuIzquierda: View {
                 }
             }
                 
-                
+            //MARK: --- MOSTRAR MENU LATERAL ---
             
             if menuEstado.menuIzquierdaSideMenuIcono {
                 Button(action: {
@@ -51,16 +53,21 @@ struct MenuIzquierda: View {
                 }
             }
             
-            Button(action: {
-                                        
-//                isSideMenuVisible.toggle()
-                
-            }) {
-                Image("custom.library")
-                    .font(.system(size: appEstado.constantes.iconSize))
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
-                    .fontWeight(appEstado.constantes.iconWeight)
+            
+            //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
+            
+            if appEstado.sistemaArchivos == .arbol {
+                Button(action: {
+                                            
+                    //mostrar colecciones
+                    
+                }) {
+                    Image("custom.library")
+                        .font(.system(size: appEstado.constantes.iconSize))
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                        .fontWeight(appEstado.constantes.iconWeight)
+                }
             }
             
             Spacer()

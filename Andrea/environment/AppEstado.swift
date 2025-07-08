@@ -10,15 +10,15 @@ import SwiftUI
 class AppEstado: ObservableObject {
     
     private let cpag = ClavesPersistenciaAjustesGenerales()
-    
     private let uds = UserDefaults.standard
     
     @Published var isFirstTimeLaunch: Bool = false
     @Published var resolucionLogica: EnumResolucionesLogicas
     
+    //Persistencia
     @Published var temaActual: EnumTemas { didSet { uds.setEnum(temaActual, forKey: cpag.temaActual ) } }
+    @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { uds.setEnum(sistemaArchivos, forKey: cpag.sistemaArchivos) } }
     
-    @Published var tipoSistemaArchivos: EnumTipoSistemaArchivos = .tradicional
     @Published var shadows: Bool = true
     @Published var animaciones: Bool = true
     
@@ -55,7 +55,9 @@ class AppEstado: ObservableObject {
 
         self.constantes = Constantes(scaleFactor: scaleFactor)
         
+        //Persistencia
         self.temaActual = uds.getEnum(forKey: cpag.temaActual, default: .light)
+        self.sistemaArchivos = uds.getEnum(forKey: cpag.sistemaArchivos, default: .tradicional)
         
     }
     

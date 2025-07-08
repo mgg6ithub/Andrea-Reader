@@ -31,7 +31,7 @@ enum EnumFiltroArchivos {
 
 
 //MARK: - TIPOS DE SISTEMA DE ARCHIVOS
-enum EnumTipoSistemaArchivos {
+enum EnumTipoSistemaArchivos: String, CaseIterable {
     case tradicional
     case arbol
 }

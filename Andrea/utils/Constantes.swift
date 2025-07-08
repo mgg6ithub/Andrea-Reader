@@ -66,6 +66,7 @@ struct ConstantesPorDefecto {
 struct ClavesPersistenciaAjustesGenerales {
     
     public let temaActual: String = "TemaActual"
+    public let sistemaArchivos: String = "SistemaArchivos"
     
 }
 

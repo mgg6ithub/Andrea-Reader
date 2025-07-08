@@ -9,12 +9,14 @@ import SwiftUI
 
 class MenuEstado: ObservableObject {
     
+    private let cpag = ClavesPersistenciaAjustesGenerales()
+    private let uds = UserDefaults.standard
     
     //MARK: - ICONOS DEL MENU
     
     //Mostrar u ocultar iconos del menu
-    @Published var menuIzquierdaSideMenuIcono: Bool = true
     @Published var menuIzquierdaFlechaLateral: Bool = true
+    @Published var menuIzquierdaSideMenuIcono: Bool = true
 
     
     //MARK: - AJUSTES GLOBALES
@@ -51,5 +53,7 @@ class MenuEstado: ObservableObject {
         default: return ""
         }
     }
+    
+    init() {}
     
 }

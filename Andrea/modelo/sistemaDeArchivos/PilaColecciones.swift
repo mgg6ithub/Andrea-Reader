@@ -154,7 +154,6 @@ class PilaColecciones: ObservableObject {
 //        }
     }
 
-
     
     public func sacarTodasColecciones() {
         self.colecciones.removeAll()
