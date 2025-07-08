@@ -10,7 +10,9 @@ struct CuadriculaVista: View {
         GeometryReader { outerGeometry in
             ScrollViewReader { proxy in
                 ScrollView(.vertical) {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 165), spacing: 20)]) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 165), spacing: 20)],
+                              spacing: 20
+                    ) {
                         ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
                             ElementoVista(element: elemento) {
                                 // tu contenido condicional aquí
