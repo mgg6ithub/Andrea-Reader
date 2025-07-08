@@ -200,9 +200,22 @@ struct AjustesGlobales: View {
                 maxHeight: .infinity,
                 alignment: .center
             )
-        
+            .background(appEstado.temaActual.backgroundColor)
+            .animation(.easeInOut(duration: 2), value: appEstado.temaActual)
     }
     
+}
+
+struct AjustesGlobalesWrapper: View {
+    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var menuEstado: MenuEstado
+
+    var body: some View {
+        AjustesGlobales()
+            // 🚫 QUITA ESTA LÍNEA: .id(appEstado.temaActual.rawValue)
+            .environmentObject(appEstado)
+            .environmentObject(menuEstado)
+    }
 }
 
 

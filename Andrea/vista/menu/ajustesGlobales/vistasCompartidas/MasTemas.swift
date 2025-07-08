@@ -15,7 +15,7 @@ struct MasTemas: View {
     private var escala: CGFloat { appEstado.constantes.scaleFactor }
     
     //NOMBRE TEMA
-    let tema: String
+    let tema: EnumTemas
     
     //COLORES
     let color1: Color
@@ -24,13 +24,13 @@ struct MasTemas: View {
     var body: some View {
         
         VStack {
-            Text(tema)
+            Text(tema.rawValue)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             
             Button(action: {
-                print(tema, " SELECCIONADO")
+                appEstado.temaActual = tema
             }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)

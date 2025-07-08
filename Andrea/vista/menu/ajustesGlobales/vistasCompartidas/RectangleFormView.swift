@@ -39,7 +39,7 @@ struct RectangleFormView<T: Equatable>: View {
                 .foregroundColor(isSelected ? .primary : .secondary.opacity(0.3))
 
             Button(action: {
-                withAnimation(.easeInOut(duration: 0.5)) {
+                withAnimation(.easeInOut(duration: 0.75)) {
                     isBouncing.toggle()
                     opcionActual = opcionSeleccionada
                 }

@@ -50,7 +50,7 @@ struct VistaPrincipal: View {
                     Spacer()
                     
                 }
-                .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
+//                .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
                 .padding(.horizontal, ConstantesPorDefecto().horizontalPadding)
             }
             .foregroundColor(appEstado.temaActual.textColor)

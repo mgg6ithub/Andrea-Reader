@@ -10,6 +10,8 @@ struct MenuCentro: View {
     @State private var mostrarDocumentPicker: Bool = false
     @State private var esNuevaColeccionPresionado: Bool = false
     @State private var nuevaColeccionNombre: String = ""
+    
+    @State private var sheetID = UUID()
 
     var body: some View {
         
@@ -92,9 +94,10 @@ struct MenuCentro: View {
                     .fontWeight(appEstado.constantes.iconWeight)
             }
             .sheet(isPresented: $menuEstado.isGlobalSettingsPressed) {
-                AjustesGlobales()
-                    .background(appEstado.temaActual.backgroundColor)
+              AjustesGlobales()
+//                    .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
             }
+
             
         }
     }

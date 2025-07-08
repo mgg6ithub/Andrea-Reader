@@ -145,15 +145,15 @@ struct AjustesTema: View {
                                 //MAS TEMAS
                                 
                                 HStack(spacing: 0) {
-                                    MasTemas(tema: "verde", color1: .teal, color2: .green)
+                                    MasTemas(tema: .green, color1: .teal, color2: .green)
                                     
-                                    MasTemas(tema: "rojo", color1: .red.opacity(0.6), color2: .red.opacity(0.9))
+//                                    MasTemas(tema: "rojo", color1: .red.opacity(0.6), color2: .red.opacity(0.9))
                                     
                                     // Azul claro a azul oscuro
-                                    MasTemas(tema: "azul", color1: .blue.opacity(0.5), color2: .blue.opacity(0.8))
+                                    MasTemas(tema: .blue, color1: .blue.opacity(0.5), color2: .blue.opacity(0.8))
                                     
                                     // Naranja claro a naranja oscuro
-                                    MasTemas(tema: "naranja", color1: .orange.opacity(0.4), color2: .orange.opacity(0.7))
+//                                    MasTemas(tema: "naranja", color1: .orange.opacity(0.4), color2: .orange.opacity(0.7))
                             }
                                 
                             }
