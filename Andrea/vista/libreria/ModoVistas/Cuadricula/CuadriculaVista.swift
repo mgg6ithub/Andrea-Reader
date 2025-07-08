@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct CuadriculaVista: View {
-    
-    @EnvironmentObject var appEstado: AppEstado
 
     @ObservedObject var vm: ColeccionViewModel
     @State private var haHechoScroll = false
@@ -33,12 +31,6 @@ struct CuadriculaVista: View {
                             }
 
                         }
-                    }
-                }
-                .onAppear {
-                    if vm.appEstado == nil {
-                        vm.setAppEstado(appEstado)
-                        vm.cargarElementos()
                     }
                 }
                 .onChange(of: vm.isPerformingAutoScroll) { auto in

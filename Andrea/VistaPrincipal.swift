@@ -31,11 +31,18 @@ struct VistaPrincipal: View {
                         .frame(height: 50)
 //                        .border(.red)
                     
-                    
-//                    ZStack {
                     if let lastVM = pc.coleccionActualVM {
                         CuadriculaVista(vm: lastVM)
                             .onAppear {
+                                if lastVM.appEstado == nil {
+                                    lastVM.setAppEstado(appEstado) //Seteamos el appEstado
+                                }
+                                lastVM.cargarElementos() //Indexamos elementos de la coleccion
+                            }
+                            .onChange(of: appEstado.sistemaArchivos) {
+                                if lastVM.appEstado == nil {
+                                    lastVM.setAppEstado(appEstado) //Seteamos el appEstado
+                                }
                                 lastVM.cargarElementos()
                             }
                     }
