@@ -79,6 +79,24 @@ class CBZArchivo: Archivo {
             return nil
         }
     }
+    
+    override func cargarDatosImagen(nombreImagen: String) -> Data? {
+        do {
+            let archive = try Archive(url: self.url, accessMode: .read)
+            guard let entry = archive[nombreImagen] else {
+                print("❌ Entrada no encontrada en archivo: \(nombreImagen)")
+                return nil
+            }
+            var data = Data()
+            _ = try archive.extract(entry) { chunk in
+                data.append(chunk)
+            }
+            return data
+        } catch {
+            print("Error extrayendo datos de \(nombreImagen):", error)
+            return nil
+        }
+    }
 
     
     func convertToJPEG(image: UIImage, quality: CGFloat = 0.8) -> UIImage? {

@@ -2,28 +2,6 @@
 import SwiftUI
 import ZIPFoundation
 
-
-extension Archivo {
-    /// Extrae los bytes crudos de la entrada `nombreImagen` dentro del CBZ
-    func dataForPage(_ nombreImagen: String) -> Data? {
-        do {
-            let archive = try Archive(url: self.url, accessMode: .read)
-            guard let entry = archive[nombreImagen] else {
-                print("❌ Entrada no encontrada en archivo: \(nombreImagen)")
-                return nil
-            }
-            var data = Data()
-            _ = try archive.extract(entry) { chunk in
-                data.append(chunk)
-            }
-            return data
-        } catch {
-            print("Error extrayendo datos de \(nombreImagen):", error)
-            return nil
-        }
-    }
-}
-
 //MARK: --- PERSISTENCIA PARA LOS AJUSTES GENERALES DE USUARIO ---
 /**
  Modificacion para poder guardar enums en UserDefaults

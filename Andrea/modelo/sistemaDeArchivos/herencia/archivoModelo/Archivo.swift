@@ -113,5 +113,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         return nil
     }
     
+    func cargarDatosImagen(nombreImagen: String) -> Data? {
+        return nil
+    }
     
 }

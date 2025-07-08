@@ -72,7 +72,7 @@ class ModeloMiniatura {
 //                return
 //            }
             
-            guard let data = archivo.dataForPage(primeraPagina) else {
+            guard let data = archivo.cargarDatosImagen(nombreImagen: primeraPagina) else {
                 print("MAL")
                 return
             }
