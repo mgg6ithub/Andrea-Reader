@@ -71,6 +71,7 @@
 		D4DF31792DEC7362000D15CC /* ElementoPlaceholderDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF31782DEC7362000D15CC /* ElementoPlaceholderDummy.swift */; };
 		D4DF317B2DEC74F0000D15CC /* CuadriculaVista.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF317A2DEC74F0000D15CC /* CuadriculaVista.swift */; };
 		D4DF317E2DEC77D1000D15CC /* PlaceholderElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF317D2DEC77D1000D15CC /* PlaceholderElementView.swift */; };
+		D4E0B4BC2E1D9FA5008586D2 /* Unrar in Frameworks */ = {isa = PBXBuildFile; productRef = D4E0B4BB2E1D9FA5008586D2 /* Unrar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4E0B4BC2E1D9FA5008586D2 /* Unrar in Frameworks */,
 				D48B459F2DF248310088F40E /* Unrar in Frameworks */,
 				D48B45A42DF250720088F40E /* ZIPFoundation in Frameworks */,
 			);
@@ -482,6 +484,7 @@
 			packageProductDependencies = (
 				D48B459E2DF248310088F40E /* Unrar */,
 				D48B45A32DF250720088F40E /* ZIPFoundation */,
+				D4E0B4BB2E1D9FA5008586D2 /* Unrar */,
 			);
 			productName = Andrea;
 			productReference = D45E6FF42DE7A772001F816A /* Andrea.app */;
@@ -840,6 +843,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D48B45A22DF250720088F40E /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
+		};
+		D4E0B4BB2E1D9FA5008586D2 /* Unrar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D48B459D2DF248310088F40E /* XCRemoteSwiftPackageReference "Unrar" */;
+			productName = Unrar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

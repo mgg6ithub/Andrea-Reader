@@ -16,7 +16,7 @@ struct CuadriculaColeccion: View {
     var body: some View {
         
         Button(action: {
-            coleccion.meterColeccion(coleccion: coleccion)
+            coleccion.meterColeccion()
         }) {
             VStack {
                 ZStack {
