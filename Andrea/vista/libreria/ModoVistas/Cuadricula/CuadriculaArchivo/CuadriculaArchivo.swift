@@ -42,7 +42,6 @@ struct CuadriculaArchivo: View {
         .scaleEffect(isVisible ? 1 : 0.95)
         .opacity(isVisible ? 1 : 0)
         .onAppear {
-//            guard viewModel.miniatura == nil else { return }
             
             viewModel.loadThumbnail(coleccion: coleccion, for: archivo)
 
@@ -65,6 +64,9 @@ class ArchivoThumbnailViewModel: ObservableObject {
     private var cargaTask: Task<Void, Never>? = nil
 
     func loadThumbnail(coleccion: Coleccion, for archivo: Archivo, allowGeneration: Bool = true) {
+        
+        guard miniatura == nil else { return }
+        
         // Cancelamos cualquier carga anterior
         cargaTask?.cancel()
 
@@ -72,7 +74,6 @@ class ArchivoThumbnailViewModel: ObservableObject {
         cargaTask = Task {
             // 1. Consultamos cache
             if let miniaturaCacheada = mm.obtenerMiniatura(archivo: archivo) {
-                print("✅ Miniatura desde cache para: \(archivo.name)")
                 await MainActor.run {
                     self.miniatura = miniaturaCacheada
                 }
