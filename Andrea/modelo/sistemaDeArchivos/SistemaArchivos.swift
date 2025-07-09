@@ -296,10 +296,12 @@ class SistemaArchivos: ObservableObject {
                     print("Error a la hora de crear el archivo -> ", nombreArchivo)
                 }
                 
+                // --- Agregamos el archivo a la listaElementos para actualizar la UI solo con ese elemento
+                self.actualizarUISoloElemento(elementoURL: nuevoArchivoURL)
+                return
             }
             
-            // --- Agregamos el archivo a la listaElementos para actualizar la UI solo con ese elemento
-            self.actualizarUISoloElemento(elementoURL: nuevoArchivoURL)
+            //Si el archivo es duplicado para una coleccion nunca llega aqui el codigo
             
         }
         
