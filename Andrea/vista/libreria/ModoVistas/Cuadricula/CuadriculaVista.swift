@@ -3,8 +3,7 @@ import SwiftUI
 struct CuadriculaVista: View {
 
     @ObservedObject var vm: ColeccionViewModel
-    @State private var haHechoScroll = false
-    @State private var apariciones: Int = 0
+    let namespace: Namespace.ID
 
     var body: some View {
         GeometryReader { outerGeometry in
@@ -17,7 +16,7 @@ struct CuadriculaVista: View {
                             ElementoVista(element: elemento) {
                                 // tu contenido condicional aquí
                                 if let _ = elemento as? ElementoPlaceholder {
-                                    PlaceholderElementView()
+                                    PlaceholderElementView(index: index)
                                 } else if let coleccion = elemento as? Coleccion {
                                     CuadriculaColeccion(coleccion: coleccion)
                                 } else if let archivo = elemento as? Archivo {
@@ -31,6 +30,13 @@ struct CuadriculaVista: View {
                                 }
 
                             }
+//                            .matchedGeometryEffect(
+//                                id: elemento.id,
+//                                in: namespace,
+//                                properties: .position,
+//                                anchor: .center
+//                            )
+
 
                         }
                     }
@@ -38,7 +44,7 @@ struct CuadriculaVista: View {
                 .onChange(of: vm.isPerformingAutoScroll) { auto in
                     
                     if auto {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             proxy.scrollTo(vm.scrollPosition, anchor: .top)
                             vm.isPerformingAutoScroll = false
                         }

@@ -42,7 +42,7 @@ struct CuadriculaArchivo: View {
         .scaleEffect(isVisible ? 1 : 0.95)
         .opacity(isVisible ? 1 : 0)
         .onAppear {
-            guard viewModel.miniatura == nil else { return }
+//            guard viewModel.miniatura == nil else { return }
             
             viewModel.loadThumbnail(coleccion: coleccion, for: archivo)
 
@@ -58,53 +58,53 @@ struct CuadriculaArchivo: View {
     
 }
 
-
 class ArchivoThumbnailViewModel: ObservableObject {
     @Published var miniatura: UIImage? = nil
     
     private let mm: ModeloMiniatura = ModeloMiniatura.getModeloMiniaturaSingleton
+    private var cargaTask: Task<Void, Never>? = nil
 
     func loadThumbnail(coleccion: Coleccion, for archivo: Archivo, allowGeneration: Bool = true) {
-        
-        //1. Comprobamos cache de miniaturas
-        if let miniaturaCacheada = mm.obtenerMiniatura(archivo: archivo) {
-            
-            print("Esta en cache para: ", archivo.name)
-            print()
-            
-            DispatchQueue.main.async {
-                self.miniatura = miniaturaCacheada
+        // Cancelamos cualquier carga anterior
+        cargaTask?.cancel()
+
+        // Creamos nueva carga como Task
+        cargaTask = Task {
+            // 1. Consultamos cache
+            if let miniaturaCacheada = mm.obtenerMiniatura(archivo: archivo) {
+                print("✅ Miniatura desde cache para: \(archivo.name)")
+                await MainActor.run {
+                    self.miniatura = miniaturaCacheada
+                }
+                return
             }
-            return
+
+            // 2. Generamos desde 0
+            guard !Task.isCancelled else { return }
+
+            // convertimos construirMiniatura a async (más abajo te explico cómo)
+            if let miniaturaNueva = await construirMiniaturaAsync(coleccion: coleccion, archivo: archivo) {
+                await MainActor.run {
+                    self.miniatura = miniaturaNueva
+                }
+            }
         }
-        
-        //2. Creamos desde 0
-        mm.construirMiniatura(coleccion: coleccion, archivo: archivo) { [weak self] image in
-           guard let self = self, let img = image else { return }
-           // Ya dentro de construirMiniatura haces DispatchQueue.main.async para el completion
-           // Si no, asegúrate de hacerlo aquí:
-           DispatchQueue.main.async {
-               self.miniatura = img
-           }
-       }
-        
     }
 
     func unloadThumbnail(for archivo: Archivo) {
-        // 1) Limpia la imagen en la ViewModel
-//        let before = sizeInMB(of: miniatura)
+        cargaTask?.cancel()
         miniatura = nil
-//        print("🗑️ ViewModel: thumbnail nil for \(archivo.name) (was \(before))")
-
-        // 2) Elimina del cache en memoria
-//        mm.eliminarMiniatura(archivo: archivo)
     }
 
-    private func sizeInMB(of image: UIImage?) -> String {
-        guard let cg = image?.cgImage else { return "N/A" }
-        let bytes = cg.bytesPerRow * cg.height
-        return String(format: "%.2f MB", Double(bytes) / (1024*1024))
+    /// Convierte el método callback en uno async usando `withCheckedContinuation`
+    private func construirMiniaturaAsync(coleccion: Coleccion, archivo: Archivo) async -> UIImage? {
+        await withCheckedContinuation { continuation in
+            mm.construirMiniatura(coleccion: coleccion, archivo: archivo) { image in
+                continuation.resume(returning: image)
+            }
+        }
     }
 }
+
 
 

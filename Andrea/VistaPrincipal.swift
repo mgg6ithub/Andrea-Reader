@@ -13,6 +13,7 @@ struct VistaPrincipal: View {
     @EnvironmentObject var pc: PilaColecciones
     
     @State private var ultimaID: UUID? = nil
+    @Namespace private var gridNamespace
     
     var body: some View {
         NavigationStack {
@@ -31,21 +32,27 @@ struct VistaPrincipal: View {
                         .frame(height: 50)
 //                        .border(.red)
                     
-                    if let lastVM = pc.coleccionActualVM {
-                        CuadriculaVista(vm: lastVM)
-                            .onAppear {
-                                if lastVM.appEstado == nil {
-                                    lastVM.setAppEstado(appEstado) //Seteamos el appEstado
-                                }
-                                lastVM.cargarElementos() //Indexamos elementos de la coleccion
-                            }
-                            .onChange(of: appEstado.sistemaArchivos) {
-                                if lastVM.appEstado == nil {
-                                    lastVM.setAppEstado(appEstado) //Seteamos el appEstado
-                                }
-                                lastVM.cargarElementos()
-                            }
-                    }
+                    ZStack {
+                       // Para cada cambio de colección, mostramos/ocultamos con transición
+                       if let lastVM = pc.coleccionActualVM {
+                           CuadriculaVista(vm: lastVM, namespace: gridNamespace)
+                               .transition(.asymmetric(
+                                   insertion: .opacity.combined(with: .scale(scale: 1.05, anchor: .top)),
+                                   removal: .opacity
+                               ))
+                               .id(lastVM.coleccion.id) // fuerza vista nueva en cambio
+                               .onAppear {
+                                   if lastVM.appEstado == nil {
+                                       lastVM.setAppEstado(appEstado)
+                                   }
+                                   lastVM.cargarElementos()
+                               }
+                               .onChange(of: appEstado.sistemaArchivos) { _ in
+                                   lastVM.cargarElementos()
+                               }
+                       }
+                   }
+                   .animation(.spring(response: 0.5, dampingFraction: 0.7), value: pc.coleccionActualVM?.coleccion.id)
                     
                     Spacer()
                     

@@ -5,7 +5,9 @@ struct PlaceholderElementView: View {
     @State private var isVisible = false
     var width: CGFloat = 180
     var height: CGFloat = 310
-
+    
+    let index: Int
+    
     var body: some View {
         VStack(spacing: 0) {
             // Parte superior: simula imagen completa
@@ -15,6 +17,17 @@ struct PlaceholderElementView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .clipShape(RoundedCorner(radius: 18, corners: [.topLeft, .topRight]))
 //                    .shimmering()
+                
+//                VStack {
+//                    Spacer()
+//                    HStack{
+//                        Spacer()
+//                        Text(String(index))
+//                            .foregroundColor(.red)
+//                        Spacer()
+//                    }
+//                    Spacer()
+//                }
             }
 //            .border(.green)
             .frame(width: width)
