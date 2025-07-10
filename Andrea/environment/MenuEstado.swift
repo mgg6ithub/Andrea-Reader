@@ -34,6 +34,8 @@ class MenuEstado: ObservableObject {
     @Published var anchoRectanguloSmall: CGFloat = 100 //Ancho del rectangulo peke que contiene una opcion (por ejemplo el de un tema)
     @Published var altoRectanguloSmall: CGFloat = 140 //Ancho del rectangulo peke que contiene una opcion (por ejemñplo el de un tema)
     
+    @Published var modoVistaColeccion: EnumModoVista = .cuadricula
+    
     //Funcionalidad de la vista de los ajustes globales
     let sections = [
         "TemaPrincipal", "ColorPrincipal", "SistemaArchivos", "Rendimiento",

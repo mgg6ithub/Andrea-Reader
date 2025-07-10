@@ -37,6 +37,15 @@ enum EnumTipoSistemaArchivos: String, CaseIterable {
 }
 
 
+//MARK: --- MODOS DE VISTA PARA LA LIBRERIA ---
+enum EnumModoVista {
+    case cuadricula
+    case lista
+    case cartas
+    case pasarela
+}
+
+
 //MARK: - RESOLUCIONES LOGICAS
 enum EnumResolucionesLogicas {
     case small

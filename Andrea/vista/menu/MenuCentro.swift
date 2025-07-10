@@ -1,5 +1,24 @@
 import SwiftUI
 
+struct BotonMenu: View {
+    
+    let nombre: String
+    let icono: String
+    let isActive: Bool
+    let accion: () -> Void
+
+    
+    var body: some View {
+        
+        Button(action: accion) {
+            Label(nombre, systemImage: icono)
+                .foregroundColor(isActive ? .primary : .secondary)
+        }
+        
+    }
+    
+}
+
 struct MenuCentro: View {
     
     @EnvironmentObject var appEstado: AppEstado
@@ -18,7 +37,7 @@ struct MenuCentro: View {
         HStack {
             
             Button(action: {
-                //ACTION
+                
             }) {
                 Image("custom.hand.grid")
                     .font(.system(size: appEstado.constantes.iconSize * 1.3))
@@ -26,6 +45,8 @@ struct MenuCentro: View {
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .contentTransition(.symbolEffect(.replace))
                     .fontWeight(appEstado.constantes.iconWeight)
+                    .padding(12)                      // zona de toque ≥ 44×44
+                    .contentShape(Rectangle())
             }
             
             //MARK: - IMPORTAR
@@ -74,14 +95,40 @@ struct MenuCentro: View {
                 Button("Cancelar", role: .cancel) {}
             }
             
-            Button(action: {
-                //ACTION
-            }) {
+            Menu {
+                
+                Section(header: Text("Modos de vista")) {
+                    
+                    BotonMenu(
+                        nombre: "Cuadrícula",
+                        icono: "square.grid.2x2",
+                        isActive: menuEstado.modoVistaColeccion == .cuadricula
+                    ) {
+                        menuEstado.modoVistaColeccion = .cuadricula
+                    }
+
+                    BotonMenu(
+                        nombre: "Lista",
+                        icono: "list.bullet",
+                        isActive: menuEstado.modoVistaColeccion == .lista
+                    ) {
+                        menuEstado.modoVistaColeccion = .lista
+                    }
+                    
+                }
+                
+            } label: {
+                
+//                Image("custom.hand.grid")
                 Image(systemName: "square.grid.3x3.square")
                     .font(.system(size: appEstado.constantes.iconSize * 1.3))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                    .contentTransition(.symbolEffect(.replace))
                     .fontWeight(appEstado.constantes.iconWeight)
+                    .padding(12)                      // zona de toque ≥ 44×44
+                    .contentShape(Rectangle())
+                
             }
             
             Button(action: {

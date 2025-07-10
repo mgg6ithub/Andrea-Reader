@@ -10,10 +10,13 @@ import SwiftUI
 struct VistaPrincipal: View {
     
     @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var menuEstado: MenuEstado
     @EnvironmentObject var pc: PilaColecciones
     
     @State private var ultimaID: UUID? = nil
     @Namespace private var gridNamespace
+    
+    private var viewMode: EnumModoVista { menuEstado.modoVistaColeccion }
     
     var body: some View {
         NavigationStack {
@@ -33,26 +36,42 @@ struct VistaPrincipal: View {
 //                        .border(.red)
                     
                     ZStack {
-                       // Para cada cambio de colección, mostramos/ocultamos con transición
-                       if let lastVM = pc.coleccionActualVM {
-                           CuadriculaVista(vm: lastVM, namespace: gridNamespace)
-                               .transition(.asymmetric(
-                                   insertion: .opacity.combined(with: .scale(scale: 1.05, anchor: .top)),
-                                   removal: .opacity
-                               ))
-                               .id(lastVM.coleccion.id) // fuerza vista nueva en cambio
-                               .onAppear {
-                                   if lastVM.appEstado == nil {
-                                       lastVM.setAppEstado(appEstado)
-                                   }
-                                   lastVM.cargarElementos()
-                               }
-                               .onChange(of: appEstado.sistemaArchivos) { _ in
-                                   lastVM.cargarElementos()
-                               }
-                       }
-                   }
-                   .animation(.spring(response: 0.5, dampingFraction: 0.7), value: pc.coleccionActualVM?.coleccion.id)
+                        if let lastVM = pc.coleccionActualVM {
+                            Group {
+                                switch viewMode {
+                                case .cuadricula:
+                                    CuadriculaVista(vm: lastVM, namespace: gridNamespace)
+                                        .transition(.asymmetric(
+                                            insertion: .opacity.combined(with: .scale(scale: 1.05, anchor: .top)),
+                                            removal: .opacity
+                                        ))
+                                        .id("grid-\(lastVM.coleccion.id)")
+
+                                case .lista:
+                                    ListaVista(vm: lastVM)
+                                        .transition(.move(edge: .trailing).combined(with: .opacity))
+                                        .id("list-\(lastVM.coleccion.id)")
+                                
+                                default:
+                                    AnyView(Text(""))
+                                }
+                            }
+                            // onAppear y onChange aplican independientemente del modo
+                            .onAppear {
+                                if lastVM.appEstado == nil {
+                                    lastVM.setAppEstado(appEstado)
+                                }
+                                lastVM.cargarElementos()
+                            }
+                            .onChange(of: appEstado.sistemaArchivos) { _ in
+                                lastVM.cargarElementos()
+                            }
+                        }
+                    }
+                    .animation(.spring(response: 0.5, dampingFraction: 0.7),
+                               value: viewMode)                   // para cambio de modo
+                    .animation(.spring(response: 0.5, dampingFraction: 0.7),
+                               value: pc.coleccionActualVM?.coleccion.id)
                     
                     Spacer()
                     
