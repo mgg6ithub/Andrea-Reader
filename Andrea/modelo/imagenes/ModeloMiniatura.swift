@@ -64,6 +64,7 @@ class ModeloMiniatura {
                 return
             }
             
+            // --- SIN DOWNSAMPLE --- CADA IMAGEN CONSUMIRA MUCHA MEMORIA RAM
             // 4) Intentamos cargar la imagen real
 //            guard let miniatura = archivo.cargarImagen(nombreImagen: primeraPagina) else {
 //                DispatchQueue.main.async {

@@ -14,14 +14,17 @@ struct CuadriculaVista: View {
                     ) {
                         ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
                             ElementoVista(element: elemento) {
-                                // tu contenido condicional aquí
-                                if let _ = elemento as? ElementoPlaceholder {
-                                    PlaceholderElementView(index: index)
-                                } else if let coleccion = elemento as? Coleccion {
-                                    CuadriculaColeccion(coleccion: coleccion)
-                                } else if let archivo = elemento as? Archivo {
-                                    CuadriculaArchivo(archivo: archivo, coleccion: vm.coleccion)
-                                }
+//                                Group { // <- un contenedor para aplicar la transición
+                                    if let placeholder = elemento as? ElementoPlaceholder {
+                                        PlaceholderElementView(index: index)
+//                                            .matchedGeometryEffect(id: placeholder.id, in: namespace)
+//                                            .transition(.opacity.combined(with: .scale))
+                                    } else if let archivo = elemento as? Archivo {
+                                        CuadriculaArchivo(archivo: archivo, coleccion: vm.coleccion)
+//                                            .matchedGeometryEffect(id: archivo.id, in: namespace)
+//                                            .transition(.opacity.combined(with: .scale))
+                                    }
+//                                }
                             }
                             .id(index) // importante: asegúrate de que este `.id` sea consistente con scrollTo
                             .onAppear {
@@ -30,13 +33,6 @@ struct CuadriculaVista: View {
                                 }
 
                             }
-//                            .matchedGeometryEffect(
-//                                id: elemento.id,
-//                                in: namespace,
-//                                properties: .position,
-//                                anchor: .center
-//                            )
-
 
                         }
                     }

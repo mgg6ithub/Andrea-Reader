@@ -13,23 +13,21 @@ struct CuadriculaArchivo: View {
 
             // --- Imagen ---
             ZStack {
-                
                 if let img = viewModel.miniatura {
                     Image(uiImage: img)
                         .resizable()
-                    
+//                        .transition(.opacity)                  // <-- transición de aparición
                 } else {
                     ProgressView()
+//                        .transition(.opacity)                  // <-- transición de desaparición
                 }
-                
-                // --- Progreso ---
                 VStack {
                     Spacer()
                     ProgresoCuadricula(archivo: archivo, colorColeccion: coleccion.directoryColor)
                 }
-                
             }
-            .frame(width: width) // solo limitamos ancho
+            .frame(width: width)
+//            .animation(.easeInOut(duration: 0.3), value: viewModel.miniatura)  // <-- anima cuando cambia miniatura
             
             // --- Titulo e informacion ---
             TituloInformacion(archivo: archivo, colorColeccion: coleccion.directoryColor)
@@ -45,9 +43,9 @@ struct CuadriculaArchivo: View {
             
             viewModel.loadThumbnail(coleccion: coleccion, for: archivo)
 
-            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.0...0.2))) {
+//            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.2...0.4))) {
                 isVisible = true
-            }
+//            }
         }
         .onDisappear {
             viewModel.unloadThumbnail(for: archivo)

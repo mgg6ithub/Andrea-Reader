@@ -27,7 +27,7 @@ struct HistorialColecciones: View {
                             Image(systemName: "house")
                                 .opacity(0.75)
                         }
-                        .matchedGeometryEffect(id: 3123131321, in: breadcrumb)
+//                        .matchedGeometryEffect(id: 3123131321, in: breadcrumb)
                     }
                     else {
                         
@@ -51,13 +51,13 @@ struct HistorialColecciones: View {
                                 ) {
                                     Text(vm.coleccion.name)
                                 }
-                                .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
+//                                .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
                                 
                             } else {
                                 Button(action: {
-                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+//                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
                                         pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
-                                    }
+//                                    }
                                 }) {
                                     
                                     ColeccionRectanguloAvanzado(
@@ -70,7 +70,7 @@ struct HistorialColecciones: View {
                                     {
                                         Text(vm.coleccion.name)
                                     }
-                                    .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
+//                                    .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
                                     
                                 }
                                 .buttonStyle(ColeccionButtonStyle())
@@ -82,6 +82,28 @@ struct HistorialColecciones: View {
                 .padding(.horizontal)
             }
         }
+    }
+}
+
+struct AnimatableFontModifier: AnimatableModifier {
+    var size: CGFloat
+    var weight: Font.Weight = .regular
+
+    // Este property hace que SwiftUI anime el cambio de `size`
+    var animatableData: CGFloat {
+        get { size }
+        set { size = newValue }
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: size, weight: weight))
+    }
+}
+
+extension View {
+    func animatableFont(size: CGFloat, weight: Font.Weight = .regular) -> some View {
+        self.modifier(AnimatableFontModifier(size: size, weight: weight))
     }
 }
 
@@ -100,10 +122,12 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
 
     var body: some View {
         content()
-            .font(.system(size: textoSize, weight: isActive ? .semibold : .regular))
-            .foregroundColor(colorPrimario)
-            .padding(.horizontal, 11)
-            .padding(.vertical, 7)
+            .animatableFont(size: textoSize, weight: isActive ? .semibold : .regular)
+                .foregroundColor(colorPrimario)
+                .fixedSize()               // ¡importante!
+                .layoutPriority(1)         // o al menos mayor que 0
+                .padding(.horizontal, 11)
+                .padding(.vertical, 7)
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .fill(
@@ -127,7 +151,7 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .opacity(isVisible ? 1.0 : 0.0)
             .onAppear {
                 withAnimation(
-                    .spring(response: 0.7, dampingFraction: 0.8)
+                    .spring(response: 0.3, dampingFraction: 0.5)
                     .delay(animationDelay)
                 ) {
                     isVisible = true
@@ -136,7 +160,7 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
                 }
             }
             .onDisappear {
-                withAnimation(.easeIn(duration: 0.2)) {
+                withAnimation(.easeIn(duration: 0.1)) {
                     isVisible = false
                     scale = 0.8
                     offset = -20

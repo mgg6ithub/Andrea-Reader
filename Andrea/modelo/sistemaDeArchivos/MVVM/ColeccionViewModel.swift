@@ -74,7 +74,9 @@ class ColeccionViewModel: ObservableObject {
                     await MainActor.run {
                         var nuevos = self.elementos
                         nuevos[idx] = elem
-                        self.elementos = nuevos
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.9)) {
+                            self.elementos = nuevos
+                        }
                     }
                 }
             }

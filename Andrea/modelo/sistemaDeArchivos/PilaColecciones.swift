@@ -95,14 +95,12 @@ class PilaColecciones: ObservableObject {
         colecciones.append(vm)
         actualizarColeccionActual()
         guardarPila()
-        ThumbnailService.shared.clearCache()
     }
 
     public func sacarColeccion() {
         _ = colecciones.popLast()
         actualizarColeccionActual()
         guardarPila()
-        ThumbnailService.shared.clearCache()
     }
 
     public func getColeccionActual() -> ColeccionViewModel {
@@ -123,7 +121,6 @@ class PilaColecciones: ObservableObject {
             if ultima.coleccion == coleccion {
                 actualizarColeccionActual()
                 guardarPila()
-                ThumbnailService.shared.clearCache()
                 break
             }
             colecciones.removeLast()
