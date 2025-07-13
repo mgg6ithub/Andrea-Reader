@@ -6,7 +6,9 @@ struct CuadriculaArchivo: View {
     @StateObject private var viewModel = ArchivoThumbnailViewModel()
     let coleccion: Coleccion
     @State private var isVisible = false
-    var width: CGFloat = 180  // Esto lo puedes inyectar dinámicamente
+    
+    var width: CGFloat
+    var height: CGFloat
 
     var body: some View {
         VStack(spacing: 0) {
@@ -33,7 +35,7 @@ struct CuadriculaArchivo: View {
             TituloInformacion(archivo: archivo, colorColeccion: coleccion.directoryColor)
             
         }
-        .frame(width: width, height: 310)
+        .frame(width: width, height: height)
         .background(Color(.systemGray6))
         .cornerRadius(18)
         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)

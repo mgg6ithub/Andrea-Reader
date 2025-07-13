@@ -3,10 +3,10 @@ import SwiftUI
 
 struct PlaceholderElementView: View {
     @State private var isVisible = false
-    var width: CGFloat = 180
-    var height: CGFloat = 310
     
     let index: Int
+    var width: CGFloat
+    var height: CGFloat
     
     var body: some View {
         VStack(spacing: 0) {

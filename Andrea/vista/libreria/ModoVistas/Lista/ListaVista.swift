@@ -16,7 +16,7 @@ struct ListaVista: View {
                         } else {
                             // placeholder
                             let idx = vm.elementos.firstIndex { $0.id == elemento.id } ?? 0
-                            PlaceholderElementView(index: idx)
+                            PlaceholderElementView(index: idx, width: 180, height: 180)
                                 .frame(width: 60, height: 60)
                         }
                         // Usa la propiedad correcta: si tu Archivo tiene `name`:
