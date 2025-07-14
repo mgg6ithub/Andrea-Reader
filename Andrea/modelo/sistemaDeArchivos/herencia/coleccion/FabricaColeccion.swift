@@ -15,6 +15,11 @@ struct FabricaColeccion {
         let coleccion = Coleccion(directoryName: collectionName, directoryURL: collectionURL, creationDate: creationDate, modificationDate: modificationDate, elementList: [])
         
 //        coleccion.scrollPosition = PersistenciaDatos().obtenerPosicionScroll(coleccion: coleccion)
+        if let hexColor = PersistenciaDatos().obtenerAtributo(coleccion: coleccion, atributo: "color") as? String {
+            coleccion.color = Color(hex: hexColor)
+        } else {
+            coleccion.color = .blue // valor por defecto
+        }
         
         return coleccion
         

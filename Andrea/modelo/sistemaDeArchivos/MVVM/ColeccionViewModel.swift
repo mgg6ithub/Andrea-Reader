@@ -125,7 +125,7 @@ class ColeccionViewModel: ObservableObject {
     func actualizarScroll(_ nuevo: Int) {
 
         scrollPosition = nuevo
-        coleccion.scrollPosition = nuevo
+//        coleccion.scrollPosition = nuevo
 
         PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "scrollPosition", valor: nuevo)
     }

@@ -68,6 +68,7 @@ struct VistaPrincipal: View {
 
 
 struct ContenidoColeccionVista: View {
+    
     @ObservedObject var vm: ColeccionViewModel
     @EnvironmentObject var appEstado: AppEstado
     var namespace: Namespace.ID
@@ -103,4 +104,5 @@ struct ContenidoColeccionVista: View {
             print("👀 mostrándose vista con VM: \(vm.coleccion.name)")
         }
     }
+    
 }

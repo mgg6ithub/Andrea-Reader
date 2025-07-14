@@ -45,7 +45,7 @@ struct HistorialColecciones: View {
                                 ColeccionRectanguloAvanzado(
                                     textoSize: 21,
                                     colorPrimario: .primary,
-                                    color: vm.coleccion.directoryColor,
+                                    color: vm.coleccion.color,
                                     isActive: true,
                                     animationDelay: Double(index) * 0.1
                                 ) {
@@ -63,7 +63,7 @@ struct HistorialColecciones: View {
                                     ColeccionRectanguloAvanzado(
                                         textoSize: 14,
                                         colorPrimario: .secondary,
-                                        color: vm.coleccion.directoryColor,
+                                        color: vm.coleccion.color,
                                         isActive: false,
                                         animationDelay: Double(index) * 0.1
                                     )

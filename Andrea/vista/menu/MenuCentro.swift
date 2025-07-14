@@ -121,7 +121,6 @@ struct MenuCentro: View {
                         print("📦 Modificando modoVista para VM: \(coleccion.name) a lista")
                         vm.modoVista = .lista
                         PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
-                        
                     }
                     
                 }

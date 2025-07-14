@@ -150,21 +150,21 @@ class SistemaArchivos: ObservableObject {
         
         print("No esta cacheado")
         
-        let operation = IndexarOperation(coleccionActual: coleccionActual, sistemaArchivos: self)
-        
-        operation.completionBlock = { [weak operation, weak self] in
-            guard let self = self, let op = operation, !op.isCancelled else { return }
-            
-//            DispatchQueue.main.async {
-//                if let coleccionValor = self.cacheColecciones[coleccionURL] {
-//                    print("La coleccion ya existe en cache ", coleccionValor.coleccion.name)
-//                    coleccionValor.listaElementos = op.elementosFinales
-//                }
-//                completion?()
-//            }
-        }
-        
-        indexacionQueue.addOperation(operation)
+//        let operation = IndexarOperation(coleccionActual: coleccionActual, sistemaArchivos: self)
+//        
+//        operation.completionBlock = { [weak operation, weak self] in
+//            guard let self = self, let op = operation, !op.isCancelled else { return }
+//            
+////            DispatchQueue.main.async {
+////                if let coleccionValor = self.cacheColecciones[coleccionURL] {
+////                    print("La coleccion ya existe en cache ", coleccionValor.coleccion.name)
+////                    coleccionValor.listaElementos = op.elementosFinales
+////                }
+////                completion?()
+////            }
+//        }
+//        
+//        indexacionQueue.addOperation(operation)
     }
 
     

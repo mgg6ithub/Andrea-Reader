@@ -17,7 +17,7 @@ class Coleccion: ElementoSistemaArchivos {
     //ATRIBUTOS
     var isDirectory = true
     var elementList: [String]
-    var directoryColor: Color // Por defecto sera el azul
+    var color: Color = .blue // Por defecto sera el azul
     var lastImportedElement: URL?
     var lastImportedElementDate: Date?
     
@@ -34,12 +34,10 @@ class Coleccion: ElementoSistemaArchivos {
     
     @State private var showIconAlert = false
     
-    var scrollPosition: Int? = 0
-    
     init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, elementList: [String]) {
         
         self.elementList = elementList
-        self.directoryColor = ConstantesPorDefecto().lista.randomElement() ?? .blue
+//        self.color = ConstantesPorDefecto().lista.randomElement() ?? .blue
         super.init(name: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate)
         
 //        if let colorString = DataPersistence.getDataPersistence().getDirectoryColor(for: directoryURL), let color = Color(fromString: colorString) {

@@ -47,7 +47,7 @@ class ModeloMiniatura {
                 guard let thumb = ImagenArchivoModelo()
                         .crearMiniaturaPorDefecto(
                             miniatura: placeholder,
-                            color: UIColor(coleccion.directoryColor)
+                            color: UIColor(coleccion.color)
                         )?
                         .uiImage
                 else {

@@ -25,14 +25,14 @@ struct CuadriculaArchivo: View {
                 }
                 VStack {
                     Spacer()
-                    ProgresoCuadricula(archivo: archivo, colorColeccion: coleccion.directoryColor)
+                    ProgresoCuadricula(archivo: archivo, colorColeccion: coleccion.color)
                 }
             }
             .frame(width: width)
 //            .animation(.easeInOut(duration: 0.3), value: viewModel.miniatura)  // <-- anima cuando cambia miniatura
             
             // --- Titulo e informacion ---
-            TituloInformacion(archivo: archivo, colorColeccion: coleccion.directoryColor)
+            TituloInformacion(archivo: archivo, colorColeccion: coleccion.color)
             
         }
         .frame(width: width, height: height)
