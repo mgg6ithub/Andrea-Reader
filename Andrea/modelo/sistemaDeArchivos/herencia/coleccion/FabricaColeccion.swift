@@ -14,7 +14,7 @@ struct FabricaColeccion {
         
         let coleccion = Coleccion(directoryName: collectionName, directoryURL: collectionURL, creationDate: creationDate, modificationDate: modificationDate, elementList: [])
         
-        coleccion.scrollPosition = PersistenciaDatos().obtenerPosicionScroll(coleccion: coleccion)
+//        coleccion.scrollPosition = PersistenciaDatos().obtenerPosicionScroll(coleccion: coleccion)
         
         return coleccion
         

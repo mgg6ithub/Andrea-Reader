@@ -104,7 +104,11 @@ struct MenuCentro: View {
                         icono: "square.grid.2x2",
                         isActive: menuEstado.modoVistaColeccion == .cuadricula
                     ) {
-                        menuEstado.modoVistaColeccion = .cuadricula
+                        let vm = PilaColecciones.getPilaColeccionesSingleton.getColeccionActual()
+                        let coleccion = vm.coleccion
+                        print("📦 Modificando modoVista para VM: \(coleccion.name) a cuadricula")
+                        vm.modoVista = .cuadricula
+                        PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.cuadricula)
                     }
 
                     BotonMenu(
@@ -112,7 +116,12 @@ struct MenuCentro: View {
                         icono: "list.bullet",
                         isActive: menuEstado.modoVistaColeccion == .lista
                     ) {
-                        menuEstado.modoVistaColeccion = .lista
+                        let vm = PilaColecciones.getPilaColeccionesSingleton.getColeccionActual()
+                        let coleccion = vm.coleccion
+                        print("📦 Modificando modoVista para VM: \(coleccion.name) a lista")
+                        vm.modoVista = .lista
+                        PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
+                        
                     }
                     
                 }

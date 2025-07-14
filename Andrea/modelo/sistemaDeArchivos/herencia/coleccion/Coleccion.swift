@@ -21,6 +21,9 @@ class Coleccion: ElementoSistemaArchivos {
     var lastImportedElement: URL?
     var lastImportedElementDate: Date?
     
+    //ATRIBUTOS PERSISTENTES
+
+    
     //MODELO
 //    var directoryImageModel: DirectoryImageModel = DirectoryImageModel()
     

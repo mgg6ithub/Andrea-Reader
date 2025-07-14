@@ -37,35 +37,7 @@ struct VistaPrincipal: View {
                     
                     ZStack {
                         if let lastVM = pc.coleccionActualVM {
-                            Group {
-                                switch viewMode {
-                                case .cuadricula:
-                                    CuadriculaVista(vm: lastVM, namespace: gridNamespace)
-                                        .transition(.asymmetric(
-                                            insertion: .opacity.combined(with: .scale(scale: 1.05, anchor: .top)),
-                                            removal: .opacity
-                                        ))
-                                        .id("grid-\(lastVM.coleccion.id)")
-
-                                case .lista:
-                                    ListaVista(vm: lastVM)
-                                        .transition(.move(edge: .trailing).combined(with: .opacity))
-                                        .id("list-\(lastVM.coleccion.id)")
-                                
-                                default:
-                                    AnyView(Text(""))
-                                }
-                            }
-                            // onAppear y onChange aplican independientemente del modo
-                            .onAppear {
-                                if lastVM.appEstado == nil {
-                                    lastVM.setAppEstado(appEstado)
-                                }
-                                lastVM.cargarElementos()
-                            }
-                            .onChange(of: appEstado.sistemaArchivos) { _ in
-                                lastVM.cargarElementos()
-                            }
+                            ContenidoColeccionVista(vm: lastVM, namespace: gridNamespace)
                         }
                     }
                     .animation(.spring(response: 0.5, dampingFraction: 0.7),
@@ -90,6 +62,45 @@ struct VistaPrincipal: View {
                     vm.cargarElementos()
                 }
             }
+        }
+    }
+}
+
+
+struct ContenidoColeccionVista: View {
+    @ObservedObject var vm: ColeccionViewModel
+    @EnvironmentObject var appEstado: AppEstado
+    var namespace: Namespace.ID
+
+    var body: some View {
+        Group {
+            switch vm.modoVista {
+            case .cuadricula:
+                CuadriculaVista(vm: vm, namespace: namespace)
+                    .transition(.asymmetric(
+                        insertion: .opacity.combined(with: .scale(scale: 1.05, anchor: .top)),
+                        removal: .opacity
+                    ))
+                    .id("grid-\(vm.coleccion.id)")
+
+            case .lista:
+                ListaVista(vm: vm)
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
+                    .id("list-\(vm.coleccion.id)")
+
+            default:
+                AnyView(Text("Vista desconocida"))
+            }
+        }
+        .onAppear {
+            if vm.appEstado == nil {
+                vm.setAppEstado(appEstado)
+            }
+            vm.cargarElementos()
+        }
+        .onChange(of: appEstado.sistemaArchivos) { _ in
+            vm.cargarElementos()
+            print("👀 mostrándose vista con VM: \(vm.coleccion.name)")
         }
     }
 }

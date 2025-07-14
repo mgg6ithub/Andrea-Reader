@@ -9,7 +9,6 @@ struct CuadriculaVista: View {
     @State private var lastMagnification: CGFloat = 1.0
     @State private var scrollEnabled: Bool = true
 
-
     var body: some View {
         GeometryReader { outerGeometry in
             

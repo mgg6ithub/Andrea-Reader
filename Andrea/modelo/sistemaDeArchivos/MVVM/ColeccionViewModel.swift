@@ -10,13 +10,46 @@ class ColeccionViewModel: ObservableObject {
     
   @Published var elementos: [any ElementoSistemaArchivosProtocolo] = []
   @Published var isLoading = false
+    
+  @Published var color: Color
   @Published var scrollPosition: Int
+  @Published var modoVista: EnumModoVista
+    
   @Published var isPerformingAutoScroll = false
 
     init(_ coleccion: Coleccion) {
         self.coleccion = coleccion
-        self.scrollPosition = PersistenciaDatos().obtenerPosicionScroll(coleccion: coleccion)
+        
+        //Llamamos a la persistencia para obtener los datos de la coleccion
+        //DATOS
+        // - Color
+        // - posicion scroll
+        // - Ordenamiento
+        // - Tipo de vista
+        //    - Cuadricula
+        //    - Lista
+        
+        let datos = PersistenciaDatos().obtenerDatosColeccion(coleccion: coleccion)
 
+        if let scroll = datos?["scrollPosition"] as? Int {
+            self.scrollPosition = scroll
+        } else {
+            self.scrollPosition = 0
+        }
+
+        if let hexColor = datos?["color"] as? String {
+            self.color = Color(hex: hexColor)
+        } else {
+            self.color = .blue // default color
+        }
+
+        if let tipoVistaRaw = PersistenciaDatos().obtenerAtributo(coleccion: coleccion, atributo: "tipoVista") as? String,
+           let modo = EnumModoVista(rawValue: tipoVistaRaw) {
+            self.modoVista = modo
+        } else {
+            self.modoVista = .lista
+        }
+        //asignarlos
 //        print("🟠 Inicializando VM para colección: \(coleccion.name) con scrollPosition: \(self.scrollPosition)")
 
 //        cargarElementos()
@@ -94,7 +127,7 @@ class ColeccionViewModel: ObservableObject {
         scrollPosition = nuevo
         coleccion.scrollPosition = nuevo
 
-        PersistenciaDatos().guardarPosicionScroll(coleccion: coleccion)
+        PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "scrollPosition", valor: nuevo)
     }
     
 }

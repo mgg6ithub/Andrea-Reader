@@ -131,7 +131,7 @@ class ModeloMiniatura {
         
         //Mera comprobacion
         if self.cacheMiniaturas.object(forKey: key) != nil {
-            print("✅ Imagen confirmada en caché para archivo:", archivo.name)
+//            print("✅ Imagen confirmada en caché para archivo:", archivo.name)
         } else {
             print("❌ No se pudo confirmar imagen en caché para archivo:", archivo.name)
         }
