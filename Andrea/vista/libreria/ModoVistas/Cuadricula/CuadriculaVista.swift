@@ -27,7 +27,7 @@ struct CuadriculaVista: View {
                         spacing: spacing
                     ) {
                         ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
-                            ElementoVista(element: elemento) {
+                            ElementoVista(vm: vm, elemento: elemento) {
                                 if let placeholder = elemento as? ElementoPlaceholder {
                                     PlaceholderElementView(index: index, width: itemWidth, height: itemHeight)
                                 } else if let archivo = elemento as? Archivo {

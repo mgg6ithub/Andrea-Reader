@@ -226,21 +226,39 @@ class SistemaArchivos: ObservableObject {
     
     
     // MARK: – Ejemplo de método para borrar un elemento (protegido por fileQueue)
-    public func borrarElemento(_ elemento: Any) throws {
-        try fileQueue.sync {
-            // --- Lógica para borrar del disco, actualizar caches internas, etc. ---
-            // Por ejemplo:
-            // try FileManager.default.removeItem(at: (elemento as! URL))
-            //
-            // Una vez borrado en disco, actualizamos la propiedad `elements` en main:
+    public func borrarElemento(elemento: any ElementoSistemaArchivosProtocolo, vm: ColeccionViewModel) {
+        fileQueue.async {
+            let url: URL = elemento.url
             
-            DispatchQueue.main.async {
-                // Aquí harías algo como:
-                // self.elements.removeAll { $0.id == elemento.id }
-                // (Este es solo un ejemplo; adapta a tu modelo real)
+            do {
+                try FileManager.default.removeItem(at: url)
+                
+                DispatchQueue.main.async {
+                    // Verifica que realmente se haya borrado
+                    let existe = SistemaArchivosUtilidades
+                        .getSistemaArchivosUtilidadesSingleton
+                        .fileExists(elementURL: url)
+                    
+                    if !existe {
+                        withAnimation(.easeInOut(duration: 0.35)) {
+                            vm.elementos.removeAll(where: { $0.id == elemento.id })
+                        }
+                        
+                        if self.cacheColecciones[url] != nil {
+                            self.cacheColecciones.removeValue(forKey: url)
+                            print("✅ Colección eliminada del cache")
+                        }
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    // Aquí podrías mostrar un alert en la UI si usas un binding
+                    print("⚠️ Error al borrar el archivo: \(error)")
+                }
             }
         }
     }
+
     
     
     // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)

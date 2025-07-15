@@ -3,14 +3,18 @@ import SwiftUI
 
 struct ElementoVista<Content: View>: View {
     
-    let element: any ElementoSistemaArchivosProtocolo
+    @ObservedObject var vm: ColeccionViewModel
+    let elemento: any ElementoSistemaArchivosProtocolo
     @ViewBuilder let content: () -> Content
+    
+    private let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
+    @State private var mostrarConfirmacion = false
     
     var body: some View {
 
         content()
             .contextMenu {
-                Section(header: Text(element.name)) {
+                Section(header: Text(elemento.name)) {
                     
                     Text("Mostrar informacion")
                     
@@ -25,6 +29,18 @@ struct ElementoVista<Content: View>: View {
                     }
                     
                 }
+                
+                Button("Borrar", role: .destructive) { mostrarConfirmacion = true }
+            }
+            .confirmationDialog(
+                "¿Estás seguro de que quieres borrar \(elemento.name)?",
+                isPresented: $mostrarConfirmacion,
+                titleVisibility: .visible
+            ) {
+                Button("Borrar", role: .destructive) {
+                    sa.borrarElemento(elemento: elemento, vm: vm)
+                }
+                Button("Cancelar", role: .cancel) {}
             }
         
     }
