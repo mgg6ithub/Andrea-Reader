@@ -29,7 +29,7 @@ struct CuadriculaVista: View {
                         ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
                             ElementoVista(vm: vm, elemento: elemento) {
                                 if let _ = elemento as? ElementoPlaceholder {
-                                    PlaceholderElementView(index: index, width: itemWidth, height: itemHeight)
+                                    PlaceholderCuadricula(index: index, width: itemWidth, height: itemHeight)
                                 } else if let archivo = elemento as? Archivo {
                                     CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
                                 } else if let coleccion = elemento as? Coleccion {

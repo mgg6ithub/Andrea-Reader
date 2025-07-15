@@ -15,10 +15,8 @@ struct ListaVista: View {
                 ForEach(vm.elementos, id: \.id) { elemento in
                     HStack(spacing: 12) {
                         // Miniatura + título en fila
-                        if let _ = elemento as? ElementoPlaceholder {
-                            let idx = vm.elementos.firstIndex { $0.id == elemento.id } ?? 0
-                            PlaceholderElementView(index: idx, width: 180, height: 180)
-                                .frame(width: 60, height: 60)
+                        if let placeholder = elemento as? ElementoPlaceholder {
+                            PlaceholderLista(placeholder: placeholder, coleccionVM: vm)
                         } else if let archivo = elemento as? Archivo {
                             ListaArchivo(archivo: archivo, coleccionVM: vm)
                         } else if let coleccion = elemento as? Coleccion {

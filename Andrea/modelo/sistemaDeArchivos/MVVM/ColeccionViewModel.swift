@@ -148,7 +148,6 @@ class ColeccionViewModel: ObservableObject {
             }
         }
 
-
     }
     
     func actualizarScroll(_ nuevo: Int) {
