@@ -9,6 +9,8 @@ import SwiftUI
 
 struct VistaPrincipal: View {
     
+    @State private var animacionesInicialesActivadas = false
+    
     @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     @EnvironmentObject var pc: PilaColecciones

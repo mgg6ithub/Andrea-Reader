@@ -32,6 +32,8 @@ struct CuadriculaVista: View {
                                     PlaceholderElementView(index: index, width: itemWidth, height: itemHeight)
                                 } else if let archivo = elemento as? Archivo {
                                     CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
+                                } else if let coleccion = elemento as? Coleccion {
+                                    CuadriculaColeccion(coleccion: coleccion)
                                 }
                             }
                             .id(index) // importante: asegúrate de que este `.id` sea consistente con scrollTo
@@ -66,9 +68,9 @@ struct CuadriculaVista: View {
                             lastMagnification = 1.0
                             currentMagnification = 1.0
 
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                                 scrollEnabled = true
-//                            }
+                            }
                         },
                     including: .all // <- esto da prioridad real al gesto incluso sobre el scroll
                 )

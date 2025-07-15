@@ -42,9 +42,13 @@ class PilaColecciones: ObservableObject {
             let cache = sa.cacheColecciones
 
             var vistaModelos = coleccionesGuardadas.compactMap { url in
-                cache[url]?.coleccion
-            }.map { coleccion in
-                ColeccionViewModel(coleccion)
+                // ✅ Validar si aún existe en el sistema de archivos
+                if FileManager.default.fileExists(atPath: url.path),
+                   let coleccion = cache[url]?.coleccion {
+                    return ColeccionViewModel(coleccion)
+                } else {
+                    return nil
+                }
             }
 
             // ✅ Añadir siempre la colección HOME como primera en la pila
@@ -64,7 +68,6 @@ class PilaColecciones: ObservableObject {
             self.colecciones = vistaModelos
         }
     }
-
 
 
     public func guardarPila() {

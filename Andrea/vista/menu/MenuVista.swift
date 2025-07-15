@@ -43,24 +43,24 @@ struct MenuVista: View {
             }
 //            .frame(maxWidth: .infinity, alignment: .center)
             
-            HStack {
-                Spacer()
-                Rectangle()
-                    .fill(Color(UIColor.systemGray4))
-                    .frame(width: isExpanded ? menuCentroWidth + 40 : 0, height: 1) // Ajusta el ancho de la línea
-                    .animation(appEstado.isFirstTimeLaunch ? .easeInOut(duration: 2.0) : .none, value: isExpanded)
-                Spacer()
-            }
-            .onAppear {
-                if appEstado.isFirstTimeLaunch {
-                    isExpanded = true // Activa la animación
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Tras animación, desactiva el flag
-                        appEstado.isFirstTimeLaunch = false
-                    }
-                } else {
-                    isExpanded = true // Muestra directamente la línea con ancho completo
-                }
-            }
+//            HStack {
+//                Spacer()
+//                Rectangle()
+//                    .fill(Color(UIColor.systemGray4))
+//                    .frame(width: isExpanded ? menuCentroWidth + 40 : 0, height: 1) // Ajusta el ancho de la línea
+//                    .animation(appEstado.isFirstTimeLaunch ? .easeInOut(duration: 2.0) : .none, value: isExpanded)
+//                Spacer()
+//            }
+//            .onAppear {
+//                if appEstado.isFirstTimeLaunch {
+//                    isExpanded = true // Activa la animación
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Tras animación, desactiva el flag
+//                        appEstado.isFirstTimeLaunch = false
+//                    }
+//                } else {
+//                    isExpanded = true // Muestra directamente la línea con ancho completo
+//                }
+//            }
         }
         .frame(height: 25)
 //        .padding(.horizontal, 25)

@@ -77,10 +77,6 @@ class ColeccionViewModel: ObservableObject {
             break
         }
         
-        //asignarlos
-//        print("🟠 Inicializando VM para colección: \(coleccion.name) con scrollPosition: \(self.scrollPosition)")
-
-//        cargarElementos()
     }
     
     //Inyectamos appEstado desde CuadriculaVista
@@ -93,6 +89,7 @@ class ColeccionViewModel: ObservableObject {
 
         // 1. Obtener las URLs y filtrarlas SINCRÓNICAMENTE para crear los placeholders
         let allURLs = SistemaArchivos.getSistemaArchivosSingleton.obtenerURLSDirectorio(coleccionURL: coleccion.url)
+        
         var filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.filtrosIndexado.allSatisfy {
                 $0.shouldInclude(url: url)
@@ -110,7 +107,6 @@ class ColeccionViewModel: ObservableObject {
         
         filteredURLs.sort { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
         
-
         let total = filteredURLs.count
         if self.scrollPosition >= total || self.scrollPosition < 0 {
 //            print("⚠️ Scroll position fuera de rango. Reiniciando a 0.")
@@ -140,7 +136,7 @@ class ColeccionViewModel: ObservableObject {
                     await MainActor.run {
                         var nuevos = self.elementos
                         nuevos[idx] = elem
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.9)) {
+                        withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
                             self.elementos = nuevos
                         }
                     }

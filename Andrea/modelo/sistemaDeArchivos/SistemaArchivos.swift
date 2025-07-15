@@ -320,10 +320,16 @@ class SistemaArchivos: ObservableObject {
             // --- Lógica para crear carpeta en disco ---
             let coleccionDestino = direccionNuevaColeccion ?? self.coleccionHomeURL
             let nuevaColeccionURL = coleccionDestino.appendingPathComponent(nombre, isDirectory: true)
-            try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
             
-            // --- Creamos la instancia de la coleccion ---
-            self.actualizarUISoloElemento(elementoURL: nuevaColeccionURL)
+            if !SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.fileExists(elementURL: nuevaColeccionURL) {
+                try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
+                
+                // --- Creamos la instancia de la coleccion ---
+                self.actualizarUISoloElemento(elementoURL: nuevaColeccionURL)
+            }
+            else {
+                print("La coleccion ya existe no se creara otra")
+            }
 
         }
     }
@@ -338,10 +344,9 @@ class SistemaArchivos: ObservableObject {
         
         // --- Introducir el elemento en la lista en el hilo principal
         if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: elementoURL) {
-            DispatchQueue.main.async { PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().elementos.append(elemento)
-            }
+            DispatchQueue.main.async { PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().elementos.append(elemento) }
         }
-        
+
         //Actualizar todas las instancias dependientes de dicho elemento
         
     }
