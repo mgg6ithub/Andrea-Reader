@@ -45,6 +45,18 @@ enum EnumModoVista: String, Codable {
     case pasarela
 }
 
+//MARK: --- MODOS DE ORDENACION ---
+enum EnumOrdenaciones: String, Codable {
+    case aleatorio
+    case personalizado
+    case alfabeticamente
+    case porcentaje
+    case tamano
+    case paginas
+    case fechaimportacion
+    case fechamodificacion
+}
+
 
 //MARK: - RESOLUCIONES LOGICAS
 enum EnumResolucionesLogicas {

@@ -17,7 +17,6 @@ class Coleccion: ElementoSistemaArchivos {
     //ATRIBUTOS
     var isDirectory = true
     var elementList: [String]
-    var color: Color = .blue // Por defecto sera el azul
     var lastImportedElement: URL?
     var lastImportedElementDate: Date?
     

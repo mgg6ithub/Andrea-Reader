@@ -14,6 +14,10 @@ class ColeccionViewModel: ObservableObject {
   @Published var color: Color
   @Published var scrollPosition: Int
   @Published var modoVista: EnumModoVista
+  @Published var ordenacion: EnumOrdenaciones
+  @Published var columnas: Int = 4
+  @Published var altura: CGFloat = 180
+
     
   @Published var isPerformingAutoScroll = false
 
@@ -49,6 +53,30 @@ class ColeccionViewModel: ObservableObject {
         } else {
             self.modoVista = .lista
         }
+        
+        if let ordenacionString = PersistenciaDatos().obtenerAtributo(coleccion: coleccion, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {
+            self.ordenacion = ordenacion
+        } else {
+            self.ordenacion = .alfabeticamente
+        }
+        
+        switch self.modoVista {
+        case .cuadricula:
+            if let columnasGuardadas = PersistenciaDatos().obtenerAtributoVista(coleccion: coleccion, modo: .cuadricula, atributo: "columnas") as? Int {
+                self.columnas = columnasGuardadas
+            } else {
+                self.columnas = 4 // valor por defecto
+            }
+        case .lista:
+            if let alturaItem = PersistenciaDatos().obtenerAtributoVista(coleccion: coleccion, modo: .lista, atributo: "alturaItem") as? CGFloat {
+                self.altura = alturaItem
+            } else {
+                self.altura = 180 // valor por defecto
+            }
+        default:
+            break
+        }
+        
         //asignarlos
 //        print("🟠 Inicializando VM para colección: \(coleccion.name) con scrollPosition: \(self.scrollPosition)")
 

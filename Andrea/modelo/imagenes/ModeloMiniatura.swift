@@ -34,7 +34,7 @@ class ModeloMiniatura {
     private init() {}
     
     func construirMiniatura(
-        coleccion: Coleccion,
+        color: Color,
         archivo: Archivo,
         completion: @escaping(UIImage?) -> Void
     ) {
@@ -47,7 +47,7 @@ class ModeloMiniatura {
                 guard let thumb = ImagenArchivoModelo()
                         .crearMiniaturaPorDefecto(
                             miniatura: placeholder,
-                            color: UIColor(coleccion.color)
+                            color: UIColor(color)
                         )?
                         .uiImage
                 else {

@@ -5,7 +5,7 @@ import SwiftUI
 struct TituloInformacion: View {
     
     let archivo: Archivo
-    let colorColeccion: Color
+    @ObservedObject var coleccionVM: ColeccionViewModel
     
     var progreso: Int { archivo.fileProgressPercentage }
     
@@ -23,10 +23,11 @@ struct TituloInformacion: View {
                 
                 Color.clear
                     .animatedProgressText1(progreso)
-                    .foregroundColor(colorColeccion)
+                    .foregroundColor(coleccionVM.color)
                     .font(.system(size: ConstantesPorDefecto().subTitleSize))
                     .bold()
             }
+            .animation(.easeInOut(duration: 0.7), value: coleccionVM.color)
             .padding(0)
             
             HStack {
@@ -44,7 +45,7 @@ struct TituloInformacion: View {
                     .font(.system(size: ConstantesPorDefecto().subTitleSize))
                     .foregroundColor(.gray)
                     .font(.system(size: 8))
-                    .lineLimit(1) // Limita a una sola línea inicialmente
+                    .lineLimit(1) // Limita a una sola línea ini	cialmente
                     .minimumScaleFactor(0.8) // Reduce el tamaño hasta un 80% si es necesario
                     .truncationMode(.tail)
 

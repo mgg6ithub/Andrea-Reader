@@ -4,7 +4,7 @@ struct CuadriculaArchivo: View {
     
     @ObservedObject var archivo: Archivo
     @StateObject private var viewModel = ArchivoThumbnailViewModel()
-    let coleccion: Coleccion
+    @ObservedObject var coleccionVM: ColeccionViewModel
     @State private var isVisible = false
     
     var width: CGFloat
@@ -25,14 +25,14 @@ struct CuadriculaArchivo: View {
                 }
                 VStack {
                     Spacer()
-                    ProgresoCuadricula(archivo: archivo, colorColeccion: coleccion.color)
+                    ProgresoCuadricula(archivo: archivo, coleccionVM: coleccionVM)
                 }
             }
             .frame(width: width)
 //            .animation(.easeInOut(duration: 0.3), value: viewModel.miniatura)  // <-- anima cuando cambia miniatura
             
             // --- Titulo e informacion ---
-            TituloInformacion(archivo: archivo, colorColeccion: coleccion.color)
+            TituloInformacion(archivo: archivo, coleccionVM: coleccionVM)
             
         }
         .frame(width: width, height: height)
@@ -43,7 +43,7 @@ struct CuadriculaArchivo: View {
         .opacity(isVisible ? 1 : 0)
         .onAppear {
             
-            viewModel.loadThumbnail(coleccion: coleccion, for: archivo)
+            viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
 
 //            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.2...0.4))) {
                 isVisible = true
@@ -63,7 +63,7 @@ class ArchivoThumbnailViewModel: ObservableObject {
     private let mm: ModeloMiniatura = ModeloMiniatura.getModeloMiniaturaSingleton
     private var cargaTask: Task<Void, Never>? = nil
 
-    func loadThumbnail(coleccion: Coleccion, for archivo: Archivo, allowGeneration: Bool = true) {
+    func loadThumbnail(color: Color, for archivo: Archivo, allowGeneration: Bool = true) {
         
         guard miniatura == nil else { return }
         
@@ -84,7 +84,7 @@ class ArchivoThumbnailViewModel: ObservableObject {
             guard !Task.isCancelled else { return }
 
             // convertimos construirMiniatura a async (más abajo te explico cómo)
-            if let miniaturaNueva = await construirMiniaturaAsync(coleccion: coleccion, archivo: archivo) {
+            if let miniaturaNueva = await construirMiniaturaAsync(color: color, archivo: archivo) {
                 await MainActor.run {
                     self.miniatura = miniaturaNueva
                 }
@@ -98,9 +98,9 @@ class ArchivoThumbnailViewModel: ObservableObject {
     }
 
     /// Convierte el método callback en uno async usando `withCheckedContinuation`
-    private func construirMiniaturaAsync(coleccion: Coleccion, archivo: Archivo) async -> UIImage? {
+    private func construirMiniaturaAsync(color: Color, archivo: Archivo) async -> UIImage? {
         await withCheckedContinuation { continuation in
-            mm.construirMiniatura(coleccion: coleccion, archivo: archivo) { image in
+            mm.construirMiniatura(color: color, archivo: archivo) { image in
                 continuation.resume(returning: image)
             }
         }

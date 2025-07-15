@@ -20,15 +20,34 @@ struct PersistenciaDatos {
     @MainActor
     public func guardarDatosColeccion(coleccion: ColeccionViewModel) {
         let key = keyParaColeccion(coleccion.coleccion)
-        let datos: [String: Any] = [
+
+        var datos: [String: Any] = [
             "scrollPosition": coleccion.scrollPosition,
             "color": coleccion.color.toHexString,
- // Asumiendo que tienes una representación hex del color
-//            "ordenamiento": coleccion.ordenamiento.rawValue,
             "tipoVista": coleccion.modoVista.rawValue
         ]
+        
+        // Atributos específicos de la vista actual
+        switch coleccion.modoVista {
+        case .cuadricula:
+            datos["vistaAtributos"] = [
+                "cuadricula": [
+                    "columnas": coleccion.columnas
+                ]
+            ]
+        case .lista:
+            datos["vistaAtributos"] = [
+                "lista": [
+                    "alturaItem": coleccion.altura
+                ]
+            ]
+        default:
+            break
+        }
+
         UserDefaults.standard.set(datos, forKey: key)
     }
+
 
     // MARK: - Restaurar datos
     public func obtenerDatosColeccion(coleccion: Coleccion) -> [String: Any]? {
@@ -36,14 +55,27 @@ struct PersistenciaDatos {
         return UserDefaults.standard.dictionary(forKey: key)
     }
 
+
     // MARK: - Obtener un atributo específico
     public func obtenerAtributo(coleccion: Coleccion, atributo: String) -> Any? {
         let key = keyParaColeccion(coleccion)
         guard let dict = UserDefaults.standard.dictionary(forKey: key) else { return nil }
         return dict[atributo]
     }
+    
+    
+    public func obtenerAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String) -> Any? {
+        let key = keyParaColeccion(coleccion)
+        guard let dict = UserDefaults.standard.dictionary(forKey: key),
+              let vistaAtributos = dict["vistaAtributos"] as? [String: Any],
+              let atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] else {
+            return nil
+        }
+        
+        return atributosVista[atributo]
+    }
+    
 
-    // MARK: - Guardar / modificar un solo atributo
     // MARK: - Guardar / modificar un solo atributo
     public func guardarAtributo(coleccion: Coleccion, atributo: String, valor: Any) {
         let key = keyParaColeccion(coleccion)
@@ -67,6 +99,19 @@ struct PersistenciaDatos {
         UserDefaults.standard.set(dict, forKey: key)
     }
 
+    public func guardarAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String, valor: Any) {
+        let key = keyParaColeccion(coleccion)
+        var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
+
+        var vistaAtributos = dict["vistaAtributos"] as? [String: Any] ?? [:]
+        var atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] ?? [:]
+
+        atributosVista[atributo] = valor
+        vistaAtributos[modo.rawValue] = atributosVista
+        dict["vistaAtributos"] = vistaAtributos
+
+        UserDefaults.standard.set(dict, forKey: key)
+    }
 
     
 }

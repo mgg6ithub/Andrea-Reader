@@ -4,7 +4,7 @@ struct CuadriculaVista: View {
 
     @ObservedObject var vm: ColeccionViewModel
     let namespace: Namespace.ID
-    @State private var cols: Int = 4
+//    @State private var cols: Int { vm.columnas }
     @State private var currentMagnification: CGFloat = 1.0
     @State private var lastMagnification: CGFloat = 1.0
     @State private var scrollEnabled: Bool = true
@@ -13,7 +13,7 @@ struct CuadriculaVista: View {
         GeometryReader { outerGeometry in
             
             let spacing: CGFloat = 20
-            let columnsCount = cols // o lo puedes pasar como parámetro si quieres que sea dinámico
+            let columnsCount = vm.columnas // o lo puedes pasar como parámetro si quieres que sea dinámico
             let totalSpacing = spacing * CGFloat(columnsCount - 1)
             let itemWidth = (outerGeometry.size.width - totalSpacing) / CGFloat(columnsCount)
             
@@ -34,7 +34,7 @@ struct CuadriculaVista: View {
 //                                            .matchedGeometryEffect(id: placeholder.id, in: namespace)
 //                                            .transition(.opacity.combined(with: .scale))
                                     } else if let archivo = elemento as? Archivo {
-                                        CuadriculaArchivo(archivo: archivo, coleccion: vm.coleccion, width: itemWidth, height: itemHeight)
+                                        CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
 //                                            .matchedGeometryEffect(id: archivo.id, in: namespace)
 //                                            .transition(.opacity.combined(with: .scale))
                                     }
@@ -50,7 +50,7 @@ struct CuadriculaVista: View {
 
                         }
                     }
-                    .animation(.easeInOut(duration: 0.35), value: cols)
+                    .animation(.easeInOut(duration: 0.35), value: vm.columnas)
                 }
                 .simultaneousGesture(
                     MagnificationGesture()
@@ -61,12 +61,14 @@ struct CuadriculaVista: View {
                         .onEnded { value in
                             let delta = value / lastMagnification
 
-                            if delta > 1.1, cols < 8 {
-                                cols += 1
-                            } else if delta < 0.9, cols > 1 {
-                                cols -= 1
+                            if delta > 1.1, vm.columnas < 8 {
+                                vm.columnas -= 1
+                            } else if delta < 0.9, vm.columnas > 1 {
+                                vm.columnas += 1
                             }
-
+                            
+                            PersistenciaDatos().guardarAtributoVista(coleccion: vm.coleccion, modo: vm.modoVista, atributo: "columnas", valor: vm.columnas)
+                            
                             lastMagnification = 1.0
                             currentMagnification = 1.0
 

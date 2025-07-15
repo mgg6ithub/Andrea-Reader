@@ -8,6 +8,9 @@ struct HistorialColecciones: View {
     @EnvironmentObject var pc: PilaColecciones
     @EnvironmentObject var appEstado: AppEstado
     
+    @State private var esVerColeccionPresionado: Bool = false
+    @State private var colorTemporal: Color = .clear
+    
     private var iconSize: CGFloat  { appEstado.constantes.iconSize }
     
     var body: some View {
@@ -45,12 +48,13 @@ struct HistorialColecciones: View {
                                 ColeccionRectanguloAvanzado(
                                     textoSize: 21,
                                     colorPrimario: .primary,
-                                    color: vm.coleccion.color,
+                                    color: vm.color,
                                     isActive: true,
                                     animationDelay: Double(index) * 0.1
                                 ) {
                                     Text(vm.coleccion.name)
                                 }
+                                .animation(.easeInOut(duration: 0.4), value: vm.color)
 //                                .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
                                 
                             } else {
@@ -63,7 +67,7 @@ struct HistorialColecciones: View {
                                     ColeccionRectanguloAvanzado(
                                         textoSize: 14,
                                         colorPrimario: .secondary,
-                                        color: vm.coleccion.color,
+                                        color: vm.color,
                                         isActive: false,
                                         animationDelay: Double(index) * 0.1
                                     )
@@ -80,6 +84,24 @@ struct HistorialColecciones: View {
 
                 }
                 .padding(.horizontal)
+            }
+            
+            Spacer()
+            
+            Button(action: {
+                withAnimation { self.esVerColeccionPresionado.toggle() }
+            }) {
+                Text("Ver coleccion")
+                    .font(.system(size: 14))
+                    .foregroundColor(.secondary)
+                    .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
+                    .animation(.spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.3), value: esVerColeccionPresionado)
+            }
+            .sheet(isPresented: $esVerColeccionPresionado, onDismiss: {
+                // aplicar el nuevo color al cerrar la hoja
+                pc.getColeccionActual().color = colorTemporal
+            }) {
+                MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
             }
         }
     }
