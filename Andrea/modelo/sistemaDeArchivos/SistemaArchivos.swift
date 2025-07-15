@@ -228,10 +228,11 @@ class SistemaArchivos: ObservableObject {
     // MARK: – Ejemplo de método para borrar un elemento (protegido por fileQueue)
     public func borrarElemento(elemento: any ElementoSistemaArchivosProtocolo, vm: ColeccionViewModel) {
         fileQueue.async {
-            let url: URL = elemento.url
             
+            // --- obtenemos la url del elemento a borrar
+            let url: URL = elemento.url
             do {
-                try FileManager.default.removeItem(at: url)
+                try FileManager.default.removeItem(at: url) //borramos del dispositivo con fm
                 
                 DispatchQueue.main.async {
                     // Verifica que realmente se haya borrado
@@ -239,13 +240,13 @@ class SistemaArchivos: ObservableObject {
                         .getSistemaArchivosUtilidadesSingleton
                         .fileExists(elementURL: url)
                     
-                    if !existe {
+                    if !existe { //si ya no existe
                         withAnimation(.easeInOut(duration: 0.35)) {
-                            vm.elementos.removeAll(where: { $0.id == elemento.id })
+                            vm.elementos.removeAll(where: { $0.id == elemento.id }) //borramos de la vista del vm
                         }
                         
                         if self.cacheColecciones[url] != nil {
-                            self.cacheColecciones.removeValue(forKey: url)
+                            self.cacheColecciones.removeValue(forKey: url) //borramos del cache de coleccion en sa
                             print("✅ Colección eliminada del cache")
                         }
                     }
