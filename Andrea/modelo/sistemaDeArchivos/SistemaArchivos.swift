@@ -217,10 +217,6 @@ class SistemaArchivos: ObservableObject {
                 true
             }
             
-            //            print("En total hay para el directorio: ", self.coleccionHomeURL)
-            //            print(filteredURLs.count)
-            //            print(filteredURLs)
-            
             return filteredURLs
         } catch {
             print("Error al obtener las URLs del directorio '\(coleccionURL.lastPathComponent)': \(error.localizedDescription)")
@@ -344,7 +340,11 @@ class SistemaArchivos: ObservableObject {
         
         // --- Introducir el elemento en la lista en el hilo principal
         if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: elementoURL) {
-            DispatchQueue.main.async { PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().elementos.append(elemento) }
+            DispatchQueue.main.async {
+                withAnimation(.easeOut(duration: 0.35)) {
+                    PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().elementos.append(elemento)
+                }
+            }
         }
 
         //Actualizar todas las instancias dependientes de dicho elemento
