@@ -21,24 +21,18 @@ struct CuadriculaVista: View {
             let itemHeight = itemWidth * aspectRatio
             
             ScrollViewReader { proxy in
-                ScrollView(.vertical, showsIndicators: true) {
+                ScrollView(.vertical, showsIndicators: false) {
                     LazyVGrid(
                         columns: Array(repeating: GridItem(.fixed(itemWidth), spacing: spacing), count: columnsCount),
                         spacing: spacing
                     ) {
                         ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
                             ElementoVista(element: elemento) {
-//                                Group { // <- un contenedor para aplicar la transición
-                                    if let placeholder = elemento as? ElementoPlaceholder {
-                                        PlaceholderElementView(index: index, width: itemWidth, height: itemHeight)
-//                                            .matchedGeometryEffect(id: placeholder.id, in: namespace)
-//                                            .transition(.opacity.combined(with: .scale))
-                                    } else if let archivo = elemento as? Archivo {
-                                        CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
-//                                            .matchedGeometryEffect(id: archivo.id, in: namespace)
-//                                            .transition(.opacity.combined(with: .scale))
-                                    }
-//                                }
+                                if let placeholder = elemento as? ElementoPlaceholder {
+                                    PlaceholderElementView(index: index, width: itemWidth, height: itemHeight)
+                                } else if let archivo = elemento as? Archivo {
+                                    CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
+                                }
                             }
                             .id(index) // importante: asegúrate de que este `.id` sea consistente con scrollTo
                             .onAppear {
@@ -50,7 +44,7 @@ struct CuadriculaVista: View {
 
                         }
                     }
-                    .animation(.easeInOut(duration: 0.35), value: vm.columnas)
+                    .animation(.easeInOut(duration: 0.2), value: vm.columnas)
                 }
                 .simultaneousGesture(
                     MagnificationGesture()
@@ -72,13 +66,12 @@ struct CuadriculaVista: View {
                             lastMagnification = 1.0
                             currentMagnification = 1.0
 
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                                 scrollEnabled = true
-                            }
+//                            }
                         },
                     including: .all // <- esto da prioridad real al gesto incluso sobre el scroll
                 )
-
                 .onChange(of: vm.isPerformingAutoScroll) { auto in
                     
                     if auto {
