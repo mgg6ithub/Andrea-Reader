@@ -105,6 +105,11 @@ class ColeccionViewModel: ObservableObject {
                 !SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.isDirectory(elementURL: url)
             }
         }
+        
+        // --- ORDENAMIENTO LIGERO ---
+        
+        filteredURLs.sort { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+        
 
         let total = filteredURLs.count
         if self.scrollPosition >= total || self.scrollPosition < 0 {
