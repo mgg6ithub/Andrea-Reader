@@ -8,7 +8,7 @@ class ColeccionViewModel: ObservableObject {
   let coleccion: Coleccion
   var appEstado: AppEstado?
     
-  @Published var elementos: [any ElementoSistemaArchivosProtocolo] = []
+  @Published var elementos: [ElementoSistemaArchivos] = []
   @Published var isLoading = false
     
   @Published var color: Color
@@ -114,7 +114,7 @@ class ColeccionViewModel: ObservableObject {
         }
         
         elementos = (0..<total).map { _ in
-            ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
+            ElementoPlaceholder()
         }
         
         // 2. Scroll automático (lo activará la vista si isPerformingAutoScroll = true)
@@ -132,13 +132,12 @@ class ColeccionViewModel: ObservableObject {
                 let url = urls[idx]
                 
                 //2. Si no la creamos
-                if let elem = SistemaArchivos.getSistemaArchivosSingleton.crearInstancia(elementoURL: url) {
-                    await MainActor.run {
-                        var nuevos = self.elementos
-                        nuevos[idx] = elem
-                        withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
-                            self.elementos = nuevos
-                        }
+                let elem = SistemaArchivos.getSistemaArchivosSingleton.crearInstancia(elementoURL: url)
+                await MainActor.run {
+                    var nuevos = self.elementos
+                    nuevos[idx] = elem
+                    withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
+                        self.elementos = nuevos
                     }
                 }
             }

@@ -31,30 +31,30 @@ struct CuadriculaVista: View {
                         ForEach(vm.elementos.indices, id: \.self) { index in
                             
                             let elemento = vm.elementos[index]
-                            if let elementoSA = elemento as? ElementoSistemaArchivos {
-                                ElementoVista(vm: vm, elemento: elemento) {
-                                    if let placeholder = elemento as? ElementoPlaceholder {
-                                        PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
-                                    } else if let archivo = elemento as? Archivo {
-                                        CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
-                                    } else if let coleccion = elemento as? Coleccion {
-                                        CuadriculaColeccion(coleccion: coleccion)
-                                    }
+//                            if let elementoSA = elemento as? ElementoSistemaArchivos {
+                            ElementoVista(vm: vm, elemento: elemento) {
+                                if let placeholder = elemento as? ElementoPlaceholder {
+                                    PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
+                                } else if let archivo = elemento as? Archivo {
+                                    CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
+                                } else if let coleccion = elemento as? Coleccion {
+                                    CuadriculaColeccion(coleccion: coleccion)
                                 }
-                                .id(index)
-                                .onAppear {
-                                    if !vm.isPerformingAutoScroll && vm.scrollPosition != index {
-                                        vm.actualizarScroll(index)
-                                    }
-                                }
-                                .modifier(ArrastreManual(
-                                    elementoArrastrando: $elementoArrastrando,
-                                    viewModel: vm,
-                                    elemento: elementoSA,
-                                    index: index
-                                ))
-                                
                             }
+                            .id(index)
+                            .onAppear {
+                                if !vm.isPerformingAutoScroll && vm.scrollPosition != index {
+                                    vm.actualizarScroll(index)
+                                }
+                            }
+//                                .modifier(ArrastreManual(
+//                                    elementoArrastrando: $elementoArrastrando,
+//                                    viewModel: vm,
+//                                    elemento: elementoSA,
+//                                    index: index
+//                                ))
+                                
+//                            }
                         }
 
                     }

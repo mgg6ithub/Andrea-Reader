@@ -6,7 +6,7 @@ struct FabricaColeccion {
     
     let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
     
-    func crearColeccion(collectionName: String, collectionURL: URL) -> Coleccion? {
+    func crearColeccion(collectionName: String, collectionURL: URL) -> Coleccion {
         
 //        let directoryType = sau.getDirectoryType(directoryURL: collectionURL)
         let creationDate = sau.getElementCreationDate(elementURL: collectionURL)

@@ -63,7 +63,7 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         // Crear la coleccion raiz y asignarla
-        let home = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.coleccionHomeURL)!
+        let home = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.coleccionHomeURL)
         cacheColecciones[coleccionHomeURL] = ColeccionValor(coleccion: home)
         
         // Indexar recursivamente a partir de la raiz
@@ -82,9 +82,8 @@ class SistemaArchivos: ObservableObject {
 
         // Si no está ya cacheado, lo agregamos al cache con una lista vacía de elementos
         if cacheColecciones[coleccionURL] == nil {
-            if let coleccion = FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: coleccionURL), collectionURL: coleccionURL) {
-                cacheColecciones[coleccionURL] = ColeccionValor(coleccion: coleccion)
-            }
+            let coleccion = FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: coleccionURL), collectionURL: coleccionURL)
+            cacheColecciones[coleccionURL] = ColeccionValor(coleccion: coleccion)
         }
 
         guard let coleccionValor = cacheColecciones[coleccionURL] else { return }
@@ -168,7 +167,7 @@ class SistemaArchivos: ObservableObject {
     }
 
     
-    public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> (any ElementoSistemaArchivosProtocolo)? {
+    public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> ElementoSistemaArchivos {
         
         let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
         let destinoURL: URL = coleccionDestinoURL ?? self.coleccionHomeURL
@@ -358,13 +357,12 @@ class SistemaArchivos: ObservableObject {
     private func actualizarUISoloElemento(elementoURL: URL) {
         
         // --- Introducir el elemento en la lista en el hilo principal
-        if let elemento: (any ElementoSistemaArchivosProtocolo) = self.crearInstancia(elementoURL: elementoURL) {
+        let elemento: ElementoSistemaArchivos = self.crearInstancia(elementoURL: elementoURL)
             DispatchQueue.main.async {
                 withAnimation(.easeOut(duration: 0.35)) {
                     PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().elementos.append(elemento)
                 }
             }
-        }
 
         //Actualizar todas las instancias dependientes de dicho elemento
         
