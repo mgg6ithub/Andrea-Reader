@@ -104,9 +104,9 @@ struct HistorialColecciones: View {
                 MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
             }
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { self.appEstado.historialCargado = true }
-        }
+//        .onAppear {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { self.appEstado.historialCargado = true }
+//        }
     }
 }
 

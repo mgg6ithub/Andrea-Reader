@@ -9,6 +9,8 @@ struct CuadriculaVista: View {
     @State private var lastMagnification: CGFloat = 1.0
     @State private var scrollEnabled: Bool = true
 
+    @State private var elementoArrastrando: ElementoSistemaArchivos? = nil
+    
     var body: some View {
         GeometryReader { outerGeometry in
             
@@ -29,23 +31,30 @@ struct CuadriculaVista: View {
                         ForEach(vm.elementos.indices, id: \.self) { index in
                             
                             let elemento = vm.elementos[index]
-                            
-                            ElementoVista(vm: vm, elemento: elemento) {
-                                if let placeholder = elemento as? ElementoPlaceholder {
-                                    PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
-                                } else if let archivo = elemento as? Archivo {
-                                    CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
-                                } else if let coleccion = elemento as? Coleccion {
-                                    CuadriculaColeccion(coleccion: coleccion)
+                            if let elementoSA = elemento as? ElementoSistemaArchivos {
+                                ElementoVista(vm: vm, elemento: elemento) {
+                                    if let placeholder = elemento as? ElementoPlaceholder {
+                                        PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
+                                    } else if let archivo = elemento as? Archivo {
+                                        CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
+                                    } else if let coleccion = elemento as? Coleccion {
+                                        CuadriculaColeccion(coleccion: coleccion)
+                                    }
                                 }
-                            }
-                            .id(index)
-                            .onAppear {
-                                if !vm.isPerformingAutoScroll && vm.scrollPosition != index {
-                                    vm.actualizarScroll(index)
+                                .id(index)
+                                .onAppear {
+                                    if !vm.isPerformingAutoScroll && vm.scrollPosition != index {
+                                        vm.actualizarScroll(index)
+                                    }
                                 }
+                                .modifier(ArrastreManual(
+                                    elementoArrastrando: $elementoArrastrando,
+                                    viewModel: vm,
+                                    elemento: elementoSA,
+                                    index: index
+                                ))
+                                
                             }
-
                         }
 
                     }
@@ -93,6 +102,4 @@ struct CuadriculaVista: View {
     }
 
 }
-
-
 

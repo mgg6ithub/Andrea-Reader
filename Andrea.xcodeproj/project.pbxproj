@@ -45,6 +45,7 @@
 		D49F12F62E25349500C67FB8 /* MasInformacionColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F12F52E25349500C67FB8 /* MasInformacionColeccion.swift */; };
 		D4A0FF3D2DEB3FD300195018 /* LineaSeparadora.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */; };
 		D4A0FF3F2DEB6F1500195018 /* MasTemas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */; };
+		D4A65E022E27EBB500729A57 /* ArrastreManual.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A65E012E27EBB500729A57 /* ArrastreManual.swift */; };
 		D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */; };
 		D4A6C7272DEA216400E7451F /* RectangleFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7262DEA216400E7451F /* RectangleFormView.swift */; };
 		D4A6C7292DEA21C200E7451F /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7282DEA21C200E7451F /* Enums.swift */; };
@@ -119,6 +120,7 @@
 		D49F12F52E25349500C67FB8 /* MasInformacionColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacionColeccion.swift; sourceTree = "<group>"; };
 		D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineaSeparadora.swift; sourceTree = "<group>"; };
 		D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasTemas.swift; sourceTree = "<group>"; };
+		D4A65E012E27EBB500729A57 /* ArrastreManual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrastreManual.swift; sourceTree = "<group>"; };
 		D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirculoActivo.swift; sourceTree = "<group>"; };
 		D4A6C7262DEA216400E7451F /* RectangleFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleFormView.swift; sourceTree = "<group>"; };
 		D4A6C7282DEA21C200E7451F /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
@@ -487,6 +489,7 @@
 		D4DF317C2DEC77BD000D15CC /* vistasAyudas */ = {
 			isa = PBXGroup;
 			children = (
+				D4A65E012E27EBB500729A57 /* ArrastreManual.swift */,
 			);
 			path = vistasAyudas;
 			sourceTree = "<group>";
@@ -572,6 +575,7 @@
 			files = (
 				D49DE74B2E0D33F1002FDB7A /* CBRArchivo.swift in Sources */,
 				D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */,
+				D4A65E022E27EBB500729A57 /* ArrastreManual.swift in Sources */,
 				D45E700C2DE7A803001F816A /* MenuVista.swift in Sources */,
 				D4BF0B1F2DEF493500152333 /* FabricaArchivo.swift in Sources */,
 				D49F12F62E25349500C67FB8 /* MasInformacionColeccion.swift in Sources */,

@@ -77,7 +77,7 @@ struct ContenidoColeccionVista: View {
 
     var body: some View {
         Group {
-            if appEstado.menuCargado && appEstado.historialCargado {
+//            if appEstado.menuCargado && appEstado.historialCargado {
                 switch vm.modoVista {
                 case .cuadricula:
                     CuadriculaVista(vm: vm, namespace: namespace)
@@ -95,7 +95,7 @@ struct ContenidoColeccionVista: View {
                 default:
                     AnyView(Text("Vista desconocida"))
                 }
-            }
+//            }
         }
         .onAppear {
             if vm.appEstado == nil {
