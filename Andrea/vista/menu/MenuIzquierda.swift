@@ -37,6 +37,7 @@ struct MenuIzquierda: View {
                                 .foregroundStyle(appEstado.constantes.iconColor.gradient)
                                 .fontWeight(appEstado.constantes.iconWeight)
                         }
+                        .offset(y: 1.0)
                     }
                 }
                 
@@ -54,6 +55,7 @@ struct MenuIzquierda: View {
                             .foregroundStyle(appEstado.constantes.iconColor.gradient)
                             .fontWeight(appEstado.constantes.iconWeight)
                     }
+                    .offset(y: 1.35)
                 }
                 
                 

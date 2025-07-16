@@ -51,12 +51,12 @@ struct MenuCentro: View {
                 
             }) {
                 Image("custom.hand.grid")
-                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .font(.system(size: appEstado.constantes.iconSize * 1.55))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .contentTransition(.symbolEffect(.replace))
                     .fontWeight(appEstado.constantes.iconWeight)
-                    .padding(12)                      // zona de toque ≥ 44×44
+//                    .padding(12)                      // zona de toque ≥ 44×44
                     .contentShape(Rectangle())
             }
             
@@ -66,7 +66,7 @@ struct MenuCentro: View {
                 self.mostrarDocumentPicker.toggle()
             }) {
                 Image(systemName: "tray.and.arrow.down")
-                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .font(.system(size: appEstado.constantes.iconSize * 1.15))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
@@ -86,6 +86,7 @@ struct MenuCentro: View {
                     contentTypes: [.item]
                 )
             }
+            .offset(y: -2)
             
             //MARK: - CREAR COLECCION
             
@@ -93,7 +94,7 @@ struct MenuCentro: View {
                 self.esNuevaColeccionPresionado.toggle()
             }) {
                 Image(systemName: "folder.badge.plus")
-                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .font(.system(size: appEstado.constantes.iconSize * 1.2))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
@@ -145,12 +146,12 @@ struct MenuCentro: View {
                 
 //                Image("custom.hand.grid")
                 Image(systemName: "square.grid.3x3.square")
-                    .font(.system(size: appEstado.constantes.iconSize * 1.3))
+                    .font(.system(size: appEstado.constantes.iconSize * 1.4))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .contentTransition(.symbolEffect(.replace))
                     .fontWeight(appEstado.constantes.iconWeight)
-                    .padding(12)                      // zona de toque ≥ 44×44
+//                    .padding(12)                      // zona de toque ≥ 44×44
                     .contentShape(Rectangle())
                 
             }
@@ -174,4 +175,26 @@ struct MenuCentro: View {
         }
     }
 }
+
+//struct AndreaAppView_Preview: PreviewProvider {
+//    static var previews: some View {
+//        // Instancias de ejemplo para los objetos de entorno
+//        let appStatePreview = AppEstado()   // Reemplaza con inicialización adecuada
+////        let appEstadoPreview = AppEstado() // Reemplaza con inicialización adecuada
+////        let appEstadoPreview = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
+//        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+////        let appEstadoPreview = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
+////        let appEstadoPreview = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
+////        let appEstadoPreview = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
+////        let appEstadoPreview = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
+//        let menuEstadoPreview = MenuEstado() // Reemplaza con inicialización adecuada
+//        let pc = PilaColecciones.getPilaColeccionesSingleton
+//
+//        return AndreaAppView()
+//            .environmentObject(appStatePreview)
+//            .environmentObject(appEstadoPreview)
+//            .environmentObject(menuEstadoPreview)
+//            .environmentObject(pc)
+//    }
+//}
 
