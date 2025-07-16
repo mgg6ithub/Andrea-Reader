@@ -30,7 +30,7 @@ struct HistorialColecciones: View {
                             Image(systemName: "house")
                                 .opacity(0.75)
                         }
-//                        .matchedGeometryEffect(id: 3123131321, in: breadcrumb)
+                        //                        .matchedGeometryEffect(id: 3123131321, in: breadcrumb)
                     }
                     else {
                         
@@ -55,13 +55,13 @@ struct HistorialColecciones: View {
                                     Text(vm.coleccion.name)
                                 }
                                 .animation(.easeInOut(duration: 0.4), value: vm.color)
-//                                .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
+                                //                                .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
                                 
                             } else {
                                 Button(action: {
-//                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
-                                        pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
-//                                    }
+                                    //                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                                    pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
+                                    //                                    }
                                 }) {
                                     
                                     ColeccionRectanguloAvanzado(
@@ -74,14 +74,14 @@ struct HistorialColecciones: View {
                                     {
                                         Text(vm.coleccion.name)
                                     }
-//                                    .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
+                                    //                                    .matchedGeometryEffect(id: vm.coleccion.url, in: breadcrumb)
                                     
                                 }
                                 .buttonStyle(ColeccionButtonStyle())
                             }
                         }
                     } //FIN ELSE empty
-
+                    
                 }
                 .padding(.horizontal)
             }
@@ -103,6 +103,9 @@ struct HistorialColecciones: View {
             }) {
                 MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
             }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { self.appEstado.historialCargado = true }
         }
     }
 }

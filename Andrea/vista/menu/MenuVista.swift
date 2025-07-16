@@ -63,6 +63,9 @@ struct MenuVista: View {
 //            }
         }
         .frame(height: 25)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { self.appEstado.menuCargado = true }
+        }
 //        .padding(.horizontal, 25)
     }
 }

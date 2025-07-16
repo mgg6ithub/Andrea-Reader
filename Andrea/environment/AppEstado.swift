@@ -12,6 +12,10 @@ class AppEstado: ObservableObject {
     private let cpag = ClavesPersistenciaAjustesGenerales()
     private let uds = UserDefaults.standard
     
+    //MARK: --- marcas de cargado dinamico ---
+    @Published var menuCargado = false
+    @Published var historialCargado = false
+    
     @Published var isFirstTimeLaunch: Bool = false
     @Published var resolucionLogica: EnumResolucionesLogicas
     

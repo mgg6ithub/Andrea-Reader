@@ -77,22 +77,24 @@ struct ContenidoColeccionVista: View {
 
     var body: some View {
         Group {
-            switch vm.modoVista {
-            case .cuadricula:
-                CuadriculaVista(vm: vm, namespace: namespace)
-                    .transition(.asymmetric(
-                        insertion: .opacity.combined(with: .scale(scale: 1.05, anchor: .top)),
-                        removal: .opacity
-                    ))
-                    .id("grid-\(vm.coleccion.id)")
+            if appEstado.menuCargado && appEstado.historialCargado {
+                switch vm.modoVista {
+                case .cuadricula:
+                    CuadriculaVista(vm: vm, namespace: namespace)
+                        .transition(.asymmetric(
+                            insertion: .opacity.combined(with: .scale(scale: 1.05, anchor: .top)),
+                            removal: .opacity
+                        ))
+                        .id("grid-\(vm.coleccion.id)")
 
-            case .lista:
-                ListaVista(vm: vm)
-                    .transition(.move(edge: .trailing).combined(with: .opacity))
-                    .id("list-\(vm.coleccion.id)")
+                case .lista:
+                    ListaVista(vm: vm)
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
+                        .id("list-\(vm.coleccion.id)")
 
-            default:
-                AnyView(Text("Vista desconocida"))
+                default:
+                    AnyView(Text("Vista desconocida"))
+                }
             }
         }
         .onAppear {
