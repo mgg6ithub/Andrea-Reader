@@ -31,7 +31,7 @@ struct CuadriculaVista: View {
                         ForEach(vm.elementos.indices, id: \.self) { index in
                             
                             let elemento = vm.elementos[index]
-//                            if let elementoSA = elemento as? ElementoSistemaArchivos {
+                            
                             ElementoVista(vm: vm, elemento: elemento) {
                                 if let placeholder = elemento as? ElementoPlaceholder {
                                     PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
@@ -47,14 +47,13 @@ struct CuadriculaVista: View {
                                     vm.actualizarScroll(index)
                                 }
                             }
-//                                .modifier(ArrastreManual(
-//                                    elementoArrastrando: $elementoArrastrando,
-//                                    viewModel: vm,
-//                                    elemento: elementoSA,
-//                                    index: index
-//                                ))
-                                
-//                            }
+                            .modifier(ArrastreManual(
+                                elementoArrastrando: $elementoArrastrando,
+                                viewModel: vm,
+                                elemento: elemento,
+                                index: index
+                            ))
+
                         }
 
                     }
