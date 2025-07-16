@@ -25,7 +25,7 @@ struct CuadriculaVista: View {
                 // Línea superior que aparece solo cuando se ha hecho scroll
                 Rectangle()
                     .fill(Color.gray)
-                    .frame(height: 1.5)
+                    .frame(height: 1)
                     .opacity(scrollOffset < 0 ? 1 : 0) // Cuando scrollOffset < 0, se ha hecho scroll hacia abajo
                     .animation(.easeInOut(duration: 0.05), value: scrollOffset < 0)
                     .cornerRadius(8)

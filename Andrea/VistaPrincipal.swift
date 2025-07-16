@@ -24,12 +24,12 @@ struct VistaPrincipal: View {
                 VStack {
                     
                     MenuVista()
-                        .padding(.vertical, 10)
-                        .padding(.bottom, 10)
+                        .padding(.vertical, 8)
                     
                     
                     HistorialColecciones()
                         .frame(height: 50)
+                        .padding(.bottom, 8)
                     
                     ZStack {
                         if let lastVM = pc.coleccionActualVM {

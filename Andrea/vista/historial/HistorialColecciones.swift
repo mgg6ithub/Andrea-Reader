@@ -30,6 +30,10 @@ struct HistorialColecciones: View {
                             Image(systemName: "house")
                                 .opacity(0.75)
                         }
+                        
+//                        Text("HOME")
+//                            .frame(alignment: .bottom)
+//                            .offset(y: 8)
                         //                        .matchedGeometryEffect(id: 3123131321, in: breadcrumb)
                     }
                     else {
@@ -88,22 +92,24 @@ struct HistorialColecciones: View {
             
             Spacer()
             
-            Button(action: {
-                withAnimation { self.esVerColeccionPresionado.toggle() }
-            }) {
-                Text("Ver coleccion")
-                    .font(.system(size: 14))
-                    .foregroundColor(.secondary)
-                    .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
-                    .animation(.spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.3), value: esVerColeccionPresionado)
+            if pc.getColeccionActual().coleccion.name != "HOME" {
+                Button(action: {
+                    withAnimation { self.esVerColeccionPresionado.toggle() }
+                }) {
+                    Text("Ver coleccion")
+                        .font(.system(size: 14))
+                        .foregroundColor(.secondary)
+                        .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
+                        .animation(.spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0.3), value: esVerColeccionPresionado)
+                }
+                .sheet(isPresented: $esVerColeccionPresionado, onDismiss: {
+                    // aplicar el nuevo color al cerrar la hoja
+                    pc.getColeccionActual().color = colorTemporal
+                }) {
+                    MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
+                }
+                .padding(.trailing, 2.5)
             }
-            .sheet(isPresented: $esVerColeccionPresionado, onDismiss: {
-                // aplicar el nuevo color al cerrar la hoja
-                pc.getColeccionActual().color = colorTemporal
-            }) {
-                MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
-            }
-            .padding(.trailing, 2.5)
         }
 //        .onAppear {
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { self.appEstado.historialCargado = true }

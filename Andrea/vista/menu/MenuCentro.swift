@@ -58,6 +58,7 @@ struct MenuCentro: View {
                     .fontWeight(appEstado.constantes.iconWeight)
                     .contentShape(Rectangle())
             }
+            .offset(y: 0.6)
             
             //MARK: - IMPORTAR
             

@@ -24,40 +24,40 @@ struct MenuIzquierda: View {
                 
                 //MARK: --- FLECHA TRADICIONAL PARA IR ATRAS UNA COLECCION ---
                 
-                if pc.getColeccionActual().coleccion.name != "HOME" {
-                    if menuEstado.menuIzquierdaFlechaLateral {
-                        Button(action: {
-                            
-                            pc.sacarColeccion()
-                            
-                        }) {
-                            Image(systemName: "arrow.backward")
-                                .font(.system(size: appEstado.constantes.iconSize * 0.9))
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(appEstado.constantes.iconColor.gradient)
-                                .fontWeight(appEstado.constantes.iconWeight)
-                        }
-                        .offset(y: 1.0)
-                    }
-                }
+//                if pc.getColeccionActual().coleccion.name != "HOME" {
+//                    if menuEstado.menuIzquierdaFlechaLateral {
+//                        Button(action: {
+//                            
+//                            pc.sacarColeccion()
+//                            
+//                        }) {
+//                            Image(systemName: "arrow.backward")
+//                                .font(.system(size: appEstado.constantes.iconSize * 0.9))
+//                                .symbolRenderingMode(.palette)
+//                                .foregroundStyle(appEstado.constantes.iconColor.gradient)
+//                                .fontWeight(appEstado.constantes.iconWeight)
+//                        }
+//                        .offset(y: 1.0)
+//                    }
+//                }
                 
                 //MARK: --- MOSTRAR MENU LATERAL ---
                 
-                if menuEstado.menuIzquierdaSideMenuIcono {
-                    Button(action: {
-                        
-                        //                isSideMenuVisible.toggle()
-                        
-                    }) {
-                        Image(systemName: "sidebar.trailing")
-                            .font(.system(size: appEstado.constantes.iconSize))
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(appEstado.constantes.iconColor.gradient)
-                            .fontWeight(appEstado.constantes.iconWeight)
-                    }
-                    .offset(y: 1.6)
-                }
-                
+//                if menuEstado.menuIzquierdaSideMenuIcono {
+//                    Button(action: {
+//                        
+//                        //                isSideMenuVisible.toggle()
+//                        
+//                    }) {
+//                        Image(systemName: "sidebar.trailing")
+//                            .font(.system(size: appEstado.constantes.iconSize))
+//                            .symbolRenderingMode(.palette)
+//                            .foregroundStyle(appEstado.constantes.iconColor.gradient)
+//                            .fontWeight(appEstado.constantes.iconWeight)
+//                    }
+//                    .offset(y: 1.6)
+//                }
+//                
                 
                 //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
                 
@@ -71,6 +71,7 @@ struct MenuIzquierda: View {
                                         .foregroundStyle(appEstado.constantes.iconColor.gradient)
                                         .fontWeight(appEstado.constantes.iconWeight)
                                 }
+                                .offset(y: -0.7)
                                 // Aquí va el popover
                                 .popover(isPresented: $mostrarPopover, arrowEdge: .bottom) {
                                     VStack(alignment: .leading, spacing: 0) {

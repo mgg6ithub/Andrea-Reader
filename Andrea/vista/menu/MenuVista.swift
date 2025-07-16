@@ -63,7 +63,7 @@ struct MenuVista: View {
 //                    isExpanded = true // Muestra directamente la línea con ancho completo
 //                }
 //            }
-            Divider()
+//            Divider()
         }
 //        .border(.red)
         .frame(height: 25)
