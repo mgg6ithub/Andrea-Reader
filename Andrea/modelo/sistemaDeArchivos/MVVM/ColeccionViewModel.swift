@@ -68,8 +68,8 @@ class ColeccionViewModel: ObservableObject {
                 self.columnas = 4 // valor por defecto
             }
         case .lista:
-            if let alturaItem = PersistenciaDatos().obtenerAtributoVista(coleccion: coleccion, modo: .lista, atributo: "alturaItem") as? CGFloat {
-                self.altura = alturaItem
+            if let altura = PersistenciaDatos().obtenerAtributoVista(coleccion: coleccion, modo: .lista, atributo: "altura") as? CGFloat {
+                self.altura = altura
             } else {
                 self.altura = 180 // valor por defecto
             }

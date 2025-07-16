@@ -11,9 +11,10 @@ struct ListaVista: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 12) {
+            LazyVStack(spacing: 20) {
                 ForEach(vm.elementos, id: \.id) { elemento in
-                    HStack(spacing: 12) {
+//                    HStack(spacing: 12) {
+                    ElementoVista(vm: vm, elemento: elemento) {
                         // Miniatura + título en fila
                         if let placeholder = elemento as? ElementoPlaceholder {
                             PlaceholderLista(placeholder: placeholder, coleccionVM: vm)
@@ -24,10 +25,8 @@ struct ListaVista: View {
                         }
                         
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
+//                    .padding(.vertical, 8)
+
                 }
             }
             .padding(.vertical)
@@ -47,7 +46,7 @@ struct ListaVista: View {
                         vm.altura -= 30
                     }
                     
-                    PersistenciaDatos().guardarAtributoVista(coleccion: vm.coleccion, modo: vm.modoVista, atributo: "altura", valor: vm.columnas)
+                    PersistenciaDatos().guardarAtributoVista(coleccion: vm.coleccion, modo: vm.modoVista, atributo: "altura", valor: vm.altura)
                     
                     lastMagnification = 1.0
                     currentMagnification = 1.0

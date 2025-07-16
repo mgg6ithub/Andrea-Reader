@@ -3,8 +3,9 @@ import SwiftUI
 
 struct PlaceholderCuadricula: View {
     @State private var isVisible = false
-    
-    let index: Int
+
+    let placeholder: ElementoPlaceholder
+//    let index: Int
     var width: CGFloat
     var height: CGFloat
     
