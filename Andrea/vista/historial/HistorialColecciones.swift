@@ -83,7 +83,7 @@ struct HistorialColecciones: View {
                     } //FIN ELSE empty
                     
                 }
-                .padding(.horizontal)
+//                .padding(.horizontal)
             }
             
             Spacer()
@@ -104,6 +104,7 @@ struct HistorialColecciones: View {
                 MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
             }
         }
+        .border(.red)
 //        .onAppear {
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { self.appEstado.historialCargado = true }
 //        }
