@@ -80,6 +80,12 @@ struct CuadriculaVista: View {
                                               value: scrollGeo.frame(in: .named("scrollContainer")).minY)
                             }
                         )
+                    } //FIN SCROLLVIEW
+                    .onAppear {
+                        UIScrollView.appearance().bounces = false
+                    }
+                    .onDisappear {
+                        UIScrollView.appearance().bounces = true
                     }
                     .coordinateSpace(name: "scrollContainer")
                     .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in

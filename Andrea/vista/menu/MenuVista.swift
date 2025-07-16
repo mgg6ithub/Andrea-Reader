@@ -39,7 +39,7 @@ struct MenuVista: View {
                         .onAppear {
                             menuCentroWidth = geo.size.width
                         }
-                        .offset(y: -1.0)
+                        .offset(y: 1.0)
                 }
             }
 //            .offset(y: 2.5)
@@ -63,7 +63,7 @@ struct MenuVista: View {
 //                    isExpanded = true // Muestra directamente la línea con ancho completo
 //                }
 //            }
-//            Divider()
+            Divider()
         }
 //        .border(.red)
         .frame(height: 25)

@@ -30,7 +30,6 @@ struct VistaPrincipal: View {
                     
                     HistorialColecciones()
                         .frame(height: 50)
-//                        .border(.red)
                     
                     ZStack {
                         if let lastVM = pc.coleccionActualVM {
@@ -45,6 +44,7 @@ struct VistaPrincipal: View {
                     Spacer()
                     
                 }
+//                .border(.red)
 //                .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
                 .padding(.horizontal, ConstantesPorDefecto().horizontalPadding)
             }

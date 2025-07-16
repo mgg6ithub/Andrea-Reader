@@ -32,7 +32,7 @@ struct MenuIzquierda: View {
                             
                         }) {
                             Image(systemName: "arrow.backward")
-                                .font(.system(size: appEstado.constantes.iconSize))
+                                .font(.system(size: appEstado.constantes.iconSize * 0.9))
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(appEstado.constantes.iconColor.gradient)
                                 .fontWeight(appEstado.constantes.iconWeight)
@@ -55,7 +55,7 @@ struct MenuIzquierda: View {
                             .foregroundStyle(appEstado.constantes.iconColor.gradient)
                             .fontWeight(appEstado.constantes.iconWeight)
                     }
-                    .offset(y: 1.35)
+                    .offset(y: 1.6)
                 }
                 
                 
@@ -115,7 +115,31 @@ struct MenuIzquierda: View {
                 
             }
             .frame(maxWidth: 120)
+//            .padding(.leading, 4)
 
         
     }
 }
+
+
+//struct AndreaAppView_Preview: PreviewProvider {
+//    static var previews: some View {
+//        // Instancias de ejemplo para los objetos de entorno
+//        let appStatePreview = AppEstado()   // Reemplaza con inicialización adecuada
+////        let appEstadoPreview = AppEstado() // Reemplaza con inicialización adecuada
+////        let appEstadoPreview = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
+//        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+////        let appEstadoPreview = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
+////        let appEstadoPreview = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
+////        let appEstadoPreview = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
+////        let appEstadoPreview = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
+//        let menuEstadoPreview = MenuEstado() // Reemplaza con inicialización adecuada
+//        let pc = PilaColecciones.getPilaColeccionesSingleton
+//
+//        return AndreaAppView()
+//            .environmentObject(appStatePreview)
+//            .environmentObject(appEstadoPreview)
+//            .environmentObject(menuEstadoPreview)
+//            .environmentObject(pc)
+//    }
+//}
