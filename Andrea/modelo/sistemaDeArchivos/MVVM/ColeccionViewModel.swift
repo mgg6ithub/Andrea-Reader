@@ -150,12 +150,28 @@ class ColeccionViewModel: ObservableObject {
 
     }
     
+    private var scrollDebounceWorkItem: DispatchWorkItem?
+    
+
     func actualizarScroll(_ nuevo: Int) {
-
         scrollPosition = nuevo
-//        coleccion.scrollPosition = nuevo
 
-        PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "scrollPosition", valor: nuevo)
+        scrollDebounceWorkItem?.cancel() // Cancelar debounce anterior
+
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+
+            // Aquí se ejecuta solo si el scroll ha parado por 0.5s
+            print("✅ Guardando scrollPosition:", nuevo)
+            PersistenciaDatos().guardarAtributo(
+                coleccion: self.coleccion,
+                atributo: "scrollPosition",
+                valor: nuevo
+            )
+        }
+
+        scrollDebounceWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: workItem)
     }
     
 }

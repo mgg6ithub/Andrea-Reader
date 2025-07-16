@@ -26,30 +26,30 @@ struct CuadriculaVista: View {
                         columns: Array(repeating: GridItem(.fixed(itemWidth), spacing: spacing), count: columnsCount),
                         spacing: spacing
                     ) {
-                        ForEach(vm.elementos, id: \.id) { elemento in
-                            // Obtener el índice manualmente
-                            if let index = vm.elementos.firstIndex(where: { $0.id == elemento.id }) {
-                                
-                                ElementoVista(vm: vm, elemento: elemento) {
-                                    if let placeholder = elemento as? ElementoPlaceholder {
-                                        PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
-                                    } else if let archivo = elemento as? Archivo {
-                                        CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
-                                    } else if let coleccion = elemento as? Coleccion {
-                                        CuadriculaColeccion(coleccion: coleccion)
-                                    }
+                        ForEach(vm.elementos.indices, id: \.self) { index in
+                            
+                            let elemento = vm.elementos[index]
+                            
+                            ElementoVista(vm: vm, elemento: elemento) {
+                                if let placeholder = elemento as? ElementoPlaceholder {
+                                    PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
+                                } else if let archivo = elemento as? Archivo {
+                                    CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
+                                } else if let coleccion = elemento as? Coleccion {
+                                    CuadriculaColeccion(coleccion: coleccion)
                                 }
-                                .id(index)
-                                .onAppear {
-                                    if !vm.isPerformingAutoScroll {
-                                        vm.actualizarScroll(index)
-                                    }
+                            }
+                            .id(index)
+                            .onAppear {
+                                if !vm.isPerformingAutoScroll && vm.scrollPosition != index {
+                                    vm.actualizarScroll(index)
                                 }
-                            }//FIN BUSQUEDA INDICE MANUALEMNTE
+                            }
+
                         }
 
                     }
-                    .animation(.easeInOut(duration: 0.2), value: vm.columnas)
+                    .animation(.easeInOut(duration: 0.3), value: vm.columnas)
                 }
                 .simultaneousGesture(
                     MagnificationGesture()
