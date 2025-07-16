@@ -11,8 +11,13 @@ struct BotonMenu: View {
     var body: some View {
         
         Button(action: accion) {
-            Label(nombre, systemImage: icono)
-                .foregroundColor(isActive ? .primary : .secondary)
+            Label(nombre, systemImage: isActive ? "checkmark" : icono)
+                .foregroundStyle(
+                    isActive ? .green : .gray,
+                    isActive ? .primary : .secondary,
+                    .secondary
+                )
+
         }
         
     }
@@ -25,6 +30,12 @@ struct MenuCentro: View {
     @EnvironmentObject var menuEstado: MenuEstado
     
     private let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
+    
+    private var modoVistaActual: EnumModoVista {
+        PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().modoVista
+    }
+    
+    @State private var menuRefreshTrigger = UUID() // <-- Añadido
     
     @State private var mostrarDocumentPicker: Bool = false
     @State private var esNuevaColeccionPresionado: Bool = false
@@ -102,29 +113,34 @@ struct MenuCentro: View {
                     BotonMenu(
                         nombre: "Cuadrícula",
                         icono: "square.grid.2x2",
-                        isActive: menuEstado.modoVistaColeccion == .cuadricula
+                        isActive: self.modoVistaActual == .cuadricula
                     ) {
                         let vm = PilaColecciones.getPilaColeccionesSingleton.getColeccionActual()
                         let coleccion = vm.coleccion
                         print("📦 Modificando modoVista para VM: \(coleccion.name) a cuadricula")
-                        vm.modoVista = .cuadricula
+                        
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { vm.modoVista = .cuadricula }
+                        
                         PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.cuadricula)
+                        menuRefreshTrigger = UUID()
                     }
 
                     BotonMenu(
                         nombre: "Lista",
                         icono: "list.bullet",
-                        isActive: menuEstado.modoVistaColeccion == .lista
+                        isActive: self.modoVistaActual == .lista
                     ) {
                         let vm = PilaColecciones.getPilaColeccionesSingleton.getColeccionActual()
                         let coleccion = vm.coleccion
                         print("📦 Modificando modoVista para VM: \(coleccion.name) a lista")
-                        vm.modoVista = .lista
+                        
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { vm.modoVista = .lista }
+                        
                         PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
+                        menuRefreshTrigger = UUID()
                     }
                     
                 }
-                
             } label: {
                 
 //                Image("custom.hand.grid")
@@ -138,6 +154,7 @@ struct MenuCentro: View {
                     .contentShape(Rectangle())
                 
             }
+            .id(menuRefreshTrigger)
             
             Button(action: {
                 self.menuEstado.isGlobalSettingsPressed.toggle()
