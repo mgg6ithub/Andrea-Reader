@@ -1,48 +1,48 @@
+
+//MARK: --- SINGLETON ---
+
 import SwiftUI
 
 @MainActor
 class PilaColecciones: ObservableObject {
 
-    private static let pilaColeccionesQueue = DispatchQueue(label: "com.miApp.pilaColecciones")
-    private static var pilaColecciones: PilaColecciones? = nil
+    //MARK: --- Instancia singleton totalmente segura, lazy, thread-safe ---
+    static let pilaColecciones: PilaColecciones = PilaColecciones()
 
-    private(set) var coleccionHomeURL: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
-
+    //MARK: --- Variables publicas para las vistas ---
     @Published private(set) var colecciones: [ColeccionViewModel] = []
-    
     @Published private(set) var coleccionActualVM: ColeccionViewModel?
 
-    private let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
+    //MARK: --- Variables privadas para esta clase ---
+    private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
+    private let sa: SistemaArchivos = SistemaArchivos.sa
 
+    //MARK: --- CONSTRUCTOR PRIVADO (solo se instancia desde el singleton) ---
     private init() {
+        //1
         self.cargarPila()
         
-        // Inicializar coleccionActualVM tras cargar la pila
+        //2
         actualizarColeccionActual()
     }
 
-    public static var getPilaColeccionesSingleton: PilaColecciones {
-        return pilaColeccionesQueue.sync {
-            if pilaColecciones == nil {
-                pilaColecciones = PilaColecciones()
-            }
-            return pilaColecciones!
-        }
-    }
-
+    /**
+      Carga la pila de colecciones desde `UserDefaults`.
+      Si alguna URL ya no existe, se omite.
+      Siempre asegura que la colección HOME esté al principio de la pila.
+     */
     public func cargarPila() {
-        let coleccionHomeURLStripped = self.coleccionHomeURL.deletingLastPathComponent()
+        let homeURLStripped = self.homeURL.deletingLastPathComponent()
 
         if let pilaGuardada = UserDefaults.standard.array(forKey: ConstantesPorDefecto().pilaColeccionesClave) as? [String] {
             let coleccionesGuardadas: [URL] = pilaGuardada.compactMap { col in
-                let absolutaURL = coleccionHomeURLStripped.appendingPathComponent(col)
+                let absolutaURL = homeURLStripped.appendingPathComponent(col)
                 return ManipulacionCadenas().agregarPrivate(absolutaURL)
             }
 
             let cache = sa.cacheColecciones
 
             var vistaModelos = coleccionesGuardadas.compactMap { url in
-                // ✅ Validar si aún existe en el sistema de archivos
                 if FileManager.default.fileExists(atPath: url.path),
                    let coleccion = cache[url]?.coleccion {
                     return ColeccionViewModel(coleccion)
@@ -51,8 +51,7 @@ class PilaColecciones: ObservableObject {
                 }
             }
 
-            // ✅ Añadir siempre la colección HOME como primera en la pila
-            if let home = cache[self.coleccionHomeURL]?.coleccion {
+            if let home = cache[self.homeURL]?.coleccion {
                 let homeVM = ColeccionViewModel(home)
 
                 // Evita duplicarla si ya estaba
@@ -70,19 +69,30 @@ class PilaColecciones: ObservableObject {
     }
 
 
+    /**
+     Guarda la pila de colecciones en `UserDefaults` como rutas relativas.
+     */
     public func guardarPila() {
-        let coleccionHomeURLStripped = self.coleccionHomeURL.deletingLastPathComponent().path
+        let homeURLStripped = self.homeURL.deletingLastPathComponent().path
 
         let rutasRelativas = self.colecciones.map { vm in
             let normalizarURL = ManipulacionCadenas().normalizarURL(vm.coleccion.url).path
-            return normalizarURL.replacingOccurrences(of: coleccionHomeURLStripped, with: "").trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+            return normalizarURL
+                .replacingOccurrences(of: homeURLStripped, with: "")
+                .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         }
+
         UserDefaults.standard.set(rutasRelativas, forKey: ConstantesPorDefecto().pilaColeccionesClave)
     }
     
+
+    /**
+     Establece la colección actual como la última de la pila.
+     Si la pila está vacía, usa la colección HOME.
+     */
     private func actualizarColeccionActual() {
         coleccionActualVM = colecciones.last ?? {
-            if let home = sa.cacheColecciones[coleccionHomeURL]?.coleccion {
+            if let home = sa.cacheColecciones[homeURL]?.coleccion {
                 return ColeccionViewModel(home)
             } else {
                 fatalError("No se pudo obtener la colección HOME")
@@ -90,6 +100,11 @@ class PilaColecciones: ObservableObject {
         }()
     }
 
+    /**
+     Agrega una colección al final de la pila si no es igual a la actual.
+
+     - Parameter coleccion: La colección a agregar.
+     */
     public func meterColeccion(coleccion: Coleccion) {
         let vm = ColeccionViewModel(coleccion)
         if colecciones.last?.coleccion == coleccion {
@@ -100,25 +115,54 @@ class PilaColecciones: ObservableObject {
         guardarPila()
     }
 
+    /**
+     Elimina la última colección de la pila.
+     */
     public func sacarColeccion() {
         _ = colecciones.popLast()
         actualizarColeccionActual()
         guardarPila()
     }
 
+    /**
+     Retorna la colección actual (última en la pila), o la colección HOME si no hay ninguna.
+     */
     public func getColeccionActual() -> ColeccionViewModel {
-        coleccionActualVM ?? ColeccionViewModel(sa.cacheColecciones[self.coleccionHomeURL]?.coleccion
-           ?? Coleccion(directoryName: "Inicio", directoryURL: coleccionHomeURL, creationDate: .now, modificationDate: .now, elementList: []))
+        coleccionActualVM ?? ColeccionViewModel(
+            sa.cacheColecciones[self.homeURL]?.coleccion
+            ?? Coleccion(
+                directoryName: "Inicio",
+                directoryURL: homeURL,
+                creationDate: .now,
+                modificationDate: .now,
+                elementList: []
+            )
+        )
     }
 
+    /**
+     Retorna la colección actual como propiedad.
+     */
     public var currentVM: ColeccionViewModel {
         getColeccionActual()
     }
 
+    /**
+     Verifica si una colección dada es igual a la colección actual.
+
+     - Parameter coleccion: La colección a comparar.
+     - Returns: `true` si es la colección actual, `false` en caso contrario.
+     */
     public func esColeccionActual(coleccion: Coleccion) -> Bool {
         return self.getColeccionActual().coleccion == coleccion
     }
 
+    /**
+     Saca colecciones de la pila hasta que encuentra la indicada.
+     Si se encuentra, la deja como actual y guarda la pila.
+
+     - Parameter coleccion: La colección objetivo.
+     */
     public func sacarHastaEncontrarColeccion(coleccion: Coleccion) {
         while let ultima = colecciones.last {
             if ultima.coleccion == coleccion {
@@ -129,32 +173,26 @@ class PilaColecciones: ObservableObject {
             colecciones.removeLast()
         }
     }
-    
-    /// Conserva solo la primera colección (HOME),
-    /// actualiza la colección actual y guarda la pila.
+
+    /**
+     Elimina todas las colecciones excepto la HOME.
+     Establece la HOME como actual y guarda la pila.
+     */
     public func conservarSoloHome() {
         guard !colecciones.isEmpty else { return }
 
-        // 1. Conservar solo la primera (HOME)
         let home = colecciones.first!
         colecciones = [home]
-
-        // 2. Establecer como actual
         actualizarColeccionActual()
-
-        // 3. Guardar en persistencia
         guardarPila()
 
-        // 4. Limpiar caché de miniaturas
-//        ThumbnailService.shared.clearCache()
-
-//        print("🏠 Solo se conservó la colección HOME:")
-//        for col in self.colecciones {
-//            print(col.coleccion.name)
-//        }
+        // Opcional: limpiar caché de miniaturas
+        // ThumbnailService.shared.clearCache()
     }
 
-    
+    /**
+     Elimina todas las colecciones de la pila (sin guardar).
+     */
     public func sacarTodasColecciones() {
         self.colecciones.removeAll()
     }

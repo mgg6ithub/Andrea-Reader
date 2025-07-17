@@ -6,7 +6,7 @@ import SwiftUI
 class ColeccionViewModel: ObservableObject {
     
   let coleccion: Coleccion
-  var appEstado: AppEstado?
+  var tipoSA: EnumTipoSistemaArchivos?
     
   @Published var elementos: [ElementoSistemaArchivos] = []
   @Published var isLoading = false
@@ -17,6 +17,8 @@ class ColeccionViewModel: ObservableObject {
   @Published var ordenacion: EnumOrdenaciones
   @Published var columnas: Int = 4
   @Published var altura: CGFloat = 180
+
+  @Published var elementosCargados: Bool = false
 
     
   @Published var isPerformingAutoScroll = false
@@ -80,26 +82,28 @@ class ColeccionViewModel: ObservableObject {
     }
     
     //Inyectamos appEstado desde CuadriculaVista
-    func setAppEstado(_ appEstado: AppEstado) {
-        self.appEstado = appEstado
+    func setSistemaArchivos(_ tipo: EnumTipoSistemaArchivos) {
+        guard self.tipoSA == nil else { return }
+        self.tipoSA = tipo
     }
 
     func cargarElementos() {
+        guard !elementosCargados else { return }
         isLoading = true
 
         // 1. Obtener las URLs y filtrarlas SINCRÓNICAMENTE para crear los placeholders
-        let allURLs = SistemaArchivos.getSistemaArchivosSingleton.obtenerURLSDirectorio(coleccionURL: coleccion.url)
+        let allURLs = SistemaArchivos.sa.obtenerURLSDirectorio(coleccionURL: coleccion.url)
         
         var filteredURLs = allURLs.filter { url in
-            SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.filtrosIndexado.allSatisfy {
+            SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
                 $0.shouldInclude(url: url)
             }
         }
         
         //2.1 Si el sistema de archivos estan en modo arbol tambien hay que filtrar las urls que sean de colecciones (directorios)
-        if self.appEstado?.sistemaArchivos == .arbol {
+        if self.tipoSA == .arbol {
             filteredURLs = filteredURLs.filter { url in
-                !SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.isDirectory(elementURL: url)
+                !SistemaArchivosUtilidades.sau.isDirectory(elementURL: url)
             }
         }
         
@@ -132,7 +136,7 @@ class ColeccionViewModel: ObservableObject {
                 let url = urls[idx]
                 
                 //2. Si no la creamos
-                let elem = SistemaArchivos.getSistemaArchivosSingleton.crearInstancia(elementoURL: url)
+                let elem = SistemaArchivos.sa.crearInstancia(elementoURL: url)
                 await MainActor.run {
                     var nuevos = self.elementos
                     nuevos[idx] = elem
@@ -144,10 +148,17 @@ class ColeccionViewModel: ObservableObject {
 
             await MainActor.run {
                 self.isLoading = false
+                self.elementosCargados = true
             }
         }
 
     }
+    
+    
+    func reiniciarCarga() {
+        elementosCargados = false
+    }
+
     
     private var scrollDebounceWorkItem: DispatchWorkItem?
     

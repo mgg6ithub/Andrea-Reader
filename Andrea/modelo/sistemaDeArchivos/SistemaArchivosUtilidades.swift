@@ -5,37 +5,25 @@ import UniformTypeIdentifiers
 
 class SistemaArchivosUtilidades {
     
-    // MARK: – Instancia singleton (perezosa + protegida con queue de sincronización)
-    private static var sistemaArchivosUtilidades: SistemaArchivosUtilidades? = nil
-    private static let sistemaArchivosUtilidadesQueue = DispatchQueue(label: "com.miApp.singletonSistemaArchivos")
-    
-    public static var getSistemaArchivosUtilidadesSingleton: SistemaArchivosUtilidades {
-        return sistemaArchivosUtilidadesQueue.sync {
-            if sistemaArchivosUtilidades == nil {
-                sistemaArchivosUtilidades = SistemaArchivosUtilidades()
-            }
-            return sistemaArchivosUtilidades!
-        }
-    }
+    // MARK: –-- Instancia singleton totalmente segura, lazy, thread-safe ---
+    static let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades()
     
     //Variables locales del SISTEMA DE ARCHIVOS
     public var filtrosIndexado: Set<EnumFiltroArchivos> = [.excludeTrash, .excludeHiddenFiles]
     
     public var fm: FileManager // Intancia global de FileManager para interactuar con el sistema de archivos
+    public var home: URL // Variable con la ruta del directorio root
     
-    public var rootDirectory: URL // Variable con la ruta del directorio root
-    
+    //MARK: --- CONSTRUCTOR PRIVADO (solo se instancia desde el singleton) ---
     private init() {
-        
-        //Inicializamos
-        
+
         // Intentar obtener el directorio de documentos
-        guard let rootURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+        guard let home = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             fatalError()
         }
         
         //Por defecto inicializamos con el directorio root
-        self.rootDirectory = rootURL
+        self.home = home
         
         self.fm = FileManager.default
     }

@@ -3,7 +3,7 @@ import SwiftUI
 
 struct FactoryArchivo {
     
-    private let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
+    private let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.sau
     
     func crearArchivo(fileName: String, fileURL: URL, destionationURL: URL?, currentDirectory: URL) -> Archivo {
         

@@ -90,7 +90,6 @@ struct CuadriculaVista: View {
                     .coordinateSpace(name: "scrollContainer")
                     .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
                         scrollOffset = value
-                        print("scrollOffset:", scrollOffset)
                     }
                     .simultaneousGesture(
                         MagnificationGesture()
@@ -131,7 +130,5 @@ struct CuadriculaVista: View {
         }
     }
 }
-
-
 
 

@@ -41,7 +41,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     var finisheReadingDate: Date?
     
     //MODELOS NECESARIOS
-    var sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
+    private let sau = SistemaArchivosUtilidades.sau
     
 //    var hasThumbnail: Bool {
 //        let thumbURL = ThumbnailService.shared.cacheDir

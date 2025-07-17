@@ -7,7 +7,7 @@ struct ElementoVista<Content: View>: View {
     let elemento: any ElementoSistemaArchivosProtocolo
     @ViewBuilder let content: () -> Content
     
-    private let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
+    private let sa: SistemaArchivos = SistemaArchivos.sa
     @State private var mostrarConfirmacion = false
     
     var body: some View {

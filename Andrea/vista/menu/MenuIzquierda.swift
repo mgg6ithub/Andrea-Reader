@@ -85,7 +85,7 @@ struct MenuIzquierda: View {
                                         ScrollView {
                                             LazyVStack(alignment: .leading, spacing: 0) {
                                                 ForEach(
-                                                    SistemaArchivos.getSistemaArchivosSingleton.cacheColecciones
+                                                    SistemaArchivos.sa.cacheColecciones
                                                         .sorted { $0.value.coleccion.name < $1.value.coleccion.name },
                                                     id: \.key
                                                 ) { url, valor in

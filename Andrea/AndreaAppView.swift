@@ -16,8 +16,8 @@ struct AndreaAppView: View {
 //    @StateObject private var appEstado = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
 //    @StateObject private var appEstado = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
     @StateObject private var menuEstado = MenuEstado()//Inicalizamos el sistema de archivos
-    @StateObject private var pc = PilaColecciones.getPilaColeccionesSingleton //Inicalizamos la pila de las colecciones
-    
+    @StateObject private var pc = PilaColecciones.pilaColecciones
+
     @State private var sideMenuVisible: Bool = false
     
     var body: some View {
@@ -26,7 +26,6 @@ struct AndreaAppView: View {
             VistaPrincipal()
                 .environmentObject(appEstado)
                 .environmentObject(menuEstado)
-//                .environmentObject(sa)
                 .environmentObject(pc)
             
             if sideMenuVisible {

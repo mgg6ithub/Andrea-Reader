@@ -33,19 +33,13 @@ struct VistaPrincipal: View {
                     
                     ZStack {
                         if let lastVM = pc.coleccionActualVM {
-                            ContenidoColeccionVista(vm: lastVM, namespace: gridNamespace)
+                            Libreria(vm: lastVM, namespace: gridNamespace)
                         }
                     }
                     .animation(.spring(response: 0.5, dampingFraction: 0.7),
-                               value: viewMode)                   // para cambio de modo
-                    .animation(.spring(response: 0.5, dampingFraction: 0.7),
                                value: pc.coleccionActualVM?.coleccion.id)
                     
-                    Spacer()
-                    
                 }
-//                .border(.red)
-//                .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
                 .padding(.horizontal, ConstantesPorDefecto().horizontalPadding)
             }
             .foregroundColor(appEstado.temaActual.textColor)
@@ -64,7 +58,7 @@ struct VistaPrincipal: View {
 }
 
 
-struct ContenidoColeccionVista: View {
+struct Libreria: View {
     
     @ObservedObject var vm: ColeccionViewModel
     @EnvironmentObject var appEstado: AppEstado
@@ -92,15 +86,16 @@ struct ContenidoColeccionVista: View {
                 }
 //            }
         }
-        .onAppear {
-            if vm.appEstado == nil {
-                vm.setAppEstado(appEstado)
+        .task {
+            vm.setSistemaArchivos(appEstado.sistemaArchivos)
+
+            if !vm.elementosCargados {
+                vm.cargarElementos()
             }
-            vm.cargarElementos()
         }
         .onChange(of: appEstado.sistemaArchivos) { _ in
+            vm.reiniciarCarga()
             vm.cargarElementos()
-            print("👀 mostrándose vista con VM: \(vm.coleccion.name)")
         }
     }
     

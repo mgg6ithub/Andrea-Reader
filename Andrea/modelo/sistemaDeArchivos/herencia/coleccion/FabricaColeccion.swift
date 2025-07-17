@@ -4,7 +4,7 @@ import SwiftUI
 
 struct FabricaColeccion {
     
-    let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
+    let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.sau
     
     func crearColeccion(collectionName: String, collectionURL: URL) -> Coleccion {
         

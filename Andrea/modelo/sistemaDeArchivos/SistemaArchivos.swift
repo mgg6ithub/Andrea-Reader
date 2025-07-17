@@ -5,35 +5,13 @@ import SwiftUI
 
 class SistemaArchivos: ObservableObject {
     
-    // MARK: – Instancia singleton (perezosa + protegida con queue de sincronización)
-    private static var sistemaArchivos: SistemaArchivos? = nil
+    // MARK: --- Instancia singleton totalmente segura, lazy, thread-safe ---
+    static let sa: SistemaArchivos = SistemaArchivos()
     
-    private static let sistemaArchivosQueue = DispatchQueue(label: "com.miApp.singletonSistemaArchivos")
+//    private static let sistemaArchivosQueue = DispatchQueue(label: "com.miApp.singletonSistemaArchivos")
     
     //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual (Documents) coelccion raiz
-    private(set) var coleccionHomeURL: URL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory
-    
-//    private(set) var coleccionHome: ColeccionValor
-    
-    /// Getter público que comprueba si la instancia es nula; si lo es, la crea una sola vez.
-    public static var getSistemaArchivosSingleton: SistemaArchivos {
-        return sistemaArchivosQueue.sync {
-            if sistemaArchivos == nil {
-                sistemaArchivos = SistemaArchivos()
-            }
-            return sistemaArchivos!
-        }
-    }
-    
-    
-//    @Published var coleccionActual: Coleccion {
-//        willSet {
-//            print("➡️ coleccionActual va a cambiar de \(coleccionActual.name) a \(newValue.name)")
-//            print("Guardando en \(coleccionActual.name) el indice \(coleccionActual.scrollPosition)")
-//            // Aquí puedes guardar scrollPosition actual, etc.
-//            PersistenciaDatos().guardarPosicionScroll(coleccion: coleccionActual)
-//        }
-//    }
+    private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
 
     
     //MARK: - LISTAS Y CACHES
@@ -52,6 +30,7 @@ class SistemaArchivos: ObservableObject {
     
     @Published var listaElementos: [any ElementoSistemaArchivosProtocolo] = [] //Es es la lista publica que se vinculara a la vista de la libreria.
     
+    private let sau = SistemaArchivosUtilidades.sau
     private let fm: FileManager = FileManager.default
     
     //MARK: - CONSTRUCTOR
@@ -63,19 +42,17 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         // Crear la coleccion raiz y asignarla
-        let home = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.coleccionHomeURL)
-        cacheColecciones[coleccionHomeURL] = ColeccionValor(coleccion: home)
+        let home = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.homeURL)
+        cacheColecciones[homeURL] = ColeccionValor(coleccion: home)
         
         // Indexar recursivamente a partir de la raiz
-        self.indexamientoRecursivoColecciones(desde: coleccionHomeURL)
+        self.indexamientoRecursivoColecciones(desde: homeURL)
     }
     
     /**
      Recorre recursivamente todas las colecciones.
      */
     private func indexamientoRecursivoColecciones(desde coleccionURL: URL) {
-        
-        let sau = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
 
         // Verificamos que es un directorio válido antes de continuar
         guard sau.isDirectory(elementURL: coleccionURL) else { return }
@@ -96,81 +73,14 @@ class SistemaArchivos: ObservableObject {
             indexamientoRecursivoColecciones(desde: subdir)
         }
         
-//        print("Indexado de coleccion completado en SA")
-        
     }
     
     private let indexacionQueue = OperationQueue()
-    
-    public func refreshIndex(coleccionActual: Coleccion, completion: (() -> Void)? = nil) {
-        
-        // 1. Limpiar lista elementos antes de comenzar (en main queue)
-        DispatchQueue.main.async {
-            self.listaElementos.removeAll()
-        }
-        
-        let coleccionURL = coleccionActual.url
-        
-        // Cancelar indexaciones anteriores
-        indexacionQueue.cancelAllOperations()
-        
-        // Si ya está cacheado, actualizamos y terminamos rápido
-//        if let coleccionValor = self.cacheColecciones[coleccionURL],
-//           !coleccionValor.listaElementos.isEmpty {
-//            
-//            print("Esta cacheado")
-//            let total = coleccionValor.listaElementos.count
-//
-//            DispatchQueue.main.async {
-//                // Crear placeholders temporales con mismo tamaño
-//                self.listaElementos = (0..<coleccionValor.listaElementos.count).map { _ in
-//                    ElementoPlaceholder() as any ElementoSistemaArchivosProtocolo
-//                }
-//            }
-//            
-//            // Scroll inmediato
-//            self.coleccionActual = coleccionActual
-//            
-//            let centro = coleccionActual.scrollPosition ?? 0
-//            let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: total)
-//
-//            // Luego, una animación suave para reemplazar con reales (opcional)
-//            DispatchQueue.main.async {
-//                for index in indices {
-//                    if index < coleccionValor.listaElementos.count {
-//                        self.listaElementos[index] = coleccionValor.listaElementos[index]
-//                    }
-//                }
-//                completion?()
-//            }
-//
-//            return
-//        }
-        
-        print("No esta cacheado")
-        
-//        let operation = IndexarOperation(coleccionActual: coleccionActual, sistemaArchivos: self)
-//        
-//        operation.completionBlock = { [weak operation, weak self] in
-//            guard let self = self, let op = operation, !op.isCancelled else { return }
-//            
-////            DispatchQueue.main.async {
-////                if let coleccionValor = self.cacheColecciones[coleccionURL] {
-////                    print("La coleccion ya existe en cache ", coleccionValor.coleccion.name)
-////                    coleccionValor.listaElementos = op.elementosFinales
-////                }
-////                completion?()
-////            }
-//        }
-//        
-//        indexacionQueue.addOperation(operation)
-    }
 
     
     public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> ElementoSistemaArchivos {
-        
-        let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton
-        let destinoURL: URL = coleccionDestinoURL ?? self.coleccionHomeURL
+    
+        let destinoURL: URL = coleccionDestinoURL ?? self.homeURL
         
         if sau.isDirectory(elementURL: elementoURL) {
             if let coleccionValor: ColeccionValor = self.cacheColecciones[elementoURL] {
@@ -178,7 +88,7 @@ class SistemaArchivos: ObservableObject {
             }
             return FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: elementoURL), collectionURL: elementoURL)
         } else {
-            return FactoryArchivo().crearArchivo(fileName: sau.getFileName(fileURL: elementoURL), fileURL: elementoURL, destionationURL: destinoURL, currentDirectory: self.coleccionHomeURL)
+            return FactoryArchivo().crearArchivo(fileName: sau.getFileName(fileURL: elementoURL), fileURL: elementoURL, destionationURL: destinoURL, currentDirectory: self.homeURL)
         }
     }
     
@@ -207,9 +117,7 @@ class SistemaArchivos: ObservableObject {
      */
     func obtenerURLSDirectorio(coleccionURL: URL) -> [URL] {
         do {
-            // Obtén todas las URLs en el directorio
-            let contentsURLs = try FileManager.default.contentsOfDirectory(at: coleccionURL, includingPropertiesForKeys: nil)
-            // Filtra los elementos según sea necesario (descomentar o modificar según el uso)
+            let contentsURLs = try fm.contentsOfDirectory(at: coleccionURL, includingPropertiesForKeys: nil)
             let filteredURLs = contentsURLs.filter { url in
                 // Aplica filtros personalizados aquí (si es necesario)
                 // return indexingFilters.allSatisfy { $0.shouldInclude(url: url) }
@@ -231,12 +139,12 @@ class SistemaArchivos: ObservableObject {
             // --- obtenemos la url del elemento a borrar
             let url: URL = elemento.url
             do {
-                try FileManager.default.removeItem(at: url) //borramos del dispositivo con fm
+                try self.fm.removeItem(at: url) //borramos del dispositivo con fm
                 
                 DispatchQueue.main.async {
                     // Verifica que realmente se haya borrado
                     let existe = SistemaArchivosUtilidades
-                        .getSistemaArchivosUtilidadesSingleton
+                        .sau
                         .fileExists(elementURL: url)
                     
                     if !existe { //si ya no existe
@@ -263,7 +171,7 @@ class SistemaArchivos: ObservableObject {
     
     // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
     public func moverElemento(_ elemento: Any, a nuevaURL: URL) throws {
-        try fileQueue.sync {
+        fileQueue.sync {
             // --- Lógica para mover/renombrar en disco ---
             // try FileManager.default.moveItem(at: (elemento as! URL), to: nuevaURL)
             //
@@ -291,12 +199,12 @@ class SistemaArchivos: ObservableObject {
             // 1. Obtenenmos el nombre de la url
             let nombreArchivo: String = archivoURL.lastPathComponent
             // 2. Verificamos si se ha pasado un destino concreto. Si no se creara en la colecciona actual.
-            let coleccionDestinoURL = coleccionDestino ?? self.coleccionHomeURL
+            let coleccionDestinoURL = coleccionDestino ?? self.homeURL
             // 3. Construimos la nueva URL
             let nuevoArchivoURL = coleccionDestinoURL.appendingPathComponent(nombreArchivo)
             
             // --- Agregamos el archivo a la carpeta Andrea para la persistencia ---
-            if !SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.fileExists(elementURL: nuevoArchivoURL) {
+            if !self.sau.fileExists(elementURL: nuevoArchivoURL) {
                 
                 do {
                     guard archivoURL.startAccessingSecurityScopedResource() else {
@@ -314,9 +222,6 @@ class SistemaArchivos: ObservableObject {
                 self.actualizarUISoloElemento(elementoURL: nuevoArchivoURL)
                 return
             }
-            
-            //Si el archivo es duplicado para una coleccion nunca llega aqui el codigo
-            
         }
         
     }
@@ -332,10 +237,10 @@ class SistemaArchivos: ObservableObject {
     public func crearColeccion(nombre: String, en direccionNuevaColeccion: URL? = nil) {
         fileQueue.async {
             // --- Lógica para crear carpeta en disco ---
-            let coleccionDestino = direccionNuevaColeccion ?? self.coleccionHomeURL
+            let coleccionDestino = direccionNuevaColeccion ?? self.homeURL
             let nuevaColeccionURL = coleccionDestino.appendingPathComponent(nombre, isDirectory: true)
             
-            if !SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.fileExists(elementURL: nuevaColeccionURL) {
+            if !self.sau.fileExists(elementURL: nuevaColeccionURL) {
                 try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
                 
                 // --- Creamos la instancia de la coleccion ---
@@ -344,7 +249,6 @@ class SistemaArchivos: ObservableObject {
             else {
                 print("La coleccion ya existe no se creara otra")
             }
-
         }
     }
     
@@ -360,7 +264,7 @@ class SistemaArchivos: ObservableObject {
         let elemento: ElementoSistemaArchivos = self.crearInstancia(elementoURL: elementoURL)
             DispatchQueue.main.async {
                 withAnimation(.easeOut(duration: 0.35)) {
-                    PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().elementos.append(elemento)
+                    PilaColecciones.pilaColecciones.getColeccionActual().elementos.append(elemento)
                 }
             }
 

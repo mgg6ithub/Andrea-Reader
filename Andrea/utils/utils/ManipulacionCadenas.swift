@@ -7,6 +7,8 @@ import SwiftUI
 
 struct ManipulacionCadenas {
     
+    private let sau: SistemaArchivosUtilidades = SistemaArchivosUtilidades.sau
+    
     /**
      Metodo para calcular la altura del texto usado
      */
@@ -55,7 +57,7 @@ struct ManipulacionCadenas {
             newName = self.deleteDuplicateNumberFromString(newName)
         }
         
-        var highestDuplicate = getHighestDuplicate(newName, SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.getListSubdirectoryContentsWithNoExtensions(urlPath: directoryURL))
+        var highestDuplicate = getHighestDuplicate(newName, sau.getListSubdirectoryContentsWithNoExtensions(urlPath: directoryURL))
         highestDuplicate += 1
         
         return ManipulacionCadenas().joinNameWithExtension(name: newName + " (" + String(highestDuplicate) + ")", ext: elementExtension)
@@ -177,7 +179,7 @@ struct ManipulacionCadenas {
     }
     
     func absolutivizeURL(elementSTRING: String) -> URL {
-        let rootPath = ManipulacionCadenas().agregarPrivate(SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.getRootDirectoryPath())
+        let rootPath = ManipulacionCadenas().agregarPrivate(sau.getRootDirectoryPath())
         return URL(fileURLWithPath: rootPath.deletingLastPathComponent().path).appendingPathComponent(elementSTRING)
     }
 
@@ -187,7 +189,7 @@ struct ManipulacionCadenas {
      */
     public func borrarURLLOCAL(url: URL) -> String {
         
-        let homeURL = SistemaArchivosUtilidades.getSistemaArchivosUtilidadesSingleton.rootDirectory.deletingLastPathComponent().path
+        let homeURL = sau.home.deletingLastPathComponent().path
         
         return self.normalizarURL(url).path.replacingOccurrences(of: homeURL, with: "").trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         

@@ -29,10 +29,10 @@ struct MenuCentro: View {
     @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
-    private let sa: SistemaArchivos = SistemaArchivos.getSistemaArchivosSingleton
+    private let sa: SistemaArchivos = SistemaArchivos.sa
     
     private var modoVistaActual: EnumModoVista {
-        PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().modoVista
+        PilaColecciones.pilaColecciones.getColeccionActual().modoVista
     }
     
     @State private var menuRefreshTrigger = UUID() // <-- Añadido
@@ -76,7 +76,7 @@ struct MenuCentro: View {
                     onPick: { urls in
                         print("Seleccionado: \(urls)")
                         for url in urls {
-                            sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().coleccion.url)
+                            sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.pilaColecciones.getColeccionActual().coleccion.url)
                         }
                     },
                     onCancel: {
@@ -102,7 +102,7 @@ struct MenuCentro: View {
             .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)
                 Button("Aceptar") {
-                    sa.crearColeccion(nombre: nuevaColeccionNombre, en: PilaColecciones.getPilaColeccionesSingleton.getColeccionActual().coleccion.url)
+                    sa.crearColeccion(nombre: nuevaColeccionNombre, en: PilaColecciones.pilaColecciones.getColeccionActual().coleccion.url)
                 }
                 Button("Cancelar", role: .cancel) {}
             }
@@ -116,7 +116,7 @@ struct MenuCentro: View {
                         icono: "square.grid.2x2",
                         isActive: self.modoVistaActual == .cuadricula
                     ) {
-                        let vm = PilaColecciones.getPilaColeccionesSingleton.getColeccionActual()
+                        let vm = PilaColecciones.pilaColecciones.getColeccionActual()
                         let coleccion = vm.coleccion
                         print("📦 Modificando modoVista para VM: \(coleccion.name) a cuadricula")
                         
@@ -131,7 +131,7 @@ struct MenuCentro: View {
                         icono: "list.bullet",
                         isActive: self.modoVistaActual == .lista
                     ) {
-                        let vm = PilaColecciones.getPilaColeccionesSingleton.getColeccionActual()
+                        let vm = PilaColecciones.pilaColecciones.getColeccionActual()
                         let coleccion = vm.coleccion
                         print("📦 Modificando modoVista para VM: \(coleccion.name) a lista")
                         
@@ -188,7 +188,7 @@ struct AndreaAppView_Preview: PreviewProvider {
 //        let appEstadoPreview = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
 //        let appEstadoPreview = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
         let menuEstadoPreview = MenuEstado() // Reemplaza con inicialización adecuada
-        let pc = PilaColecciones.getPilaColeccionesSingleton
+        let pc = PilaColecciones.pilaColecciones
 
         return AndreaAppView()
             .environmentObject(appStatePreview)

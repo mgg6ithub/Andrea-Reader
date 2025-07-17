@@ -51,7 +51,7 @@ class Coleccion: ElementoSistemaArchivos {
     
     public func meterColeccion() {
         DispatchQueue.main.async {
-            PilaColecciones.getPilaColeccionesSingleton.meterColeccion(coleccion: self)
+            PilaColecciones.pilaColecciones.meterColeccion(coleccion: self)
         }
     }
     
