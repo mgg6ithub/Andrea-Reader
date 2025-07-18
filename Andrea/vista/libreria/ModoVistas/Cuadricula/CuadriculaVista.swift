@@ -1,5 +1,18 @@
 import SwiftUI
 
+struct GridMetrics {
+  var columns: Int
+  var containerWidth: CGFloat
+
+  var itemSize: CGSize {
+    let spacing: CGFloat = 20
+    let totalSpacing = spacing * CGFloat(columns - 1)
+    let w = (containerWidth - totalSpacing) / CGFloat(columns)
+    let h = w * (310 / 180)
+    return CGSize(width: w, height: h)
+  }
+}
+
 struct CuadriculaVista: View {
 
     @ObservedObject var vm: ColeccionViewModel
@@ -10,27 +23,31 @@ struct CuadriculaVista: View {
     @State private var elementoArrastrando: ElementoSistemaArchivos? = nil
     @State private var scrollOffset: CGFloat = 0
 
+    @State private var metrics = GridMetrics(columns: 4, containerWidth: 0)
     @State private var didAutoScroll = false
     
     var body: some View {
         GeometryReader { outerGeometry in
 
-            VStack(spacing: 0) {
-
-                let spacing: CGFloat = 20
-                let columnsCount = vm.columnas
-                let totalSpacing = spacing * CGFloat(columnsCount - 1)
-                let itemWidth = (outerGeometry.size.width - totalSpacing) / CGFloat(columnsCount)
-
-                let aspectRatio: CGFloat = 310 / 180
-                let itemHeight = itemWidth * aspectRatio
+            Color.clear
+                .onAppear {
+                  metrics = GridMetrics(columns: vm.columnas, containerWidth: outerGeometry.size.width)
+                }
+                .onChange(of: vm.columnas) { newCols in
+                  metrics.columns = newCols
+                }
+                .onChange(of: outerGeometry.size.width) { newWidth in
+                  metrics.containerWidth = newWidth
+                }
+            
+                let size = metrics.itemSize
 
                 ScrollViewReader { proxy in
                     ScrollView(.vertical, showsIndicators: false) {
                         
                         LazyVGrid(
-                            columns: Array(repeating: GridItem(.fixed(itemWidth), spacing: spacing), count: columnsCount),
-                            spacing: spacing
+                            columns: Array(repeating: GridItem(.fixed(size.width), spacing: 20), count: metrics.columns),
+                            spacing: 20
                         ) {
                             ForEach(vm.elementos.indices, id: \.self) { index in
 
@@ -38,9 +55,9 @@ struct CuadriculaVista: View {
 
                                 ElementoVista(vm: vm, elemento: elemento) {
                                     if let placeholder = elemento as? ElementoPlaceholder {
-                                        PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
+                                        PlaceholderCuadricula(placeholder: placeholder, width: size.width, height: size.height)
                                     } else if let archivo = elemento as? Archivo {
-                                        CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
+                                        CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: size.width, height: size.height)
                                     } else if let coleccion = elemento as? Coleccion {
                                         CuadriculaColeccion(coleccion: coleccion)
                                     }
@@ -59,6 +76,7 @@ struct CuadriculaVista: View {
                                 ))
                             }
                         }
+
                     } //FIN SCROLLVIEW
                     .simultaneousGesture(
                         MagnificationGesture()
@@ -97,8 +115,6 @@ struct CuadriculaVista: View {
                             }
                         }
                     }
-                    
-                }
             }
         }
     }

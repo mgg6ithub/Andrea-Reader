@@ -140,9 +140,9 @@ class ColeccionViewModel: ObservableObject {
                 await MainActor.run {
                     var nuevos = self.elementos
                     nuevos[idx] = elem
-                    withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
+//                    withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
                         self.elementos = nuevos
-                    }
+//                    }
                 }
             }
 
