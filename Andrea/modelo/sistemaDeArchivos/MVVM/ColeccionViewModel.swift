@@ -158,6 +158,10 @@ class ColeccionViewModel: ObservableObject {
     func reiniciarCarga() {
         elementosCargados = false
     }
+    
+    func resetScrollState() {
+        isPerformingAutoScroll = false
+    }
 
     
     private var scrollDebounceWorkItem: DispatchWorkItem?

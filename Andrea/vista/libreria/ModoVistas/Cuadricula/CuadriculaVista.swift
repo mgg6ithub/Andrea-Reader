@@ -1,12 +1,5 @@
 import SwiftUI
 
-struct ScrollOffsetPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
-    }
-}
-
 struct CuadriculaVista: View {
 
     @ObservedObject var vm: ColeccionViewModel
@@ -17,18 +10,12 @@ struct CuadriculaVista: View {
     @State private var elementoArrastrando: ElementoSistemaArchivos? = nil
     @State private var scrollOffset: CGFloat = 0
 
+    @State private var didAutoScroll = false
+    
     var body: some View {
         GeometryReader { outerGeometry in
 
             VStack(spacing: 0) {
-
-                // Línea superior que aparece solo cuando se ha hecho scroll
-                Rectangle()
-                    .fill(Color.gray)
-                    .frame(height: 1)
-                    .opacity(scrollOffset < 0 ? 1 : 0) // Cuando scrollOffset < 0, se ha hecho scroll hacia abajo
-                    .animation(.easeInOut(duration: 0.05), value: scrollOffset < 0)
-                    .cornerRadius(8)
 
                 let spacing: CGFloat = 20
                 let columnsCount = vm.columnas
@@ -40,6 +27,7 @@ struct CuadriculaVista: View {
 
                 ScrollViewReader { proxy in
                     ScrollView(.vertical, showsIndicators: false) {
+                        
                         LazyVGrid(
                             columns: Array(repeating: GridItem(.fixed(itemWidth), spacing: spacing), count: columnsCount),
                             spacing: spacing
@@ -71,26 +59,7 @@ struct CuadriculaVista: View {
                                 ))
                             }
                         }
-                        .animation(.easeInOut(duration: 0.3), value: vm.columnas)
-                        .overlay(
-                            // GeometryReader que mide la posición del contenido
-                            GeometryReader { scrollGeo in
-                                Color.clear
-                                    .preference(key: ScrollOffsetPreferenceKey.self,
-                                              value: scrollGeo.frame(in: .named("scrollContainer")).minY)
-                            }
-                        )
                     } //FIN SCROLLVIEW
-                    .onAppear {
-                        UIScrollView.appearance().bounces = false
-                    }
-                    .onDisappear {
-                        UIScrollView.appearance().bounces = true
-                    }
-                    .coordinateSpace(name: "scrollContainer")
-                    .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                        scrollOffset = value
-                    }
                     .simultaneousGesture(
                         MagnificationGesture()
                             .onChanged { value in
@@ -117,14 +86,18 @@ struct CuadriculaVista: View {
                             },
                         including: .all
                     )
-                    .onChange(of: vm.isPerformingAutoScroll) { auto in
-                        if auto {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                proxy.scrollTo(vm.scrollPosition, anchor: .top)
-                                vm.isPerformingAutoScroll = false
+                    .onChange(of: vm.isPerformingAutoScroll) {
+                        if !didAutoScroll {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                withAnimation(.none) {
+                                    self.didAutoScroll = true
+                                    proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                                    vm.isPerformingAutoScroll = false
+                                  }
                             }
                         }
                     }
+                    
                 }
             }
         }

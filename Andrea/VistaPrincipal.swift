@@ -75,6 +75,9 @@ struct Libreria: View {
                             removal: .opacity
                         ))
                         .id("grid-\(vm.coleccion.id)")
+                        .onDisappear {
+                            vm.resetScrollState()
+                        }
 
                 case .lista:
                     ListaVista(vm: vm)
