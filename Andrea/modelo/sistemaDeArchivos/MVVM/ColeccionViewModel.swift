@@ -120,13 +120,14 @@ class ColeccionViewModel: ObservableObject {
             guard let self = self else { return }
 
             let centro = await MainActor.run { self.scrollPosition }
+//            let centro = 0
             let urls = await MainActor.run { filteredURLs }
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)
 
             let batchSize = 10
             var pendingUpdates: [(Int, ElementoSistemaArchivos)] = []
 
-            for (count, idx) in indices.enumerated() {
+            for (_, idx) in indices.enumerated() {
                 let url = urls[idx]
                 let elemento = SistemaArchivos.sa.crearInstancia(elementoURL: url)
                 pendingUpdates.append((idx, elemento))
@@ -166,31 +167,18 @@ class ColeccionViewModel: ObservableObject {
     func resetScrollState() {
         isPerformingAutoScroll = false
     }
-
-    
-    private var scrollDebounceWorkItem: DispatchWorkItem?
     
 
     func actualizarScroll(_ nuevo: Int) {
         scrollPosition = nuevo
-
-        scrollDebounceWorkItem?.cancel() // Cancelar debounce anterior
-
-        let workItem = DispatchWorkItem { [weak self] in
-            guard let self = self else { return }
-
-            // Aquí se ejecuta solo si el scroll ha parado por 0.5s
-            print("✅ Guardando scrollPosition:", nuevo)
-            PersistenciaDatos().guardarAtributo(
-                coleccion: self.coleccion,
-                atributo: "scrollPosition",
-                valor: nuevo
-            )
-        }
-
-        scrollDebounceWorkItem = workItem
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: workItem)
+        print("✅ Guardando scrollPosition:", nuevo)
+        PersistenciaDatos().guardarAtributo(
+            coleccion: self.coleccion,
+            atributo: "scrollPosition",
+            valor: nuevo
+        )
     }
+
     
 }
 

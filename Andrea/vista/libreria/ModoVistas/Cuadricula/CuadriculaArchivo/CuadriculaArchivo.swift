@@ -5,6 +5,8 @@ struct CuadriculaArchivo: View {
     @ObservedObject var archivo: Archivo
     @StateObject private var viewModel = ArchivoThumbnailViewModel()
     @ObservedObject var coleccionVM: ColeccionViewModel
+
+    @State private var miniatura: UIImage? = nil
     @State private var isVisible = false
     
     var width: CGFloat
@@ -21,11 +23,14 @@ struct CuadriculaArchivo: View {
                 } else {
                     ProgressView()
                 }
+                
                 VStack {
                     Spacer()
                     let ancho = width - 20
                     ProgresoCuadricula(progreso: archivo.fileProgressPercentage, coleccionColor: coleccionVM.color, totalWidth: ancho)
+                        .equatable()
                 }
+                
             }
             .frame(width: width)
             
@@ -39,6 +44,7 @@ struct CuadriculaArchivo: View {
                 coleccionColor: coleccionVM.color,
                 maxWidth: width
             )
+            .equatable()
             
         }
         .frame(width: width, height: height)
@@ -47,14 +53,31 @@ struct CuadriculaArchivo: View {
         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
         .scaleEffect(isVisible ? 1 : 0.95)
         .opacity(isVisible ? 1 : 0)
+//        .onAppear {
+//            isVisible = true
+//        }
+//        .task(id: archivo.id) {
+//            let targetSize = CGSize(width: width * UIScreen.main.scale,
+//                                    height: (height * 0.6) * UIScreen.main.scale)
+//            if let img = await ThumbnailLoader.shared.image(
+//                for: archivo,
+//                color: coleccionVM.color,
+//                targetSize: targetSize
+//            ) {
+//                miniatura = img
+//            }
+//        }
         .onAppear {
-            
-            viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
-            isVisible = true
-        }
-        .onDisappear {
-            viewModel.unloadThumbnail(for: archivo)
-        }
+                    
+                    viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
+
+        //            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.2...0.4))) {
+                        isVisible = true
+        //            }
+                }
+                .onDisappear {
+                    viewModel.unloadThumbnail(for: archivo)
+                }
 
     }
     

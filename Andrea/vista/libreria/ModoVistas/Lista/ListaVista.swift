@@ -13,10 +13,10 @@ struct ListaVista: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 20) {
-                    ForEach(vm.elementos.indices, id: \.self) { index in
+                    ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
                         //                    HStack(spacing: 12) {
-                        let elemento = vm.elementos[index]
-                        ElementoVista(vm: vm, elemento: elemento) {
+//                        let elemento = vm.elementos[index]
+                        ElementoVista(vm: vm, elemento: elemento, scrollIndex: index) {
                             // Miniatura + título en fila
                             if let placeholder = elemento as? ElementoPlaceholder {
                                 PlaceholderLista(placeholder: placeholder, coleccionVM: vm)

@@ -2,6 +2,9 @@ import SwiftUI
 
 struct CuadriculaVista: View {
     @ObservedObject var vm: ColeccionViewModel
+    
+    @State private var visibleIndices: [VisibleIndex] = []
+    @State private var debounceWorkItem: DispatchWorkItem?
 
     var body: some View {
         GeometryReader { geo in
@@ -21,8 +24,8 @@ struct CuadriculaVista: View {
                         ),
                         spacing: spacing
                     ) {
-                        ForEach(vm.elementos) { elemento in
-                            ElementoVista(vm: vm, elemento: elemento) {
+                        ForEach(Array(vm.elementos.enumerated()), id: \.offset) { index, elemento in
+                            ElementoVista(vm: vm, elemento: elemento, scrollIndex: index) {
                                 if let placeholder = elemento as? ElementoPlaceholder {
                                     PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
                                 } else if let archivo = elemento as? Archivo {
@@ -31,10 +34,66 @@ struct CuadriculaVista: View {
                                     CuadriculaColeccion(coleccion: coleccion)
                                 }
                             }
+                            .id(index)  // importante para scrollTo
+                        }
+                    }
+                    .background(
+                        GeometryReader { _ in Color.clear }
+                    )
+                }
+                .coordinateSpace(name: "scroll")
+                .onPreferenceChange(ScrollIndexPreferenceKey.self) { newValue in
+                    visibleIndices = newValue
+
+                    guard !vm.isPerformingAutoScroll else { return }
+
+                    debounceWorkItem?.cancel()
+                    let workItem = DispatchWorkItem {
+                        if let top = newValue
+                            .filter({ $0.minY >= 0 })
+                            .min(by: { $0.minY < $1.minY }) {
+
+                            print("🟢 Scroll detenido. Índice visible superior:", top.index)
+                            vm.actualizarScroll(top.index)
+                        } else {
+                            print("🔴 No hay índice visible tras detener scroll.")
+                        }
+                    }
+                    debounceWorkItem = workItem
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
+                }
+                .onChange(of: vm.elementos) { newElementos in
+                    guard vm.isPerformingAutoScroll else { return }
+                    if newElementos.count > 0 {
+                        DispatchQueue.main.async {
+                            proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                            vm.isPerformingAutoScroll = false
                         }
                     }
                 }
+
+
+
+
+
             }
+
         }
     }
+}
+
+
+struct ScrollIndexPreferenceKey: PreferenceKey {
+    static var defaultValue: [VisibleIndex] = []
+    static func reduce(value: inout [VisibleIndex], nextValue: () -> [VisibleIndex]) {
+        let new = nextValue()
+//        print("📦 Se reportan índices visibles: \(new.map(\.index))")
+        value.append(contentsOf: new)
+    }
+
+}
+
+struct VisibleIndex: Equatable {
+    let index: Int
+    let minY: CGFloat
 }

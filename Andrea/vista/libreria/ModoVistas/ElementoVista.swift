@@ -2,35 +2,41 @@
 import SwiftUI
 
 struct ElementoVista<Content: View>: View {
-    
     @ObservedObject var vm: ColeccionViewModel
     let elemento: any ElementoSistemaArchivosProtocolo
+    let scrollIndex: Int? // <- NUEVO
     @ViewBuilder let content: () -> Content
-    
+
     private let sa: SistemaArchivos = SistemaArchivos.sa
     @State private var mostrarConfirmacion = false
-    
-    var body: some View {
 
+    var body: some View {
         content()
+            .background(
+                GeometryReader { geo in
+                    Color.clear
+                        .preference(
+                            key: ScrollIndexPreferenceKey.self,
+                            value: scrollIndex.map { idx in
+                                [VisibleIndex(index: idx, minY: geo.frame(in: .named("scroll")).minY)]
+                            } ?? []
+                        )
+                }
+            )
             .contextMenu {
                 Section(header: Text(elemento.name)) {
-                    
                     Text("Mostrar informacion")
-                    
                     Text("Completar lectura")
-                    
                     Menu {
-                        
-                        
-                        
+                        // ...
                     } label: {
                         Label("Cambiar portada", systemImage: "paintbrush")
                     }
-                    
                 }
-                
-                Button("Borrar", role: .destructive) { mostrarConfirmacion = true }
+
+                Button("Borrar", role: .destructive) {
+                    mostrarConfirmacion = true
+                }
             }
             .confirmationDialog(
                 "¿Estás seguro de que quieres borrar \(elemento.name)?",
@@ -42,7 +48,7 @@ struct ElementoVista<Content: View>: View {
                 }
                 Button("Cancelar", role: .cancel) {}
             }
-        
     }
-    
 }
+
+
