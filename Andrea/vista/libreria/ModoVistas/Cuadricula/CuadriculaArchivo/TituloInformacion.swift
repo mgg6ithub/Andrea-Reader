@@ -2,65 +2,70 @@
 
 import SwiftUI
 
-struct TituloInformacion: View {
-    
-    let archivo: Archivo
-    @ObservedObject var coleccionVM: ColeccionViewModel
-    
-    var progreso: Int { archivo.fileProgressPercentage }
-    
+struct TituloInformacion: View, Equatable {
+    let nombre: String
+    let tipo: String
+    let tamanioMB: Int
+    let paginas: Int
+    let progreso: Int
+    let coleccionColor: Color
+    let maxWidth: CGFloat
+
+    static func == (lhs: TituloInformacion, rhs: TituloInformacion) -> Bool {
+        lhs.nombre == rhs.nombre &&
+        lhs.tipo == rhs.tipo &&
+        lhs.tamanioMB == rhs.tamanioMB &&
+        lhs.paginas == rhs.paginas &&
+        lhs.progreso == rhs.progreso &&
+        lhs.coleccionColor == rhs.coleccionColor &&
+        lhs.maxWidth == rhs.maxWidth
+    }
+
     var body: some View {
-        
         VStack(spacing: 4) {
             HStack(spacing: 0) {
-                Text(archivo.name)
+                Text(nombre)
                     .font(.system(size: ConstantesPorDefecto().titleSize))
                     .foregroundColor(.primary)
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.6)
                     .lineLimit(1)
-                    .frame(maxWidth: .infinity)
-                
-                Color.clear
-                    .animatedProgressText1(progreso)
-                    .foregroundColor(coleccionVM.color)
+                    .frame(maxWidth: maxWidth * 0.7)
+
+                Spacer()
+
+                Text("\(progreso)%")
                     .font(.system(size: ConstantesPorDefecto().subTitleSize))
                     .bold()
+                    .foregroundColor(coleccionColor)
+                    .frame(maxWidth: maxWidth * 0.3, alignment: .trailing)
             }
-            .animation(.easeInOut(duration: 0.7), value: coleccionVM.color)
-            .padding(0)
-            
+
             HStack {
-                Text("\(archivo.fileType.rawValue)")
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize))
-                    .foregroundColor(.gray)
+                Text(tipo)
                     .font(.system(size: 8))
-                    .lineLimit(1) // Limita a una sola línea inicialmente
-                    .minimumScaleFactor(0.8) // Reduce el tamaño hasta un 80% si es necesario
-                    .truncationMode(.tail)
+                    .foregroundColor(.gray)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
 
                 Spacer()
 
-                Text(String("\(archivo.fileSize / (1024 * 1024)) MB"))
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize))
-                    .foregroundColor(.gray)
+                Text("\(tamanioMB) MB")
                     .font(.system(size: 8))
-                    .lineLimit(1) // Limita a una sola línea ini	cialmente
-                    .minimumScaleFactor(0.8) // Reduce el tamaño hasta un 80% si es necesario
-                    .truncationMode(.tail)
+                    .foregroundColor(.gray)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
 
                 Spacer()
 
-                Text("\(archivo.fileTotalPages) pages")
+                Text("\(paginas) pages")
+                    .font(.system(size: 8))
                     .foregroundColor(.gray)
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize)) // Usa el tamaño de fuente calculado
-                    .lineLimit(1) // Limita a una sola línea inicialmente
-                    .minimumScaleFactor(0.8) // Reduce el tamaño hasta un 80% si es necesario
-                    .truncationMode(.tail)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
             }
         }
         .padding(8)
-        
     }
-    
 }
+

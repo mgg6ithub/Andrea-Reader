@@ -2,7 +2,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Hashable, Equatable {
+class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
     
     var id: UUID
     var name: String

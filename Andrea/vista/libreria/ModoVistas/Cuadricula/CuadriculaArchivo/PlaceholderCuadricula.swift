@@ -5,33 +5,17 @@ struct PlaceholderCuadricula: View {
     @State private var isVisible = false
 
     let placeholder: ElementoPlaceholder
-//    let index: Int
     var width: CGFloat
     var height: CGFloat
     
     var body: some View {
         VStack(spacing: 0) {
-            // Parte superior: simula imagen completa
-            ZStack {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                    .clipShape(RoundedCorner(radius: 18, corners: [.topLeft, .topRight]))
-//                    .shimmering()
-                
-//                VStack {
-//                    Spacer()
-//                    HStack{
-//                        Spacer()
-//                        Text(String(index))
-//                            .foregroundColor(.red)
-//                        Spacer()
-//                    }
-//                    Spacer()
-//                }
-            }
-//            .border(.green)
-            .frame(width: width)
+
+            Rectangle()
+                .fill(Color.gray.opacity(0.5))
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                .clipShape(RoundedCorner(radius: 18, corners: [.topLeft, .topRight]))
+                .frame(width: width)
 
             // Parte inferior: título + metadatos
             VStack {
@@ -39,46 +23,32 @@ struct PlaceholderCuadricula: View {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(Color.gray.opacity(0.5))
                     .frame(height: 16)
-//                    .shimmering()
 
                 // Simulación de metadatos
                 HStack {
-                    
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
                     
                     Spacer()
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
                     
                     Spacer()
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
                 }
             }
             .frame(height: 30)
-//            .border(.red)
             .padding(8)
         }
         .frame(width: width, height: height)
         .background(Color(.systemGray6))
         .cornerRadius(18)
-//        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-//        .scaleEffect(isVisible ? 1 : 0.95)
-//        .opacity(isVisible ? 1 : 0)
-//        .onAppear {
-//            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0...0.2))) {
-//                isVisible = true
-//            }
-//        }
     }
 }
 

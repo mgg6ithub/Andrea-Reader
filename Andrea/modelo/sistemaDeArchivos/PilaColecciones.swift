@@ -90,15 +90,29 @@ class PilaColecciones: ObservableObject {
      Establece la colección actual como la última de la pila.
      Si la pila está vacía, usa la colección HOME.
      */
+    @MainActor
     private func actualizarColeccionActual() {
-        coleccionActualVM = colecciones.last ?? {
-            if let home = sa.cacheColecciones[homeURL]?.coleccion {
-                return ColeccionViewModel(home)
-            } else {
-                fatalError("No se pudo obtener la colección HOME")
-            }
-        }()
+        // 1. Obtén la nueva VM (la última de la pila o la HOME)
+        let nuevaVM: ColeccionViewModel
+        if let última = colecciones.last {
+            nuevaVM = última
+        } else if let home = sa.cacheColecciones[homeURL]?.coleccion {
+            nuevaVM = ColeccionViewModel(home)
+        } else {
+            fatalError("No se pudo obtener la colección HOME")
+        }
+
+        // 2. Asigna la nueva VM
+        coleccionActualVM = nuevaVM
+
+        // 3. Resetea su estado de carga y vuelve a cargar
+        nuevaVM.reiniciarCarga()          // elementosCargados = false
+        nuevaVM.elementos = []            // limpia placeholders anteriores si quieres
+        Task {                            // asegúrate de llamar en MainActor
+            await nuevaVM.cargarElementos()
+        }
     }
+
 
     /**
      Agrega una colección al final de la pila si no es igual a la actual.

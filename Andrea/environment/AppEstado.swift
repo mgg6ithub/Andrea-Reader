@@ -24,7 +24,7 @@ class AppEstado: ObservableObject {
     @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { uds.setEnum(sistemaArchivos, forKey: cpag.sistemaArchivos) } }
     
     @Published var shadows: Bool = true
-    @Published var animaciones: Bool = true
+    @Published var animaciones: Bool = false
     
     @Published var screenWidth: CGFloat
     @Published var screenHeigth: CGFloat

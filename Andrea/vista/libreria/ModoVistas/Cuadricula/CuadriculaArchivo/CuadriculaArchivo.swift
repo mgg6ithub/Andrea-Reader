@@ -18,21 +18,27 @@ struct CuadriculaArchivo: View {
                 if let img = viewModel.miniatura {
                     Image(uiImage: img)
                         .resizable()
-//                        .transition(.opacity)                  // <-- transición de aparición
                 } else {
                     ProgressView()
-//                        .transition(.opacity)                  // <-- transición de desaparición
                 }
                 VStack {
                     Spacer()
-                    ProgresoCuadricula(archivo: archivo, coleccionVM: coleccionVM)
+                    let ancho = width - 20
+                    ProgresoCuadricula(progreso: archivo.fileProgressPercentage, coleccionColor: coleccionVM.color, totalWidth: ancho)
                 }
             }
             .frame(width: width)
-//            .animation(.easeInOut(duration: 0.3), value: viewModel.miniatura)  // <-- anima cuando cambia miniatura
             
             // --- Titulo e informacion ---
-            TituloInformacion(archivo: archivo, coleccionVM: coleccionVM)
+            TituloInformacion(
+                nombre: archivo.name,
+                tipo: archivo.fileType.rawValue,
+                tamanioMB: archivo.fileSize / (1024*1024),
+                paginas: archivo.fileTotalPages,
+                progreso: archivo.fileProgressPercentage,
+                coleccionColor: coleccionVM.color,
+                maxWidth: width
+            )
             
         }
         .frame(width: width, height: height)
@@ -44,10 +50,7 @@ struct CuadriculaArchivo: View {
         .onAppear {
             
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
-
-//            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.2...0.4))) {
-                isVisible = true
-//            }
+            isVisible = true
         }
         .onDisappear {
             viewModel.unloadThumbnail(for: archivo)

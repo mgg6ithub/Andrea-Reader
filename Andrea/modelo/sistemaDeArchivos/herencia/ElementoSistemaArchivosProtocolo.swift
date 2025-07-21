@@ -1,6 +1,6 @@
 import SwiftUI
 
-protocol ElementoSistemaArchivosProtocolo: Transferable, Hashable {
+protocol ElementoSistemaArchivosProtocolo: Transferable, Hashable, Identifiable {
     
     var id: UUID { get }
     var name: String { get set }

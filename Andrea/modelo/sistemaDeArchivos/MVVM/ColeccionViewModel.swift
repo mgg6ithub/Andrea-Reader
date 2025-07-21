@@ -91,68 +91,72 @@ class ColeccionViewModel: ObservableObject {
         guard !elementosCargados else { return }
         isLoading = true
 
-        // 1. Obtener las URLs y filtrarlas SINCRÓNICAMENTE para crear los placeholders
+        // 1. Obtener y filtrar URLs
         let allURLs = SistemaArchivos.sa.obtenerURLSDirectorio(coleccionURL: coleccion.url)
-        
         var filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
                 $0.shouldInclude(url: url)
             }
         }
-        
-        //2.1 Si el sistema de archivos estan en modo arbol tambien hay que filtrar las urls que sean de colecciones (directorios)
         if self.tipoSA == .arbol {
             filteredURLs = filteredURLs.filter { url in
                 !SistemaArchivosUtilidades.sau.isDirectory(elementURL: url)
             }
         }
-        
-        // --- ORDENAMIENTO LIGERO ---
-        
-        filteredURLs.sort { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
-        
+        filteredURLs.sort {
+            $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending
+        }
+
+        // 2. Prepara placeholders
         let total = filteredURLs.count
         if self.scrollPosition >= total || self.scrollPosition < 0 {
-//            print("⚠️ Scroll position fuera de rango. Reiniciando a 0.")
             self.scrollPosition = 0
         }
-        
-        elementos = (0..<total).map { _ in
-            ElementoPlaceholder()
-        }
-        
-        // 2. Scroll automático (lo activará la vista si isPerformingAutoScroll = true)
+        elementos = (0..<total).map { _ in ElementoPlaceholder() }
         self.isPerformingAutoScroll = true
 
-        // 3. Indexado asincrónico y centrado
+        // 3. Carga e indexado asíncrono con batching
         Task.detached { [weak self] in
             guard let self = self else { return }
-            
+
             let centro = await MainActor.run { self.scrollPosition }
-            let urls: [URL] = await MainActor.run { filteredURLs }
+            let urls = await MainActor.run { filteredURLs }
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)
 
-            for idx in indices {
+            let batchSize = 10
+            var pendingUpdates: [(Int, ElementoSistemaArchivos)] = []
+
+            for (count, idx) in indices.enumerated() {
                 let url = urls[idx]
-                
-                //2. Si no la creamos
-                let elem = SistemaArchivos.sa.crearInstancia(elementoURL: url)
-                await MainActor.run {
-                    var nuevos = self.elementos
-                    nuevos[idx] = elem
-//                    withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
-                        self.elementos = nuevos
-//                    }
+                let elemento = SistemaArchivos.sa.crearInstancia(elementoURL: url)
+                pendingUpdates.append((idx, elemento))
+
+                // Cada batchSize elementos (o al final), lanzamos la actualización
+                if pendingUpdates.count == batchSize || idx == indices.last {
+                    let updates = pendingUpdates
+                    pendingUpdates.removeAll()
+
+                    await MainActor.run {
+                        // Hacemos copy-on-write para evitar mutar el array actor-isolated
+                        var nuevoArray = self.elementos
+                        for (i, elem) in updates {
+                            nuevoArray[i] = elem
+                        }
+                        self.elementos = nuevoArray
+                    }
                 }
             }
 
+            // 4. Marcamos carga completada
             await MainActor.run {
                 self.isLoading = false
                 self.elementosCargados = true
             }
         }
-
     }
+
+
+
     
     
     func reiniciarCarga() {
