@@ -11,6 +11,7 @@ struct VistaPrincipal: View {
     @State private var ultimaID: UUID? = nil
     
     private var viewMode: EnumModoVista { menuEstado.modoVistaColeccion }
+    private let constantes = ConstantesPorDefecto()
     
     var body: some View {
         NavigationStack {
@@ -18,22 +19,24 @@ struct VistaPrincipal: View {
                 appEstado.temaActual.backgroundColor
                     .edgesIgnoringSafeArea(.all)
                 
-                VStack {
+                VStack(spacing: 0) {
                     
-                    MenuVista()
-                        .padding(.vertical, 8)
+                    VStack(spacing: 0) {
+                        MenuVista()
+                            .padding(.vertical, 8)
+                        
+                        HistorialColecciones()
+                            .frame(height: 50)
+                            .padding(.bottom, 8)
+                    }
+//                    .border(Color.gray.opacity(appEstado.isScrolling ? 1 : 0), width: 1)
                     
-                    
-                    HistorialColecciones()
-                        .frame(height: 50)
-                        .padding(.bottom, 8)
-                    
-                    Spacer()
+//                    Spacer()
                     
                     Libreria(vm: pc.getColeccionActual())
                     
                 }
-                .padding(.horizontal, ConstantesPorDefecto().horizontalPadding)
+                .padding(.horizontal, constantes.horizontalPadding)
                 
                 //MARK: --- AQUI AGREGAMOS LA COLECCION ---
                 

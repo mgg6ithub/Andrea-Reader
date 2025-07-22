@@ -69,15 +69,15 @@ struct CuadriculaArchivo: View {
 //        }
         .onAppear {
                     
-                    viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
+            viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
 
-        //            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.2...0.4))) {
-                        isVisible = true
-        //            }
-                }
-                .onDisappear {
-                    viewModel.unloadThumbnail(for: archivo)
-                }
+//            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.2...0.4))) {
+                isVisible = true
+//            }
+        }
+        .onDisappear {
+            viewModel.unloadThumbnail(for: archivo)
+        }
 
     }
     

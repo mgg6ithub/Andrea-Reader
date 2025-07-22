@@ -31,6 +31,8 @@ class AppEstado: ObservableObject {
     
     @Published var constantes: Constantes
     
+    @Published var isScrolling: Bool = false
+    
     init(screenWidth: CGFloat? = nil, screenHeight: CGFloat? = nil) {
         self.isFirstTimeLaunch = true
         
