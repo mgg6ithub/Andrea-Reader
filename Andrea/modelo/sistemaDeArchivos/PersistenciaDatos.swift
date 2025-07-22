@@ -106,7 +106,8 @@ struct PersistenciaDatos {
         var vistaAtributos = dict["vistaAtributos"] as? [String: Any] ?? [:]
         var atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] ?? [:]
 
-        atributosVista[atributo] = valor
+        atributosVista[atributo] = 4
+//        atributosVista[atributo] = valor
         vistaAtributos[modo.rawValue] = atributosVista
         dict["vistaAtributos"] = vistaAtributos
 

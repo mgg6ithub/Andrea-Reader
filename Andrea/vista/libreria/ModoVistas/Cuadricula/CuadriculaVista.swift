@@ -10,19 +10,19 @@ struct CuadriculaVista: View {
     @State private var debounceWorkItem: DispatchWorkItem?
     @State private var elementoArrastrando: ElementoSistemaArchivos? = nil
     @State private var scrollEnabled: Bool = true
-    @State private var hasScrolled: Bool = false
+//    @State private var hasScrolled: Bool = false
 
     var body: some View {
         GeometryReader { geo in
             
-            VStack(spacing: 0) {
+//            VStack(spacing: 0) {
                 
-                if hasScrolled {
-                    Rectangle()
-                        .fill(Color.gray)
-                        .frame(height: 1)
-                        .transition(.opacity)
-                }
+//                if hasScrolled {
+//                    Rectangle()
+//                        .fill(Color.gray)
+//                        .frame(height: 1)
+//                        .transition(.opacity)
+//                }
                 
                 let spacing: CGFloat = 20
                 let columnsCount = vm.columnas
@@ -64,11 +64,11 @@ struct CuadriculaVista: View {
                         visibleIndices = newValue
 
                         // ✅ Detectar si el ítem top está debajo del inicio visible
-                        if let top = newValue.min(by: { $0.minY < $1.minY }) {
-                            hasScrolled = top.minY < -1  // <- margen de tolerancia por seguridad
-                        } else {
-                            hasScrolled = false
-                        }
+//                        if let top = newValue.min(by: { $0.minY < $1.minY }) {
+//                            hasScrolled = top.minY < -1  // <- margen de tolerancia por seguridad
+//                        } else {
+//                            hasScrolled = false
+//                        }
 
                         // Resto de lógica (debounce, scrollPos)...
                         guard !vm.isPerformingAutoScroll else { return }
@@ -133,7 +133,7 @@ struct CuadriculaVista: View {
                         atributo: "columnas"
                     )
                 }
-            }
+//            }
 
         }
     }
@@ -182,7 +182,6 @@ struct ModificarSize<Value: Numeric & Comparable>: ViewModifier {
                     .onEnded { val in
                         let delta = val / lastMagnification
 
-                        // Convertir a Double para hacer cálculos
                         let currentDouble = toDouble(value)
                         let stepDouble = toDouble(step)
                         let minDouble = toDouble(minValue)
@@ -190,32 +189,25 @@ struct ModificarSize<Value: Numeric & Comparable>: ViewModifier {
 
                         var newValue = currentDouble
 
-                        if delta > 1.1, currentDouble + stepDouble <= maxDouble {
-                            switch modoVista {
-                            case .cuadricula:
-                                newValue -= stepDouble
-                            case .lista:
-                                newValue += stepDouble
-                            case .cartas:
-                                newValue += stepDouble
-                            case .pasarela:
-                                newValue += stepDouble
+                        switch modoVista {
+                        case .cuadricula:
+                            if delta > 1.1, currentDouble - stepDouble >= minDouble {
+                                // Zoom in (acercar) => menos columnas
+                                newValue = currentDouble - stepDouble
+                            } else if delta < 0.9, currentDouble + stepDouble <= maxDouble {
+                                // Zoom out (alejar) => más columnas
+                                newValue = currentDouble + stepDouble
                             }
-                            
-                        } else if delta < 0.9, currentDouble - stepDouble >= minDouble {
-                            switch modoVista {
-                            case .cuadricula:
-                                newValue += stepDouble
-                            case .lista:
-                                newValue -= stepDouble
-                            case .cartas:
-                                newValue -= stepDouble
-                            case .pasarela:
-                                newValue -= stepDouble
+                        default:
+                            if delta > 1.1, currentDouble + stepDouble <= maxDouble {
+                                // Zoom in (acercar) => más tamaño
+                                newValue = currentDouble + stepDouble
+                            } else if delta < 0.9, currentDouble - stepDouble >= minDouble {
+                                // Zoom out (alejar) => menos tamaño
+                                newValue = currentDouble - stepDouble
                             }
                         }
 
-                        // Actualizar binding con conversión inversa
                         if let convertedBack = fromDouble(newValue) {
                             value = convertedBack
                         }
