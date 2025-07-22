@@ -25,7 +25,7 @@ struct TituloInformacion: View, Equatable {
         VStack(spacing: 4) {
             HStack(spacing: 0) {
                 Text(nombre)
-                    .font(.system(size: ConstantesPorDefecto().titleSize))
+                    .font(.system(size: ConstantesPorDefecto().titleSize * 0.5))
                     .foregroundColor(.primary)
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.6)
@@ -34,8 +34,8 @@ struct TituloInformacion: View, Equatable {
 
                 Spacer()
 
-                Text("\(progreso)%")
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize))
+                Text("%\(progreso)")
+                    .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.5))
                     .bold()
                     .foregroundColor(coleccionColor)
                     .frame(maxWidth: maxWidth * 0.3, alignment: .trailing)

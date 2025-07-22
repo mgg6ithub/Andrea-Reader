@@ -62,6 +62,35 @@ struct CuadriculaVista: View {
                     debounceWorkItem = workItem
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
                 }
+//                .onPreferenceChange(ScrollIndexPreferenceKey.self) { newValue in
+//                    visibleIndices = newValue
+//
+//                    guard !vm.isPerformingAutoScroll else { return }
+//
+//                    debounceWorkItem?.cancel()
+//                    let scrollViewHeight = geo.size.height // <- este es el alto visible del ScrollView
+//                    let centerY = scrollViewHeight / 2
+//
+//                    let workItem = DispatchWorkItem {
+//                        // Busca el índice cuyo centro esté más cerca del centro del scrollView
+//                        if let centered = newValue
+//                            .filter({ $0.minY >= -itemHeight && $0.minY <= scrollViewHeight }) // visibles o casi visibles
+//                            .min(by: {
+//                                let centerA = $0.minY + itemHeight / 2
+//                                let centerB = $1.minY + itemHeight / 2
+//                                return abs(centerA - centerY) < abs(centerB - centerY)
+//                            }) {
+//                            
+//                            print("🎯 Elemento más centrado:", centered.index)
+//                            vm.actualizarScroll(centered.index)
+//                        } else {
+//                            print("⚠️ No hay elemento centrado visible")
+//                        }
+//                    }
+//
+//                    debounceWorkItem = workItem
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
+//                }
                 .onChange(of: vm.elementos) { newElementos in
                     guard vm.isPerformingAutoScroll else { return }
                     if newElementos.count > 0 {
