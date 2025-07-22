@@ -1,15 +1,18 @@
 import SwiftUI
 
 struct CuadriculaVista: View {
+    
     @ObservedObject var vm: ColeccionViewModel
     
     @State private var visibleIndices: [VisibleIndex] = []
     @State private var debounceWorkItem: DispatchWorkItem?
+    @State private var elementoArrastrando: ElementoSistemaArchivos? = nil
+    @State private var scrollEnabled: Bool = true
 
     var body: some View {
         GeometryReader { geo in
             let spacing: CGFloat = 20
-            let columnsCount = 6
+            let columnsCount = vm.columnas
             let totalSpacing = spacing * CGFloat(columnsCount - 1)
             let itemWidth = (geo.size.width - totalSpacing) / CGFloat(columnsCount)
             let aspectRatio: CGFloat = 310 / 180
@@ -35,8 +38,10 @@ struct CuadriculaVista: View {
                                 }
                             }
                             .id(index)  // importante para scrollTo
+                            .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
                         }
                     }
+                    .animation(.easeInOut(duration: 0.3), value: vm.columnas)
                     .background(
                         GeometryReader { _ in Color.clear }
                     )
@@ -91,24 +96,30 @@ struct CuadriculaVista: View {
 //                    debounceWorkItem = workItem
 //                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
 //                }
-                .onChange(of: vm.elementos) { newElementos in
+                .onChange(of: vm.elementos) {
                     guard vm.isPerformingAutoScroll else { return }
-                    if newElementos.count > 0 {
+                    if vm.elementos.count > 0 {
                         DispatchQueue.main.async {
                             proxy.scrollTo(vm.scrollPosition, anchor: .top)
                             vm.isPerformingAutoScroll = false
                         }
                     }
                 }
-
-
-
-
-
+                .modificarSizeExtension(
+                    value: $vm.columnas,
+                    minValue: 2,
+                    maxValue: 6,
+                    step: 1,
+                    scrollEnabled: $scrollEnabled,
+                    coleccion: vm.coleccion,
+                    modoVista: vm.modoVista,
+                    atributo: "columnas"
+                )
             }
 
         }
     }
+    
 }
 
 
@@ -125,4 +136,134 @@ struct ScrollIndexPreferenceKey: PreferenceKey {
 struct VisibleIndex: Equatable {
     let index: Int
     let minY: CGFloat
+}
+
+struct ModificarSize<Value: Numeric & Comparable>: ViewModifier {
+    @Binding var value: Value
+    var minValue: Value
+    var maxValue: Value
+    var step: Value
+    @Binding var scrollEnabled: Bool
+
+    // Parámetros para persistir
+    var coleccion: Coleccion
+    var modoVista: EnumModoVista
+    var atributo: String
+
+    @State private var lastMagnification: CGFloat = 1.0
+    @State private var currentMagnification: CGFloat = 1.0
+
+    func body(content: Content) -> some View {
+        content
+            .simultaneousGesture(
+                MagnificationGesture()
+                    .onChanged { val in
+                        scrollEnabled = false
+                        currentMagnification = val
+                    }
+                    .onEnded { val in
+                        let delta = val / lastMagnification
+
+                        // Convertir a Double para hacer cálculos
+                        let currentDouble = toDouble(value)
+                        let stepDouble = toDouble(step)
+                        let minDouble = toDouble(minValue)
+                        let maxDouble = toDouble(maxValue)
+
+                        var newValue = currentDouble
+
+                        if delta > 1.1, currentDouble + stepDouble <= maxDouble {
+                            switch modoVista {
+                            case .cuadricula:
+                                newValue -= stepDouble
+                            case .lista:
+                                newValue += stepDouble
+                            case .cartas:
+                                newValue += stepDouble
+                            case .pasarela:
+                                newValue += stepDouble
+                            }
+                            
+                        } else if delta < 0.9, currentDouble - stepDouble >= minDouble {
+                            switch modoVista {
+                            case .cuadricula:
+                                newValue += stepDouble
+                            case .lista:
+                                newValue -= stepDouble
+                            case .cartas:
+                                newValue -= stepDouble
+                            case .pasarela:
+                                newValue -= stepDouble
+                            }
+                        }
+
+                        // Actualizar binding con conversión inversa
+                        if let convertedBack = fromDouble(newValue) {
+                            value = convertedBack
+                        }
+
+                        PersistenciaDatos().guardarAtributoVista(
+                            coleccion: coleccion,
+                            modo: modoVista,
+                            atributo: atributo,
+                            valor: value
+                        )
+
+                        lastMagnification = 1.0
+                        currentMagnification = 1.0
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                            scrollEnabled = true
+                        }
+                    }
+            )
+    }
+
+    // Helpers para convertir Numeric genérico a Double
+    func toDouble<T: Numeric>(_ val: T) -> Double {
+        if let v = val as? Double { return v }
+        if let v = val as? CGFloat { return Double(v) }
+        if let v = val as? Int { return Double(v) }
+        // Agrega más conversiones si quieres
+        return 0
+    }
+
+    func fromDouble(_ val: Double) -> Value? {
+        if Value.self == Double.self {
+            return val as? Value
+        }
+        if Value.self == CGFloat.self {
+            return CGFloat(val) as? Value
+        }
+        if Value.self == Int.self {
+            return Int(val) as? Value
+        }
+        return nil
+    }
+}
+
+extension View {
+    func modificarSizeExtension<Value: Numeric & Comparable>(
+        value: Binding<Value>,
+        minValue: Value,
+        maxValue: Value,
+        step: Value,
+        scrollEnabled: Binding<Bool>,
+        coleccion: Coleccion,
+        modoVista: EnumModoVista,
+        atributo: String
+    ) -> some View {
+        self.modifier(
+            ModificarSize(
+                value: value,
+                minValue: minValue,
+                maxValue: maxValue,
+                step: step,
+                scrollEnabled: scrollEnabled,
+                coleccion: coleccion,
+                modoVista: modoVista,
+                atributo: atributo
+            )
+        )
+    }
 }
