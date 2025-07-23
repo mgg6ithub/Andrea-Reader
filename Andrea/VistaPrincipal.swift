@@ -29,6 +29,7 @@ struct VistaPrincipal: View {
                             .frame(height: 50)
                             .padding(.bottom, 8)
                     }
+                    .padding(.horizontal, constantes.horizontalPadding)
 //                    .border(Color.gray.opacity(appEstado.isScrolling ? 1 : 0), width: 1)
                     
 //                    Spacer()
@@ -36,7 +37,8 @@ struct VistaPrincipal: View {
                     Libreria(vm: pc.getColeccionActual())
                     
                 }
-                .padding(.horizontal, constantes.horizontalPadding)
+                .padding(0)
+
                 
                 //MARK: --- AQUI AGREGAMOS LA COLECCION ---
                 

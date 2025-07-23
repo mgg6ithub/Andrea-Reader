@@ -3,6 +3,8 @@ import SwiftUI
 
 struct ListaVista: View {
     
+    @EnvironmentObject var menuEstado: MenuEstado
+    
     @ObservedObject var vm: ColeccionViewModel
     
     @State private var visibleIndices: [VisibleIndex] = []
@@ -12,6 +14,18 @@ struct ListaVista: View {
 
     var body: some View {
         ScrollViewReader { proxy in
+            
+            Color.clear
+                .frame(height: 0)
+                .onAppear {
+                    guard vm.isPerformingAutoScroll else { return }
+                    DispatchQueue.main.async {
+                        proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                        vm.isPerformingAutoScroll = false
+                    }
+                }
+
+            
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 20) {
                     ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
@@ -29,6 +43,8 @@ struct ListaVista: View {
                         .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
                     }
                 }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 20/2)
                 .animation(.easeInOut(duration: 0.3), value: vm.altura)
                 .background(
                     GeometryReader { _ in Color.clear }
@@ -64,6 +80,15 @@ struct ListaVista: View {
                     }
                 }
             }
+            .onChange(of: vm.modoVista) {
+                print("🌀 Cambio de modoVista:", vm.modoVista)
+                vm.isPerformingAutoScroll = true
+                DispatchQueue.main.async {
+                    print("🔥 Ejecutando scrollTo con proxy:", vm.scrollPosition)
+                    proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                }
+            }
+
             .modificarSizeExtension(
                 value: $vm.altura,
                 minValue: 100,

@@ -80,7 +80,7 @@ extension Color {
     }()
 
     static let fixedSecondaryGray_light = Color(red: 242/255, green: 242/255, blue: 247/255) // Aproximado a systemGray6 (modo claro)
-        static let fixedSecondaryGray_dark = Color(red: 28/255, green: 28/255, blue: 30/255)     // Aproximado a systemGray6 (modo oscuro)
+    static let fixedSecondaryGray_dark = Color(red: 28/255, green: 28/255, blue: 30/255)     // Aproximado a systemGray6 (modo oscuro)
 }
 
 

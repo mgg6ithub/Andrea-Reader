@@ -3,6 +3,7 @@ import SwiftUI
 struct CuadriculaVista: View {
     
     @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var menuEstado: MenuEstado
     
     @ObservedObject var vm: ColeccionViewModel
     
@@ -24,14 +25,34 @@ struct CuadriculaVista: View {
 //                        .transition(.opacity)
 //                }
                 
-                let spacing: CGFloat = 20
-                let columnsCount = vm.columnas
-                let totalSpacing = spacing * CGFloat(columnsCount - 1)
-                let itemWidth = (geo.size.width - totalSpacing) / CGFloat(columnsCount)
-                let aspectRatio: CGFloat = 310 / 180
-                let itemHeight = itemWidth * aspectRatio
+               let outerPadding: CGFloat = 20      // ← cuanto quieras de margen a cada lado
+               let spacing: CGFloat = 20           // ← spacing interno entre celdas
+               let columnsCount = vm.columnas
+               
+               // ANCHO REAL DISPONIBLE para la grid, descontando los márgenes exteriores
+               let contentWidth = geo.size.width - outerPadding * 2
+               
+               // total de los gaps internos
+               let totalSpacing = spacing * CGFloat(columnsCount - 1)
+               
+               // calculamos el width de cada celda sobre el contentWidth
+               let itemWidth = (contentWidth - totalSpacing) / CGFloat(columnsCount)
+               let aspectRatio: CGFloat = 310/180
+               let itemHeight = itemWidth * aspectRatio
 
                 ScrollViewReader { proxy in
+                    
+                    Color.clear
+                        .frame(height: 0)
+                        .onAppear {
+                            guard vm.isPerformingAutoScroll else { return }
+                            DispatchQueue.main.async {
+                                proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                                vm.isPerformingAutoScroll = false
+                            }
+                        }
+
+                    
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVGrid(
                             columns: Array(
@@ -54,6 +75,8 @@ struct CuadriculaVista: View {
                                 .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
                             }
                         }
+                        .padding(.horizontal, outerPadding)
+                        .padding(.vertical, spacing/2)
                         .animation(.easeInOut(duration: 0.3), value: vm.columnas)
                         .background(
                             GeometryReader { _ in Color.clear }
@@ -122,6 +145,15 @@ struct CuadriculaVista: View {
                             }
                         }
                     }
+                    .onChange(of: vm.modoVista) {
+                        print("🌀 Cambio de modoVista:", vm.modoVista)
+                        vm.isPerformingAutoScroll = true
+                        DispatchQueue.main.async {
+                            print("🔥 Ejecutando scrollTo con proxy:", vm.scrollPosition)
+                            proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                        }
+                    }
+
                     .modificarSizeExtension(
                         value: $vm.columnas,
                         minValue: 2,

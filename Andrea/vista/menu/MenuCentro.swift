@@ -7,7 +7,6 @@ struct BotonMenu: View {
     let isActive: Bool
     let accion: () -> Void
 
-    
     var body: some View {
         
         Button(action: accion) {
@@ -17,11 +16,9 @@ struct BotonMenu: View {
                     isActive ? .primary : .secondary,
                     .secondary
                 )
-
         }
         
     }
-    
 }
 
 struct MenuCentro: View {
@@ -142,6 +139,7 @@ struct MenuCentro: View {
                     }
                     
                 }
+                
             } label: {
                 
 //                Image("custom.hand.grid")
