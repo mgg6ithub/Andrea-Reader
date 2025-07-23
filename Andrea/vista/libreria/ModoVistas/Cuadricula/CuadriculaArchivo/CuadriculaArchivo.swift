@@ -28,10 +28,15 @@ struct CuadriculaArchivo: View {
                 
                 VStack {
                     Spacer()
-                    let ancho = width - 20
-                    ProgresoCuadricula(progreso: archivo.fileProgressPercentage, coleccionColor: coleccionVM.color, totalWidth: ancho)
-                        .equatable()
+                    ProgresoCuadricula(
+                        progreso: archivo.fileProgressPercentage,
+                        coleccionColor: coleccionVM.color,
+                        totalWidth: width - 20
+                    )
+                    .frame(maxHeight: 24) // ← Altura máxima fija para evitar saltos
                 }
+                .frame(maxHeight: .infinity, alignment: .bottom) // 👈 fuerza que siempre esté abajo
+                .padding(.bottom, 6)
             }
             .frame(width: width)
             

@@ -23,7 +23,6 @@ struct ProgresoCuadricula: View, Equatable {
                 RoundedRectangle(cornerRadius: 3)
                     .fill(coleccionColor)
                     .frame(width: totalWidth * CGFloat(progreso) / 100.0, height: 4)
-                    .animation(.linear, value: progreso)
             }
             .frame(height: 4)
 
