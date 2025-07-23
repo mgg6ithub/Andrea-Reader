@@ -146,7 +146,6 @@ struct CuadriculaVista: View {
                         }
                     }
                     .onChange(of: vm.modoVista) {
-                        print("🌀 Cambio de modoVista:", vm.modoVista)
                         vm.isPerformingAutoScroll = true
                         DispatchQueue.main.async {
                             print("🔥 Ejecutando scrollTo con proxy:", vm.scrollPosition)

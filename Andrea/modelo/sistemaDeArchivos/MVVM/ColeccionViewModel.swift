@@ -17,6 +17,8 @@ class ColeccionViewModel: ObservableObject {
   @Published var ordenacion: EnumOrdenaciones
   @Published var columnas: Int = 4
   @Published var altura: CGFloat = 180
+    @Published var tiempoCarga: Double? = nil
+
 
   @Published var elementosCargados: Bool = false
 
@@ -89,6 +91,8 @@ class ColeccionViewModel: ObservableObject {
 
     func cargarElementos() {
         guard !elementosCargados else { return }
+        
+        let startTime = CFAbsoluteTimeGetCurrent()
         isLoading = true
 
         // 1. Obtener y filtrar URLs
@@ -152,6 +156,10 @@ class ColeccionViewModel: ObservableObject {
             await MainActor.run {
                 self.isLoading = false
                 self.elementosCargados = true
+                
+                let endTime = CFAbsoluteTimeGetCurrent()
+               let elapsed = endTime - startTime
+               self.tiempoCarga = elapsed
             }
         }
     }
@@ -171,7 +179,7 @@ class ColeccionViewModel: ObservableObject {
 
     func actualizarScroll(_ nuevo: Int) {
         scrollPosition = nuevo
-        print("✅ Guardando scrollPosition:", nuevo)
+//        print("✅ Guardando scrollPosition:", nuevo)
         PersistenciaDatos().guardarAtributo(
             coleccion: self.coleccion,
             atributo: "scrollPosition",

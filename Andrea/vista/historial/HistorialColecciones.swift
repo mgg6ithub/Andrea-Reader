@@ -10,12 +10,17 @@ struct HistorialColecciones: View {
     @State private var colorTemporal: Color = .clear
     
     private var iconSize: CGFloat  { appEstado.constantes.iconSize }
+    @ObservedObject private var coleccionActualVM: ColeccionViewModel
+    
+    init() {
+        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
+    }
     
     var body: some View {
         HStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 8) {
-                    if pc.getColeccionActual().coleccion.name == "HOME" {
+                    if coleccionActualVM.coleccion.name == "HOME" {
                         ColeccionRectanguloAvanzado(
                             textoSize: 21,
                             colorPrimario: appEstado.temaActual.textColor,
@@ -71,7 +76,7 @@ struct HistorialColecciones: View {
             
             Spacer()
             
-            if pc.getColeccionActual().coleccion.name != "HOME" {
+            if coleccionActualVM.coleccion.name != "HOME" {
                 Button(action: {
                     if appEstado.animaciones {
                         withAnimation {
@@ -81,15 +86,32 @@ struct HistorialColecciones: View {
                         esVerColeccionPresionado.toggle()
                     }
                 }) {
-                    Text("Ver coleccion")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                        .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
+                    HStack(spacing: 6) {
+                        
+                        if let tiempo = coleccionActualVM.tiempoCarga {
+                            Text("⏱ Carga en \(String(format: "%.2f", tiempo)) segundos")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                                .padding(.top, 4)
+                        }
+
+                        
+                        Image(systemName: "info.circle")
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(appEstado.temaActual.secondaryText)
+                            .font(.system(size: 16)) // <-- controla el tamaño del icono
+                            .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
+                        
+                        Text("Ver colección")
+                            .font(.system(size: 14))
+                            .foregroundColor(appEstado.temaActual.secondaryText)
+                            .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
+                    }
                 }
                 .sheet(isPresented: $esVerColeccionPresionado, onDismiss: {
-                    pc.getColeccionActual().color = colorTemporal
+                    coleccionActualVM.color = colorTemporal
                 }) {
-                    MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
+                    MasInformacionColeccion(coleccionVM: coleccionActualVM, colorTemporal: $colorTemporal)
                 }
                 .padding(.trailing, 2.5)
             }

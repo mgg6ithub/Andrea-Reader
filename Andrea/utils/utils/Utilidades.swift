@@ -58,3 +58,23 @@ struct Utilidades {
     
 }
 
+
+struct Benchmark {
+    private let label: String
+    private let startTime: CFAbsoluteTime
+
+    init(_ label: String) {
+        self.label = label
+        self.startTime = CFAbsoluteTimeGetCurrent()
+//        print("⏱️ [\(label)] Inicio benchmark")
+    }
+
+    func end() {
+        let endTime = CFAbsoluteTimeGetCurrent()
+        let elapsed = endTime - startTime
+        print("✅ [\(label)] Finalizado en \(String(format: "%.3f", elapsed)) segundos")
+        print()
+    }
+}
+
+

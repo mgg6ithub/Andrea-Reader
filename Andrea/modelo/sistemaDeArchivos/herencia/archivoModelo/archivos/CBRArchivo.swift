@@ -10,7 +10,7 @@ class CBRArchivo: Archivo {
         
         super.init(fileName: fileName, fileURL: fileURL, creationDate: creationDate, modificationDate: modificationDate, fileType: fileType, fileExtension: fileExtension, fileSize: fileSize)
         
-        self.pages = cargarPaginas()
+//        self.pages = cargarPaginas()
 //        self.imagenArchivo = self.crearImagenArchivo(tipoArchivo: self.fileType, miniaturaPortada: self.crearMiniaturaPortada(), miniaturaContraPortada: self.crearMiniaturaContraPortada())
     }
     
