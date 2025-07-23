@@ -3,6 +3,9 @@
 import SwiftUI
 
 struct TituloInformacion: View, Equatable {
+    
+    @EnvironmentObject var appEstado: AppEstado
+    
     let nombre: String
     let tipo: String
     let tamanioMB: Int
@@ -26,7 +29,7 @@ struct TituloInformacion: View, Equatable {
             HStack(spacing: 0) {
                 Text(nombre)
                     .font(.system(size: ConstantesPorDefecto().titleSize * 0.5))
-                    .foregroundColor(.primary)
+                    .foregroundColor(appEstado.temaActual.textColor)
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.6)
                     .lineLimit(1)

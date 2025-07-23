@@ -167,8 +167,7 @@ struct MenuCentro: View {
                     .fontWeight(appEstado.constantes.iconWeight)
             }
             .sheet(isPresented: $menuEstado.isGlobalSettingsPressed) {
-              AjustesGlobales()
-//                    .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
+                AjustesGlobales()
             }
 
             

@@ -18,7 +18,7 @@ struct HistorialColecciones: View {
                     if pc.getColeccionActual().coleccion.name == "HOME" {
                         ColeccionRectanguloAvanzado(
                             textoSize: 21,
-                            colorPrimario: .primary,
+                            colorPrimario: appEstado.temaActual.textColor,
                             color: Color.gray,
                             isActive: true,
                             animationDelay: delay(1.5)
@@ -38,7 +38,7 @@ struct HistorialColecciones: View {
                                 if pc.esColeccionActual(coleccion: vm.coleccion) {
                                     ColeccionRectanguloAvanzado(
                                         textoSize: 21,
-                                        colorPrimario: .primary,
+                                        colorPrimario: appEstado.temaActual.textColor,
                                         color: vm.color,
                                         isActive: true,
                                         animationDelay: delay(Double(index))
@@ -51,7 +51,7 @@ struct HistorialColecciones: View {
                                     }) {
                                         ColeccionRectanguloAvanzado(
                                             textoSize: 14,
-                                            colorPrimario: .secondary,
+                                            colorPrimario: appEstado.temaActual.secondaryText,
                                             color: vm.color,
                                             isActive: false,
                                             animationDelay: delay(Double(index))

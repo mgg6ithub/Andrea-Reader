@@ -3,6 +3,8 @@ import SwiftUI
 
 struct PlaceholderLista: View {
     
+    @EnvironmentObject var appEstado: AppEstado
+    
     let placeholder: ElementoPlaceholder
     @ObservedObject var coleccionVM: ColeccionViewModel
     
@@ -52,7 +54,7 @@ struct PlaceholderLista: View {
             .padding()
         }
         .frame(width: .infinity, height: coleccionVM.altura)
-        .background(Color(UIColor.systemGray5))
+        .background(appEstado.temaActual.cardColor)
         .clipShape(RoundedRectangle(cornerRadius: 8)) // <- Luego el recorte
     }
 }

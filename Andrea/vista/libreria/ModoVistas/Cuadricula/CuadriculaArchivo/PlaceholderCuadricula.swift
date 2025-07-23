@@ -2,6 +2,9 @@
 import SwiftUI
 
 struct PlaceholderCuadricula: View {
+    
+    @EnvironmentObject var appEstado: AppEstado
+    
     @State private var isVisible = false
 
     let placeholder: ElementoPlaceholder
@@ -47,7 +50,7 @@ struct PlaceholderCuadricula: View {
             .padding(8)
         }
         .frame(width: width, height: height)
-        .background(Color(.systemGray6))
+        .background(appEstado.temaActual.cardColor)
         .cornerRadius(18)
     }
 }

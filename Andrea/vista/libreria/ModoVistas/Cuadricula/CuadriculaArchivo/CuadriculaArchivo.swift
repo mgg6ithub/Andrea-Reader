@@ -2,6 +2,8 @@ import SwiftUI
 
 struct CuadriculaArchivo: View {
     
+    @EnvironmentObject var appEstado: AppEstado
+    
     @ObservedObject var archivo: Archivo
     @StateObject private var viewModel = ArchivoThumbnailViewModel()
     @ObservedObject var coleccionVM: ColeccionViewModel
@@ -48,7 +50,7 @@ struct CuadriculaArchivo: View {
             
         }
         .frame(width: width, height: height)
-        .background(Color(.systemGray6))
+        .background(appEstado.temaActual.cardColor)
         .cornerRadius(18)
         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
         .scaleEffect(isVisible ? 1 : 0.95)

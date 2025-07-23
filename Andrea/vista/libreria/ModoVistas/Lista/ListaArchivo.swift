@@ -1,13 +1,10 @@
-//
-//  ListaArchivo.swift
-//  Andrea
-//
-//  Created by mgg on 15/7/25.
-//
+
 
 import SwiftUI
 
 struct ListaArchivo: View {
+    
+    @EnvironmentObject var appEstado: AppEstado
     
     @ObservedObject var archivo: Archivo
     @StateObject private var viewModel = ArchivoThumbnailViewModel()
@@ -32,13 +29,13 @@ struct ListaArchivo: View {
                     
                     Text(archivo.name)
                         .font(.headline)
-                        .foregroundColor(.primary)
+                        .foregroundColor(appEstado.temaActual.textColor)
                     
                     Spacer()
                     
                     Text("Andrea la mas guapa del mundo pero que guapa es con esos pedazo de papos la madre que me pario. Hay diso mios que guapa es la pocala blablanskanks askdaskd algo mas no se que mas.")
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(appEstado.temaActual.secondaryText)
 //                        .lineLimit(scaleSize > 0.7 ? nil : 2)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
@@ -56,7 +53,7 @@ struct ListaArchivo: View {
             
         } //HStack principal
         .frame(height: coleccionVM.altura)
-        .background(Color(UIColor.systemGray5))
+        .background(appEstado.temaActual.cardColor)
         .cornerRadius(8)
         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
         .onAppear {

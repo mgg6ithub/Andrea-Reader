@@ -2,6 +2,9 @@
 import SwiftUI
 
 struct ElementoVista<Content: View>: View {
+    
+    @EnvironmentObject var appEstado: AppEstado
+    
     @ObservedObject var vm: ColeccionViewModel
     let elemento: any ElementoSistemaArchivosProtocolo
     let scrollIndex: Int? // <- NUEVO
@@ -12,6 +15,7 @@ struct ElementoVista<Content: View>: View {
 
     var body: some View {
         content()
+//            .background(appEstado.temaActual.cardColor)
             .background(
                 GeometryReader { geo in
                     Color.clear

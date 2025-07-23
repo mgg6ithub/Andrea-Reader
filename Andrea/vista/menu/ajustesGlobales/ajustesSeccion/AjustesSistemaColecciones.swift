@@ -28,7 +28,7 @@ struct AjustesSistemaColecciones: View {
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
                 .font(.system(size: appEstado.constantes.subTitleSize))
-                .foregroundColor(.secondary)
+                .foregroundColor(appEstado.temaActual.secondaryText)
                 .frame(width: .infinity, alignment: .leading)
                 .padding(.bottom, paddingVertical) // 20
             
@@ -38,7 +38,7 @@ struct AjustesSistemaColecciones: View {
                 
                 Text("Selecciona un tipo de sa.")
                     .font(.system(size: appEstado.constantes.subTitleSize))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(appEstado.temaActual.secondaryText)
                     .frame(alignment: .leading)
                 
                 Spacer()

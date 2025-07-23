@@ -68,7 +68,7 @@ struct AjustesGlobales: View {
                     Text("Personaliza la apariencia y funcionalidad a tu gusto. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
                         .font(.system(size: appEstado.constantes.subTitleSize, weight: .bold))
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.primary)
+//                        .foregroundColor(.primary)
                         .frame(width: 400 * appEstado.constantes.scaleFactor)
                         .padding(.horizontal, paddingHorizontal)
                         .padding(.bottom, paddingVertical + 5) // 25
@@ -201,7 +201,7 @@ struct AjustesGlobales: View {
                 alignment: .center
             )
             .background(appEstado.temaActual.backgroundColor)
-            .animation(.easeInOut(duration: 2), value: appEstado.temaActual)
+            .animation(.easeInOut, value: appEstado.temaActual)
     }
     
 }
@@ -238,7 +238,7 @@ struct Punto: View {
             HStack(spacing: ConstantesPorDefecto().paddingCorto - 2) {
                 Text(menuEstado.sectionTitle(section))
                     .font(.system(size: appEstado.constantes.smallTitleSize))
-                    .foregroundColor(selectedSection == section ? appEstado.constantes.iconColor : .primary)
+                    .foregroundColor(selectedSection == section ? appEstado.temaActual.textColor : appEstado.temaActual.secondaryText)
                     .frame(width: (menuEstado.anchoTexto - 10) * appEstado.constantes.scaleFactor, alignment: .leading)
                 
                 Circle()
@@ -266,6 +266,7 @@ struct Punto: View {
             }
         }
         .frame(maxWidth: (menuEstado.anchoIndicePuntos) * appEstado.constantes.scaleFactor)
+        
         
     }
     

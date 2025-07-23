@@ -14,7 +14,7 @@ struct VistaPrincipal: View {
     private let constantes = ConstantesPorDefecto()
     
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             ZStack {
                 appEstado.temaActual.backgroundColor
                     .edgesIgnoringSafeArea(.all)
@@ -43,7 +43,7 @@ struct VistaPrincipal: View {
             }
             .foregroundColor(appEstado.temaActual.textColor)
             .animation(.easeInOut, value: appEstado.temaActual)
-        }
+//        }
     }
 }
 

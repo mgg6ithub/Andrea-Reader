@@ -65,6 +65,26 @@ enum EnumResolucionesLogicas {
     case big
 }
 
+
+extension Color {
+    static let fixedSystemGray6_light: Color = {
+        let traits = UITraitCollection(userInterfaceStyle: .light)
+        let color = UIColor.systemGray6.resolvedColor(with: traits)
+        return Color(color)
+    }()
+
+    static let fixedSystemGray5_dark: Color = {
+        let traits = UITraitCollection(userInterfaceStyle: .dark)
+        let color = UIColor.systemGray5.resolvedColor(with: traits)
+        return Color(color)
+    }()
+
+    static let fixedSecondaryGray_light = Color(red: 242/255, green: 242/255, blue: 247/255) // Aproximado a systemGray6 (modo claro)
+        static let fixedSecondaryGray_dark = Color(red: 28/255, green: 28/255, blue: 30/255)     // Aproximado a systemGray6 (modo oscuro)
+}
+
+
+
 //MARK: - TEMAS
 
 enum EnumTemas: String, CaseIterable {
@@ -72,8 +92,8 @@ enum EnumTemas: String, CaseIterable {
     
     var backgroundColor: Color {
         switch self {
-        case .light: return Color(UIColor.systemGray6)
-        case .dark: return Color(UIColor.systemGray5)
+        case .light: return .fixedSystemGray6_light
+        case .dark: return .fixedSystemGray5_dark
         case .dayNight: return .black.opacity(0.5)
         case .blue: return .blue.opacity(0.2)
         case .green: return .green.opacity(0.2)
@@ -83,8 +103,8 @@ enum EnumTemas: String, CaseIterable {
     var cardColor: Color {
         
         switch self {
-        case .light: return Color(UIColor.systemGray6)
-        case .dark: return Color(UIColor.systemGray5)
+        case .light: return .fixedSystemGray6_light
+        case .dark: return .fixedSystemGray5_dark
         case .dayNight: return .black.opacity(0.5)
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)
@@ -94,8 +114,8 @@ enum EnumTemas: String, CaseIterable {
     
     var iconColor: Color {
         switch self {
-        case .light: return Color(UIColor.systemGray5)
-        case .dark: return Color(UIColor.systemGray4)
+        case .light: return .fixedSystemGray6_light
+        case .dark: return .fixedSystemGray5_dark
         case .dayNight: return .black.opacity(0.5)
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)
@@ -104,11 +124,21 @@ enum EnumTemas: String, CaseIterable {
     
     var textColor: Color {
         switch self {
-        case .light: return .black
-        case .dark: return .white
+        case .light: return .fixedSystemGray5_dark
+        case .dark: return .fixedSystemGray6_light
         case .dayNight: return .white
         case .blue: return .blue
         case .green: return .green
+        }
+    }
+    
+    var secondaryText: Color {
+        switch self {
+        case .light: return .gray
+        case .dark: return .gray
+        case .dayNight: return .white
+        case .blue: return .blue.opacity(0.5)
+        case .green: return .green.opacity(0.5)
         }
     }
 }

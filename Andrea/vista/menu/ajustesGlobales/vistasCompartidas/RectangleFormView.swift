@@ -36,13 +36,13 @@ struct RectangleFormView<T: Equatable>: View {
             Text(titulo)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.subheadline)
-                .foregroundColor(isSelected ? .primary : .secondary.opacity(0.3))
+                .foregroundColor(isSelected ? appEstado.temaActual.textColor : appEstado.temaActual.secondaryText.opacity(0.3))
 
             Button(action: {
-                withAnimation(.easeInOut(duration: 0.75)) {
+//                withAnimation(.easeInOut(duration: 0.75)) {
                     isBouncing.toggle()
                     opcionActual = opcionSeleccionada
-                }
+//                }
             }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
