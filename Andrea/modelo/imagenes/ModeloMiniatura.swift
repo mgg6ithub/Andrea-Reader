@@ -57,7 +57,7 @@ class ModeloMiniatura {
             }()
             
             // 3) Si no hay páginas, devolvemos default
-            guard let primeraPagina = archivo.pages.first else {
+            guard let primeraPagina = archivo.obtenerPrimeraPagina() else {
                 DispatchQueue.main.async {
                     completion(defaultThumbnail)
                 }

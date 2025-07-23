@@ -33,8 +33,8 @@ struct FactoryArchivo {
         }
         
         // --- PAGINAS Y PORCENTAJE ---
-        archivo.fileTotalPages = Int.random(in: 20...50)
-        archivo.setCurrentPage(currentPage: Int.random(in: 1...archivo.fileTotalPages))
+        archivo.cargarPaginasAsync()
+        archivo.setCurrentPage(currentPage: Int.random(in: 1...archivo.totalPaginas))
         
         // --- GENERAR MINIATURA ---
 //        ThumbnailService.shared.generateThumbnail(for: archivo)

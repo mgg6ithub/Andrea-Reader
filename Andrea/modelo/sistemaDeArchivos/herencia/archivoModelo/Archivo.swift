@@ -3,15 +3,13 @@ import SwiftUI
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     
-    
     //ARRAY CON LOS NOMBRES DE LAS PAGINAS 1,2,3,4...
-    var pages: [String] = []
+    var totalPaginas: Int = 2
     
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
     var dirName: String = ""
     var dirColor: UIColor = .gray
-    
     
     //ATRIBUTOS
     var isDirectory = false
@@ -24,7 +22,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     var isExecutable: Bool
     var isProtected: Bool = false
     
-    
     //ATRIBUTOS EXTRAIDOS DEL ARCHIVO
     var fileOriginalName: String?
     var scanFormat: String?
@@ -34,7 +31,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     var colectionTotalIssues: Int?
     
     //PROGRESO
-    var fileTotalPages: Int = 0
     @Published var fileProgressPercentage: Int = 0
     @Published var fileProgressPercentageEntero: Double = 0
     @Published var currentSavedPage: Int = 0
@@ -64,7 +60,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         self.isExecutable = false
         self.isProtected = false
 
-        self.fileTotalPages = 0
         self.fileProgressPercentage = 0
         self.currentSavedPage = 0
         self.finisheReadingDate = nil
@@ -94,7 +89,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     }
     
     func getTotalPages() -> Int {
-        return self.fileTotalPages
+        return self.totalPaginas
     }
     
     func setCurrentPage(currentPage: Int) {
@@ -115,6 +110,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     
     func cargarDatosImagen(nombreImagen: String) -> Data? {
         return nil
+    }
+    
+    func cargarPaginasAsync() {
+            // Implementación vacía por defecto o genérica
+    }
+    
+    func obtenerPrimeraPagina() -> String? {
+        return ""
     }
     
 }

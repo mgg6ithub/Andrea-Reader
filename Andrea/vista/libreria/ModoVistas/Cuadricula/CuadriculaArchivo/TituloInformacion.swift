@@ -9,7 +9,7 @@ struct TituloInformacion: View, Equatable {
     let nombre: String
     let tipo: String
     let tamanioMB: Int
-    let paginas: Int
+    let totalPaginas: Int
     let progreso: Int
     let coleccionColor: Color
     let maxWidth: CGFloat
@@ -18,7 +18,7 @@ struct TituloInformacion: View, Equatable {
         lhs.nombre == rhs.nombre &&
         lhs.tipo == rhs.tipo &&
         lhs.tamanioMB == rhs.tamanioMB &&
-        lhs.paginas == rhs.paginas &&
+        lhs.totalPaginas == rhs.totalPaginas &&
         lhs.progreso == rhs.progreso &&
         lhs.coleccionColor == rhs.coleccionColor &&
         lhs.maxWidth == rhs.maxWidth
@@ -61,7 +61,7 @@ struct TituloInformacion: View, Equatable {
 
                 Spacer()
 
-                Text("\(paginas) pages")
+                Text(totalPaginas != nil ? "\(totalPaginas) pages" : "—")
                     .font(.system(size: 8))
                     .foregroundColor(.gray)
                     .lineLimit(1)

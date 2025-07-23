@@ -45,7 +45,7 @@ struct CuadriculaArchivo: View {
                 nombre: archivo.name,
                 tipo: archivo.fileType.rawValue,
                 tamanioMB: archivo.fileSize / (1024*1024),
-                paginas: archivo.fileTotalPages,
+                totalPaginas: archivo.totalPaginas,
                 progreso: archivo.fileProgressPercentage,
                 coleccionColor: coleccionVM.color,
                 maxWidth: width

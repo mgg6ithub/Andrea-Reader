@@ -13,26 +13,68 @@ class CBZArchivo: Archivo {
 //        self.imagenArchivo = self.crearImagenArchivo(tipoArchivo: self.fileType, miniaturaPortada: self.crearMiniaturaPortada(), miniaturaContraPortada: self.crearMiniaturaContraPortada())
     }
     
-    func cargarPaginas() -> [String] {
+//    func cargarPaginas() -> [String] {
+//        do {
+//            let archive = try Archive(url: self.url, accessMode: .read)
+//            
+//            // Filtra solo las imágenes dentro del archivo CBZ
+//            let comicImages = archive.compactMap { entry in
+//                if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
+//                    return entry.path
+//                }
+//                return nil
+//            }
+//            
+//            let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
+//            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+//            
+//        } catch {
+////            print("Error al abrir el archivo CBZ: \(error)")
+//            return []
+//        }
+//    }
+    
+    override func obtenerPrimeraPagina() -> String? {
         do {
             let archive = try Archive(url: self.url, accessMode: .read)
-            
-            // Filtra solo las imágenes dentro del archivo CBZ
-            let comicImages = archive.compactMap { entry in
-                if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
-                    return entry.path
-                }
-                return nil
+
+            // Se detiene en la primera imagen
+            if let entry = archive.first(where: { entry in
+                let lowercased = entry.path.lowercased()
+                return lowercased.hasSuffix(".jpg") || lowercased.hasSuffix(".jpeg") || lowercased.hasSuffix(".png")
+            }) {
+                return entry.path
             }
-            
-            let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
-            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
-            
+
+            return nil
         } catch {
-//            print("Error al abrir el archivo CBZ: \(error)")
-            return []
+            print("Error leyendo archivo CBZ: \(error)")
+            return nil
         }
     }
+
+    
+   override func cargarPaginasAsync() {
+        Task {
+            let total = contarPaginas()
+            await MainActor.run {
+                self.totalPaginas = total
+            }
+        }
+    }
+
+    func contarPaginas() -> Int {
+        do {
+            let archive = try Archive(url: self.url, accessMode: .read)
+            let imageCount = archive.filter { entry in
+                entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png")
+            }.count
+            return imageCount
+        } catch {
+            return 0
+        }
+    }
+
     
 //    override func extractPageData(named name: String) -> Data? {
 //        do {

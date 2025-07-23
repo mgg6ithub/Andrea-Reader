@@ -29,7 +29,7 @@ struct InformacionLista: View {
             
             Spacer()
             
-            Text(String("\(archivo.fileTotalPages) pages"))
+            Text(archivo.totalPaginas != nil ? "\(archivo.totalPaginas) pages" : "—")
                 .foregroundColor(.gray)
                 .font(.subheadline)
                 .lineLimit(1)
