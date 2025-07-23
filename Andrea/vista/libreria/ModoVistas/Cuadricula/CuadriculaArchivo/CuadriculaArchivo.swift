@@ -32,7 +32,6 @@ struct CuadriculaArchivo: View {
                     ProgresoCuadricula(progreso: archivo.fileProgressPercentage, coleccionColor: coleccionVM.color, totalWidth: ancho)
                         .equatable()
                 }
-                
             }
             .frame(width: width)
             
