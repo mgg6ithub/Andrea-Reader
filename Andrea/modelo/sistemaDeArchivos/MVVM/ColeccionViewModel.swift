@@ -61,7 +61,7 @@ class ColeccionViewModel: ObservableObject {
         if let ordenacionString = PersistenciaDatos().obtenerAtributo(coleccion: coleccion, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {
             self.ordenacion = ordenacion
         } else {
-            self.ordenacion = .alfabeticamente
+            self.ordenacion = .nombre
         }
         
         switch self.modoVista {
@@ -107,9 +107,8 @@ class ColeccionViewModel: ObservableObject {
                 !SistemaArchivosUtilidades.sau.isDirectory(elementURL: url)
             }
         }
-        filteredURLs.sort {
-            $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending
-        }
+        
+        filteredURLs = EnumOrdenaciones.ordenarURLs(filteredURLs, por: .tamano)
 
         // 2. Prepara placeholders
         let total = filteredURLs.count
@@ -163,10 +162,6 @@ class ColeccionViewModel: ObservableObject {
             }
         }
     }
-
-
-
-    
     
     func reiniciarCarga() {
         elementosCargados = false

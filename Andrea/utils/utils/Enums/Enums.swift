@@ -49,12 +49,62 @@ enum EnumModoVista: String, Codable {
 enum EnumOrdenaciones: String, Codable {
     case aleatorio
     case personalizado
-    case alfabeticamente
+    case nombre
     case porcentaje
     case tamano
     case paginas
-    case fechaimportacion
-    case fechamodificacion
+    case fechaImportacion
+    case fechaModificacion
+}
+
+extension EnumOrdenaciones {
+    static
+    func ordenarURLs(_ urls: [URL], por tipoOrden: EnumOrdenaciones) -> [URL] {
+        switch tipoOrden {
+        case .nombre:
+            return urls.sorted {
+                $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending
+            }
+        case .aleatorio:
+            return urls.shuffled()
+        case .tamano:
+            return urls.sorted {
+                let t1 = SistemaArchivosUtilidades.sau.getFileSize(fileURL: $0)
+                let t2 = SistemaArchivosUtilidades.sau.getFileSize(fileURL: $1)
+                return t1 < t2
+            }
+//        case .paginas:
+//            return urls.sorted {
+//                let p1 = obtenerPaginasDeArchivo(url: $0)
+//                let p2 = obtenerPaginasDeArchivo(url: $1)
+//                return p1 < p2
+//            }
+//        case .porcentaje:
+//            return urls.sorted {
+//                let prog1 = obtenerProgresoArchivo(url: $0)
+//                let prog2 = obtenerProgresoArchivo(url: $1)
+//                return prog1 < prog2
+//            }
+        case .fechaImportacion:
+            return urls.sorted {
+                let f1 = SistemaArchivosUtilidades.sau.getElementCreationDate(elementURL: $0)
+                let f2 = SistemaArchivosUtilidades.sau.getElementCreationDate(elementURL: $1)
+                return f1 < f2
+            }
+        case .fechaModificacion:
+            return urls.sorted {
+                let f1 = SistemaArchivosUtilidades.sau.getElementModificationDate(elementURL: $0)
+                let f2 = SistemaArchivosUtilidades.sau.getElementModificationDate(elementURL: $1)
+                return f1 < f2
+            }
+            
+        default:
+            return urls.sorted {
+                $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending
+            }
+        }
+    }
+
 }
 
 

@@ -23,7 +23,6 @@ protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     var colectionTotalIssues: Int? { get set }
     
     func viewContent() -> AnyView
-//    func showViewContentMenu(elementModel: ElementModel) -> AnyView
     
     func getTotalPages() -> Int
     func setCurrentPage(currentPage: Int) -> Void
