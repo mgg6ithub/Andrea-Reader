@@ -12,6 +12,8 @@ struct CuadriculaArchivo: View {
     
     var width: CGFloat
     var height: CGFloat
+    
+    @State private var mostrarMiniatura = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -21,6 +23,12 @@ struct CuadriculaArchivo: View {
                 if let img = viewModel.miniatura {
                     Image(uiImage: img)
                         .resizable()
+                        .scaleEffect(mostrarMiniatura ? 1 : 0.95)
+                        .opacity(mostrarMiniatura ? 1 : 0)
+                        .animation(.easeOut(duration: 0.3), value: mostrarMiniatura)
+                        .onAppear {
+                            mostrarMiniatura = true
+                        }
                 } else {
                     ProgressView()
                 }
@@ -60,6 +68,7 @@ struct CuadriculaArchivo: View {
         .onAppear {
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
             isVisible = true
+            mostrarMiniatura = false // ← reinicia animación si se reutiliza la celda
         }
         .onDisappear { viewModel.unloadThumbnail(for: archivo) }
 
