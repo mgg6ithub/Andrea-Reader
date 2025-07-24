@@ -2,12 +2,11 @@ import SwiftUI
 
 struct CuadriculaVista: View {
     
-    @Namespace private var namespace
-    
     @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     @ObservedObject var vm: ModeloColeccion
+    var namespace: Namespace.ID
     
     @State private var visibleIndices: [VisibleIndex] = []
     @State private var debounceWorkItem: DispatchWorkItem?

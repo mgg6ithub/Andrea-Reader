@@ -143,7 +143,6 @@ class ModeloColeccion: ObservableObject {
                 self.elementos = elementosOrdenados
                 self.isLoading = false
                 self.elementosCargados = true
-
                 let endTime = CFAbsoluteTimeGetCurrent()
                 self.tiempoCarga = endTime - startTime
             }

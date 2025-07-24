@@ -3,11 +3,10 @@ import SwiftUI
 
 struct ListaVista: View {
     
-    @Namespace private var namespace
-    
     @EnvironmentObject var menuEstado: MenuEstado
     
     @ObservedObject var vm: ModeloColeccion
+    var namespace: Namespace.ID
     
     @State private var visibleIndices: [VisibleIndex] = []
     @State private var debounceWorkItem: DispatchWorkItem?
