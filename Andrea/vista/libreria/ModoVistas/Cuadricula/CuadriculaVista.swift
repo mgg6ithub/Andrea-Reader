@@ -2,6 +2,8 @@ import SwiftUI
 
 struct CuadriculaVista: View {
     
+    @Namespace private var namespace
+    
     @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
@@ -23,7 +25,8 @@ struct CuadriculaVista: View {
 //                        .frame(height: 1)
 //                        .transition(.opacity)
 //                }
-                
+
+
                let outerPadding: CGFloat = 20      // ← cuanto quieras de margen a cada lado
                let spacing: CGFloat = 20           // ← spacing interno entre celdas
                let columnsCount = vm.columnas
@@ -60,7 +63,7 @@ struct CuadriculaVista: View {
                             ),
                             spacing: spacing
                         ) {
-                            ForEach(Array(vm.elementos.enumerated()), id: \.offset) { index, elemento in
+                            ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
                                 ElementoVista(vm: vm, elemento: elemento, scrollIndex: index) {
                                     if let placeholder = elemento as? ElementoPlaceholder {
                                         PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
@@ -70,6 +73,7 @@ struct CuadriculaVista: View {
                                         CuadriculaColeccion(coleccion: coleccion)
                                     }
                                 }
+                                .matchedGeometryEffect(id: elemento.id, in: namespace)
                                 .id(index)  // importante para scrollTo
                                 .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
                             }

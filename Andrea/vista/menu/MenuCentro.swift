@@ -158,10 +158,7 @@ struct MenuCentro: View {
                         valor: .aleatorio,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
-                        withAnimation {
-                            coleccionActualVM.ordenacion = .aleatorio
-                            coleccionActualVM.ordenarElementos(modoOrdenacion: .aleatorio)
-                        }
+                        coleccionActualVM.ordenarElementos(modoOrdenacion: .aleatorio)
                     }
                     
                     BotonMenu(
@@ -179,10 +176,7 @@ struct MenuCentro: View {
                         valor: .nombre,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
-                        withAnimation {
-                            coleccionActualVM.ordenacion = .nombre
-                            coleccionActualVM.ordenarElementos(modoOrdenacion: .nombre)
-                        }
+                        coleccionActualVM.ordenarElementos(modoOrdenacion: .nombre)
                     }
                     
                     BotonMenu(
@@ -191,10 +185,7 @@ struct MenuCentro: View {
                         valor: .tamano,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
-                        withAnimation {
-                            coleccionActualVM.ordenacion = .tamano
-                            coleccionActualVM.ordenarElementos(modoOrdenacion: .tamano)
-                        }
+                        coleccionActualVM.ordenarElementos(modoOrdenacion: .tamano)
                     }
                     
                     BotonMenu(

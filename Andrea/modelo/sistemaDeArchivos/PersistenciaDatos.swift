@@ -53,12 +53,6 @@ struct PersistenciaDatos {
         return dict[atributo]
     }
     
-    //MARK: --- guardar un atributo concreto ---
-//    public func guardarAtributoConcreto(url: URL, atributo: String) {
-//        let key = obtenerKey(url)
-//        UserDefaults.standard.set(datos, forKey: key)
-//    }
-    
     public func obtenerAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String) -> Any? {
         let key = obtenerKey(coleccion.url)
         guard let dict = UserDefaults.standard.dictionary(forKey: key),
@@ -109,8 +103,10 @@ struct PersistenciaDatos {
         let key = obtenerKey(coleccion.url)
         var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
 
-        if let valorEnum = valor as? EnumModoVista {
-            dict[atributo] = valorEnum.rawValue
+        if let tipoVistaEnum = valor as? EnumModoVista {
+            dict[atributo] = tipoVistaEnum.rawValue
+        } else if let ordenacionEnum = valor as? EnumOrdenaciones {
+            dict[atributo] = ordenacionEnum.rawValue
         } else if let valorColor = valor as? Color {
             dict[atributo] = valorColor.toHexString
         } else if let valor = valor as? String {
@@ -135,7 +131,6 @@ struct PersistenciaDatos {
         var vistaAtributos = dict["vistaAtributos"] as? [String: Any] ?? [:]
         var atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] ?? [:]
 
-//        atributosVista[atributo] = 4
         atributosVista[atributo] = valor
         vistaAtributos[modo.rawValue] = atributosVista
         dict["vistaAtributos"] = vistaAtributos

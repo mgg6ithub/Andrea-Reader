@@ -161,19 +161,15 @@ class ModeloColeccion: ObservableObject {
 
     func actualizarScroll(_ nuevo: Int) {
         scrollPosition = nuevo
-//        print("✅ Guardando scrollPosition:", nuevo)
-        PersistenciaDatos().guardarAtributoColeccion(
-            coleccion: self.coleccion,
-            atributo: "scrollPosition",
-            valor: nuevo
-        )
+        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "scrollPosition", valor: nuevo)
     }
 
     
     //MARK: --- ordenar los elementos pasandolo un modo de ordenacion ---
     func ordenarElementos(modoOrdenacion: EnumOrdenaciones) {
         self.ordenacion = modoOrdenacion
-        self.elementos = EnumOrdenaciones.ordenarElementos(self.elementos, por: modoOrdenacion)
+        let tempElementos = EnumOrdenaciones.ordenarElementos(self.elementos, por: modoOrdenacion)
+        withAnimation(.easeInOut(duration: 0.5)) { self.elementos = tempElementos }
         
         //guardamos en persistencia el modo de ordenacion
         PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenacion", valor: modoOrdenacion)

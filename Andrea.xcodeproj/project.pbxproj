@@ -34,7 +34,7 @@
 		D48B459F2DF248310088F40E /* Unrar in Frameworks */ = {isa = PBXBuildFile; productRef = D48B459E2DF248310088F40E /* Unrar */; };
 		D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */; };
 		D48B45A42DF250720088F40E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D48B45A32DF250720088F40E /* ZIPFoundation */; };
-		D49BE6D52E17AF2500FEDB99 /* ColeccionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49BE6D42E17AF2500FEDB99 /* ColeccionViewModel.swift */; };
+		D49BE6D52E17AF2500FEDB99 /* ModeloColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49BE6D42E17AF2500FEDB99 /* ModeloColeccion.swift */; };
 		D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D7D002E26D77500E0A93B /* ListaArchivo.swift */; };
 		D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D7D022E26D77D00E0A93B /* ListaColeccion.swift */; };
 		D49D7D052E26DAC100E0A93B /* ProgresoLista.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D7D042E26DAC100E0A93B /* ProgresoLista.swift */; };
@@ -57,13 +57,11 @@
 		D4ADDB7C2DE9B9F10097A010 /* MenuCentro.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB7B2DE9B9F10097A010 /* MenuCentro.swift */; };
 		D4ADDB7E2DE9B9FA0097A010 /* MenuDerecha.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB7D2DE9B9FA0097A010 /* MenuDerecha.swift */; };
 		D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB812DE9C0530097A010 /* MenuEstado.swift */; };
-		D4ADDB842DE9C06C0097A010 /* LibreriaEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB832DE9C06C0097A010 /* LibreriaEstado.swift */; };
-		D4ADDB872DE9C1150097A010 /* HistorialEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB862DE9C1150097A010 /* HistorialEstado.swift */; };
 		D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB882DE9C2E30097A010 /* AppEstado.swift */; };
 		D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AECEBA2DEE33620032917F /* PilaColecciones.swift */; };
 		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
 		D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8B3882E1324B200585A6D /* ThumbnailService.swift */; };
-		D4BA32F12E0BDD1300CF3219 /* TituloInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */; };
+		D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */; };
 		D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */; };
 		D4BF0B1F2DEF493500152333 /* FabricaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B1E2DEF493500152333 /* FabricaArchivo.swift */; };
 		D4BF0B212DEF494000152333 /* FabricaColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B202DEF494000152333 /* FabricaColeccion.swift */; };
@@ -71,7 +69,10 @@
 		D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */; };
 		D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */; };
 		D4BF4B1C2E168D1400224C71 /* Algoritmos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4B1B2E168D1400224C71 /* Algoritmos.swift */; };
-		D4C232FD2E1455AA00C8DBA4 /* IndexarOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */; };
+		D4CF28E32E323CF3003B3ABC /* ModificarTamano.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E22E323CF3003B3ABC /* ModificarTamano.swift */; };
+		D4CF28E52E323D3D003B3ABC /* Desplazamiento.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E42E323D3D003B3ABC /* Desplazamiento.swift */; };
+		D4CF28E72E323E29003B3ABC /* ModeloMiniaturaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E62E323E29003B3ABC /* ModeloMiniaturaArchivo.swift */; };
+		D4CF28E92E323F15003B3ABC /* Libreria.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E82E323F15003B3ABC /* Libreria.swift */; };
 		D4DEBBEC2DE9CCD500F06C30 /* AjustesGlobales.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */; };
 		D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */; };
 		D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */; };
@@ -108,7 +109,7 @@
 		D48589732DEBA1A80074DB8E /* Archivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Archivo.swift; sourceTree = "<group>"; };
 		D48589752DEBA1C50074DB8E /* Coleccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coleccion.swift; sourceTree = "<group>"; };
 		D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBZArchivo.swift; sourceTree = "<group>"; };
-		D49BE6D42E17AF2500FEDB99 /* ColeccionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColeccionViewModel.swift; sourceTree = "<group>"; };
+		D49BE6D42E17AF2500FEDB99 /* ModeloColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloColeccion.swift; sourceTree = "<group>"; };
 		D49D2AF02DEC5D7400AC8E36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D49D7D002E26D77500E0A93B /* ListaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListaArchivo.swift; sourceTree = "<group>"; };
 		D49D7D022E26D77D00E0A93B /* ListaColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListaColeccion.swift; sourceTree = "<group>"; };
@@ -132,13 +133,11 @@
 		D4ADDB7B2DE9B9F10097A010 /* MenuCentro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCentro.swift; sourceTree = "<group>"; };
 		D4ADDB7D2DE9B9FA0097A010 /* MenuDerecha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDerecha.swift; sourceTree = "<group>"; };
 		D4ADDB812DE9C0530097A010 /* MenuEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEstado.swift; sourceTree = "<group>"; };
-		D4ADDB832DE9C06C0097A010 /* LibreriaEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreriaEstado.swift; sourceTree = "<group>"; };
-		D4ADDB862DE9C1150097A010 /* HistorialEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorialEstado.swift; sourceTree = "<group>"; };
 		D4ADDB882DE9C2E30097A010 /* AppEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado.swift; sourceTree = "<group>"; };
 		D4AECEBA2DEE33620032917F /* PilaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilaColecciones.swift; sourceTree = "<group>"; };
 		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
 		D4B8B3882E1324B200585A6D /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
-		D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TituloInformacion.swift; sourceTree = "<group>"; };
+		D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformacionCuadricula.swift; sourceTree = "<group>"; };
 		D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCuadricula.swift; sourceTree = "<group>"; };
 		D4BF0B1E2DEF493500152333 /* FabricaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabricaArchivo.swift; sourceTree = "<group>"; };
 		D4BF0B202DEF494000152333 /* FabricaColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabricaColeccion.swift; sourceTree = "<group>"; };
@@ -146,7 +145,10 @@
 		D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTipoArchivos.swift; sourceTree = "<group>"; };
 		D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TXTArchivo.swift; sourceTree = "<group>"; };
 		D4BF4B1B2E168D1400224C71 /* Algoritmos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algoritmos.swift; sourceTree = "<group>"; };
-		D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexarOperation.swift; sourceTree = "<group>"; };
+		D4CF28E22E323CF3003B3ABC /* ModificarTamano.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModificarTamano.swift; sourceTree = "<group>"; };
+		D4CF28E42E323D3D003B3ABC /* Desplazamiento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Desplazamiento.swift; sourceTree = "<group>"; };
+		D4CF28E62E323E29003B3ABC /* ModeloMiniaturaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloMiniaturaArchivo.swift; sourceTree = "<group>"; };
+		D4CF28E82E323F15003B3ABC /* Libreria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Libreria.swift; sourceTree = "<group>"; };
 		D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesGlobales.swift; sourceTree = "<group>"; };
 		D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesTema.swift; sourceTree = "<group>"; };
 		D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesColor.swift; sourceTree = "<group>"; };
@@ -289,7 +291,8 @@
 		D49BE6D32E17AF0400FEDB99 /* MVVM */ = {
 			isa = PBXGroup;
 			children = (
-				D49BE6D42E17AF2500FEDB99 /* ColeccionViewModel.swift */,
+				D49BE6D42E17AF2500FEDB99 /* ModeloColeccion.swift */,
+				D4CF28E62E323E29003B3ABC /* ModeloMiniaturaArchivo.swift */,
 			);
 			path = MVVM;
 			sourceTree = "<group>";
@@ -316,12 +319,12 @@
 		D4ADDB6E2DE9B4A00097A010 /* vista */ = {
 			isa = PBXGroup;
 			children = (
-				D4BA32F42E0BE3EF00CF3219 /* animaciones */,
-				D440162C2DF1CB3B0025832B /* picker */,
 				D4ADDB732DE9B69C0097A010 /* principal */,
 				D4ADDB722DE9B4E90097A010 /* menu */,
 				D4ADDB7F2DE9BE730097A010 /* historial */,
 				D4ADDB712DE9B4DB0097A010 /* libreria */,
+				D49F12F42E25348300C67FB8 /* MasInformacion */,
+				D4CF28EA2E323FC2003B3ABC /* vistaAyudas */,
 			);
 			path = vista;
 			sourceTree = "<group>";
@@ -348,9 +351,9 @@
 		D4ADDB712DE9B4DB0097A010 /* libreria */ = {
 			isa = PBXGroup;
 			children = (
-				D49F12F42E25348300C67FB8 /* MasInformacion */,
+				D4CF28E82E323F15003B3ABC /* Libreria.swift */,
 				D47139B62E0ACD9800B5FA35 /* ModoVistas */,
-				D4DF317C2DEC77BD000D15CC /* vistasAyudas */,
+				D4DF317C2DEC77BD000D15CC /* ayudasLibreria */,
 			);
 			path = libreria;
 			sourceTree = "<group>";
@@ -388,8 +391,6 @@
 			children = (
 				D4ADDB882DE9C2E30097A010 /* AppEstado.swift */,
 				D4ADDB812DE9C0530097A010 /* MenuEstado.swift */,
-				D4ADDB832DE9C06C0097A010 /* LibreriaEstado.swift */,
-				D4ADDB862DE9C1150097A010 /* HistorialEstado.swift */,
 			);
 			path = environment;
 			sourceTree = "<group>";
@@ -399,7 +400,6 @@
 			children = (
 				D49BE6D32E17AF0400FEDB99 /* MVVM */,
 				D45E70092DE7A7F3001F816A /* SistemaArchivos.swift */,
-				D4C232FC2E1455AA00C8DBA4 /* IndexarOperation.swift */,
 				D48589702DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift */,
 				D4AECEBA2DEE33620032917F /* PilaColecciones.swift */,
 				D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */,
@@ -413,7 +413,7 @@
 			children = (
 				D47139C62E0AE76500B5FA35 /* CuadriculaArchivo.swift */,
 				D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */,
-				D4BA32F02E0BDD1300CF3219 /* TituloInformacion.swift */,
+				D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */,
 				D4DF317D2DEC77D1000D15CC /* PlaceholderCuadricula.swift */,
 			);
 			path = CuadriculaArchivo;
@@ -465,6 +465,15 @@
 			path = archivos;
 			sourceTree = "<group>";
 		};
+		D4CF28EA2E323FC2003B3ABC /* vistaAyudas */ = {
+			isa = PBXGroup;
+			children = (
+				D440162C2DF1CB3B0025832B /* picker */,
+				D4BA32F42E0BE3EF00CF3219 /* animaciones */,
+			);
+			path = vistaAyudas;
+			sourceTree = "<group>";
+		};
 		D4DEBBEA2DE9CCB100F06C30 /* ajustesGlobales */ = {
 			isa = PBXGroup;
 			children = (
@@ -486,12 +495,14 @@
 			path = ajustesSeccion;
 			sourceTree = "<group>";
 		};
-		D4DF317C2DEC77BD000D15CC /* vistasAyudas */ = {
+		D4DF317C2DEC77BD000D15CC /* ayudasLibreria */ = {
 			isa = PBXGroup;
 			children = (
 				D4A65E012E27EBB500729A57 /* ArrastreManual.swift */,
+				D4CF28E22E323CF3003B3ABC /* ModificarTamano.swift */,
+				D4CF28E42E323D3D003B3ABC /* Desplazamiento.swift */,
 			);
-			path = vistasAyudas;
+			path = ayudasLibreria;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -579,9 +590,10 @@
 				D45E700C2DE7A803001F816A /* MenuVista.swift in Sources */,
 				D4BF0B1F2DEF493500152333 /* FabricaArchivo.swift in Sources */,
 				D49F12F62E25349500C67FB8 /* MasInformacionColeccion.swift in Sources */,
+				D4CF28E92E323F15003B3ABC /* Libreria.swift in Sources */,
 				D45E700A2DE7A7F3001F816A /* SistemaArchivos.swift in Sources */,
 				D485896F2DEB9E4E0074DB8E /* ManipulacionCadenas.swift in Sources */,
-				D49BE6D52E17AF2500FEDB99 /* ColeccionViewModel.swift in Sources */,
+				D49BE6D52E17AF2500FEDB99 /* ModeloColeccion.swift in Sources */,
 				D4DF317B2DEC74F0000D15CC /* CuadriculaVista.swift in Sources */,
 				D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */,
 				D4ADDB7A2DE9B9E60097A010 /* MenuIzquierda.swift in Sources */,
@@ -589,20 +601,21 @@
 				D4ADDB7C2DE9B9F10097A010 /* MenuCentro.swift in Sources */,
 				D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */,
 				D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */,
-				D4BA32F12E0BDD1300CF3219 /* TituloInformacion.swift in Sources */,
+				D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */,
 				D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */,
 				D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */,
 				D48589742DEBA1A80074DB8E /* Archivo.swift in Sources */,
 				D48589762DEBA1C50074DB8E /* Coleccion.swift in Sources */,
 				D4ADDB772DE9B9990097A010 /* Constantes.swift in Sources */,
 				D4A0FF3D2DEB3FD300195018 /* LineaSeparadora.swift in Sources */,
+				D4CF28E52E323D3D003B3ABC /* Desplazamiento.swift in Sources */,
 				D48589712DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift in Sources */,
 				D47139C12E0AE44200B5FA35 /* ListaVista.swift in Sources */,
 				D4DF317E2DEC77D1000D15CC /* PlaceholderCuadricula.swift in Sources */,
 				D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */,
 				D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */,
+				D4CF28E32E323CF3003B3ABC /* ModificarTamano.swift in Sources */,
 				D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */,
-				D4ADDB872DE9C1150097A010 /* HistorialEstado.swift in Sources */,
 				D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */,
 				D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */,
 				D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */,
@@ -610,11 +623,11 @@
 				D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */,
 				D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */,
 				D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */,
+				D4CF28E72E323E29003B3ABC /* ModeloMiniaturaArchivo.swift in Sources */,
 				D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */,
 				D49DE74E2E0D3481002FDB7A /* ImagenArchivo.swift in Sources */,
 				D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */,
 				D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */,
-				D4ADDB842DE9C06C0097A010 /* LibreriaEstado.swift in Sources */,
 				D4A6C7272DEA216400E7451F /* RectangleFormView.swift in Sources */,
 				D47139C72E0AE76500B5FA35 /* CuadriculaArchivo.swift in Sources */,
 				D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */,
@@ -630,7 +643,6 @@
 				D4DF31792DEC7362000D15CC /* ElementoPlaceholder.swift in Sources */,
 				D46E94352DEA287000ABD9EE /* Toggle.swift in Sources */,
 				D485896A2DEB9DC30074DB8E /* Extensiones.swift in Sources */,
-				D4C232FD2E1455AA00C8DBA4 /* IndexarOperation.swift in Sources */,
 				D4BF0B232DEF4AA000152333 /* ProtocoloArchivo.swift in Sources */,
 				D48589662DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift in Sources */,
 				D4A6C7292DEA21C200E7451F /* Enums.swift in Sources */,
