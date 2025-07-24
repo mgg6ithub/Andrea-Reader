@@ -4,7 +4,7 @@ import SwiftUI
 struct ArrastreManual: ViewModifier {
     
     @Binding var elementoArrastrando: ElementoSistemaArchivos?
-    @ObservedObject var viewModel: ColeccionViewModel
+    @ObservedObject var viewModel: ModeloColeccion
     var elemento: ElementoSistemaArchivos
     var index: Int
 

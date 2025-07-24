@@ -8,8 +8,6 @@ class SistemaArchivos: ObservableObject {
     // MARK: --- Instancia singleton totalmente segura, lazy, thread-safe ---
     static let sa: SistemaArchivos = SistemaArchivos()
     
-//    private static let sistemaArchivosQueue = DispatchQueue(label: "com.miApp.singletonSistemaArchivos")
-    
     //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual (Documents) coelccion raiz
     private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
 
@@ -133,7 +131,7 @@ class SistemaArchivos: ObservableObject {
     
     
     // MARK: – Ejemplo de método para borrar un elemento (protegido por fileQueue)
-    public func borrarElemento(elemento: any ElementoSistemaArchivosProtocolo, vm: ColeccionViewModel) {
+    public func borrarElemento(elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion) {
         fileQueue.async {
             
             // --- obtenemos la url del elemento a borrar

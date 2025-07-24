@@ -10,8 +10,8 @@ class PilaColecciones: ObservableObject {
     static let pilaColecciones: PilaColecciones = PilaColecciones()
 
     //MARK: --- Variables publicas para las vistas ---
-    @Published private(set) var colecciones: [ColeccionViewModel] = []
-    @Published private(set) var coleccionActualVM: ColeccionViewModel?
+    @Published private(set) var colecciones: [ModeloColeccion] = []
+    @Published private(set) var coleccionActualVM: ModeloColeccion?
 
     //MARK: --- Variables privadas para esta clase ---
     private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
@@ -45,14 +45,14 @@ class PilaColecciones: ObservableObject {
             var vistaModelos = coleccionesGuardadas.compactMap { url in
                 if FileManager.default.fileExists(atPath: url.path),
                    let coleccion = cache[url]?.coleccion {
-                    return ColeccionViewModel(coleccion)
+                    return ModeloColeccion(coleccion)
                 } else {
                     return nil
                 }
             }
 
             if let home = cache[self.homeURL]?.coleccion {
-                let homeVM = ColeccionViewModel(home)
+                let homeVM = ModeloColeccion(home)
 
                 // Evita duplicarla si ya estaba
                 if !vistaModelos.contains(where: { $0.coleccion.url == home.url }) {
@@ -93,11 +93,11 @@ class PilaColecciones: ObservableObject {
     @MainActor
     private func actualizarColeccionActual() {
         // 1. Obtén la nueva VM (la última de la pila o la HOME)
-        let nuevaVM: ColeccionViewModel
+        let nuevaVM: ModeloColeccion
         if let última = colecciones.last {
             nuevaVM = última
         } else if let home = sa.cacheColecciones[homeURL]?.coleccion {
-            nuevaVM = ColeccionViewModel(home)
+            nuevaVM = ModeloColeccion(home)
         } else {
             fatalError("No se pudo obtener la colección HOME")
         }
@@ -120,7 +120,7 @@ class PilaColecciones: ObservableObject {
      - Parameter coleccion: La colección a agregar.
      */
     public func meterColeccion(coleccion: Coleccion) {
-        let vm = ColeccionViewModel(coleccion)
+        let vm = ModeloColeccion(coleccion)
         if colecciones.last?.coleccion == coleccion {
             return
         }
@@ -141,8 +141,8 @@ class PilaColecciones: ObservableObject {
     /**
      Retorna la colección actual (última en la pila), o la colección HOME si no hay ninguna.
      */
-    public func getColeccionActual() -> ColeccionViewModel {
-        coleccionActualVM ?? ColeccionViewModel(
+    public func getColeccionActual() -> ModeloColeccion {
+        coleccionActualVM ?? ModeloColeccion(
             sa.cacheColecciones[self.homeURL]?.coleccion
             ?? Coleccion(
                 directoryName: "Inicio",
@@ -157,7 +157,7 @@ class PilaColecciones: ObservableObject {
     /**
      Retorna la colección actual como propiedad.
      */
-    public var currentVM: ColeccionViewModel {
+    public var currentVM: ModeloColeccion {
         getColeccionActual()
     }
 

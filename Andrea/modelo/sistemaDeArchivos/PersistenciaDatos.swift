@@ -9,17 +9,72 @@ import SwiftUI
 
 struct PersistenciaDatos {
     
+    let mc = ManipulacionCadenas()
+    
+    //MARK: --- ARCHIVO ---
+    
+    public func guardarDatoElemento(url: URL, atributo: String, valor: Any) {
+        let key = obtenerKey(url)
+        var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
+
+        if let valor = valor as? Int {
+            dict[atributo] = valor
+        } else if let valor = valor as? Bool {
+            dict[atributo] = valor
+        } else if let valor = valor as? String {
+            dict[atributo] = valor
+        } else {
+            print("⚠️ Tipo no soportado para persistencia en elemento: \(type(of: valor))")
+            return
+        }
+
+        UserDefaults.standard.set(dict, forKey: key)
+    }
+
+    
     //MARK:  --- COLECCION ---
     
     // MARK: - Keys
-    private func keyParaColeccion(_ coleccion: Coleccion) -> String {
-        ManipulacionCadenas().borrarURLLOCAL(url: coleccion.url)
+    private func obtenerKey(_ url: URL) -> String {
+        mc.borrarURLLOCAL(url: url)
     }
 
+
+    // MARK: - Obtener todos los datos de un elemento
+    public func obtenerAtributos(url: URL) -> [String: Any]? {
+        let key = obtenerKey(url)
+        return UserDefaults.standard.dictionary(forKey: key)
+    }
+
+    // MARK: - Obtener un atributo específico
+    public func obtenerAtributoConcreto(url: URL, atributo: String) -> Any? {
+        let key = obtenerKey(url)
+        guard let dict = UserDefaults.standard.dictionary(forKey: key) else { return nil }
+        return dict[atributo]
+    }
+    
+    //MARK: --- guardar un atributo concreto ---
+//    public func guardarAtributoConcreto(url: URL, atributo: String) {
+//        let key = obtenerKey(url)
+//        UserDefaults.standard.set(datos, forKey: key)
+//    }
+    
+    public func obtenerAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String) -> Any? {
+        let key = obtenerKey(coleccion.url)
+        guard let dict = UserDefaults.standard.dictionary(forKey: key),
+              let vistaAtributos = dict["vistaAtributos"] as? [String: Any],
+              let atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] else {
+            return nil
+        }
+        
+        return atributosVista[atributo]
+    }
+    
+    
     // MARK: - Guardar todo el diccionario
     @MainActor
-    public func guardarDatosColeccion(coleccion: ColeccionViewModel) {
-        let key = keyParaColeccion(coleccion.coleccion)
+    public func guardarDatosColeccion(coleccion: ModeloColeccion) {
+        let key = obtenerKey(coleccion.coleccion.url)
 
         var datos: [String: Any] = [
             "scrollPosition": coleccion.scrollPosition,
@@ -47,38 +102,11 @@ struct PersistenciaDatos {
 
         UserDefaults.standard.set(datos, forKey: key)
     }
-
-
-    // MARK: - Restaurar datos
-    public func obtenerDatosColeccion(coleccion: Coleccion) -> [String: Any]? {
-        let key = keyParaColeccion(coleccion)
-        return UserDefaults.standard.dictionary(forKey: key)
-    }
-
-
-    // MARK: - Obtener un atributo específico
-    public func obtenerAtributo(coleccion: Coleccion, atributo: String) -> Any? {
-        let key = keyParaColeccion(coleccion)
-        guard let dict = UserDefaults.standard.dictionary(forKey: key) else { return nil }
-        return dict[atributo]
-    }
-    
-    
-    public func obtenerAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String) -> Any? {
-        let key = keyParaColeccion(coleccion)
-        guard let dict = UserDefaults.standard.dictionary(forKey: key),
-              let vistaAtributos = dict["vistaAtributos"] as? [String: Any],
-              let atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] else {
-            return nil
-        }
-        
-        return atributosVista[atributo]
-    }
     
 
     // MARK: - Guardar / modificar un solo atributo
-    public func guardarAtributo(coleccion: Coleccion, atributo: String, valor: Any) {
-        let key = keyParaColeccion(coleccion)
+    public func guardarAtributoColeccion(coleccion: Coleccion, atributo: String, valor: Any) {
+        let key = obtenerKey(coleccion.url)
         var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
 
         if let valorEnum = valor as? EnumModoVista {
@@ -98,9 +126,10 @@ struct PersistenciaDatos {
 
         UserDefaults.standard.set(dict, forKey: key)
     }
-
+    
+    //MARK: - gurdar un atributo
     public func guardarAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String, valor: Any) {
-        let key = keyParaColeccion(coleccion)
+        let key = obtenerKey(coleccion.url)
         var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
 
         var vistaAtributos = dict["vistaAtributos"] as? [String: Any] ?? [:]
@@ -145,4 +174,7 @@ extension Color {
         }
     }
 }
+
+
+
 

@@ -6,7 +6,7 @@ struct PlaceholderLista: View {
     @EnvironmentObject var appEstado: AppEstado
     
     let placeholder: ElementoPlaceholder
-    @ObservedObject var coleccionVM: ColeccionViewModel
+    @ObservedObject var coleccionVM: ModeloColeccion
     
     var body: some View {
         HStack(spacing: 0) {

@@ -7,8 +7,8 @@ struct ListaArchivo: View {
     @EnvironmentObject var appEstado: AppEstado
     
     @ObservedObject var archivo: Archivo
-    @StateObject private var viewModel = ArchivoThumbnailViewModel()
-    @ObservedObject var coleccionVM: ColeccionViewModel
+    @StateObject private var viewModel = ModeloMiniaturaArchivo()
+    @ObservedObject var coleccionVM: ModeloColeccion
     @State private var isVisible = false
     
     var body: some View {

@@ -161,25 +161,6 @@ class SistemaArchivosUtilidades {
        }
     }
     
-    /**
-     *OBTENER EL TIPO DEL DIRECTORIO SEGUN LOS ARCHIVOS OCULTOS QUE TENGA*
-     */
-    
-//    public func getDirectoryType(directoryURL: URL) -> EnumDirectoryTypes {
-//        
-//        let contents = self.getUrlsSubdirectoryContents(urlPath: directoryURL)
-//        
-//        let hiddenFile = contents.filter { $0.lastPathComponent.hasPrefix(".") }
-//        
-//        if let hiddenFileName = hiddenFile.first?.lastPathComponent.dropFirst() {
-//            if let directoryType = EnumDirectoryTypes(rawValue: String(hiddenFileName)) {
-//                return directoryType
-//            }
-//        }
-//        
-//        return .normal
-//    }
-    
     
     /**
      *DEVUELVE UNA LISTA DE STRINGS CON EL NOMBRE DE LOS ELEMENTOS DEL DIRECTORIO ROOT*

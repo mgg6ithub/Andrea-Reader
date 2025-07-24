@@ -5,7 +5,7 @@ struct ElementoVista<Content: View>: View {
     
     @EnvironmentObject var appEstado: AppEstado
     
-    @ObservedObject var vm: ColeccionViewModel
+    @ObservedObject var vm: ModeloColeccion
     let elemento: any ElementoSistemaArchivosProtocolo
     let scrollIndex: Int? // <- NUEVO
     @ViewBuilder let content: () -> Content

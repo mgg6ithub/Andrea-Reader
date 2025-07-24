@@ -10,7 +10,7 @@ struct HistorialColecciones: View {
     @State private var colorTemporal: Color = .clear
     
     private var iconSize: CGFloat  { appEstado.constantes.iconSize }
-    @ObservedObject private var coleccionActualVM: ColeccionViewModel
+    @ObservedObject private var coleccionActualVM: ModeloColeccion
     
     init() {
         _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())

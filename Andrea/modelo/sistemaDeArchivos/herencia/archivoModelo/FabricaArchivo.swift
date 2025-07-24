@@ -33,8 +33,14 @@ struct FactoryArchivo {
         }
         
         // --- PAGINAS Y PORCENTAJE ---
-        archivo.setCurrentPage(currentPage: 10)
-        
+        if let paginaConcreta = PersistenciaDatos().obtenerAtributoConcreto(url: archivo.url, atributo: "paginaGuardada") {
+            print("Se cagra la pagina guardada desde persistencia")
+            archivo.setCurrentPage(currentPage: paginaConcreta as! Int)
+        } else {
+            archivo.setCurrentPage(currentPage: 10)
+//            PersistenciaDatos().guardarDatoElemento(url: archivo.url, atributo: "paginaGuardada", valor: 10)
+        }
+
         return archivo
     }
     

@@ -119,7 +119,7 @@ struct MenuCentro: View {
                         
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { vm.modoVista = .cuadricula }
                         
-                        PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.cuadricula)
+                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.cuadricula)
                         menuRefreshTrigger = UUID()
                     }
 
@@ -134,7 +134,7 @@ struct MenuCentro: View {
                         
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { vm.modoVista = .lista }
                         
-                        PersistenciaDatos().guardarAtributo(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
+                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
                         menuRefreshTrigger = UUID()
                     }
                     

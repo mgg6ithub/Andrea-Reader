@@ -10,7 +10,7 @@ import SwiftUI
 struct ProgresoLista: View {
     
     let archivo: Archivo
-    @ObservedObject var coleccionVM: ColeccionViewModel
+    @ObservedObject var coleccionVM: ModeloColeccion
     
     var progreso: Int { archivo.fileProgressPercentage }
     var progresoEntero: Double { archivo.fileProgressPercentageEntero }

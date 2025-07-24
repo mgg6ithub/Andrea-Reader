@@ -3,7 +3,7 @@
 import SwiftUI
 
 @MainActor
-class ColeccionViewModel: ObservableObject {
+class ModeloColeccion: ObservableObject {
     
   let coleccion: Coleccion
   var tipoSA: EnumTipoSistemaArchivos?
@@ -37,7 +37,7 @@ class ColeccionViewModel: ObservableObject {
         //    - Cuadricula
         //    - Lista
         
-        let datos = PersistenciaDatos().obtenerDatosColeccion(coleccion: coleccion)
+        let datos = PersistenciaDatos().obtenerAtributos(url: coleccion.url)
 
         if let scroll = datos?["scrollPosition"] as? Int {
             self.scrollPosition = scroll
@@ -51,14 +51,14 @@ class ColeccionViewModel: ObservableObject {
             self.color = .blue // default color
         }
 
-        if let tipoVistaRaw = PersistenciaDatos().obtenerAtributo(coleccion: coleccion, atributo: "tipoVista") as? String,
+        if let tipoVistaRaw = PersistenciaDatos().obtenerAtributoConcreto(url: coleccion.url, atributo: "tipoVista") as? String,
            let modo = EnumModoVista(rawValue: tipoVistaRaw) {
             self.modoVista = modo
         } else {
             self.modoVista = .lista
         }
         
-        if let ordenacionString = PersistenciaDatos().obtenerAtributo(coleccion: coleccion, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {
+        if let ordenacionString = PersistenciaDatos().obtenerAtributoConcreto(url: coleccion.url, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {
             self.ordenacion = ordenacion
         } else {
             self.ordenacion = .nombre
@@ -161,7 +161,7 @@ class ColeccionViewModel: ObservableObject {
     func actualizarScroll(_ nuevo: Int) {
         scrollPosition = nuevo
 //        print("✅ Guardando scrollPosition:", nuevo)
-        PersistenciaDatos().guardarAtributo(
+        PersistenciaDatos().guardarAtributoColeccion(
             coleccion: self.coleccion,
             atributo: "scrollPosition",
             valor: nuevo

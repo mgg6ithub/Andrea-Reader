@@ -4,7 +4,7 @@ import SwiftUI
 
 struct MasInformacionColeccion: View {
     
-    @ObservedObject var coleccionVM: ColeccionViewModel
+    @ObservedObject var coleccionVM: ModeloColeccion
     @Binding var colorTemporal: Color
 
     var body: some View {
@@ -21,7 +21,7 @@ struct MasInformacionColeccion: View {
 //                    coleccionVM.color = nuevoColor
                     
                     // --- PERSISTENCIA ---
-                    PersistenciaDatos().guardarAtributo(coleccion: coleccionVM.coleccion, atributo: "color", valor: nuevoColor)
+                    PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionVM.coleccion, atributo: "color", valor: nuevoColor)
                 }
             
             RoundedRectangle(cornerRadius: 10)

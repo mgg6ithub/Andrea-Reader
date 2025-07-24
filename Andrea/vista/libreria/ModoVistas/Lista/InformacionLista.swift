@@ -10,7 +10,7 @@ import SwiftUI
 struct InformacionLista: View {
     
     let archivo: Archivo
-    @ObservedObject var coleccionVM: ColeccionViewModel
+    @ObservedObject var coleccionVM: ModeloColeccion
     
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {

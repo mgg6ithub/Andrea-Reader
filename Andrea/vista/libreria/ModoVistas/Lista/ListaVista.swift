@@ -5,7 +5,7 @@ struct ListaVista: View {
     
     @EnvironmentObject var menuEstado: MenuEstado
     
-    @ObservedObject var vm: ColeccionViewModel
+    @ObservedObject var vm: ModeloColeccion
     
     @State private var visibleIndices: [VisibleIndex] = []
     @State private var debounceWorkItem: DispatchWorkItem?
@@ -62,7 +62,6 @@ struct ListaVista: View {
                         .filter({ $0.minY >= 0 })
                         .min(by: { $0.minY < $1.minY }) {
 
-                        print("🟢 Scroll detenido. Índice visible superior:", top.index)
                         vm.actualizarScroll(top.index)
                     } else {
                         print("🔴 No hay índice visible tras detener scroll.")
@@ -81,10 +80,8 @@ struct ListaVista: View {
                 }
             }
             .onChange(of: vm.modoVista) {
-                print("🌀 Cambio de modoVista:", vm.modoVista)
                 vm.isPerformingAutoScroll = true
                 DispatchQueue.main.async {
-                    print("🔥 Ejecutando scrollTo con proxy:", vm.scrollPosition)
                     proxy.scrollTo(vm.scrollPosition, anchor: .top)
                 }
             }
