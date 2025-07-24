@@ -391,6 +391,7 @@
 			children = (
 				D4ADDB882DE9C2E30097A010 /* AppEstado.swift */,
 				D4ADDB812DE9C0530097A010 /* MenuEstado.swift */,
+				D4AECEBA2DEE33620032917F /* PilaColecciones.swift */,
 			);
 			path = environment;
 			sourceTree = "<group>";
@@ -401,7 +402,6 @@
 				D49BE6D32E17AF0400FEDB99 /* MVVM */,
 				D45E70092DE7A7F3001F816A /* SistemaArchivos.swift */,
 				D48589702DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift */,
-				D4AECEBA2DEE33620032917F /* PilaColecciones.swift */,
 				D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */,
 				D48589642DEB9CB50074DB8E /* herencia */,
 			);

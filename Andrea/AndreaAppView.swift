@@ -1,9 +1,3 @@
-//
-//  AndreaAppView.swift
-//  Andrea
-//
-//  Created by mgg on 28/5/25.
-//
 
 import SwiftUI
 

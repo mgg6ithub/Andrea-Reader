@@ -3,9 +3,6 @@ import SwiftUI
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     
-    //ARRAY CON LOS NOMBRES DE LAS PAGINAS 1,2,3,4...
-    var totalPaginas: Int? = nil
-    
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
     var dirName: String = ""
@@ -31,9 +28,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     var colectionTotalIssues: Int?
     
     //PROGRESO
-    @Published var fileProgressPercentage: Int = 0
-    @Published var fileProgressPercentageEntero: Double = 0
-    @Published var currentSavedPage: Int = 0
+    @Published var totalPaginas: Int? {
+        didSet {
+            recalcularProgreso()
+        }
+    }
+    @Published var progreso: Int = 0
+    @Published var progresoEntero: Double = 0
+    @Published var paginaActual: Int = 0
     var finisheReadingDate: Date?
     
     //MODELOS NECESARIOS
@@ -60,8 +62,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         self.isExecutable = false
         self.isProtected = false
 
-        self.fileProgressPercentage = 0
-        self.currentSavedPage = 0
+        self.progreso = 0
+        self.paginaActual = 0
         self.finisheReadingDate = nil
 
         super.init()
@@ -82,6 +84,16 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         
         super.init(name: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate)
         
+        self.cargarPaginasAsync()
+        
+        if let paginaConcreta = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "paginaGuardada") {
+            print("Se cagra la pagina guardada desde persistencia")
+            self.setCurrentPage(currentPage: paginaConcreta as! Int)
+        } else {
+            self.setCurrentPage(currentPage: 10)
+//            PersistenciaDatos().guardarDatoElemento(url: archivo.url, atributo: "paginaGuardada", valor: 10)
+        }
+        
     }
     
     func viewContent() -> AnyView {
@@ -93,10 +105,10 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     }
     
     func setCurrentPage(currentPage: Int) {
-        self.currentSavedPage = currentPage
+        self.paginaActual = currentPage
         //al setear la pagina calculamos automaticamente el porcentaje
-        self.fileProgressPercentage = Int((Double(currentPage) / Double(getTotalPages())) * 100)
-        self.fileProgressPercentageEntero = Double(currentPage) / Double(getTotalPages())
+        self.progreso = Int((Double(currentPage) / Double(getTotalPages())) * 100)
+        self.progresoEntero = Double(currentPage) / Double(getTotalPages())
 
     }
     
@@ -118,6 +130,16 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     
     func obtenerPrimeraPagina() -> String? {
         return ""
+    }
+    
+    private func recalcularProgreso() {
+        guard let total = totalPaginas, total > 0 else {
+            progreso = 0
+            return
+        }
+
+        let porcentaje = Int((Double(paginaActual) / Double(total)) * 100)
+        progreso = min(max(porcentaje, 0), 100)
     }
     
 }

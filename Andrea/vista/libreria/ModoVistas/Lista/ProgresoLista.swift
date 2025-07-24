@@ -12,8 +12,8 @@ struct ProgresoLista: View {
     let archivo: Archivo
     @ObservedObject var coleccionVM: ModeloColeccion
     
-    var progreso: Int { archivo.fileProgressPercentage }
-    var progresoEntero: Double { archivo.fileProgressPercentageEntero }
+    var progreso: Int { archivo.progreso }
+    var progresoEntero: Double { archivo.progresoEntero }
     
     var body: some View {
         

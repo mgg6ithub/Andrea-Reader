@@ -8,7 +8,6 @@ struct CuadriculaArchivo: View {
     @StateObject private var viewModel = ModeloMiniaturaArchivo()
     @ObservedObject var coleccionVM: ModeloColeccion
 
-    @State private var miniatura: UIImage? = nil
     @State private var isVisible = false
     
     var width: CGFloat
@@ -29,7 +28,7 @@ struct CuadriculaArchivo: View {
                 VStack {
                     Spacer()
                     ProgresoCuadricula(
-                        progreso: archivo.fileProgressPercentage,
+                        progreso: archivo.progreso,
                         coleccionColor: coleccionVM.color,
                         totalWidth: width - 20
                     )
@@ -46,16 +45,16 @@ struct CuadriculaArchivo: View {
                 tipo: archivo.fileType.rawValue,
                 tamanioMB: archivo.fileSize / (1024*1024),
                 totalPaginas: archivo.totalPaginas,
-                progreso: archivo.fileProgressPercentage,
+                progreso: archivo.progreso,
                 coleccionColor: coleccionVM.color,
                 maxWidth: width
             )
             .equatable()
-            .onAppear {
-                if archivo.totalPaginas == nil {
-                    archivo.cargarPaginasAsync()
-                }
-            }
+//            .onAppear {
+//                if archivo.totalPaginas == nil {
+//                    archivo.cargarPaginasAsync()
+//                }
+//            }
         }
         .frame(width: width, height: height)
         .background(appEstado.temaActual.cardColor)
