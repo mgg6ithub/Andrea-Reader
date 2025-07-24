@@ -62,62 +62,60 @@ struct MenuIzquierda: View {
                 //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
                 
                 if appEstado.sistemaArchivos == .arbol {
-                                Button(action: {
-                                    mostrarPopover.toggle()
-                                }) {
-                                    Image("custom.library")
-                                        .font(.system(size: appEstado.constantes.iconSize))
-                                        .symbolRenderingMode(.palette)
-                                        .foregroundStyle(appEstado.constantes.iconColor.gradient)
-                                        .fontWeight(appEstado.constantes.iconWeight)
-                                }
-                                .offset(y: -0.7)
-                                // Aquí va el popover
-                                .popover(isPresented: $mostrarPopover, arrowEdge: .bottom) {
-                                    VStack(alignment: .leading, spacing: 0) {
-                                        Text("Colecciones")
-                                            .font(.headline)
-                                            .padding(.vertical, 8)
-                                            .padding(.horizontal)
+                    Button(action: {
+                        mostrarPopover.toggle()
+                    }) {
+                        Image("custom.library")
+                            .font(.system(size: appEstado.constantes.iconSize))
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                            .fontWeight(appEstado.constantes.iconWeight)
+                    }
+                    .offset(y: -0.7)
+                    // Aquí va el popover
+                    .popover(isPresented: $mostrarPopover, arrowEdge: .bottom) {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("Colecciones")
+                                .font(.headline)
+                                .padding(.vertical, 8)
+                                .padding(.horizontal)
 
-                                        Divider()
+                            Divider()
 
-                                        ScrollView {
-                                            LazyVStack(alignment: .leading, spacing: 0) {
-                                                ForEach(
-                                                    SistemaArchivos.sa.cacheColecciones
-                                                        .sorted { $0.value.coleccion.name < $1.value.coleccion.name },
-                                                    id: \.key
-                                                ) { url, valor in
-                                                    Button {
-                                                        // Acción al seleccionar
-                                                        valor.coleccion.meterColeccion()
-                                                        // Actualiza tu vista o VM aquí...
-                                                        mostrarPopover = false
-                                                    } label: {
-                                                        Text(valor.coleccion.name)
-                                                            .padding(.vertical, 8)
-                                                            .padding(.horizontal)
-                                                            .foregroundColor(appEstado.temaActual.textColor)
-                                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                                    }
-                                                    .background(appEstado.temaActual.backgroundColor)
-                                                }
-                                            }
+                            ScrollView {
+                                LazyVStack(alignment: .leading, spacing: 0) {
+                                    ForEach(
+                                        SistemaArchivos.sa.cacheColecciones
+                                            .sorted { $0.value.coleccion.name < $1.value.coleccion.name },
+                                        id: \.key
+                                    ) { url, valor in
+                                        Button {
+                                            // Acción al seleccionar
+                                            valor.coleccion.meterColeccion()
+                                            // Actualiza tu vista o VM aquí...
+                                            mostrarPopover = false
+                                        } label: {
+                                            Text(valor.coleccion.name)
+                                                .padding(.vertical, 8)
+                                                .padding(.horizontal)
+                                                .foregroundColor(appEstado.temaActual.textColor)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
                                         }
-                                        .frame(maxHeight: 300) // límite de alto, ajusta a tu gusto
+                                        .background(appEstado.temaActual.backgroundColor)
                                     }
-                                    .frame(width: 200) // ajusta el ancho
-                                    .background(appEstado.temaActual.cardColor)
                                 }
                             }
+                            .frame(maxHeight: 300) // límite de alto, ajusta a tu gusto
+                        }
+                        .frame(width: 200) // ajusta el ancho
+                        .background(appEstado.temaActual.cardColor)
+                    }
+                }
 
-                            Spacer()
+                Spacer()
                 
             }
             .frame(maxWidth: 120)
-//            .padding(.leading, 4)
-
         
     }
 }

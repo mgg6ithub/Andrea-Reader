@@ -19,9 +19,7 @@ struct MenuDerecha: View {
             
             
             Button(action: {
-//                withAnimation {
-//                    self.isMultipleSelectionPressed = true
-//                }
+
             }) {
                 Image(systemName: "checkmark.rectangle.stack")
                     .font(.system(size: appEstado.constantes.iconSize * 1.1))
@@ -30,7 +28,6 @@ struct MenuDerecha: View {
                     .contentTransition(.symbolEffect(.replace))
                     .fontWeight(appEstado.constantes.iconWeight)
             }
-//            .offset(y: -1.0)
             
         }
         .frame(maxWidth: 70)

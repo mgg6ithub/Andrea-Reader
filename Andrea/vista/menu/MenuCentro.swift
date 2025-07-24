@@ -36,19 +36,13 @@ struct MenuCentro: View {
         PilaColecciones.pilaColecciones.getColeccionActual()
     }
     
-    @State private var menuRefreshTrigger = UUID() // <-- Añadido
+    @State private var menuRefreshTrigger = UUID()
     
     @State private var mostrarDocumentPicker: Bool = false
     @State private var esNuevaColeccionPresionado: Bool = false
     @State private var nuevaColeccionNombre: String = ""
     
     @State private var sheetID = UUID()
-    
-//    @ObservedObject private var coleccionActualVM: ModeloColeccion
-//    
-//    init() {
-//        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
-//    }
 
     var body: some View {
         
@@ -110,6 +104,7 @@ struct MenuCentro: View {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)
                 Button("Aceptar") {
                     sa.crearColeccion(nombre: nuevaColeccionNombre, en: coleccionActualVM.coleccion.url)
+                    nuevaColeccionNombre = ""
                 }
                 Button("Cancelar", role: .cancel) {}
             }
@@ -124,13 +119,8 @@ struct MenuCentro: View {
                         valor: .cuadricula,
                         valorActual: coleccionActualVM.modoVista
                     ) {
-
-                        let coleccion = coleccionActualVM.coleccion
-                        print("📦 Modificando modoVista para VM: \(coleccion.name) a cuadricula")
-                        
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccionActualVM.modoVista = .cuadricula }
-                        
-                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.cuadricula)
+                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionActualVM.coleccion, atributo: "tipoVista", valor: EnumModoVista.cuadricula)
                         menuRefreshTrigger = UUID()
                     }
 
@@ -140,12 +130,8 @@ struct MenuCentro: View {
                         valor: .lista,
                         valorActual: coleccionActualVM.modoVista
                     ) {
-                        let coleccion = coleccionActualVM.coleccion
-                        print("📦 Modificando modoVista para VM: \(coleccion.name) a lista")
-                        
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccionActualVM.modoVista = .lista }
-                        
-                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
+                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionActualVM.coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
                         menuRefreshTrigger = UUID()
                     }
                     
@@ -160,6 +146,7 @@ struct MenuCentro: View {
                     ) {
                         print("has cambiado el modo a aleatoria para ", coleccionActualVM.coleccion.name)
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .aleatorio)
+                        menuRefreshTrigger = UUID()
                     }
                     
                     BotonMenu(
@@ -179,6 +166,7 @@ struct MenuCentro: View {
                     ) {
                         print("has cambiado el modo a nombre para ", coleccionActualVM.coleccion.name)
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .nombre)
+                        menuRefreshTrigger = UUID()
                     }
                     
                     BotonMenu(
@@ -188,6 +176,7 @@ struct MenuCentro: View {
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .tamano)
+                        menuRefreshTrigger = UUID()
                     }
                     
                     BotonMenu(
@@ -209,17 +198,13 @@ struct MenuCentro: View {
                 }
                 
             } label: {
-                
-//                Image("custom.hand.grid")
                 Image(systemName: "square.grid.3x3.square")
                     .font(.system(size: appEstado.constantes.iconSize * 1.2))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .contentTransition(.symbolEffect(.replace))
                     .fontWeight(appEstado.constantes.iconWeight)
-//                    .padding(12)                      // zona de toque ≥ 44×44
                     .contentShape(Rectangle())
-                
             }
             .id(menuRefreshTrigger)
             

@@ -50,11 +50,6 @@ struct CuadriculaArchivo: View {
                 maxWidth: width
             )
             .equatable()
-//            .onAppear {
-//                if archivo.totalPaginas == nil {
-//                    archivo.cargarPaginasAsync()
-//                }
-//            }
         }
         .frame(width: width, height: height)
         .background(appEstado.temaActual.cardColor)

@@ -15,8 +15,7 @@ struct VistaPrincipal: View {
     
     var body: some View {
         ZStack {
-            appEstado.temaActual.backgroundColor
-                .edgesIgnoringSafeArea(.all)
+            appEstado.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 0) {
                 

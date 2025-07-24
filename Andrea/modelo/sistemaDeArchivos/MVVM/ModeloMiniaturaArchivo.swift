@@ -4,7 +4,7 @@ import SwiftUI
 class ModeloMiniaturaArchivo: ObservableObject {
     @Published var miniatura: UIImage? = nil
     
-    private let mm: ModeloMiniatura = ModeloMiniatura.getModeloMiniaturaSingleton
+    private let mm: ModeloMiniatura = ModeloMiniatura.modeloMiniatura
     private var cargaTask: Task<Void, Never>? = nil
 
     func loadThumbnail(color: Color, for archivo: Archivo, allowGeneration: Bool = true) {

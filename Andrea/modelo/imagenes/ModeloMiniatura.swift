@@ -12,19 +12,10 @@ import ImageIO
 class ModeloMiniatura {
     
     //Instancia del singleton
-    private static var modeloMiniatura: ModeloMiniatura? = nil
+    static var modeloMiniatura: ModeloMiniatura = ModeloMiniatura()
     
     //Cola para poder acceder desde cualquier parte del programa al singleton
     private static let modeloMiniaturaQueue = DispatchQueue(label: "com.miApp.singletonModeloMiniatura")
-    
-    public static var getModeloMiniaturaSingleton: ModeloMiniatura {
-        return modeloMiniaturaQueue.sync {
-            if modeloMiniatura == nil {
-                modeloMiniatura = ModeloMiniatura()
-            }
-            return modeloMiniatura!
-        }
-    }
     
     //Cache para las miniaturas.
     //Utilizamos un NSCache por si hay muchas miniaturas y afecta a la memoria que se vacie solo.
