@@ -1,14 +1,18 @@
 import SwiftUI
 
-struct BotonMenu: View {
+struct BotonMenu<T: Equatable>: View {
     
     let nombre: String
     let icono: String
-    let isActive: Bool
+    let valor: T
+    let valorActual: T
     let accion: () -> Void
 
+    var isActive: Bool {
+        valor == valorActual
+    }
+
     var body: some View {
-        
         Button(action: accion) {
             Label(nombre, systemImage: isActive ? "checkmark" : icono)
                 .foregroundStyle(
@@ -17,9 +21,9 @@ struct BotonMenu: View {
                     .secondary
                 )
         }
-        
     }
 }
+
 
 struct MenuCentro: View {
     
@@ -39,6 +43,12 @@ struct MenuCentro: View {
     @State private var nuevaColeccionNombre: String = ""
     
     @State private var sheetID = UUID()
+    
+    @ObservedObject private var coleccionActualVM: ModeloColeccion
+    
+    init() {
+        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
+    }
 
     var body: some View {
         
@@ -99,25 +109,26 @@ struct MenuCentro: View {
             .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)
                 Button("Aceptar") {
-                    sa.crearColeccion(nombre: nuevaColeccionNombre, en: PilaColecciones.pilaColecciones.getColeccionActual().coleccion.url)
+                    sa.crearColeccion(nombre: nuevaColeccionNombre, en: coleccionActualVM.coleccion.url)
                 }
                 Button("Cancelar", role: .cancel) {}
             }
             
             Menu {
                 
-                Section(header: Text("Modos de vista")) {
+                Section(header: Text("Vista")) {
                     
                     BotonMenu(
                         nombre: "Cuadrícula",
                         icono: "square.grid.2x2",
-                        isActive: self.modoVistaActual == .cuadricula
+                        valor: .cuadricula,
+                        valorActual: coleccionActualVM.modoVista
                     ) {
-                        let vm = PilaColecciones.pilaColecciones.getColeccionActual()
-                        let coleccion = vm.coleccion
+
+                        let coleccion = coleccionActualVM.coleccion
                         print("📦 Modificando modoVista para VM: \(coleccion.name) a cuadricula")
                         
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { vm.modoVista = .cuadricula }
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccionActualVM.modoVista = .cuadricula }
                         
                         PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.cuadricula)
                         menuRefreshTrigger = UUID()
@@ -126,18 +137,82 @@ struct MenuCentro: View {
                     BotonMenu(
                         nombre: "Lista",
                         icono: "list.bullet",
-                        isActive: self.modoVistaActual == .lista
+                        valor: .lista,
+                        valorActual: coleccionActualVM.modoVista
                     ) {
-                        let vm = PilaColecciones.pilaColecciones.getColeccionActual()
-                        let coleccion = vm.coleccion
+                        let coleccion = coleccionActualVM.coleccion
                         print("📦 Modificando modoVista para VM: \(coleccion.name) a lista")
                         
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { vm.modoVista = .lista }
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccionActualVM.modoVista = .lista }
                         
                         PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
                         menuRefreshTrigger = UUID()
                     }
                     
+                }
+                
+                Section(header: Text("Ordenar")) {
+                    BotonMenu(
+                        nombre: "Aleatorio",
+                        icono: "shuffle",
+                        valor: .aleatorio,
+                        valorActual: coleccionActualVM.ordenacion
+                    ) {
+                        withAnimation {
+                            coleccionActualVM.ordenacion = .aleatorio
+                            coleccionActualVM.ordenarElementos(modoOrdenacion: .aleatorio)
+                        }
+                    }
+                    
+                    BotonMenu(
+                        nombre: "Personalizada",
+                        icono: "hand.draw.fill",
+                        valor: .personalizado,
+                        valorActual: coleccionActualVM.ordenacion
+                    ) {
+                        
+                    }
+                    
+                    BotonMenu(
+                        nombre: "Nombre",
+                        icono: "textformat.characters.arrow.left.and.right",
+                        valor: .nombre,
+                        valorActual: coleccionActualVM.ordenacion
+                    ) {
+                        withAnimation {
+                            coleccionActualVM.ordenacion = .nombre
+                            coleccionActualVM.ordenarElementos(modoOrdenacion: .nombre)
+                        }
+                    }
+                    
+                    BotonMenu(
+                        nombre: "Tamaño",
+                        icono: "arrow.left.and.right.text.vertical",
+                        valor: .tamano,
+                        valorActual: coleccionActualVM.ordenacion
+                    ) {
+                        withAnimation {
+                            coleccionActualVM.ordenacion = .tamano
+                            coleccionActualVM.ordenarElementos(modoOrdenacion: .tamano)
+                        }
+                    }
+                    
+                    BotonMenu(
+                        nombre: "Paginas",
+                        icono: "book.pages",
+                        valor: .paginas,
+                        valorActual: coleccionActualVM.ordenacion
+                    ) {
+                        
+                    }
+                }
+                
+                Section(header: Text("Renombra y ordena a la vez")) {
+                    Button(action: {
+                        
+                    }) {
+                        Label("Smart rename", systemImage: "brain")
+                    }
                 }
                 
             } label: {

@@ -123,6 +123,7 @@ class ModeloColeccion: ObservableObject {
 
             let centro = await MainActor.run { self.scrollPosition }
             let urls = await MainActor.run { filteredURLs }
+            let ordenacion = await MainActor.run { self.ordenacion }
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)
 
             var todosLosElementos: [(Int, ElementoSistemaArchivos)] = []
@@ -135,7 +136,7 @@ class ModeloColeccion: ObservableObject {
 
             // Ordenar todos los elementos (sin importar el orden de entrada)
             let elementosOrdenados = EnumOrdenaciones.ordenarElementos(
-                todosLosElementos.map { $0.1 }, por: .aleatorio
+                todosLosElementos.map { $0.1 }, por: ordenacion
             )
 
             await MainActor.run {
@@ -168,6 +169,15 @@ class ModeloColeccion: ObservableObject {
         )
     }
 
+    
+    //MARK: --- ordenar los elementos pasandolo un modo de ordenacion ---
+    func ordenarElementos(modoOrdenacion: EnumOrdenaciones) {
+        self.ordenacion = modoOrdenacion
+        self.elementos = EnumOrdenaciones.ordenarElementos(self.elementos, por: modoOrdenacion)
+        
+        //guardamos en persistencia el modo de ordenacion
+        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenacion", valor: modoOrdenacion)
+    }
     
 }
 
