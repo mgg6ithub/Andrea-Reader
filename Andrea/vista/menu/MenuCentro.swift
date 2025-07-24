@@ -32,8 +32,8 @@ struct MenuCentro: View {
     
     private let sa: SistemaArchivos = SistemaArchivos.sa
     
-    private var modoVistaActual: EnumModoVista {
-        PilaColecciones.pilaColecciones.getColeccionActual().modoVista
+    private var coleccionActualVM: ModeloColeccion {
+        PilaColecciones.pilaColecciones.getColeccionActual()
     }
     
     @State private var menuRefreshTrigger = UUID() // <-- Añadido
@@ -44,11 +44,11 @@ struct MenuCentro: View {
     
     @State private var sheetID = UUID()
     
-    @ObservedObject private var coleccionActualVM: ModeloColeccion
-    
-    init() {
-        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
-    }
+//    @ObservedObject private var coleccionActualVM: ModeloColeccion
+//    
+//    init() {
+//        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
+//    }
 
     var body: some View {
         
@@ -158,6 +158,7 @@ struct MenuCentro: View {
                         valor: .aleatorio,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
+                        print("has cambiado el modo a aleatoria para ", coleccionActualVM.coleccion.name)
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .aleatorio)
                     }
                     
@@ -176,6 +177,7 @@ struct MenuCentro: View {
                         valor: .nombre,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
+                        print("has cambiado el modo a nombre para ", coleccionActualVM.coleccion.name)
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .nombre)
                     }
                     

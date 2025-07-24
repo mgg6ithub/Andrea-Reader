@@ -3,6 +3,8 @@ import SwiftUI
 
 struct ListaVista: View {
     
+    @Namespace private var namespace
+    
     @EnvironmentObject var menuEstado: MenuEstado
     
     @ObservedObject var vm: ModeloColeccion
@@ -39,6 +41,7 @@ struct ListaVista: View {
                                 ListaColeccion(coleccion: coleccion)
                             }
                         }
+                        .matchedGeometryEffect(id: elemento.id, in: namespace)
                         .id(index)
                         .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
                     }

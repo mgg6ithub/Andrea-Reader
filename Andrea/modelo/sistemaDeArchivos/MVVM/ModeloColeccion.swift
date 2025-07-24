@@ -169,7 +169,7 @@ class ModeloColeccion: ObservableObject {
     func ordenarElementos(modoOrdenacion: EnumOrdenaciones) {
         self.ordenacion = modoOrdenacion
         let tempElementos = EnumOrdenaciones.ordenarElementos(self.elementos, por: modoOrdenacion)
-        withAnimation(.easeInOut(duration: 0.5)) { self.elementos = tempElementos }
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { self.elementos = tempElementos }
         
         //guardamos en persistencia el modo de ordenacion
         PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenacion", valor: modoOrdenacion)
