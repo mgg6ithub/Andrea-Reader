@@ -58,54 +58,51 @@ enum EnumOrdenaciones: String, Codable {
 }
 
 extension EnumOrdenaciones {
-    static
-    func ordenarURLs(_ urls: [URL], por tipoOrden: EnumOrdenaciones) -> [URL] {
+    static func ordenarElementos(_ elementos: [ElementoSistemaArchivos], por tipoOrden: EnumOrdenaciones) -> [ElementoSistemaArchivos] {
         switch tipoOrden {
         case .nombre:
-            return urls.sorted {
-                $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending
+            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
+                a.name.localizedStandardCompare(b.name) == .orderedAscending
             }
         case .aleatorio:
-            return urls.shuffled()
+            return elementos.shuffled()
         case .tamano:
-            return urls.sorted {
-                let t1 = SistemaArchivosUtilidades.sau.getFileSize(fileURL: $0)
-                let t2 = SistemaArchivosUtilidades.sau.getFileSize(fileURL: $1)
-                return t1 < t2
+            return elementos.sorted {
+                guard let a = $0 as? Archivo, let b = $1 as? Archivo else {
+                    return false
+                }
+                return a.fileSize > b.fileSize
             }
+
 //        case .paginas:
-//            return urls.sorted {
-//                let p1 = obtenerPaginasDeArchivo(url: $0)
-//                let p2 = obtenerPaginasDeArchivo(url: $1)
-//                return p1 < p2
+//            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
+//                (a.totalPaginas ?? 0) < (b.totalPaginas ?? 0)
 //            }
 //        case .porcentaje:
-//            return urls.sorted {
-//                let prog1 = obtenerProgresoArchivo(url: $0)
-//                let prog2 = obtenerProgresoArchivo(url: $1)
-//                return prog1 < prog2
+//            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
+//                (a.porcentajeLeido ?? 0) < (b.porcentajeLeido ?? 0)
 //            }
         case .fechaImportacion:
-            return urls.sorted {
-                let f1 = SistemaArchivosUtilidades.sau.getElementCreationDate(elementURL: $0)
-                let f2 = SistemaArchivosUtilidades.sau.getElementCreationDate(elementURL: $1)
-                return f1 < f2
+            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
+                (a.creationDate ) < (b.creationDate )
             }
         case .fechaModificacion:
-            return urls.sorted {
-                let f1 = SistemaArchivosUtilidades.sau.getElementModificationDate(elementURL: $0)
-                let f2 = SistemaArchivosUtilidades.sau.getElementModificationDate(elementURL: $1)
-                return f1 < f2
+            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
+                (a.modificationDate ) < (b.modificationDate )
             }
-            
+        case .personalizado:
+            return elementos
         default:
-            return urls.sorted {
-                $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending
+            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
+                a.name.localizedStandardCompare(b.name) == .orderedAscending
             }
         }
+        
     }
-
 }
+
+
+
 
 
 //MARK: - RESOLUCIONES LOGICAS

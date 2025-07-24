@@ -14,38 +14,29 @@ struct VistaPrincipal: View {
     private let constantes = ConstantesPorDefecto()
     
     var body: some View {
-//        NavigationStack {
-            ZStack {
-                appEstado.temaActual.backgroundColor
-                    .edgesIgnoringSafeArea(.all)
+        ZStack {
+            appEstado.temaActual.backgroundColor
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 0) {
                 
                 VStack(spacing: 0) {
+                    MenuVista()
+                        .padding(.vertical, 8)
                     
-                    VStack(spacing: 0) {
-                        MenuVista()
-                            .padding(.vertical, 8)
-                        
-                        HistorialColecciones()
-                            .frame(height: 50)
-                            .padding(.bottom, 8)
-                    }
-                    .padding(.horizontal, constantes.horizontalPadding)
-//                    .border(Color.gray.opacity(appEstado.isScrolling ? 1 : 0), width: 1)
-                    
-//                    Spacer()
-                    
-                    Libreria(vm: pc.getColeccionActual())
-                    
+                    HistorialColecciones()
+                        .frame(height: 50)
+                        .padding(.bottom, 8)
                 }
-                .padding(0)
-
+                .padding(.horizontal, constantes.horizontalPadding)
                 
-                //MARK: --- AQUI AGREGAMOS LA COLECCION ---
+                Libreria(vm: pc.getColeccionActual())
                 
             }
-            .foregroundColor(appEstado.temaActual.textColor)
-            .animation(.easeInOut, value: appEstado.temaActual)
-//        }
+            .padding(0)
+        }
+        .foregroundColor(appEstado.temaActual.textColor)
+        .animation(.easeInOut, value: appEstado.temaActual)
     }
 }
 

@@ -107,8 +107,6 @@ class ColeccionViewModel: ObservableObject {
                 !SistemaArchivosUtilidades.sau.isDirectory(elementURL: url)
             }
         }
-        
-//        filteredURLs = EnumOrdenaciones.ordenarURLs(filteredURLs, por: .nombre)
 
         // 2. Prepara placeholders
         let total = filteredURLs.count
@@ -119,48 +117,37 @@ class ColeccionViewModel: ObservableObject {
         self.isPerformingAutoScroll = true
 
         // 3. Carga e indexado asíncrono con batching
+        // Paso 3: cargar e indexar asincrónicamente
         Task.detached { [weak self] in
             guard let self = self else { return }
 
             let centro = await MainActor.run { self.scrollPosition }
-//            let centro = 0
             let urls = await MainActor.run { filteredURLs }
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)
 
-            let batchSize = 10
-            var pendingUpdates: [(Int, ElementoSistemaArchivos)] = []
+            var todosLosElementos: [(Int, ElementoSistemaArchivos)] = []
 
             for (_, idx) in indices.enumerated() {
                 let url = urls[idx]
                 let elemento = SistemaArchivos.sa.crearInstancia(elementoURL: url)
-                pendingUpdates.append((idx, elemento))
-
-                // Cada batchSize elementos (o al final), lanzamos la actualización
-                if pendingUpdates.count == batchSize || idx == indices.last {
-                    let updates = pendingUpdates
-                    pendingUpdates.removeAll()
-
-                    await MainActor.run {
-                        // Hacemos copy-on-write para evitar mutar el array actor-isolated
-                        var nuevoArray = self.elementos
-                        for (i, elem) in updates {
-                            nuevoArray[i] = elem
-                        }
-                        self.elementos = nuevoArray
-                    }
-                }
+                todosLosElementos.append((idx, elemento))
             }
 
-            // 4. Marcamos carga completada
+            // Ordenar todos los elementos (sin importar el orden de entrada)
+            let elementosOrdenados = EnumOrdenaciones.ordenarElementos(
+                todosLosElementos.map { $0.1 }, por: .aleatorio
+            )
+
             await MainActor.run {
+                self.elementos = elementosOrdenados
                 self.isLoading = false
                 self.elementosCargados = true
-                
+
                 let endTime = CFAbsoluteTimeGetCurrent()
-               let elapsed = endTime - startTime
-               self.tiempoCarga = elapsed
+                self.tiempoCarga = endTime - startTime
             }
         }
+
     }
     
     func reiniciarCarga() {
@@ -170,7 +157,6 @@ class ColeccionViewModel: ObservableObject {
     func resetScrollState() {
         isPerformingAutoScroll = false
     }
-    
 
     func actualizarScroll(_ nuevo: Int) {
         scrollPosition = nuevo
