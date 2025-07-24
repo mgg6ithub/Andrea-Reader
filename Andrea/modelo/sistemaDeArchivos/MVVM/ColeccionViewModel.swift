@@ -108,7 +108,7 @@ class ColeccionViewModel: ObservableObject {
             }
         }
         
-        filteredURLs = EnumOrdenaciones.ordenarURLs(filteredURLs, por: .tamano)
+//        filteredURLs = EnumOrdenaciones.ordenarURLs(filteredURLs, por: .nombre)
 
         // 2. Prepara placeholders
         let total = filteredURLs.count

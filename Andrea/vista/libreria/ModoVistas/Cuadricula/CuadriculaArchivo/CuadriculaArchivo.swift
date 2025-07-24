@@ -41,7 +41,7 @@ struct CuadriculaArchivo: View {
             .frame(width: width)
             
             // --- Titulo e informacion ---
-            TituloInformacion(
+            InformacionCuadricula(
                 nombre: archivo.name,
                 tipo: archivo.fileType.rawValue,
                 tamanioMB: archivo.fileSize / (1024*1024),
@@ -51,6 +51,12 @@ struct CuadriculaArchivo: View {
                 maxWidth: width
             )
             .equatable()
+            .onAppear {
+                if archivo.totalPaginas == nil {
+                    archivo.cargarPaginasAsync()
+                }
+            }
+
             
         }
         .frame(width: width, height: height)

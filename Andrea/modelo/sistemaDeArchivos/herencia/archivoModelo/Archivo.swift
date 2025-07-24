@@ -4,7 +4,7 @@ import SwiftUI
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     
     //ARRAY CON LOS NOMBRES DE LAS PAGINAS 1,2,3,4...
-    var totalPaginas: Int = 2
+    var totalPaginas: Int? = nil
     
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
@@ -75,7 +75,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         self.fileSize = fileSize
         
         let permissions = sau.getFilePermissions(for: fileURL)
-        
+
         self.isReadable = permissions.readable
         self.isWritable = permissions.writable
         self.isExecutable = permissions.executable
@@ -89,7 +89,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     }
     
     func getTotalPages() -> Int {
-        return self.totalPaginas
+        return self.totalPaginas ?? 20
     }
     
     func setCurrentPage(currentPage: Int) {

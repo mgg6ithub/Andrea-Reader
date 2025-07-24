@@ -29,11 +29,11 @@ struct InformacionLista: View {
             
             Spacer()
             
-            Text(archivo.totalPaginas != nil ? "\(archivo.totalPaginas) pages" : "—")
-                .foregroundColor(.gray)
-                .font(.subheadline)
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
+//            Text(archivo.totalPaginas != nil ? "\(archivo.totalPaginas) pages" : "—")
+//                .foregroundColor(.gray)
+//                .font(.subheadline)
+//                .lineLimit(1)
+//                .minimumScaleFactor(0.5)
 
         }
     }

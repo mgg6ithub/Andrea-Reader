@@ -2,19 +2,19 @@
 
 import SwiftUI
 
-struct TituloInformacion: View, Equatable {
+struct InformacionCuadricula: View, Equatable {
     
     @EnvironmentObject var appEstado: AppEstado
     
     let nombre: String
     let tipo: String
     let tamanioMB: Int
-    let totalPaginas: Int
+    let totalPaginas: Int?
     let progreso: Int
     let coleccionColor: Color
     let maxWidth: CGFloat
 
-    static func == (lhs: TituloInformacion, rhs: TituloInformacion) -> Bool {
+    static func == (lhs: InformacionCuadricula, rhs: InformacionCuadricula) -> Bool {
         lhs.nombre == rhs.nombre &&
         lhs.tipo == rhs.tipo &&
         lhs.tamanioMB == rhs.tamanioMB &&
@@ -61,7 +61,7 @@ struct TituloInformacion: View, Equatable {
 
                 Spacer()
 
-                Text(totalPaginas != nil ? "\(totalPaginas) pages" : "—")
+                Text("\(totalPaginas.map { "\($0) pages" } ?? "—")")
                     .font(.system(size: 8))
                     .foregroundColor(.gray)
                     .lineLimit(1)

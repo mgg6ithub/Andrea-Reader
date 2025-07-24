@@ -9,7 +9,7 @@ import SwiftUI
 
 protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     
-    var totalPaginas: Int { get set }
+    var totalPaginas: Int? { get set }
     var fileType: EnumTipoArchivos { get }
     var fileSize: Int { get }
     var isProtected: Bool { get set }
