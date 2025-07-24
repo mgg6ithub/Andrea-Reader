@@ -2,20 +2,37 @@
 import SwiftUI
 
 struct ElementoVista<Content: View>: View {
-    
     @EnvironmentObject var appEstado: AppEstado
-    
+
     @ObservedObject var vm: ModeloColeccion
     let elemento: any ElementoSistemaArchivosProtocolo
-    let scrollIndex: Int? // <- NUEVO
+    let scrollIndex: Int?
     @ViewBuilder let content: () -> Content
 
-    private let sa: SistemaArchivos = SistemaArchivos.sa
-    @State private var mostrarConfirmacion = false
+    @State private var borrarPresionado = false
+    @State private var mostrarElementoReal = false
+    @State private var esPlaceholder = true
 
     var body: some View {
         content()
-//            .background(appEstado.temaActual.cardColor)
+            .opacity(mostrarElementoReal ? 1 : 0)
+            .scaleEffect(mostrarElementoReal ? 1 : 0.9)
+            .animation(.easeOut(duration: 0.25), value: mostrarElementoReal)
+            .onAppear {
+                // Detecta si ya no es un placeholder
+                if !(elemento is ElementoPlaceholder) {
+                    DispatchQueue.main.async {
+                        self.mostrarElementoReal = true
+                    }
+                }
+            }
+            .onChange(of: elemento.id) {
+                if !(elemento is ElementoPlaceholder) {
+                    DispatchQueue.main.async {
+                        self.mostrarElementoReal = true
+                    }
+                }
+            }
             .background(
                 GeometryReader { geo in
                     Color.clear
@@ -32,27 +49,28 @@ struct ElementoVista<Content: View>: View {
                     Text("Mostrar informacion")
                     Text("Completar lectura")
                     Menu {
-                        // ...
+
                     } label: {
                         Label("Cambiar portada", systemImage: "paintbrush")
                     }
                 }
 
                 Button("Borrar", role: .destructive) {
-                    mostrarConfirmacion = true
+                    borrarPresionado = true
                 }
             }
             .confirmationDialog(
                 "¿Estás seguro de que quieres borrar \(elemento.name)?",
-                isPresented: $mostrarConfirmacion,
+                isPresented: $borrarPresionado, // <- o el tuyo
                 titleVisibility: .visible
             ) {
                 Button("Borrar", role: .destructive) {
-                    sa.borrarElemento(elemento: elemento, vm: vm)
+                    SistemaArchivos.sa.borrarElemento(elemento: elemento, vm: vm)
                 }
                 Button("Cancelar", role: .cancel) {}
             }
     }
 }
+
 
 
