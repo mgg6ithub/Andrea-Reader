@@ -205,6 +205,7 @@ struct MenuCentro: View {
                 Section(header: Text("Invertir Ordenacion")) {
                     Button(action: {
                         coleccionActualVM.esInvertido.toggle()
+                        withAnimation { coleccionActualVM.elementos = Algoritmos().ordenarElementos(coleccionActualVM.elementos, por: coleccionActualVM.ordenacion, esInvertido: coleccionActualVM.esInvertido) }
                         PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionActualVM.coleccion, atributo: "esInvertido", valor: coleccionActualVM.esInvertido)
                         menuRefreshTrigger = UUID()
                     }) {

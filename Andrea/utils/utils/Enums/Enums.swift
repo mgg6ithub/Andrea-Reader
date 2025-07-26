@@ -57,53 +57,6 @@ enum EnumOrdenaciones: String, Codable {
     case fechaModificacion
 }
 
-extension EnumOrdenaciones {
-    static func ordenarElementos(_ elementos: [ElementoSistemaArchivos], por tipoOrden: EnumOrdenaciones) -> [ElementoSistemaArchivos] {
-        switch tipoOrden {
-        case .nombre:
-            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-                a.name.localizedStandardCompare(b.name) == .orderedAscending
-            }
-        case .aleatorio:
-            return elementos.shuffled()
-        case .tamano:
-            return elementos.sorted {
-                guard let a = $0 as? Archivo, let b = $1 as? Archivo else {
-                    return false
-                }
-                return a.fileSize > b.fileSize
-            }
-
-//        case .paginas:
-//            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-//                (a.totalPaginas ?? 0) < (b.totalPaginas ?? 0)
-//            }
-//        case .porcentaje:
-//            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-//                (a.porcentajeLeido ?? 0) < (b.porcentajeLeido ?? 0)
-//            }
-        case .fechaImportacion:
-            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-                (a.creationDate ) < (b.creationDate )
-            }
-        case .fechaModificacion:
-            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-                (a.modificationDate ) < (b.modificationDate )
-            }
-        case .personalizado:
-            return elementos
-        default:
-            return elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-                a.name.localizedStandardCompare(b.name) == .orderedAscending
-            }
-        }
-        
-    }
-}
-
-
-
-
 
 //MARK: - RESOLUCIONES LOGICAS
 enum EnumResolucionesLogicas {

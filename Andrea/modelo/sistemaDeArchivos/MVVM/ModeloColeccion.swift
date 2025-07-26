@@ -150,9 +150,7 @@ class ModeloColeccion: ObservableObject {
             }
 
             // Ordenar todos los elementos (sin importar el orden de entrada)
-            let elementosOrdenados = EnumOrdenaciones.ordenarElementos(
-                todosLosElementos.map { $0.1 }, por: ordenacion
-            )
+            let elementosOrdenados = await Algoritmos().ordenarElementos(todosLosElementos.map { $0.1 }, por: ordenacion, esInvertido: self.esInvertido)
 
             await MainActor.run {
 //                withAnimation(.easeInOut(duration: 0.1)) {
@@ -184,7 +182,7 @@ class ModeloColeccion: ObservableObject {
     //MARK: --- ordenar los elementos pasandolo un modo de ordenacion ---
     func ordenarElementos(modoOrdenacion: EnumOrdenaciones) {
         self.ordenacion = modoOrdenacion
-        let tempElementos = EnumOrdenaciones.ordenarElementos(self.elementos, por: modoOrdenacion)
+        let tempElementos = Algoritmos().ordenarElementos(self.elementos, por: modoOrdenacion, esInvertido: self.esInvertido)
         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { self.elementos = tempElementos }
         
         //guardamos en persistencia el modo de ordenacion
