@@ -9,24 +9,19 @@ struct HistorialColecciones: View {
     @State private var esVerColeccionPresionado: Bool = false
     @State private var colorTemporal: Color = .clear
     
-    private var iconSize: CGFloat  { appEstado.constantes.iconSize }
-    @ObservedObject private var coleccionActualVM: ModeloColeccion
-    
-    init() {
-        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
-    }
-    
+    private var iconSize: CGFloat { appEstado.constantes.iconSize }
+
     var body: some View {
         HStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 8) {
-                    if coleccionActualVM.coleccion.name == "HOME" {
+                    if pc.getColeccionActual().coleccion.name == "HOME" {
                         ColeccionRectanguloAvanzado(
                             textoSize: 21,
                             colorPrimario: appEstado.temaActual.textColor,
                             color: Color.gray,
                             isActive: true,
-                            animationDelay: delay(1.5)
+                            animationDelay: delay(0)
                         ) {
                             Image(systemName: "house").opacity(0.75)
                         }
@@ -68,15 +63,19 @@ struct HistorialColecciones: View {
                                 }
                             }
                         }
-
                     }
                 }
                 .padding(.leading, 3.5)
+                .transaction { txn in
+                    if pc.colecciones.count == 1 {
+                        txn.disablesAnimations = true
+                    }
+                }
             }
             
             Spacer()
             
-            if coleccionActualVM.coleccion.name != "HOME" {
+            if pc.getColeccionActual().coleccion.name != "HOME" {
                 Button(action: {
                     if appEstado.animaciones {
                         withAnimation {
@@ -87,19 +86,17 @@ struct HistorialColecciones: View {
                     }
                 }) {
                     HStack(spacing: 6) {
-                        
-                        if let tiempo = coleccionActualVM.tiempoCarga {
+                        if let tiempo = pc.getColeccionActual().tiempoCarga {
                             Text("⏱ Carga en \(String(format: "%.2f", tiempo)) segundos")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                                 .padding(.top, 4)
                         }
 
-                        
                         Image(systemName: "info.circle")
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(appEstado.temaActual.secondaryText)
-                            .font(.system(size: 16)) // <-- controla el tamaño del icono
+                            .font(.system(size: 16))
                             .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
                         
                         Text("Ver colección")
@@ -109,9 +106,9 @@ struct HistorialColecciones: View {
                     }
                 }
                 .sheet(isPresented: $esVerColeccionPresionado, onDismiss: {
-                    coleccionActualVM.color = colorTemporal
+                    pc.getColeccionActual().color = colorTemporal
                 }) {
-                    MasInformacionColeccion(coleccionVM: coleccionActualVM, colorTemporal: $colorTemporal)
+                    MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
                 }
                 .padding(.trailing, 2.5)
             }
@@ -119,9 +116,11 @@ struct HistorialColecciones: View {
     }
     
     private func delay(_ index: Double) -> Double {
-        appEstado.animaciones ? Double(index) * 0.1 : 0
+        let hayMasDeUna = pc.colecciones.count > 1
+        return appEstado.animaciones && hayMasDeUna ? index * 0.1 : 0
     }
 }
+
 
 
 struct AnimatableFontModifier: AnimatableModifier {

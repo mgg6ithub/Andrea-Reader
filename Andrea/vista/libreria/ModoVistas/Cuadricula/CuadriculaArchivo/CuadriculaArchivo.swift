@@ -63,14 +63,17 @@ struct CuadriculaArchivo: View {
         .background(appEstado.temaActual.cardColor)
         .cornerRadius(18)
         .shadow(color: Color.black.opacity(0.2), radius: 2.5, x: 0, y: 1)
-        .scaleEffect(isVisible ? 1 : 0.95)
-        .opacity(isVisible ? 1 : 0)
+//        .scaleEffect(isVisible ? 1 : 0.95)
+//        .opacity(isVisible ? 1 : 0)
         .onAppear {
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
-            isVisible = true
+//            isVisible = true
             mostrarMiniatura = false // ← reinicia animación si se reutiliza la celda
         }
-        .onDisappear { viewModel.unloadThumbnail(for: archivo) }
+        .onDisappear { 
+//            isVisible = false
+            viewModel.unloadThumbnail(for: archivo)
+        }
 
     }
     

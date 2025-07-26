@@ -140,9 +140,11 @@ class ModeloColeccion: ObservableObject {
             )
 
             await MainActor.run {
-                self.elementos = elementosOrdenados
-                self.isLoading = false
-                self.elementosCargados = true
+//                withAnimation(.easeInOut(duration: 0.1)) {
+                    self.elementos = elementosOrdenados
+                    self.isLoading = false
+                    self.elementosCargados = true
+//                }
                 let endTime = CFAbsoluteTimeGetCurrent()
                 self.tiempoCarga = endTime - startTime
             }

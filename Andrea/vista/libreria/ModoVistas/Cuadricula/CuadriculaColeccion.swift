@@ -12,6 +12,7 @@ struct CuadriculaColeccion: View {
     let coleccion: Coleccion
     
     @State private var isExpanded = false
+    @State private var isVisible = false
     
     var body: some View {
         
@@ -29,17 +30,26 @@ struct CuadriculaColeccion: View {
                     
                     Image(isExpanded ? "CARPETA-ALANTE-ABIERTA" : "CARPETA-DELANTE")
                         .resizable()
-                        .frame(width: isExpanded ? 125 : 120, height: 72.5)
+//                        .frame(width: isExpanded ? 125 : 120, height: 72.5)
                         .foregroundColor(Color.cyan)
                         .zIndex(2)
-                        .animation(.easeInOut(duration: 0.3), value: isExpanded)
+//                        .animation(.easeInOut(duration: 0.3), value: isExpanded)
                 }
                 
                 Text(coleccion.name)
                     .font(.title)
                     .frame(alignment: .center)
+                
             }
         }
+//        .scaleEffect(isVisible ? 1 : 0.95)
+//        .opacity(isVisible ? 1 : 0)
+//        .onAppear {
+//            isVisible = true
+//        }
+//        .onDisappear {
+//            isVisible = false
+//        }
         
     }
     

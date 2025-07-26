@@ -15,24 +15,24 @@ struct ElementoVista<Content: View>: View {
 
     var body: some View {
         content()
-            .opacity(mostrarElementoReal ? 1 : 0)
-            .scaleEffect(mostrarElementoReal ? 1 : 0.9)
-            .animation(.easeOut(duration: 0.25), value: mostrarElementoReal)
-            .onAppear {
-                // Detecta si ya no es un placeholder
-                if !(elemento is ElementoPlaceholder) {
-                    DispatchQueue.main.async {
-                        self.mostrarElementoReal = true
-                    }
-                }
-            }
-            .onChange(of: elemento.id) {
-                if !(elemento is ElementoPlaceholder) {
-                    DispatchQueue.main.async {
-                        self.mostrarElementoReal = true
-                    }
-                }
-            }
+//            .opacity(mostrarElementoReal ? 1 : 0)
+//            .scaleEffect(mostrarElementoReal ? 1 : 0.9)
+//            .animation(.easeOut(duration: 0.25), value: mostrarElementoReal)
+//            .onAppear {
+//                // Detecta si ya no es un placeholder
+//                if !(elemento is ElementoPlaceholder) {
+//                    DispatchQueue.main.async {
+//                        self.mostrarElementoReal = true
+//                    }
+//                }
+//            }
+//            .onChange(of: elemento.id) {
+//                if !(elemento is ElementoPlaceholder) {
+//                    DispatchQueue.main.async {
+//                        self.mostrarElementoReal = true
+//                    }
+//                }
+//            }
             .background(
                 GeometryReader { geo in
                     Color.clear

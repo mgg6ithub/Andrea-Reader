@@ -52,7 +52,6 @@ struct CuadriculaVista: View {
                                 vm.isPerformingAutoScroll = false
                             }
                         }
-
                     
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVGrid(
