@@ -15,13 +15,13 @@ class ModeloColeccion: ObservableObject {
   @Published var scrollPosition: Int
   @Published var modoVista: EnumModoVista
   @Published var ordenacion: EnumOrdenaciones
+  @Published var esInvertido: Bool = false
+
   @Published var columnas: Int = 4
   @Published var altura: CGFloat = 180
     @Published var tiempoCarga: Double? = nil
 
-
   @Published var elementosCargados: Bool = false
-
     
   @Published var isPerformingAutoScroll = false
 
@@ -37,7 +37,9 @@ class ModeloColeccion: ObservableObject {
         //    - Cuadricula
         //    - Lista
         
-        let datos = PersistenciaDatos().obtenerAtributos(url: coleccion.url)
+        let pd = PersistenciaDatos()
+        
+        let datos = pd.obtenerAtributos(url: coleccion.url)
 
         if let scroll = datos?["scrollPosition"] as? Int {
             self.scrollPosition = scroll
@@ -51,28 +53,41 @@ class ModeloColeccion: ObservableObject {
             self.color = .blue // default color
         }
 
-        if let tipoVistaRaw = PersistenciaDatos().obtenerAtributoConcreto(url: coleccion.url, atributo: "tipoVista") as? String,
+        if let tipoVistaRaw = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "tipoVista") as? String,
            let modo = EnumModoVista(rawValue: tipoVistaRaw) {
             self.modoVista = modo
         } else {
             self.modoVista = .lista
         }
         
-        if let ordenacionString = PersistenciaDatos().obtenerAtributoConcreto(url: coleccion.url, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {
+        if let ordenacionString = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {
             self.ordenacion = ordenacion
         } else {
             self.ordenacion = .nombre
         }
         
+        if let raw = pd .obtenerAtributoConcreto(url: coleccion.url, atributo: "esInvertido") {
+            if let boolVal = raw as? Bool {
+                self.esInvertido = boolVal
+            }
+            else if let strVal = raw as? String, let parsed = Bool(strVal) {
+                self.esInvertido = parsed
+            } else {
+                self.esInvertido = false
+            }
+        } else {
+            self.esInvertido = false
+        }
+        
         switch self.modoVista {
         case .cuadricula:
-            if let columnasGuardadas = PersistenciaDatos().obtenerAtributoVista(coleccion: coleccion, modo: .cuadricula, atributo: "columnas") as? Int {
+            if let columnasGuardadas = pd.obtenerAtributoVista(coleccion: coleccion, modo: .cuadricula, atributo: "columnas") as? Int {
                 self.columnas = columnasGuardadas
             } else {
                 self.columnas = 4 // valor por defecto
             }
         case .lista:
-            if let altura = PersistenciaDatos().obtenerAtributoVista(coleccion: coleccion, modo: .lista, atributo: "altura") as? CGFloat {
+            if let altura = pd.obtenerAtributoVista(coleccion: coleccion, modo: .lista, atributo: "altura") as? CGFloat {
                 self.altura = altura
             } else {
                 self.altura = 180 // valor por defecto

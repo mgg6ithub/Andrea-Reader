@@ -5,10 +5,11 @@ struct HistorialColecciones: View {
     @Namespace private var breadcrumb
     @EnvironmentObject var pc: PilaColecciones
     @EnvironmentObject var appEstado: AppEstado
-    
+
     @State private var esVerColeccionPresionado: Bool = false
     @State private var colorTemporal: Color = .clear
-    
+    @State private var primeraCarga: Bool = true
+
     private var iconSize: CGFloat { appEstado.constantes.iconSize }
 
     var body: some View {
@@ -32,7 +33,7 @@ struct HistorialColecciones: View {
                             Image(systemName: "chevron.backward")
                                 .font(.system(size: iconSize * 0.65))
                         }
-                        
+
                         ForEach(Array(pc.colecciones.enumerated()).filter { $0.1.coleccion.name != "HOME" }, id: \.1.coleccion.url) { index, vm in
                             Group {
                                 if pc.esColeccionActual(coleccion: vm.coleccion) {
@@ -66,15 +67,10 @@ struct HistorialColecciones: View {
                     }
                 }
                 .padding(.leading, 3.5)
-                .transaction { txn in
-                    if pc.colecciones.count == 1 {
-                        txn.disablesAnimations = true
-                    }
-                }
             }
-            
+
             Spacer()
-            
+
             if pc.getColeccionActual().coleccion.name != "HOME" {
                 Button(action: {
                     if appEstado.animaciones {
@@ -98,7 +94,7 @@ struct HistorialColecciones: View {
                             .foregroundStyle(appEstado.temaActual.secondaryText)
                             .font(.system(size: 16))
                             .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
-                        
+
                         Text("Ver colección")
                             .font(.system(size: 14))
                             .foregroundColor(appEstado.temaActual.secondaryText)
@@ -113,13 +109,24 @@ struct HistorialColecciones: View {
                 .padding(.trailing, 2.5)
             }
         }
+        .onAppear {
+            // Desactivamos primeraCarga luego de un breve delay para evitar lag inicial
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                withAnimation(.linear(duration: 0.15)) {
+                    primeraCarga = false
+                }
+            }
+        }
     }
-    
+
     private func delay(_ index: Double) -> Double {
+        if primeraCarga { return 0 }
         let hayMasDeUna = pc.colecciones.count > 1
         return appEstado.animaciones && hayMasDeUna ? index * 0.1 : 0
     }
 }
+
+
 
 
 

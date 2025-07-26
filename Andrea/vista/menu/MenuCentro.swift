@@ -2,9 +2,12 @@ import SwiftUI
 
 struct BotonMenu<T: Equatable>: View {
     
+    @EnvironmentObject var ap: AppEstado
+    
     let nombre: String
     let icono: String
     let valor: T
+    let color: Color
     let valorActual: T
     let accion: () -> Void
 
@@ -16,8 +19,8 @@ struct BotonMenu<T: Equatable>: View {
         Button(action: accion) {
             Label(nombre, systemImage: isActive ? "checkmark" : icono)
                 .foregroundStyle(
-                    isActive ? .green : .gray,
-                    isActive ? .primary : .secondary,
+                    isActive ? color : ap.temaActual.textColor,
+                    isActive ? ap.temaActual.textColor : ap.temaActual.secondaryText,
                     .secondary
                 )
         }
@@ -29,11 +32,12 @@ struct MenuCentro: View {
     
     @EnvironmentObject var appEstado: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
+    @EnvironmentObject var pc: PilaColecciones
     
     private let sa: SistemaArchivos = SistemaArchivos.sa
     
     private var coleccionActualVM: ModeloColeccion {
-        PilaColecciones.pilaColecciones.getColeccionActual()
+        pc.getColeccionActual()
     }
     
     @State private var menuRefreshTrigger = UUID()
@@ -111,12 +115,15 @@ struct MenuCentro: View {
             
             Menu {
                 
+                Label(coleccionActualVM.coleccion.name, systemImage: "folder")
+                
                 Section(header: Text("Vista")) {
                     
                     BotonMenu(
                         nombre: "Cuadrícula",
                         icono: "square.grid.2x2",
                         valor: .cuadricula,
+                        color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.modoVista
                     ) {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccionActualVM.modoVista = .cuadricula }
@@ -128,6 +135,7 @@ struct MenuCentro: View {
                         nombre: "Lista",
                         icono: "list.bullet",
                         valor: .lista,
+                        color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.modoVista
                     ) {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccionActualVM.modoVista = .lista }
@@ -142,6 +150,7 @@ struct MenuCentro: View {
                         nombre: "Aleatorio",
                         icono: "shuffle",
                         valor: .aleatorio,
+                        color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         print("has cambiado el modo a aleatoria para ", coleccionActualVM.coleccion.name)
@@ -153,6 +162,7 @@ struct MenuCentro: View {
                         nombre: "Personalizada",
                         icono: "hand.draw.fill",
                         valor: .personalizado,
+                        color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         
@@ -162,6 +172,7 @@ struct MenuCentro: View {
                         nombre: "Nombre",
                         icono: "textformat.characters.arrow.left.and.right",
                         valor: .nombre,
+                        color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         print("has cambiado el modo a nombre para ", coleccionActualVM.coleccion.name)
@@ -173,6 +184,7 @@ struct MenuCentro: View {
                         nombre: "Tamaño",
                         icono: "arrow.left.and.right.text.vertical",
                         valor: .tamano,
+                        color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .tamano)
@@ -183,11 +195,37 @@ struct MenuCentro: View {
                         nombre: "Paginas",
                         icono: "book.pages",
                         valor: .paginas,
+                        color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         
                     }
                 }
+                
+                Section(header: Text("Invertir Ordenacion")) {
+                    Button(action: {
+                        coleccionActualVM.esInvertido.toggle()
+                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionActualVM.coleccion, atributo: "esInvertido", valor: coleccionActualVM.esInvertido)
+                        menuRefreshTrigger = UUID()
+                    }) {
+                        HStack {
+                            
+                            if coleccionActualVM.esInvertido {
+                                Text("Mayor a menor")
+                                Image(systemName: "text.append")
+                                    .foregroundColor(appEstado.temaActual.textColor)
+                                    .padding()
+                            }
+                            else {
+                                Text("Menor a mayor")
+                                Image(systemName: "text.insert")
+                                    .foregroundColor(appEstado.temaActual.textColor)
+                                    .padding()
+                            }
+                        }
+                    }
+                }
+                
                 
                 Section(header: Text("Renombra y ordena a la vez")) {
                     Button(action: {
@@ -220,9 +258,9 @@ struct MenuCentro: View {
             .sheet(isPresented: $menuEstado.isGlobalSettingsPressed) {
                 AjustesGlobales()
             }
-
-            
         }
+        .id(coleccionActualVM.coleccion.id)
+
     }
 }
 
