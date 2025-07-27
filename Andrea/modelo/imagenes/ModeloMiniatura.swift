@@ -30,8 +30,13 @@ class ModeloMiniatura {
         completion: @escaping(UIImage?) -> Void
     ) {
         DispatchQueue.global().async {
+            
+            print("Genenrando miniatua -> ", archivo.fileType)
+            
             // 1) Placeholder (no optional)
             let placeholder = EnumMiniaturasArchivos.uiImage(for: archivo.fileType)
+            
+            print(placeholder)
             
             // 2) Genera la miniatura por defecto, que sí es opcional
             let defaultThumbnail: UIImage? = {
@@ -47,11 +52,14 @@ class ModeloMiniatura {
                 return thumb
             }()
             
+            guard archivo.fileType != .unknown else {
+                DispatchQueue.main.async { completion(defaultThumbnail) }
+                return
+            }
+            
             // 3) Si no hay páginas, devolvemos default
             guard let primeraPagina = archivo.obtenerPrimeraPagina() else {
-                DispatchQueue.main.async {
-                    completion(defaultThumbnail)
-                }
+                DispatchQueue.main.async { completion(defaultThumbnail) }
                 return
             }
             
