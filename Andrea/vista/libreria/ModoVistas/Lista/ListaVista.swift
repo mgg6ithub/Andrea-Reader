@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ListaVista: View {
     
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     @ObservedObject var vm: ModeloColeccion
@@ -36,10 +37,12 @@ struct ListaVista: View {
                                 PlaceholderLista(placeholder: placeholder, coleccionVM: vm)
                             } else if let archivo = elemento as? Archivo {
                                 ListaArchivo(archivo: archivo, coleccionVM: vm)
+                                    .contentShape(ContentShapeKinds.contextMenuPreview, RoundedCorner(radius: 8, corners: [.topLeft, .bottomLeft]))
                             } else if let coleccion = elemento as? Coleccion {
                                 ListaColeccion(coleccion: coleccion)
                             }
                         }
+                        .preferredColorScheme(ap.temaActual == .dark ? .dark : .light)
                         .matchedGeometryEffect(id: elemento.id, in: namespace)
                         .id(index)
                         .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))

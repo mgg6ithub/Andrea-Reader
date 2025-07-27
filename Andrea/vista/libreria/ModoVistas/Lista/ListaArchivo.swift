@@ -57,7 +57,7 @@ struct ListaArchivo: View {
         } //HStack principal
         .frame(height: coleccionVM.altura)
         .background(appEstado.temaActual.cardColor)
-        .cornerRadius(8)
+        .cornerRadius(8, corners: [.topLeft, .bottomLeft])
         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
         .onAppear {
             

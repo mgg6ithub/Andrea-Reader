@@ -62,7 +62,7 @@ struct CuadriculaArchivo: View {
         }
         .frame(width: width, height: height)
         .background(appEstado.temaActual.cardColor)
-        .cornerRadius(18)
+        .cornerRadius(15)
         .shadow(color: Color.black.opacity(0.2), radius: 2.5, x: 0, y: 1)
 //        .scaleEffect(isVisible ? 1 : 0.95)
 //        .opacity(isVisible ? 1 : 0)

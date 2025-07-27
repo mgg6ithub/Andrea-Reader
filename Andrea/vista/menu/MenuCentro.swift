@@ -139,7 +139,6 @@ struct MenuCentro: View {
                         coleccionActualVM.cambiarModoVista(modoVista: .lista)
                         menuRefreshTrigger = UUID()
                     }
-                    
                 }
                 
                 Section(header: Text("Ordenar")) {

@@ -78,3 +78,27 @@ struct Benchmark {
 }
 
 
+
+// 1) Definimos un Shape que sólo redondea las esquinas que le digamos
+struct RoundedCorners: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
+
+// 2) Creamos una extensión para poder usarlo como un modificador
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorners(radius: radius, corners: corners) )
+    }
+}
+
+

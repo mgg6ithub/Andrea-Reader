@@ -71,10 +71,12 @@ struct CuadriculaVista: View {
                                         PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
                                     } else if let archivo = elemento as? Archivo {
                                         CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
+                                            .contentShape(ContentShapeKinds.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
                                     } else if let coleccion = elemento as? Coleccion {
                                         CuadriculaColeccion(coleccion: coleccion)
                                     }
                                 }
+                                .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
                                 .matchedGeometryEffect(id: elemento.id, in: namespace)
                                 .id(index)  // importante para scrollTo
                                 .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
