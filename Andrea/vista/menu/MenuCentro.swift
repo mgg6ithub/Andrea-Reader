@@ -20,8 +20,8 @@ struct BotonMenu<T: Equatable>: View {
             Label(nombre, systemImage: isActive ? "checkmark" : icono)
                 .foregroundStyle(
                     isActive ? color : ap.temaActual.textColor,
-                    isActive ? ap.temaActual.textColor : ap.temaActual.secondaryText,
-                    .secondary
+                    isActive ? ap.temaActual.textColor : ap.temaActual.textColor,
+                    ap.temaActual.textColor
                 )
         }
     }
@@ -45,7 +45,6 @@ struct MenuCentro: View {
     @State private var mostrarDocumentPicker: Bool = false
     @State private var esNuevaColeccionPresionado: Bool = false
     @State private var nuevaColeccionNombre: String = ""
-    
     @State private var sheetID = UUID()
 
     var body: some View {
@@ -126,8 +125,7 @@ struct MenuCentro: View {
                         color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.modoVista
                     ) {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccionActualVM.modoVista = .cuadricula }
-                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionActualVM.coleccion, atributo: "tipoVista", valor: EnumModoVista.cuadricula)
+                        coleccionActualVM.cambiarModoVista(modoVista: .cuadricula)
                         menuRefreshTrigger = UUID()
                     }
 
@@ -138,8 +136,7 @@ struct MenuCentro: View {
                         color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.modoVista
                     ) {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccionActualVM.modoVista = .lista }
-                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionActualVM.coleccion, atributo: "tipoVista", valor: EnumModoVista.lista)
+                        coleccionActualVM.cambiarModoVista(modoVista: .lista)
                         menuRefreshTrigger = UUID()
                     }
                     
@@ -153,7 +150,6 @@ struct MenuCentro: View {
                         color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
-                        print("has cambiado el modo a aleatoria para ", coleccionActualVM.coleccion.name)
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .aleatorio)
                         menuRefreshTrigger = UUID()
                     }
@@ -175,7 +171,6 @@ struct MenuCentro: View {
                         color: coleccionActualVM.color,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
-                        print("has cambiado el modo a nombre para ", coleccionActualVM.coleccion.name)
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .nombre)
                         menuRefreshTrigger = UUID()
                     }
@@ -204,22 +199,20 @@ struct MenuCentro: View {
                 
                 Section(header: Text("Invertir Ordenacion")) {
                     Button(action: {
-                        coleccionActualVM.esInvertido.toggle()
-                        withAnimation { coleccionActualVM.elementos = Algoritmos().ordenarElementos(coleccionActualVM.elementos, por: coleccionActualVM.ordenacion, esInvertido: coleccionActualVM.esInvertido) }
-                        PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionActualVM.coleccion, atributo: "esInvertido", valor: coleccionActualVM.esInvertido)
+                        coleccionActualVM.invertir()
                         menuRefreshTrigger = UUID()
                     }) {
                         HStack {
                             
                             if coleccionActualVM.esInvertido {
-                                Text("Mayor a menor")
-                                Image(systemName: "text.append")
+                                Text("Menor a mayor")
+                                Image(systemName: "text.insert")
                                     .foregroundColor(appEstado.temaActual.textColor)
                                     .padding()
                             }
                             else {
-                                Text("Menor a mayor")
-                                Image(systemName: "text.insert")
+                                Text("Mayor a menor")
+                                Image(systemName: "text.append")
                                     .foregroundColor(appEstado.temaActual.textColor)
                                     .padding()
                             }
@@ -246,6 +239,7 @@ struct MenuCentro: View {
                     .contentShape(Rectangle())
             }
             .id(menuRefreshTrigger)
+            .colorScheme(appEstado.temaActual == .dark ? .dark : .light)
             
             Button(action: {
                 self.menuEstado.isGlobalSettingsPressed.toggle()

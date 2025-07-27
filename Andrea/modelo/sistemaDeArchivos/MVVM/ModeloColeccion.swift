@@ -177,9 +177,17 @@ class ModeloColeccion: ObservableObject {
         scrollPosition = nuevo
         PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "scrollPosition", valor: nuevo)
     }
+    
+    //MARK: --- METODO PARA CAMBIAR EL MODO DE VISTA DE LA COLECCION
+    
+    func cambiarModoVista(modoVista: EnumModoVista) {
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.modoVista = modoVista }
+        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "tipoVista", valor: modoVista)
+    }
 
     
     //MARK: --- ordenar los elementos pasandolo un modo de ordenacion ---
+    
     func ordenarElementos(modoOrdenacion: EnumOrdenaciones) {
         self.ordenacion = modoOrdenacion
         let tempElementos = Algoritmos().ordenarElementos(self.elementos, por: modoOrdenacion, esInvertido: self.esInvertido)
@@ -187,6 +195,14 @@ class ModeloColeccion: ObservableObject {
         
         //guardamos en persistencia el modo de ordenacion
         PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenacion", valor: modoOrdenacion)
+    }
+    
+    //MARK: --- INVERTIR ORDENACION ACTUAL ---
+    
+    func invertir() {
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.esInvertido.toggle() }
+        self.ordenarElementos(modoOrdenacion: self.ordenacion)
+        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "esInvertido", valor: esInvertido)
     }
     
 }
