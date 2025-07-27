@@ -31,35 +31,17 @@ class ModeloMiniatura {
     ) {
         DispatchQueue.global().async {
             
-            print("Genenrando miniatua -> ", archivo.fileType)
-            
-            // 1) Placeholder (no optional)
-            let placeholder = EnumMiniaturasArchivos.uiImage(for: archivo.fileType)
-            
-            print(placeholder)
-            
-            // 2) Genera la miniatura por defecto, que sí es opcional
-            let defaultThumbnail: UIImage? = {
-                guard let thumb = ImagenArchivoModelo()
-                        .crearMiniaturaPorDefecto(
-                            miniatura: placeholder,
-                            color: UIColor(color)
-                        )?
-                        .uiImage
-                else {
-                    return nil
-                }
-                return thumb
-            }()
+            //--- obtener imagen por defecto ---
+            let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
             
             guard archivo.fileType != .unknown else {
-                DispatchQueue.main.async { completion(defaultThumbnail) }
+                DispatchQueue.main.async { completion(imagenBase) }
                 return
             }
             
             // 3) Si no hay páginas, devolvemos default
             guard let primeraPagina = archivo.obtenerPrimeraPagina() else {
-                DispatchQueue.main.async { completion(defaultThumbnail) }
+                DispatchQueue.main.async { completion(imagenBase) }
                 return
             }
             
@@ -67,7 +49,7 @@ class ModeloMiniatura {
             // 4) Intentamos cargar la imagen real
 //            guard let miniatura = archivo.cargarImagen(nombreImagen: primeraPagina) else {
 //                DispatchQueue.main.async {
-//                    completion(defaultThumbnail)
+//                    completion(imagenBase)
 //                }
 //                return
 //            }
@@ -81,7 +63,7 @@ class ModeloMiniatura {
             //4.1 aplicamos downsample para controlar por completo la calida.
             guard let miniatura = self.downsample(imageData: data, to: targetSize, scale: 1.0)  else {
                 DispatchQueue.main.async {
-                    completion(defaultThumbnail)
+                    completion(imagenBase)
                 }
                 return
             }
@@ -93,6 +75,26 @@ class ModeloMiniatura {
                 completion(miniatura)
             }
         }
+    }
+    
+    func imagenBase(tipoArchivo: EnumTipoArchivos, color: Color) -> UIImage? {
+        // 1) Placeholder (no optional)
+        let placeholder = EnumMiniaturasArchivos.uiImage(for: tipoArchivo)
+        
+        // 2) Genera la miniatura por defecto, que sí es opcional
+        return  {
+            guard let thumb = ImagenArchivoModelo()
+                    .crearMiniaturaPorDefecto(
+                        miniatura: placeholder,
+                        color: UIColor(color)
+                    )?
+                    .uiImage
+            else {
+                return nil
+            }
+            return thumb
+        }()
+
     }
 
     func downsample(

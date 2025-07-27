@@ -13,6 +13,7 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
     var modificationDate: Date
     var firstTimeAccessedDate: Date?
     var lastAccessDate: Date?
+    @Published var tipoMiniatura: EnumTipoMiniatura = .primeraPagina
     
     init() {
         self.id = UUID()

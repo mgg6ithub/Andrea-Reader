@@ -174,36 +174,7 @@ enum EnumMiniaturasArchivos: String {
 //ENUM TIPO DE MINIATURA
 enum EnumTipoMiniatura {
     
-    case defaultFile
-    case firstPage
-    case randomPage
-    case customImage
+    case imagenBase
+    case primeraPagina
     
-    func toString() -> String {
-        switch self {
-        case .defaultFile:
-            return "defaultFile"
-        case .firstPage:
-            return "firstPage"
-        case .randomPage:
-            return "randomPage"
-        case .customImage:
-            return "customImage"
-        }
-    }
-    
-    static func fromString(_ string: String) -> EnumTipoMiniatura? {
-        switch string {
-        case "defaultFile":
-            return .defaultFile
-        case "firstPage":
-            return .firstPage
-        case "randomPage":
-            return .randomPage
-        case "customImage":
-            return .customImage
-        default:
-            return nil // Manejo de error si el string no coincide con ningún caso
-        }
-    }
 }

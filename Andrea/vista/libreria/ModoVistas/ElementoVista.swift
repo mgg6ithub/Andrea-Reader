@@ -7,6 +7,8 @@ struct ElementoVista<Content: View>: View {
     @ObservedObject var vm: ModeloColeccion
     let elemento: any ElementoSistemaArchivosProtocolo
     let scrollIndex: Int?
+    var cambiarMiniatura: ((EnumTipoMiniatura) -> Void)? = nil
+    
     @ViewBuilder let content: () -> Content
 
     @State private var borrarPresionado = false
@@ -48,6 +50,23 @@ struct ElementoVista<Content: View>: View {
                 Section(header: Text(elemento.nombre)) {
                     Text("Mostrar informacion")
                     Text("Completar lectura")
+                    
+                    Menu {
+                        Button(action: {
+                            cambiarMiniatura?(.imagenBase)
+                        }) {
+                            Label("Imagen base", systemImage: "text.document")
+                        }
+                        
+                        Button(action: {
+                            cambiarMiniatura?(.primeraPagina)
+                        }) {
+                            Label("Primera página", systemImage: "text.document")
+                        }
+                    } label: {
+                        Label("Cambiar portada", systemImage: "paintbrush")
+                    }
+                    
                     Menu {
 
                     } label: {

@@ -49,4 +49,16 @@ class ModeloMiniaturaArchivo: ObservableObject {
             }
         }
     }
+    
+    public func cambiarMiniatura(color: Color, archivo: Archivo, tipoMiniatura: EnumTipoMiniatura) {
+        
+        switch tipoMiniatura {
+        case .imagenBase:
+            self.miniatura = mm.imagenBase(tipoArchivo: archivo.fileType, color: color)
+        case .primeraPagina:
+            self.miniatura = mm.obtenerMiniatura(archivo: archivo) //Tiene que estar ya en cache si no fallara
+        }
+        
+    }
+    
 }

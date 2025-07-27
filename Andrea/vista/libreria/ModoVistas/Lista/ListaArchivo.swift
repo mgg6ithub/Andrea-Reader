@@ -70,5 +70,9 @@ struct ListaArchivo: View {
         .onDisappear {
             viewModel.unloadThumbnail(for: archivo)
         }
+        .onChange(of: archivo.tipoMiniatura) {
+            print("CAMBIANDO MINIATURA EN LA VISTA")
+            viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
+        }
     }
 }

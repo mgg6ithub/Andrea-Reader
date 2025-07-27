@@ -62,7 +62,11 @@ struct CuadriculaVista: View {
                             spacing: spacing
                         ) {
                             ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
-                                ElementoVista(vm: vm, elemento: elemento, scrollIndex: index) {
+                                ElementoVista(vm: vm, elemento: elemento, scrollIndex: index, cambiarMiniatura: { nuevoTipo in
+                                    print("Antes del cambio ", elemento.tipoMiniatura)
+                                    elemento.tipoMiniatura = nuevoTipo
+                                    print("Despues del cambio ", elemento.tipoMiniatura)
+                                }) {
                                     if let placeholder = elemento as? ElementoPlaceholder {
                                         PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
                                     } else if let archivo = elemento as? Archivo {
