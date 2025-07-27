@@ -16,7 +16,7 @@ struct HistorialColecciones: View {
         HStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 8) {
-                    if pc.getColeccionActual().coleccion.name == "HOME" {
+                    if pc.getColeccionActual().coleccion.nombre == "HOME" {
                         ColeccionRectanguloAvanzado(
                             textoSize: 21,
                             colorPrimario: appEstado.temaActual.textColor,
@@ -33,8 +33,9 @@ struct HistorialColecciones: View {
                             Image(systemName: "chevron.backward")
                                 .font(.system(size: iconSize * 0.65))
                         }
+                        let coleccionesFiltradas = pc.colecciones.filter { $0.coleccion.nombre != "HOME" }
 
-                        ForEach(Array(pc.colecciones.enumerated()).filter { $0.1.coleccion.name != "HOME" }, id: \.1.coleccion.url) { index, vm in
+                        ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
                             Group {
                                 if pc.esColeccionActual(coleccion: vm.coleccion) {
                                     ColeccionRectanguloAvanzado(
@@ -44,7 +45,7 @@ struct HistorialColecciones: View {
                                         isActive: true,
                                         animationDelay: delay(Double(index))
                                     ) {
-                                        Text(vm.coleccion.name)
+                                        Text(vm.coleccion.nombre)
                                     }
                                 } else {
                                     Button(action: {
@@ -57,7 +58,7 @@ struct HistorialColecciones: View {
                                             isActive: false,
                                             animationDelay: delay(Double(index))
                                         ) {
-                                            Text(vm.coleccion.name)
+                                            Text(vm.coleccion.nombre)
                                         }
                                     }
                                     .buttonStyle(ColeccionButtonStyle())
@@ -71,7 +72,7 @@ struct HistorialColecciones: View {
 
             Spacer()
 
-            if pc.getColeccionActual().coleccion.name != "HOME" {
+            if pc.getColeccionActual().coleccion.nombre != "HOME" {
                 Button(action: {
                     if appEstado.animaciones {
                         withAnimation {

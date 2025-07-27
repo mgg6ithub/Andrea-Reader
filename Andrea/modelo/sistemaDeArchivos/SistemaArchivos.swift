@@ -129,6 +129,41 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
+    //MARK: --- renombrar elemento del sistema de archivos ---
+    public func renombrarElemento(elemento: any ElementoSistemaArchivosProtocolo, nuevoNombre: String) {
+        fileQueue.async {
+            let originalURL = elemento.url
+            let extensionOriginal = originalURL.pathExtension
+            
+            var nuevoNombre = nuevoNombre
+            if !self.sau.isDirectory(elementURL: originalURL) {
+                nuevoNombre = ManipulacionCadenas().joinNameWithExtension(name: nuevoNombre, ext: extensionOriginal)
+            }
+            
+            let newURL = originalURL.deletingLastPathComponent().appendingPathComponent(nuevoNombre)
+            
+            do {
+                try self.fm.moveItem(at: originalURL, to: newURL)
+                
+                DispatchQueue.main.async {
+                    let existeNuevo = SistemaArchivosUtilidades
+                        .sau
+                        .fileExists(elementURL: newURL)
+                    
+                    if existeNuevo {
+                        print("✅ Archivo renombrado correctamente en el sistema: \(nuevoNombre)")
+                    } else {
+                        print("⚠️ El archivo nuevo no se encontró después del renombrado.")
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    print("⚠️ Error al renombrar el archivo: \(error)")
+                }
+            }
+        }
+    }
+    
     
     // MARK: – Ejemplo de método para borrar un elemento (protegido por fileQueue)
     public func borrarElemento(elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion) {

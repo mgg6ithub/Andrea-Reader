@@ -100,7 +100,7 @@ class CBRArchivo: Archivo {
 
             
         } catch {
-            print("Error a la hora de cargar el archivo CBR ", self.name)
+            print("Error a la hora de cargar el archivo CBR ", self.nombre)
             return nil
         }
         return nil
@@ -119,7 +119,7 @@ class CBRArchivo: Archivo {
                 return extractedData
             }
         } catch {
-            print("Error al cargar datos de imagen \(nombreImagen) en \(self.name):", error)
+            print("Error al cargar datos de imagen \(nombreImagen) en \(self.nombre):", error)
             return nil
         }
         return nil

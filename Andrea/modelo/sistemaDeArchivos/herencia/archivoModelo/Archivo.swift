@@ -82,7 +82,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         self.isWritable = permissions.writable
         self.isExecutable = permissions.executable
         
-        super.init(name: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate)
+        super.init(nombre: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate)
         
         self.cargarPaginasAsync()
         
@@ -112,7 +112,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
 
     }
     
-    func extractPageData(named name: String) -> Data? {
+    func extractPageData(named nombre: String) -> Data? {
         return nil
     }
     
@@ -129,7 +129,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     }
     
     func obtenerPrimeraPagina() -> String? {
-        return ""
+        return "corrupted"
     }
     
     private func recalcularProgreso() {

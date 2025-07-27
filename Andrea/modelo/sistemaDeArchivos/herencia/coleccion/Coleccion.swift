@@ -25,7 +25,7 @@ class Coleccion: ElementoSistemaArchivos {
     init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, elementList: [String]) {
         
         self.elementList = elementList
-        super.init(name: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate)
+        super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate)
         
     }
     

@@ -27,9 +27,12 @@ struct ListaArchivo: View {
             HStack(spacing: 40) {
                 VStack(alignment: .leading, spacing: 8) {
                     
-                    Text(archivo.name)
+                    Text(archivo.nombre)
                         .font(.headline)
                         .foregroundColor(appEstado.temaActual.textColor)
+                        .id(archivo.nombre) // fuerza la transición
+                            .transition(.opacity.combined(with: .scale)) // o .slide, .move(edge:), etc.
+                            .animation(.easeInOut(duration: 0.3), value: archivo.nombre)
                     
                     Spacer()
                     

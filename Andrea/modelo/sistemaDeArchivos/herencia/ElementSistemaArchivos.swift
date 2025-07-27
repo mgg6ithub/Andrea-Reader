@@ -5,8 +5,8 @@ import UniformTypeIdentifiers
 class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
     
     var id: UUID
-    var name: String
-    var description: String?
+    @Published var nombre: String
+    var descripcion: String?
     var url: URL
     var relativeURL: String = "something"
     var creationDate: Date
@@ -16,8 +16,8 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
     
     init() {
         self.id = UUID()
-        self.name = "Untitled"
-        self.description = nil
+        self.nombre = "Untitled"
+        self.descripcion = nil
         self.url = URL(fileURLWithPath: "/default/path")
         self.relativeURL = "something"
         self.creationDate = Date()
@@ -26,10 +26,10 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable {
         self.lastAccessDate = nil
     }
     
-    init(name: String, url: URL, creationDate: Date, modificationDate: Date) {
+    init(nombre: String, url: URL, creationDate: Date, modificationDate: Date) {
         
         self.id = UUID()
-        self.name = name
+        self.nombre = nombre
         self.url = url
         self.relativeURL = ManipulacionCadenas().relativizeURL(elementURL: url)
         self.creationDate = creationDate

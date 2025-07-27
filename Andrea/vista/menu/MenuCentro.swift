@@ -114,7 +114,7 @@ struct MenuCentro: View {
             
             Menu {
                 
-                Label(coleccionActualVM.coleccion.name, systemImage: "folder")
+                Label(coleccionActualVM.coleccion.nombre, systemImage: "folder")
                 
                 Section(header: Text("Vista")) {
                     
@@ -223,7 +223,7 @@ struct MenuCentro: View {
                 
                 Section(header: Text("Renombra y ordena a la vez")) {
                     Button(action: {
-                        
+                        coleccionActualVM.smartSorting()
                     }) {
                         Label("Smart rename", systemImage: "brain")
                     }

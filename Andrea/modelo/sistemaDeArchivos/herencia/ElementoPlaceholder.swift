@@ -12,7 +12,7 @@ class ElementoPlaceholder: ElementoSistemaArchivos {
     
     override init() {
         super.init()
-        self.name = "Cargando..."
+        self.nombre = "Cargando..."
         self.url = URL(fileURLWithPath: "/placeholder")
         // Puedes ajustar creationDate/modificationDate si hace falta
     }

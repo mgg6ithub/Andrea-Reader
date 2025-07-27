@@ -10,7 +10,7 @@ struct MasInformacionColeccion: View {
     var body: some View {
         VStack(spacing: 20) {
             
-            Text(coleccionVM.coleccion.name)
+            Text(coleccionVM.coleccion.nombre)
                 .font(.title)
             
             ColorPicker("Selecciona un color", selection: $colorTemporal)

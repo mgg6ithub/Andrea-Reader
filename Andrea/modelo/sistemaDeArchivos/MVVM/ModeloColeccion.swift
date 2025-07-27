@@ -205,5 +205,19 @@ class ModeloColeccion: ObservableObject {
         PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "esInvertido", valor: esInvertido)
     }
     
+    //MARK: --- renombrear los elementos con regex y ordenarlos de golpe ---
+    func smartSorting() {
+        
+        let archivos = elementos.compactMap { $0 as? Archivo }
+        
+        for archivo in archivos {
+            if let nuevoNombre = ManipulacionCadenas().renameExpresion(originalName: archivo.nombre) {
+                SistemaArchivos.sa.renombrarElemento(elemento: archivo, nuevoNombre: nuevoNombre)
+                withAnimation { archivo.nombre = nuevoNombre }
+            }
+        }
+        
+    }
+    
 }
 

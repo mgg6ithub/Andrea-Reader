@@ -86,7 +86,7 @@ struct MenuIzquierda: View {
                                 LazyVStack(alignment: .leading, spacing: 0) {
                                     ForEach(
                                         SistemaArchivos.sa.cacheColecciones
-                                            .sorted { $0.value.coleccion.name < $1.value.coleccion.name },
+                                            .sorted { $0.value.coleccion.nombre < $1.value.coleccion.nombre },
                                         id: \.key
                                     ) { url, valor in
                                         Button {
@@ -95,7 +95,7 @@ struct MenuIzquierda: View {
                                             // Actualiza tu vista o VM aquí...
                                             mostrarPopover = false
                                         } label: {
-                                            Text(valor.coleccion.name)
+                                            Text(valor.coleccion.nombre)
                                                 .padding(.vertical, 8)
                                                 .padding(.horizontal)
                                                 .foregroundColor(appEstado.temaActual.textColor)

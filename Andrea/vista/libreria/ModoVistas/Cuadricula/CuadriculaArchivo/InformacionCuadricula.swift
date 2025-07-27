@@ -28,6 +28,9 @@ struct InformacionCuadricula: View, Equatable {
         VStack(spacing: 4) {
             HStack(spacing: 0) {
                 Text(nombre)
+                    .id(nombre) // fuerza la transición
+                    .transition(.opacity.combined(with: .scale)) // o .slide, .move(edge:), etc.
+                    .animation(.easeInOut(duration: 0.3), value: nombre)
                     .font(.system(size: ConstantesPorDefecto().titleSize * 0.5))
                     .foregroundColor(appEstado.temaActual.textColor)
                     .multilineTextAlignment(.center)

@@ -49,7 +49,7 @@ struct CuadriculaArchivo: View {
             
             // --- Titulo e informacion ---
             InformacionCuadricula(
-                nombre: archivo.name,
+                nombre: archivo.nombre,
                 tipo: archivo.fileType.rawValue,
                 tamanioMB: archivo.fileSize / (1024*1024),
                 totalPaginas: archivo.totalPaginas,
@@ -58,6 +58,7 @@ struct CuadriculaArchivo: View {
                 maxWidth: width
             )
             .equatable()
+            
         }
         .frame(width: width, height: height)
         .background(appEstado.temaActual.cardColor)

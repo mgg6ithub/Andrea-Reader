@@ -16,7 +16,7 @@ struct ListaColeccion: View {
             
             Image(systemName: "folder")
             
-            Text(coleccion.name)
+            Text(coleccion.nombre)
             
         }
     }

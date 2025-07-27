@@ -36,7 +36,7 @@ struct CuadriculaColeccion: View {
 //                        .animation(.easeInOut(duration: 0.3), value: isExpanded)
                 }
                 
-                Text(coleccion.name)
+                Text(coleccion.nombre)
                     .font(.title)
                     .frame(alignment: .center)
                 

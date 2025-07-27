@@ -314,4 +314,58 @@ struct ManipulacionCadenas {
         return numbers
     }
     
+    //MARK: --- EXTRACCION DE NOMBRES ---
+    
+    func renameExpresion(originalName: String) -> String? {
+            // Primera expresión regular (caso nombre numero (año) (bla)...)
+            let firstPattern = #"^(.*?)(\d+)\s*\(\d{4}\)(.*)"#
+            
+            // Segunda expresión regular (caso nombre numero (of n) (año) (extra))
+            let secondPattern = #"^(.*?)(\d+)\s*\(.*\)\s*\(\d{4}\).*"#
+            
+            // Tercera expresión regular (caso solo nombre sin número)
+            let thirdPattern = #"^(.*?)(\s*\(\d{4}\).*)?$"#
+            
+            // Intenta la primera expresión regular
+            if let renamedFirst = tryMatch(pattern: firstPattern, originalName: originalName) {
+                return renamedFirst
+            }
+            
+            // Si no coincide con la primera expresión regular, intenta la segunda
+            if let renamedSecond = tryMatch(pattern: secondPattern, originalName: originalName) {
+                return renamedSecond
+            }
+            
+            // Si no coincide con ninguna de las anteriores, intenta la tercera expresión regular
+            if let renamedThird = tryMatch(pattern: thirdPattern, originalName: originalName) {
+                return renamedThird
+            }
+            
+            // Si no coincide con ninguno de los patrones, retorna nil o el nombre original
+            return originalName
+        }
+
+        // Función auxiliar para aplicar la expresión regular y hacer la conversión
+        func tryMatch(pattern: String, originalName: String) -> String? {
+            let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+            
+            if let match = regex?.firstMatch(in: originalName, options: [], range: NSRange(location: 0, length: originalName.utf16.count)) {
+                
+                if let nameRange = Range(match.range(at: 1), in: originalName) {
+                    let name = originalName[nameRange].trimmingCharacters(in: .whitespaces)
+                    
+                    // Si tiene un número en el nombre, intentamos extraerlo y eliminar ceros a la izquierda
+                    if let numberRange = Range(match.range(at: 2), in: originalName),
+                       let number = Int(originalName[numberRange]) {
+                        return "\(name) \(number)"
+                    } else {
+                        // Si no tiene número, simplemente devolvemos el nombre
+                        return name
+                    }
+                }
+            }
+            
+            return nil
+        }
+    
 }

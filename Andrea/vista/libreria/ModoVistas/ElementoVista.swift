@@ -45,7 +45,7 @@ struct ElementoVista<Content: View>: View {
                 }
             )
             .contextMenu {
-                Section(header: Text(elemento.name)) {
+                Section(header: Text(elemento.nombre)) {
                     Text("Mostrar informacion")
                     Text("Completar lectura")
                     Menu {
@@ -60,7 +60,7 @@ struct ElementoVista<Content: View>: View {
                 }
             }
             .confirmationDialog(
-                "¿Estás seguro de que quieres borrar \(elemento.name)?",
+                "¿Estás seguro de que quieres borrar \(elemento.nombre)?",
                 isPresented: $borrarPresionado, // <- o el tuyo
                 titleVisibility: .visible
             ) {

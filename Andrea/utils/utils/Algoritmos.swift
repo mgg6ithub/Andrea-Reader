@@ -43,7 +43,7 @@ struct Algoritmos {
         switch tipoOrden {
         case .nombre:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-                a.name.localizedStandardCompare(b.name) == .orderedAscending
+                a.nombre.localizedStandardCompare(b.nombre) == .orderedAscending
             }
         case .aleatorio:
             tempElementos = elementos.shuffled()
@@ -75,7 +75,7 @@ struct Algoritmos {
             tempElementos = elementos
         default:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-                a.name.localizedStandardCompare(b.name) == .orderedAscending
+                a.nombre.localizedStandardCompare(b.nombre) == .orderedAscending
             }
         }
         
@@ -86,7 +86,6 @@ struct Algoritmos {
         }
         
     }
-    
     
     
 }
