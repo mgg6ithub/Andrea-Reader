@@ -9,9 +9,9 @@ struct ListaColeccionMenu: View {
     var onSeleccionColeccion: (() -> Void)? = nil
     
     var coleccionesFiltradas: [(key: URL, value: ColeccionValor)] {
-        Array(sa.cacheColecciones.compactMap { elemento in
-            elemento.value.coleccion.nombre != "HOME" ? elemento : nil
-        })
+        sa.cacheColecciones
+            .filter { $0.value.coleccion.nombre != "HOME" }
+            .sorted { $0.value.coleccion.nombre.lowercased() < $1.value.coleccion.nombre.lowercased() }
     }
     
     var coleccionPrincipal: Coleccion {

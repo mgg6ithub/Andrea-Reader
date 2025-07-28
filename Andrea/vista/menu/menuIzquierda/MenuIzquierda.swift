@@ -73,7 +73,10 @@ struct MenuIzquierda: View {
                         .frame(width: 300)
                 }
             }
+            .padding(0)
+            
         }
+        .padding(0)
     }
 }
 

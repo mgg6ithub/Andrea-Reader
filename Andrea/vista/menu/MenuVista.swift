@@ -10,9 +10,12 @@ struct MenuVista: View {
             ZStack {
                 HStack {
                     MenuIzquierda()
+                        .padding(0)
+//                        .border(.red)
                     Spacer()
                     MenuDerecha()
                 }
+                .padding(0)
                 
                 GeometryReader { geo in
                     MenuCentro()

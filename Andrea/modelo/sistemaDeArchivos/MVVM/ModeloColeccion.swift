@@ -19,7 +19,7 @@ class ModeloColeccion: ObservableObject {
 
   @Published var columnas: Int = 4
   @Published var altura: CGFloat = 180
-    @Published var tiempoCarga: Double? = nil
+  @Published var tiempoCarga: Double? = nil
 
   @Published var elementosCargados: Bool = false
     
@@ -57,7 +57,7 @@ class ModeloColeccion: ObservableObject {
            let modo = EnumModoVista(rawValue: tipoVistaRaw) {
             self.modoVista = modo
         } else {
-            self.modoVista = .lista
+            self.modoVista = .cuadricula
         }
         
         if let ordenacionString = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {

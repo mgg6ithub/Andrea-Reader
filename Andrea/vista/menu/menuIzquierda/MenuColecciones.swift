@@ -40,7 +40,7 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
                }
 
             }
-            .padding(.horizontal, 10)
+            .padding(.horizontal, animatedView ? 5 : 0)
             .sensoryFeedback(.impact, trigger: haptics)
     }
     
@@ -126,7 +126,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
             }
             
         }
-        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat((totalElements * 59) + alturaBase) : 0)
+        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat((totalElements * 60) + alturaBase) : 0)
         .background(
             ap.temaActual.backgroundColor
                 .mask(
@@ -138,14 +138,15 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
         .frame(width: animateView ? nil : sourceRect.width, height: animateView ? nil : sourceRect.height)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .scaleEffect(scale, anchor: .topLeading)
-            .animation(.easeInOut(duration: 0.3), value: scale)
-
+        .animation(.easeInOut(duration: 0.3), value: scale)
+        // --- controla el desplazamiento ---
         .offset(x: animateView ? 0 : sourceRect.minX,
                 y: animateView ? 0 : sourceRect.minY)
-            .animation(.easeInOut(duration: 0.3), value: animateView)
-
         .padding(.top, animateView ? 25 : 0)
-        .padding(.leading, animateView ? 35 : 0)
+        .padding(.leading, animateView ? 20 : 0)
+        // ---
+        .animation(.easeInOut(duration: 0.3), value: animateView)
+
         .ignoresSafeArea()
         .presentationBackground {
             GeometryReader { geo in

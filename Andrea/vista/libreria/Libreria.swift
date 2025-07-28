@@ -25,7 +25,7 @@ struct Libreria: View {
                         Text("Vacia, sin elementos.")
                             .font(.headline)
                             .opacity(showEmptyState ? 1 : 0)
-                            .animation(.easeOut.delay(0.6), value: showEmptyState)
+                            .animation(.easeOut.delay(0.4), value: showEmptyState)
                     }
 
                     Spacer()

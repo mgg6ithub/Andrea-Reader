@@ -15,7 +15,7 @@ struct HistorialColecciones: View {
     var body: some View {
         HStack {
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 8) {
+                LazyHStack(spacing: 0) {
                     if pc.getColeccionActual().coleccion.nombre == "HOME" {
                         ColeccionRectanguloAvanzado(
                             textoSize: 21,
@@ -27,6 +27,8 @@ struct HistorialColecciones: View {
                         ) {
                             Image(systemName: "house").opacity(0.75)
                         }
+                        .padding(.trailing, 4)
+                        
                     } else {
                         Button(action: {
                             pc.conservarSoloHome()
@@ -42,39 +44,50 @@ struct HistorialColecciones: View {
                                 Image(systemName: "house").opacity(0.75)
                             }
                         }
+                        .padding(.trailing, 4)
                         
                         let coleccionesFiltradas = pc.colecciones.filter { $0.coleccion.nombre != "HOME" }
 
                         ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
                             Group {
-                                
                                 if pc.esColeccionActual(coleccion: vm.coleccion) {
-                                    
-                                    ColeccionRectanguloAvanzado(
-                                        textoSize: 21,
-                                        colorPrimario: appEstado.temaActual.textColor,
-                                        color: vm.color,
-                                        isActive: true,
-                                        horizontalPadding: 11,
-                                        animationDelay: delay(Double(index))
-                                    ) {
-                                        Text(vm.coleccion.nombre)
-                                    }
-                                    
-                                } else {
-                                    Button(action: {
-                                        pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
-                                    }) {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "chevron.forward")
+                                            .font(.system(size: 16))
+                                            .foregroundColor(.gray)
+                                        
                                         ColeccionRectanguloAvanzado(
-                                            textoSize: 14,
-                                            colorPrimario: appEstado.temaActual.secondaryText,
+                                            textoSize: 21,
+                                            colorPrimario: appEstado.temaActual.textColor,
                                             color: vm.color,
-                                            isActive: false,
+                                            isActive: true,
                                             horizontalPadding: 11,
                                             animationDelay: delay(Double(index))
                                         ) {
                                             Text(vm.coleccion.nombre)
                                         }
+                                    }
+                                } else {
+                                    Button(action: {
+                                        pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
+                                    }) {
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "chevron.forward")
+                                                .font(.system(size: 10))
+                                                .foregroundColor(.gray.opacity(0.8))
+                                            
+                                            ColeccionRectanguloAvanzado(
+                                                textoSize: 14,
+                                                colorPrimario: appEstado.temaActual.secondaryText,
+                                                color: vm.color,
+                                                isActive: false,
+                                                horizontalPadding: 11,
+                                                animationDelay: delay(Double(index))
+                                            ) {
+                                                Text(vm.coleccion.nombre)
+                                            }
+                                        }
+                                        .padding(.trailing, 4)
                                     }
                                     .buttonStyle(ColeccionButtonStyle())
                                 }

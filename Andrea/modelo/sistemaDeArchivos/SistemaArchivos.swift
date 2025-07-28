@@ -183,6 +183,12 @@ class SistemaArchivos: ObservableObject {
                             vm.elementos.removeAll(where: { $0.id == elemento.id }) //borramos de la vista del vm
                         }
                         
+                        if self.sau.isDirectory(elementURL: elemento.url) {
+                            vm.coleccion.totalColecciones -= 1
+                        } else {
+                            vm.coleccion.totalArchivos -= 1
+                        }
+                        
                         if self.cacheColecciones[url] != nil {
                             self.cacheColecciones.removeValue(forKey: url) //borramos del cache de coleccion en sa
                             print("✅ Colección eliminada del cache")
@@ -288,13 +294,18 @@ class SistemaArchivos: ObservableObject {
      - Parameters:
         - elementoURL: URL
      */
+    @MainActor 
     private func actualizarUISoloElemento(elementoURL: URL, coleccionDestino: URL? = nil) {
         
         // --- Introducir el elemento en la lista en el hilo principal
         let elemento: ElementoSistemaArchivos = self.crearInstancia(elementoURL: elementoURL)
+        
+        let coleccionActualVM = PilaColecciones.pilaColecciones.getColeccionActual()
+
+        // ✅ Actualizar UI en el hilo principal
         DispatchQueue.main.async {
             withAnimation(.easeOut(duration: 0.35)) {
-                PilaColecciones.pilaColecciones.getColeccionActual().elementos.append(elemento)
+                coleccionActualVM.elementos.append(elemento)
             }
         }
 
@@ -313,6 +324,8 @@ class SistemaArchivos: ObservableObject {
             } else {
                 print("⚠️ No se encontró la colección padre en el cache: \(coleccionDestino.path)")
             }
+        } else {
+            coleccionActualVM.coleccion.totalArchivos += 1
         }
         
     }
