@@ -22,6 +22,7 @@ struct HistorialColecciones: View {
                             colorPrimario: appEstado.temaActual.textColor,
                             color: Color.gray,
                             isActive: true,
+                            horizontalPadding: 11,
                             animationDelay: delay(0)
                         ) {
                             Image(systemName: "house").opacity(0.75)
@@ -35,6 +36,7 @@ struct HistorialColecciones: View {
                                 colorPrimario: appEstado.temaActual.textColor,
                                 color: Color.gray,
                                 isActive: false,
+                                horizontalPadding: 11,
                                 animationDelay: delay(0)
                             ) {
                                 Image(systemName: "house").opacity(0.75)
@@ -45,16 +47,20 @@ struct HistorialColecciones: View {
 
                         ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
                             Group {
+                                
                                 if pc.esColeccionActual(coleccion: vm.coleccion) {
+                                    
                                     ColeccionRectanguloAvanzado(
                                         textoSize: 21,
                                         colorPrimario: appEstado.temaActual.textColor,
                                         color: vm.color,
                                         isActive: true,
+                                        horizontalPadding: 11,
                                         animationDelay: delay(Double(index))
                                     ) {
                                         Text(vm.coleccion.nombre)
                                     }
+                                    
                                 } else {
                                     Button(action: {
                                         pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
@@ -64,6 +70,7 @@ struct HistorialColecciones: View {
                                             colorPrimario: appEstado.temaActual.secondaryText,
                                             color: vm.color,
                                             isActive: false,
+                                            horizontalPadding: 11,
                                             animationDelay: delay(Double(index))
                                         ) {
                                             Text(vm.coleccion.nombre)
@@ -165,6 +172,7 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
     let colorPrimario: Color
     let color: Color
     let isActive: Bool
+    let horizontalPadding: CGFloat
     let animationDelay: Double
     let content: () -> Content
     
@@ -179,7 +187,7 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .foregroundColor(colorPrimario)
             .fixedSize()
             .layoutPriority(1)
-            .padding(.horizontal, 11)
+            .padding(.horizontal, horizontalPadding)
             .padding(.vertical, 7)
             .background(
                 RoundedRectangle(cornerRadius: 10)

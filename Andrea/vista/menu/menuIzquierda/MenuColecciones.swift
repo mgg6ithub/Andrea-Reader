@@ -6,13 +6,13 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
     var totalElements: Int
     
     @ViewBuilder var header: (Bool) -> Header
-    @ViewBuilder var content: (Bool) -> Content
+    @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
 
     @State private var sourceRect: CGRect = .zero
     @State private var showFullScreenCover: Bool = false
     @State private var animatedView: Bool = false
-    
     @State private var haptics: Bool = false
+    
     var body: some View {
         
         header(animatedView)
@@ -29,21 +29,16 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
             .fullScreenCover(isPresented: $showFullScreenCover) {
                 // Contenido para la pantalla completa
                 PopOutListOverlay(
-                    totalElements: totalElements,
-                    sourceRect: $sourceRect,
-                    animateView: $animatedView,
-                    header: header,
-                    content: content
-                ) {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        animatedView = false
-                    }
-
-                    // Espera a que se oculte la animación antes de cerrar el fullScreenCover
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        toggleFullScreenCover()
-                    }
-                }
+                   totalElements: totalElements,
+                   sourceRect: $sourceRect,
+                   animateView: $animatedView,
+                   header: header,
+                   content: { isExpandable, cerrarMenu in
+                       content(isExpandable, cerrarMenu)
+                   }
+               ) {
+                   cerrarMenu()
+               }
 
             }
             .padding(.horizontal, 10)
@@ -58,6 +53,16 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
             showFullScreenCover.toggle()
         }
     }
+    
+    private func cerrarMenu() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            animatedView = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            showFullScreenCover = false
+        }
+    }
+
 }
 
 extension View {
@@ -82,7 +87,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     @Binding var sourceRect: CGRect
     @Binding var animateView: Bool
     @ViewBuilder var header: (Bool) -> Header
-    @ViewBuilder var content: (Bool) -> Content
+    @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
     var dismissView: () -> ()
     
     @State private var edgeInsets: EdgeInsets = .init()
@@ -111,12 +116,13 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
                 .padding(.horizontal, 10)
             
             if animateView {
-                content(animateView)
+                content(animateView, dismissView)
                     .transition(.blurReplace)
             }
+
             
         }
-        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat(totalElements * 80) : 0)
+        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat(totalElements * 75) : 0)
         .background(
             ap.temaActual.backgroundColor
                 .mask(

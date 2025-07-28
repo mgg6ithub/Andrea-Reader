@@ -68,8 +68,8 @@ struct MenuIzquierda: View {
                         .foregroundStyle(appEstado.constantes.iconColor.gradient)
                         .fontWeight(.thin)
                     //                            .symbolEffect(.bounce, value: menuModel.newDirectoryCreated)
-                } content: { isExpandable in
-                    ListaColeccionMenu()
+                } content: { isExpandable, cerrarMenu in
+                    ListaColeccionMenu(onSeleccionColeccion: cerrarMenu)
                         .frame(width: 300)
                 }
             }

@@ -46,9 +46,10 @@ class SistemaArchivos: ObservableObject {
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: homeURL)
         
-        print("Indexado aplicado estos son los directorios")
-        print(self.cacheColecciones)
-        
+    }
+    
+    func obtenerColeccionPrincipal() -> Coleccion? {
+        return cacheColecciones[homeURL]?.coleccion
     }
     
     /**
@@ -101,20 +102,6 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
-    
-    /**
-     Solamente agregar los nuevos elementos a la coleccion que fue previamente indexada y esta en cache.
-     */
-    private func actualizarCache() {
-        
-    }
-    
-    /**
-     Indexa todos los elementos de la coleccion y los introduce en el cache.
-     */
-    private func indexarColeccion() {
-        
-    }
     
     //MARK: - METODOS DEL SISTEMA DE ARCHIVOS
     
