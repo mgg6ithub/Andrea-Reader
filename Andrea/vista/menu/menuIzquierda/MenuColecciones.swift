@@ -3,7 +3,7 @@ import SwiftUI
 
 struct PopOutCollectionsView<Header: View, Content: View>: View {
     
-    var totalElements: Int
+//    var totalElements: Int
     
     @ViewBuilder var header: (Bool) -> Header
     @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
@@ -29,7 +29,6 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
             .fullScreenCover(isPresented: $showFullScreenCover) {
                 // Contenido para la pantalla completa
                 PopOutListOverlay(
-                   totalElements: totalElements,
                    sourceRect: $sourceRect,
                    animateView: $animatedView,
                    header: header,
@@ -82,7 +81,9 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     
     @EnvironmentObject var ap: AppEstado
     
-    var totalElements: Int
+    var totalElements: Int {
+        SistemaArchivos.sa.cacheColecciones.count - 1
+    }
     private let alturaBase: Int = 109
     
     @Binding var sourceRect: CGRect

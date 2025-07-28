@@ -61,7 +61,7 @@ struct MenuIzquierda: View {
             
             //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
             ZStack {
-                PopOutCollectionsView(totalElements: SistemaArchivos.sa.cacheColecciones.count - 1) { isExpandable in
+                PopOutCollectionsView() { isExpandable in
                     Image("custom.library")
                         .font(.system(size: 30 * 0.8))
                         .symbolRenderingMode(.palette)

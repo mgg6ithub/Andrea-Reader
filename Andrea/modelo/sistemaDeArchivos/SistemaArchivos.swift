@@ -197,7 +197,6 @@ class SistemaArchivos: ObservableObject {
             }
         }
     }
-
     
     
     // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
@@ -275,7 +274,7 @@ class SistemaArchivos: ObservableObject {
                 try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
                 
                 // --- Creamos la instancia de la coleccion ---
-                self.actualizarUISoloElemento(elementoURL: nuevaColeccionURL)
+                self.actualizarUISoloElemento(elementoURL: nuevaColeccionURL, coleccionDestino: coleccionDestino)
             }
             else {
                 print("La coleccion ya existe no se creara otra")
@@ -289,17 +288,32 @@ class SistemaArchivos: ObservableObject {
      - Parameters:
         - elementoURL: URL
      */
-    private func actualizarUISoloElemento(elementoURL: URL) {
+    private func actualizarUISoloElemento(elementoURL: URL, coleccionDestino: URL? = nil) {
         
         // --- Introducir el elemento en la lista en el hilo principal
         let elemento: ElementoSistemaArchivos = self.crearInstancia(elementoURL: elementoURL)
-            DispatchQueue.main.async {
-                withAnimation(.easeOut(duration: 0.35)) {
-                    PilaColecciones.pilaColecciones.getColeccionActual().elementos.append(elemento)
-                }
+        DispatchQueue.main.async {
+            withAnimation(.easeOut(duration: 0.35)) {
+                PilaColecciones.pilaColecciones.getColeccionActual().elementos.append(elemento)
             }
+        }
 
         //Actualizar todas las instancias dependientes de dicho elemento
+        if sau.isDirectory(elementURL: elemento.url) {
+            guard let nuevaColeccion = elemento as? Coleccion else { return }
+            guard let coleccionDestino = coleccionDestino else { return }
+            let nuevoValor = ColeccionValor(coleccion: nuevaColeccion)
+            self.cacheColecciones[elementoURL] = nuevoValor
+            
+            // 2. Actualizar la colección padre
+            if let valorPadre = self.cacheColecciones[coleccionDestino] {
+                valorPadre.subColecciones.insert(elementoURL)
+                valorPadre.coleccion.totalColecciones += 1
+                valorPadre.listaElementos.append(nuevaColeccion)
+            } else {
+                print("⚠️ No se encontró la colección padre en el cache: \(coleccionDestino.path)")
+            }
+        }
         
     }
     
