@@ -83,6 +83,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     @EnvironmentObject var ap: AppEstado
     
     var totalElements: Int
+    private let alturaBase: Int = 109
     
     @Binding var sourceRect: CGRect
     @Binding var animateView: Bool
@@ -104,6 +105,9 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
                         .font(.system(size: 20))
                         .bold()
                         .frame(alignment: .bottom)
+                        .onAppear {
+                            print("total de elementos: ", totalElements)
+                        }
                 }
                 
             }
@@ -119,10 +123,9 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
                 content(animateView, dismissView)
                     .transition(.blurReplace)
             }
-
             
         }
-        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat(totalElements * 75) : 0)
+        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat((totalElements * 59) + alturaBase) : 0)
         .background(
             ap.temaActual.backgroundColor
                 .mask(
