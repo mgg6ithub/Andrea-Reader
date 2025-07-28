@@ -6,34 +6,44 @@ struct ListaColeccionMenu: View {
     private let sa: SistemaArchivos = SistemaArchivos.sa
     
     var body: some View {
-        List {
+        VStack {
             ForEach(Array(sa.cacheColecciones), id: \.key) { (url, colValor) in
+                
+                let col = colValor.coleccion
+                
                 VStack(spacing: 0) {
                     Button(action: {
                         // Acción al tocar la colección
                     }) {
                         HStack {
                             Circle()
-                                .fill(colValor.coleccion.color)
+                                .fill(col.color)
                                 .frame(width: 35, height: 35)
                             
                             VStack(alignment: .leading, spacing: 5) {
-                                Text(colValor.coleccion.nombre)
+                                Text(col.nombre)
                                     .font(.system(size: 17))
                                     .bold()
                                 
-                                Text("33 archivos")
-                                    .font(.system(size: 12))
-                                    .foregroundColor(ap.temaActual.secondaryText)
+                                HStack(spacing: 5) {
+                                    Text("\(col.totalArchivos) archivos")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(ap.temaActual.secondaryText)
+                                    
+                                    Text("\(col.totalColecciones) colecciones")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(ap.temaActual.secondaryText)
+                                }
                             }
                             
                             Spacer()
                             
-                            Image(systemName: "chevron.forward")
-                                .font(.system(size: 30 * 0.6))
+//                            Image(systemName: "chevron.forward")
+//                                .font(.system(size: 30 * 0.6))
                         }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 5)
+                        .padding(.top, 8)
+                        .padding(.bottom, 10)
+                        .padding(.horizontal, 10)
                         .frame(maxWidth: .infinity) // <- Importante: ocupa todo el ancho
                         .background(ap.temaActual.backgroundColor)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -41,18 +51,16 @@ struct ListaColeccionMenu: View {
                     
                     // Línea de separación personalizada
                     Rectangle()
-                        .fill(Color.white) // O ap.temaActual.separatorColor
-                        .frame(height: 1)
-                        .padding(.leading, 50)
+                        .fill(Color.gray) // O ap.temaActual.separatorColor
+                        .frame(height: 0.5)
+                        .padding(.horizontal, 10)
+                        .padding(.top, 3.5)
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets()) // <- Elimina los insets del sistema
             }
+            Spacer()
         }
-        .scrollContentBackground(.hidden)
-        .background(ap.temaActual.backgroundColor)
-        .listStyle(.plain)
-        .listRowSeparator(.hidden) // <- Bien, pero reforzado por lo anterior
     }
 }
 

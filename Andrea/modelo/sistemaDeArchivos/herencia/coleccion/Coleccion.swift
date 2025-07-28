@@ -16,22 +16,31 @@ class ColeccionValor {
 class Coleccion: ElementoSistemaArchivos {
     //ATRIBUTOS
     var isDirectory = true
-    var elementList: [String]
     var lastImportedElement: URL?
     var lastImportedElementDate: Date?
     
     @Published var color: Color
+    var totalArchivos: Int
+    var totalColecciones: Int
     
     @State private var showIconAlert = false
     
-    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, elementList: [String]) {
+    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date) {
         
-        self.elementList = elementList
-        if let colorString = PersistenciaDatos().obtenerAtributoConcreto(url: directoryURL, atributo: "color") as? String {
-            self.color = Color(hex: colorString)
-        } else {
-            self.color = .blue
-        }
+        self.color = .blue
+        self.totalArchivos = 0
+        self.totalColecciones = 0
+        
+        super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate)
+        
+    }
+    
+    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, color: Color, totalArchivos: Int, totalColecciones: Int) {
+        
+        self.color = color
+        self.totalArchivos = totalArchivos
+        self.totalColecciones = totalColecciones
+        
         super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate)
         
     }

@@ -105,6 +105,11 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
             .padding(.bottom, 5)
             .padding([.leading, .trailing, .top], animateView ? 10 : 0)
             
+            Rectangle()
+                .fill(ap.temaActual.colorContrario) // O ap.temaActual.separatorColor
+                .frame(height: 1.5)
+                .padding(.horizontal, 10)
+            
             if animateView {
                 content(animateView)
                     .transition(.blurReplace)
@@ -113,11 +118,11 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
         }
         .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat(totalElements * 80) : 0)
         .background(
-                    ap.temaActual.backgroundColor
-                        .mask(
-                            RoundedRectangle(cornerRadius: animateView ? 20 : 10)
-                        )
+            ap.temaActual.backgroundColor
+                .mask(
+                    RoundedRectangle(cornerRadius: animateView ? 20 : 10)
                 )
+        )
         .background(.clear)
         .clipShape(RoundedRectangle(cornerRadius: animateView ? 20 : 10))
         .frame(width: animateView ? nil : sourceRect.width, height: animateView ? nil : sourceRect.height)

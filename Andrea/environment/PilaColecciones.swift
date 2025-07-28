@@ -148,8 +148,7 @@ class PilaColecciones: ObservableObject {
                 directoryName: "Inicio",
                 directoryURL: homeURL,
                 creationDate: .now,
-                modificationDate: .now,
-                elementList: []
+                modificationDate: .now
             )
         )
     }

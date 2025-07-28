@@ -227,6 +227,41 @@ class SistemaArchivosUtilidades {
         return []
     }
     
+    /**
+     Obtiene el numero de archivos y subdirectorios de la coleccion pasada como URL
+     */
+    public func contarArchivosYSubdirectorios(url: URL) -> (archivos: Int, subdirectorios: Int) {
+        do {
+            let elementos = try fm.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [])
+            
+            var archivos = 0
+            var subdirectorios = 0
+            
+            for item in elementos {
+                if self.isDirectory(elementURL: item) {
+                    subdirectorios += 1
+                } else {
+                    archivos += 1
+                }
+            }
+            
+            return (archivos, subdirectorios)
+        } catch {
+            print("Error al leer \(url.lastPathComponent): \(error)")
+            return (0, 0)
+        }
+    }
+
+    
+    
+    // Función auxiliar para saber si es un directorio
+    private func esDirectorio(_ url: URL) -> Bool {
+        var isDir: ObjCBool = false
+        FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
+        return isDir.boolValue
+    }
+
+    
     private func getListSubdirectoryContentsWithNoExtensionsFilters(urlPath: URL, elementsToAvoid: [String]) -> [String] {
         
         var newList: [String] = []

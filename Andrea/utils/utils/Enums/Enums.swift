@@ -100,6 +100,14 @@ enum EnumTemas: String, CaseIterable {
         }
     }
     
+    var colorContrario: Color {
+        switch self {
+        case .light: return .black
+        case .dark: return .white
+        default: return .white
+        }
+    }
+    
     var cardColor: Color {
         
         switch self {

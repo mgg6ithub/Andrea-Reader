@@ -40,7 +40,7 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         // Crear la coleccion raiz y asignarla
-        let home = FabricaColeccion().crearColeccion(collectionName: "HOME", collectionURL: self.homeURL)
+        let home = FabricaColeccion().crearColeccion(coleccionNombre: "HOME", coleccionURL: self.homeURL)
         cacheColecciones[homeURL] = ColeccionValor(coleccion: home)
         
         // Indexar recursivamente a partir de la raiz
@@ -61,7 +61,7 @@ class SistemaArchivos: ObservableObject {
 
         // Si no está ya cacheado, lo agregamos al cache con una lista vacía de elementos
         if cacheColecciones[coleccionURL] == nil {
-            let coleccion = FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: coleccionURL), collectionURL: coleccionURL)
+            let coleccion = FabricaColeccion().crearColeccion(coleccionNombre: sau.getFileName(fileURL: coleccionURL), coleccionURL: coleccionURL)
             cacheColecciones[coleccionURL] = ColeccionValor(coleccion: coleccion)
         }
 
@@ -95,7 +95,7 @@ class SistemaArchivos: ObservableObject {
             if let coleccionValor: ColeccionValor = self.cacheColecciones[elementoURL] {
                 return coleccionValor.coleccion
             }
-            return FabricaColeccion().crearColeccion(collectionName: sau.getFileName(fileURL: elementoURL), collectionURL: elementoURL)
+            return FabricaColeccion().crearColeccion(coleccionNombre: sau.getFileName(fileURL: elementoURL), coleccionURL: elementoURL)
         } else {
             return FactoryArchivo().crearArchivo(fileName: sau.getFileName(fileURL: elementoURL), fileURL: elementoURL, destionationURL: destinoURL, currentDirectory: self.homeURL)
         }
