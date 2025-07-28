@@ -42,7 +42,7 @@ struct ListaVista: View {
                                 ListaColeccion(coleccion: coleccion)
                             }
                         }
-                        .preferredColorScheme(ap.temaActual == .dark ? .dark : .light)
+                        .colorScheme(ap.temaActual == .dark ? .dark : .light)
                         .matchedGeometryEffect(id: elemento.id, in: namespace)
                         .id(index)
                         .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))

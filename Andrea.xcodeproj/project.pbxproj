@@ -73,6 +73,8 @@
 		D4CF28E52E323D3D003B3ABC /* Desplazamiento.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E42E323D3D003B3ABC /* Desplazamiento.swift */; };
 		D4CF28E72E323E29003B3ABC /* ModeloMiniaturaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E62E323E29003B3ABC /* ModeloMiniaturaArchivo.swift */; };
 		D4CF28E92E323F15003B3ABC /* Libreria.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E82E323F15003B3ABC /* Libreria.swift */; };
+		D4D8CCF42E377C5700F7F18D /* MenuColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8CCF32E377C5700F7F18D /* MenuColecciones.swift */; };
+		D4D8CCF62E377CD600F7F18D /* ListaColeccionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8CCF52E377CD600F7F18D /* ListaColeccionMenu.swift */; };
 		D4DEBBEC2DE9CCD500F06C30 /* AjustesGlobales.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */; };
 		D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */; };
 		D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */; };
@@ -149,6 +151,8 @@
 		D4CF28E42E323D3D003B3ABC /* Desplazamiento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Desplazamiento.swift; sourceTree = "<group>"; };
 		D4CF28E62E323E29003B3ABC /* ModeloMiniaturaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloMiniaturaArchivo.swift; sourceTree = "<group>"; };
 		D4CF28E82E323F15003B3ABC /* Libreria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Libreria.swift; sourceTree = "<group>"; };
+		D4D8CCF32E377C5700F7F18D /* MenuColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuColecciones.swift; sourceTree = "<group>"; };
+		D4D8CCF52E377CD600F7F18D /* ListaColeccionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListaColeccionMenu.swift; sourceTree = "<group>"; };
 		D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesGlobales.swift; sourceTree = "<group>"; };
 		D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesTema.swift; sourceTree = "<group>"; };
 		D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesColor.swift; sourceTree = "<group>"; };
@@ -362,7 +366,7 @@
 			isa = PBXGroup;
 			children = (
 				D45E700B2DE7A803001F816A /* MenuVista.swift */,
-				D4ADDB792DE9B9E60097A010 /* MenuIzquierda.swift */,
+				D4D8CCF22E377C3D00F7F18D /* menuIzquierda */,
 				D4ADDB7B2DE9B9F10097A010 /* MenuCentro.swift */,
 				D4ADDB7D2DE9B9FA0097A010 /* MenuDerecha.swift */,
 				D4DEBBEA2DE9CCB100F06C30 /* ajustesGlobales */,
@@ -472,6 +476,16 @@
 				D4BA32F42E0BE3EF00CF3219 /* animaciones */,
 			);
 			path = vistaAyudas;
+			sourceTree = "<group>";
+		};
+		D4D8CCF22E377C3D00F7F18D /* menuIzquierda */ = {
+			isa = PBXGroup;
+			children = (
+				D4ADDB792DE9B9E60097A010 /* MenuIzquierda.swift */,
+				D4D8CCF32E377C5700F7F18D /* MenuColecciones.swift */,
+				D4D8CCF52E377CD600F7F18D /* ListaColeccionMenu.swift */,
+			);
+			path = menuIzquierda;
 			sourceTree = "<group>";
 		};
 		D4DEBBEA2DE9CCB100F06C30 /* ajustesGlobales */ = {
@@ -606,6 +620,7 @@
 				D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */,
 				D48589742DEBA1A80074DB8E /* Archivo.swift in Sources */,
 				D48589762DEBA1C50074DB8E /* Coleccion.swift in Sources */,
+				D4D8CCF42E377C5700F7F18D /* MenuColecciones.swift in Sources */,
 				D4ADDB772DE9B9990097A010 /* Constantes.swift in Sources */,
 				D4A0FF3D2DEB3FD300195018 /* LineaSeparadora.swift in Sources */,
 				D4CF28E52E323D3D003B3ABC /* Desplazamiento.swift in Sources */,
@@ -620,6 +635,7 @@
 				D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */,
 				D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */,
 				D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */,
+				D4D8CCF62E377CD600F7F18D /* ListaColeccionMenu.swift in Sources */,
 				D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */,
 				D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */,
 				D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */,

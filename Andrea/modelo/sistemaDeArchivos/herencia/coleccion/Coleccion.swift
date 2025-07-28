@@ -20,11 +20,18 @@ class Coleccion: ElementoSistemaArchivos {
     var lastImportedElement: URL?
     var lastImportedElementDate: Date?
     
+    @Published var color: Color
+    
     @State private var showIconAlert = false
     
     init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, elementList: [String]) {
         
         self.elementList = elementList
+        if let colorString = PersistenciaDatos().obtenerAtributoConcreto(url: directoryURL, atributo: "color") as? String {
+            self.color = Color(hex: colorString)
+        } else {
+            self.color = .blue
+        }
         super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate)
         
     }

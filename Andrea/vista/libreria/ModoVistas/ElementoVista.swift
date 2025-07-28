@@ -30,36 +30,40 @@ struct ElementoVista<Content: View>: View {
                 }
             )
             .contextMenu {
-                Section(header: Text(elemento.nombre)) {
-                    Text("Mostrar informacion")
-                    Text("Completar lectura")
-                    
-                    Menu {
-                        Button(action: {
-                            cambiarMiniatura?(.imagenBase)
-                        }) {
-                            Label("Imagen base", systemImage: "text.document")
-                        }
-                        
-                        Button(action: {
-                            cambiarMiniatura?(.primeraPagina)
-                        }) {
-                            Label("Primera página", systemImage: "text.document")
-                        }
-                    } label: {
-                        Label("Cambiar portada", systemImage: "paintbrush")
-                    }
-                    
-                    Menu {
-
-                    } label: {
-                        Label("Cambiar portada", systemImage: "paintbrush")
-                    }
+//                Section(header: Text(elemento.nombre)) {
+//                    Text("Mostrar informacion")
+//                    Text("Completar lectura")
+//                    
+//                    Menu {
+//                        Button(action: {
+//                            cambiarMiniatura?(.imagenBase)
+//                        }) {
+//                            Label("Imagen base", systemImage: "text.document")
+//                        }
+//                        
+//                        Button(action: {
+//                            cambiarMiniatura?(.primeraPagina)
+//                        }) {
+//                            Label("Primera página", systemImage: "text.document")
+//                        }
+//                    } label: {
+//                        Label("Cambiar portada", systemImage: "paintbrush")
+//                    }
+//                    
+//                    Menu {
+//
+//                    } label: {
+//                        Label("Cambiar portada", systemImage: "paintbrush")
+//                    }
+//                }
+//
+//                Button("Borrar", role: .destructive) {
+//                    borrarPresionado = true
+//                }
+                ZStack {
+                    ContextMenuContenido(elemento: elemento, cambiarMiniatura: cambiarMiniatura, borrarPresionado: $borrarPresionado)
                 }
-
-                Button("Borrar", role: .destructive) {
-                    borrarPresionado = true
-                }
+                
             }
             .confirmationDialog(
                 "¿Estás seguro de que quieres borrar \(elemento.nombre)?",
@@ -73,6 +77,41 @@ struct ElementoVista<Content: View>: View {
             }
     }
 }
+
+
+struct ContextMenuContenido: View {
+    let elemento: any ElementoSistemaArchivosProtocolo
+    let cambiarMiniatura: ((EnumTipoMiniatura) -> Void)?
+    @Binding var borrarPresionado: Bool
+    
+    var body: some View {
+        Section(header: Text(elemento.nombre)) {
+            Text("Mostrar información")
+            Text("Completar lectura")
+            
+            Menu {
+                Button(action: {
+                    cambiarMiniatura?(.imagenBase)
+                }) {
+                    Label("Imagen base", systemImage: "text.document")
+                }
+                Button(action: {
+                    cambiarMiniatura?(.primeraPagina)
+                }) {
+                    Label("Primera página", systemImage: "doc.text")
+                }
+            } label: {
+                Label("Cambiar portada", systemImage: "paintbrush")
+            }
+        }
+        
+        Button("Borrar", role: .destructive) {
+            borrarPresionado = true
+        }
+        
+    }
+}
+
 
 
 

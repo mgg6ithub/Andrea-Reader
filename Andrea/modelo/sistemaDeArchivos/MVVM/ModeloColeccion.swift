@@ -117,6 +117,7 @@ class ModeloColeccion: ObservableObject {
                 $0.shouldInclude(url: url)
             }
         }
+        
         if self.tipoSA == .arbol {
             filteredURLs = filteredURLs.filter { url in
                 !SistemaArchivosUtilidades.sau.isDirectory(elementURL: url)

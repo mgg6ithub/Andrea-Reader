@@ -76,7 +76,6 @@ struct CuadriculaVista: View {
                                         CuadriculaColeccion(coleccion: coleccion)
                                     }
                                 }
-                                .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
                                 .matchedGeometryEffect(id: elemento.id, in: namespace)
                                 .id(index)  // importante para scrollTo
                                 .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))

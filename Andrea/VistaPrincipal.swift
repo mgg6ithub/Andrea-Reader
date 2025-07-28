@@ -8,11 +8,7 @@ struct VistaPrincipal: View {
     @EnvironmentObject var menuEstado: MenuEstado
     @EnvironmentObject var pc: PilaColecciones
     
-    @State private var ultimaID: UUID? = nil
-    
     @State private var coleccionMostrada: ModeloColeccion? = nil
-    
-    private var viewMode: EnumModoVista { menuEstado.modoVistaColeccion }
     private let constantes = ConstantesPorDefecto()
     
     var body: some View {
@@ -36,14 +32,9 @@ struct VistaPrincipal: View {
                 
                 if let coleccion = coleccionMostrada {
                     Libreria(vm: coleccion)
-                        .id(coleccion.coleccion.id) // <- Esto fuerza a SwiftUI a tratarlo como una nueva vista (clave)
+                    // --- ANIMACIONES DE CAMBIO DE COLECCION ---
+                        .id(coleccion.coleccion.id)
                         .transition(.opacity.combined(with: .scale(scale: 0.95)))
-//                        .transition(.move(edge: .bottom).combined(with: .opacity))
-//                        .transition(.asymmetric(
-//                            insertion: .opacity.combined(with: .move(edge: .bottom)),
-//                            removal: .opacity.combined(with: .scale)
-//                        ))
-//                        .transition(.asymmetric(insertion: .opacity.combined(with: .scale(scale: 0.95)), removal: .opacity.combined(with: .scale(scale: 0.95))))
                 }
                 
             }
@@ -51,9 +42,9 @@ struct VistaPrincipal: View {
                 coleccionMostrada = pc.getColeccionActual()
             }
             .padding(0)
-            .onChange(of: pc.coleccionActualVM?.coleccion.id) { nuevoID in
+            .onChange(of: pc.coleccionActualVM?.coleccion.id) {
                 // Solo si ha cambiado de verdad
-                guard nuevoID != coleccionMostrada?.coleccion.id else { return }
+                guard pc.coleccionActualVM?.coleccion.id != coleccionMostrada?.coleccion.id else { return }
 
                 withAnimation(.easeOut(duration: 0.15)) {
                     coleccionMostrada = nil // Oculta la actual con transición

@@ -45,6 +45,10 @@ class SistemaArchivos: ObservableObject {
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: homeURL)
+        
+        print("Indexado aplicado estos son los directorios")
+        print(self.cacheColecciones)
+        
     }
     
     /**
@@ -63,7 +67,14 @@ class SistemaArchivos: ObservableObject {
 
         guard let coleccionValor = cacheColecciones[coleccionURL] else { return }
         // Filtramos solo los directorios
-        let subdirectorios = obtenerURLSDirectorio(coleccionURL: coleccionURL).filter { sau.isDirectory(elementURL: $0) }
+        var subdirectorios = obtenerURLSDirectorio(coleccionURL: coleccionURL).filter { sau.isDirectory(elementURL: $0) }
+        
+        //Filtramos
+        subdirectorios = subdirectorios.filter { url in
+            SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
+                $0.shouldInclude(url: url)
+            }
+        }
         
         // Llamamos recursivamente sobre cada subdirectorio
         for subdir in subdirectorios {

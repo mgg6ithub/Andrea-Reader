@@ -27,55 +27,47 @@ class ModeloMiniatura {
     func construirMiniatura(
         color: Color,
         archivo: Archivo,
-        completion: @escaping(UIImage?) -> Void
+        completion: @escaping (UIImage?) -> Void
     ) {
-        DispatchQueue.global().async {
-            
+        // 1) Lanza todo el trabajo pesado en un hilo userInitiated
+        DispatchQueue.global(qos: .userInitiated).async {
             //--- obtener imagen por defecto ---
             let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
-            
+
             guard archivo.fileType != .unknown else {
                 DispatchQueue.main.async { completion(imagenBase) }
                 return
             }
-            
+
             // 3) Si no hay páginas, devolvemos default
             guard let primeraPagina = archivo.obtenerPrimeraPagina() else {
                 DispatchQueue.main.async { completion(imagenBase) }
                 return
             }
-            
-            // --- SIN DOWNSAMPLE --- CADA IMAGEN CONSUMIRA MUCHA MEMORIA RAM
-            // 4) Intentamos cargar la imagen real
-//            guard let miniatura = archivo.cargarImagen(nombreImagen: primeraPagina) else {
-//                DispatchQueue.main.async {
-//                    completion(imagenBase)
-//                }
-//                return
-//            }
-            
+
+            // 4) Carga datos y downsamplea
             guard let data = archivo.cargarDatosImagen(nombreImagen: primeraPagina) else {
-                print("MAL")
+                DispatchQueue.main.async { completion(imagenBase) }
                 return
             }
+
             let targetSize = CGSize(width: 1000, height: 1000)
-            
-            //4.1 aplicamos downsample para controlar por completo la calida.
-            guard let miniatura = self.downsample(imageData: data, to: targetSize, scale: 1.0)  else {
-                DispatchQueue.main.async {
-                    completion(imagenBase)
-                }
-                return
+            let miniatura: UIImage?
+
+            // 4.1) Downsample dentro de este hilo userInitiated
+            miniatura = self.downsample(imageData: data, to: targetSize, scale: 1.0)
+
+            // 5) Guardar en cache y regresar al hilo principal
+            if let thumb = miniatura {
+                self.guardarMiniatura(miniatura: thumb, archivo: archivo)
             }
-            
-            
-            // 5) Cache y entrega
-            self.guardarMiniatura(miniatura: miniatura, archivo: archivo)
+
             DispatchQueue.main.async {
-                completion(miniatura)
+                completion(miniatura ?? imagenBase)
             }
         }
     }
+
     
     func imagenBase(tipoArchivo: EnumTipoArchivos, color: Color) -> UIImage? {
         // 1) Placeholder (no optional)

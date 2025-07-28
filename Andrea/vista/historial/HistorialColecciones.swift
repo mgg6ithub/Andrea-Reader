@@ -30,9 +30,17 @@ struct HistorialColecciones: View {
                         Button(action: {
                             pc.conservarSoloHome()
                         }) {
-                            Image(systemName: "chevron.backward")
-                                .font(.system(size: iconSize * 0.65))
+                            ColeccionRectanguloAvanzado(
+                                textoSize: 14,
+                                colorPrimario: appEstado.temaActual.textColor,
+                                color: Color.gray,
+                                isActive: false,
+                                animationDelay: delay(0)
+                            ) {
+                                Image(systemName: "house").opacity(0.75)
+                            }
                         }
+                        
                         let coleccionesFiltradas = pc.colecciones.filter { $0.coleccion.nombre != "HOME" }
 
                         ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
@@ -83,13 +91,12 @@ struct HistorialColecciones: View {
                     }
                 }) {
                     HStack(spacing: 6) {
-                        if let tiempo = pc.getColeccionActual().tiempoCarga {
-                            Text("⏱ Carga en \(String(format: "%.2f", tiempo)) segundos")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                                .padding(.top, 4)
-                        }
-
+//                        if let tiempo = pc.getColeccionActual().tiempoCarga {
+//                            Text("⏱ Carga en \(String(format: "%.2f", tiempo)) segundos")
+//                                .font(.caption)
+//                                .foregroundColor(.gray)
+//                                .padding(.top, 4)
+//                        }
                         Image(systemName: "info.circle")
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(appEstado.temaActual.secondaryText)
