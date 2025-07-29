@@ -71,11 +71,11 @@ class Coleccion: ElementoSistemaArchivos, ObservableObject {
     }
     
     public func precargarMiniaturas() {
-        
+        print("precargando miniaturas")
         let allURLs = SistemaArchivos.sa.obtenerURLSDirectorio(coleccionURL: self.url)
         var filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
-                $0.shouldInclude(url: url)
+                $0.shouldInclude(url : url)
             }
         }
         

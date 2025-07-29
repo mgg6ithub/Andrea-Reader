@@ -175,6 +175,14 @@ class SistemaArchivosUtilidades {
     }
     
     /**
+     Metodo para liminar la extension de un nombre. test.cbz -> test
+     */
+    func eliminarExtension(nombreArchivo: String) -> String {
+        return (nombreArchivo as NSString).deletingPathExtension
+    }
+
+    
+    /**
      *DEVUELVE UNA LISTA DE URLS CON LAS URLS DE LOS ELEMENTOS DEL DIRECTORIO ROOT*
      */
     

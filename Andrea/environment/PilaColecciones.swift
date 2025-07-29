@@ -67,6 +67,13 @@ class PilaColecciones: ObservableObject {
             self.colecciones = vistaModelos
         }
     }
+    
+    public func renombrarModeloColeccion(nuevoNombre: String) {
+        print("Clecciones todas")
+        for coleccion in colecciones {
+            print(coleccion.coleccion.nombre)
+        }
+    }
 
 
     /**
@@ -120,6 +127,9 @@ class PilaColecciones: ObservableObject {
      - Parameter coleccion: La colección a agregar.
      */
     public func meterColeccion(coleccion: Coleccion) {
+        
+        print("Entrando en la coleccion: ", coleccion.nombre)
+        print("Su URL: ", coleccion.url)
         let vm = ModeloColeccion(coleccion)
         if colecciones.last?.coleccion == coleccion {
             return

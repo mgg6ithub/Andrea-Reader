@@ -139,21 +139,26 @@ class SistemaArchivos: ObservableObject {
             }
             
             let newURL = originalURL.deletingLastPathComponent().appendingPathComponent(nuevoNombre)
+            nuevoNombre = self.sau.eliminarExtension(nombreArchivo: nuevoNombre)
             
             do {
-                try self.fm.moveItem(at: originalURL, to: newURL)
+                try self.fm.moveItem(at: originalURL, to: newURL) //Renombrar dentro del sistema de archivos
                 
-                DispatchQueue.main.async {
-                    let existeNuevo = SistemaArchivosUtilidades
-                        .sau
-                        .fileExists(elementURL: newURL)
-                    
-                    if existeNuevo {
-                        print("✅ Archivo renombrado correctamente en el sistema: \(nuevoNombre)")
-                    } else {
-                        print("⚠️ El archivo nuevo no se encontró después del renombrado.")
-                    }
+                //--- Actualizamos vista --- 
+                if let archivo = elemento as? Archivo {
+                    print("Renombrando archivo a ", nuevoNombre)
+                    withAnimation { archivo.nombre = nuevoNombre }
+                    archivo.url = newURL
+                } else if let coleccion = elemento as? Coleccion {
+                    print("Renombrando coleccion a ", nuevoNombre)
+                    withAnimation { coleccion.nombre = nuevoNombre }
+                    coleccion.url = newURL
+                    //--- si es una coleccion actualizamos el cache de colecciones del sa ---
+                    let valor = self.cacheColecciones.removeValue(forKey: originalURL)
+                    self.cacheColecciones[newURL] = valor
+
                 }
+                
             } catch {
                 DispatchQueue.main.async {
                     print("⚠️ Error al renombrar el archivo: \(error)")

@@ -17,6 +17,10 @@ struct ElementoVista<Content: View>: View {
     @State private var borrarPresionado = false
     @State private var mostrarElementoReal = false
     @State private var esPlaceholder = true
+    
+    @State private var renombrarPresionado = false
+    @State private var nuevoNombre = ""
+
 
     var body: some View {
         
@@ -68,7 +72,8 @@ struct ElementoVista<Content: View>: View {
                         elemento: elemento,
                         cambiarMiniaturaArchivo: cambiarMiniaturaArchivo,
                         cambiarMiniaturaColeccion: cambiarMiniaturaColeccion,
-                        borrarPresionado: $borrarPresionado
+                        borrarPresionado: $borrarPresionado,
+                        renombrarPresionado: $renombrarPresionado
                     )
                 }
             }
@@ -82,6 +87,19 @@ struct ElementoVista<Content: View>: View {
                 }
                 Button("Cancelar", role: .cancel) {}
             }
+            .alert("Renombrar \"\(elemento.nombre)\"", isPresented: $renombrarPresionado, actions: {
+                TextField("Nuevo nombre", text: $nuevoNombre)
+                
+                Button("Aceptar") {
+                    let nombreLimpio = nuevoNombre.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !nombreLimpio.isEmpty else { return }
+                    SistemaArchivos.sa.renombrarElemento(elemento: elemento, nuevoNombre: nombreLimpio)
+                    self.nuevoNombre = ""
+                }
+
+                Button("Cancelar", role: .cancel) {}
+            })
+
     }
 }
 
@@ -91,11 +109,38 @@ struct ContextMenuContenido: View {
     let cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)?
     let cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)?
     @Binding var borrarPresionado: Bool
+    @Binding var renombrarPresionado: Bool
+    
+    private let sa: SistemaArchivos = SistemaArchivos.sa
     
     var body: some View {
         Section(header: Text(elemento.nombre)) {
             Text("Mostrar información")
             Text("Completar lectura")
+            
+            Button(action: {
+                self.renombrarPresionado = true
+            }) {
+                Label("Renombrar", systemImage: "square.and.pencil")
+            }
+            
+            Button(action: {
+                print("Mover")
+            }) {
+                Label("Mover", systemImage: "arrow.right.doc.on.clipboard")
+            }
+            
+            Button(action: {
+                print("Copiar")
+            }) {
+                Label("Copiar", systemImage: "doc.on.doc")
+            }
+            
+            Button(action: {
+                print("Duplicar")
+            }) {
+                Label("Duplicar", systemImage: "rectangle.on.rectangle")
+            }
             
             Menu {
                 if let _ = elemento as? Archivo {
@@ -126,8 +171,11 @@ struct ContextMenuContenido: View {
             }
         }
         
-        Button("Borrar", role: .destructive) {
-            borrarPresionado = true
+        Button(action: {
+            self.borrarPresionado = true
+        }) {
+            Label("Borrar", systemImage: "trash")
+                .foregroundStyle(.red)
         }
         
     }
