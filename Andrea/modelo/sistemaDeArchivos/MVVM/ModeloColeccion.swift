@@ -163,7 +163,6 @@ class ModeloColeccion: ObservableObject {
                 self.tiempoCarga = endTime - startTime
             }
         }
-
     }
     
     func reiniciarCarga() {

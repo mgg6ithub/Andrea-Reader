@@ -116,7 +116,7 @@ class PilaColecciones: ObservableObject {
         nuevaVM.reiniciarCarga()          // elementosCargados = false
         nuevaVM.elementos = []            // limpia placeholders anteriores si quieres
         Task {                            // asegúrate de llamar en MainActor
-            await nuevaVM.cargarElementos()
+            nuevaVM.cargarElementos()
         }
     }
 
@@ -127,9 +127,6 @@ class PilaColecciones: ObservableObject {
      - Parameter coleccion: La colección a agregar.
      */
     public func meterColeccion(coleccion: Coleccion) {
-        
-        print("Entrando en la coleccion: ", coleccion.nombre)
-        print("Su URL: ", coleccion.url)
         let vm = ModeloColeccion(coleccion)
         if colecciones.last?.coleccion == coleccion {
             return

@@ -11,8 +11,38 @@ struct PersistenciaDatos {
     
     let mc = ManipulacionCadenas()
     
-    //MARK: --- ARCHIVO ---
+    //MARK: --- ACTUALIZAR PERSISTENCIA ---
+    public func actualizarClaveURL(origen: URL, destino: URL) {
+        let keyAntigua = obtenerKey(origen)
+        let keyNueva = obtenerKey(destino)
+
+        guard let datosAntiguos = UserDefaults.standard.dictionary(forKey: keyAntigua) else {
+            print("⚠️ No se encontraron datos en persistencia para la clave antigua: \(keyAntigua)")
+            return
+        }
+
+        UserDefaults.standard.set(datosAntiguos, forKey: keyNueva)
+        UserDefaults.standard.removeObject(forKey: keyAntigua)
+        print("🔄 Persistencia actualizada de \(keyAntigua) → \(keyNueva)")
+    }
     
+    //MARK: --- DUPLICAR DATOS DE UNA CLAVE ---
+    public func duplicarDatosClave(origen: URL, destino: URL) {
+        let keyOrigen = obtenerKey(origen)
+        let keyDestino = obtenerKey(destino)
+        
+        guard let datosOrigen = UserDefaults.standard.dictionary(forKey: keyOrigen) else {
+            print("⚠️ No se encontraron datos para duplicar desde la clave: \(keyOrigen)")
+            return
+        }
+
+        UserDefaults.standard.set(datosOrigen, forKey: keyDestino)
+        print("📄 Datos duplicados de \(keyOrigen) → \(keyDestino)")
+    }
+
+
+    
+    //MARK: --- ARCHIVO ---
     public func guardarDatoElemento(url: URL, atributo: String, valor: Any) {
         let key = obtenerKey(url)
         var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]

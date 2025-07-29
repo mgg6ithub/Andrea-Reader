@@ -166,10 +166,10 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
                                 }
                                 .onEnded { value in
                                     
-                                    let velocityHeight = value.velocity.height / 5
+                                    _ = value.velocity.height / 5
                                     let height = value.translation.height
                                     let scale = height / geo.size.height
-                                    let applyingRatio: CGFloat = 0.1
+                                    let _: CGFloat = 0.1
                                     
                                     withAnimation(.easeInOut(duration: 0.4)) {
                                         self.scale = 1

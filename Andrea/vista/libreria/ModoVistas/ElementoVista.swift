@@ -20,7 +20,10 @@ struct ElementoVista<Content: View>: View {
     
     @State private var renombrarPresionado = false
     @State private var nuevoNombre = ""
+    
+    @State private var accionDocumento: EnumAccionDocumento? = nil
 
+    private let sa: SistemaArchivos = SistemaArchivos.sa
 
     var body: some View {
         
@@ -37,45 +40,15 @@ struct ElementoVista<Content: View>: View {
                 }
             )
             .contextMenu {
-//                Section(header: Text(elemento.nombre)) {
-//                    Text("Mostrar informacion")
-//                    Text("Completar lectura")
-//                    
-//                    Menu {
-//                        Button(action: {
-//                            cambiarMiniatura?(.imagenBase)
-//                        }) {
-//                            Label("Imagen base", systemImage: "text.document")
-//                        }
-//                        
-//                        Button(action: {
-//                            cambiarMiniatura?(.primeraPagina)
-//                        }) {
-//                            Label("Primera página", systemImage: "text.document")
-//                        }
-//                    } label: {
-//                        Label("Cambiar portada", systemImage: "paintbrush")
-//                    }
-//                    
-//                    Menu {
-//
-//                    } label: {
-//                        Label("Cambiar portada", systemImage: "paintbrush")
-//                    }
-//                }
-//
-//                Button("Borrar", role: .destructive) {
-//                    borrarPresionado = true
-//                }
-                ZStack {
-                    ContextMenuContenido(
-                        elemento: elemento,
-                        cambiarMiniaturaArchivo: cambiarMiniaturaArchivo,
-                        cambiarMiniaturaColeccion: cambiarMiniaturaColeccion,
-                        borrarPresionado: $borrarPresionado,
-                        renombrarPresionado: $renombrarPresionado
-                    )
-                }
+                ContextMenuContenido(
+                    vm: vm,
+                    elemento: elemento,
+                    cambiarMiniaturaArchivo: cambiarMiniaturaArchivo,
+                    cambiarMiniaturaColeccion: cambiarMiniaturaColeccion,
+                    borrarPresionado: $borrarPresionado,
+                    renombrarPresionado: $renombrarPresionado,
+                    accionDocumento: $accionDocumento
+                )
             }
             .confirmationDialog(
                 "¿Estás seguro de que quieres borrar \(elemento.nombre)?",
@@ -90,26 +63,64 @@ struct ElementoVista<Content: View>: View {
             .alert("Renombrar \"\(elemento.nombre)\"", isPresented: $renombrarPresionado, actions: {
                 TextField("Nuevo nombre", text: $nuevoNombre)
                 
-                Button("Aceptar") {
+                Button("Aceptar", role: .destructive) {
                     let nombreLimpio = nuevoNombre.trimmingCharacters(in: .whitespacesAndNewlines)
                     guard !nombreLimpio.isEmpty else { return }
-                    SistemaArchivos.sa.renombrarElemento(elemento: elemento, nuevoNombre: nombreLimpio)
+                    sa.renombrarElemento(elemento: elemento, nuevoNombre: nombreLimpio)
                     self.nuevoNombre = ""
                 }
 
                 Button("Cancelar", role: .cancel) {}
             })
+            .sheet(item: $accionDocumento) { accion in
+                DocumentPicker(
+                    onPick: { urls in
+                        guard let destino = urls.first else { return }
+                        switch accion {
+                        case .mover:
+                            print("Moviendo \(elemento) a \(destino)")
+                            try? sa.moverElemento(elemento, vm: vm, a: destino)
+                        case .copiar:
+                            print("Copiando \(elemento) a \(destino)")
+                            try? sa.copiarElemento(elemento, vm: vm, a: destino)
+                        }
+                    },
+                    onCancel: {
+                        print("Cancelado \(accion == .mover ? "mover" : "copiar")")
+                    },
+                    allowMultipleSelection: false,
+                    contentTypes: [.folder]
+                )
+            }
 
+    }
+}
+
+enum EnumAccionDocumento {
+    case mover
+    case copiar
+}
+
+extension EnumAccionDocumento: Identifiable {
+    var id: String {
+        switch self {
+        case .mover: return "mover"
+        case .copiar: return "copiar"
+        }
     }
 }
 
 
 struct ContextMenuContenido: View {
+    
+    @ObservedObject var vm: ModeloColeccion
+    
     let elemento: any ElementoSistemaArchivosProtocolo
     let cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)?
     let cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)?
     @Binding var borrarPresionado: Bool
     @Binding var renombrarPresionado: Bool
+    @Binding var accionDocumento: EnumAccionDocumento?
     
     private let sa: SistemaArchivos = SistemaArchivos.sa
     
@@ -125,21 +136,39 @@ struct ContextMenuContenido: View {
             }
             
             Button(action: {
-                print("Mover")
+                self.accionDocumento = .mover
             }) {
                 Label("Mover", systemImage: "arrow.right.doc.on.clipboard")
             }
             
             Button(action: {
-                print("Copiar")
+                self.accionDocumento = .copiar
             }) {
                 Label("Copiar", systemImage: "doc.on.doc")
             }
             
             Button(action: {
-                print("Duplicar")
+                try? sa.duplicarElemento(elemento, vm: vm)
             }) {
                 Label("Duplicar", systemImage: "rectangle.on.rectangle")
+            }
+            
+            Button(action: {
+                print("Mostrar en archivos del dispositivo")
+            }) {
+                Label("Mostrar en Archivos", systemImage: "folder")
+            }
+            
+            Button(action: {
+                print("Exportar")
+            }) {
+                Label("Exportar", systemImage: "square.and.arrow.up")
+            }
+            
+            Button(action: {
+                print("Compartir")
+            }) {
+                Label("Compartir", systemImage: "square.and.arrow.up.on.square")
             }
             
             Menu {
@@ -171,12 +200,12 @@ struct ContextMenuContenido: View {
             }
         }
         
-        Button(action: {
+        Button(role: .destructive) {
             self.borrarPresionado = true
-        }) {
+        } label: {
             Label("Borrar", systemImage: "trash")
-                .foregroundStyle(.red)
         }
+
         
     }
 }

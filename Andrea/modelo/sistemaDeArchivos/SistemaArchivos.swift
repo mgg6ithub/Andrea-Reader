@@ -39,12 +39,20 @@ class SistemaArchivos: ObservableObject {
      4. Se realiza el primer indexado de dicha coleccion
      */
     private init() {
+        
+        print("URL HOME: ", self.homeURL)
+        
+        self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
+        
         // Crear la coleccion raiz y asignarla
         let home = FabricaColeccion().crearColeccion(coleccionNombre: "HOME", coleccionURL: self.homeURL)
         cacheColecciones[homeURL] = ColeccionValor(coleccion: home)
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: homeURL)
+        
+        print("Indexamiento recursivo terminado")
+        print(self.cacheColecciones)
         
     }
     
@@ -106,6 +114,18 @@ class SistemaArchivos: ObservableObject {
     //MARK: - METODOS DEL SISTEMA DE ARCHIVOS
     
     /**
+     Borra la coleccion pasada del cache de colecciones.
+     
+     - Parameter claveURL: URL de la coleccion para borrarla del diccinario.
+     */
+    private func borrarColeccionDeCache(claveURL: URL) {
+        if self.cacheColecciones[claveURL] != nil {
+            self.cacheColecciones.removeValue(forKey: claveURL) //borramos del cache de coleccion en sa
+            print("✅ Colección eliminada del cache")
+        }
+    }
+    
+    /**
      Escanea el directorio dado para obtener las URLs de los elementos contenidos en él.
      
      - Parameter coleccionURL: La URL del directorio a escanear.
@@ -130,34 +150,42 @@ class SistemaArchivos: ObservableObject {
     //MARK: --- renombrar elemento del sistema de archivos ---
     public func renombrarElemento(elemento: any ElementoSistemaArchivosProtocolo, nuevoNombre: String) {
         fileQueue.async {
-            let originalURL = elemento.url
-            let extensionOriginal = originalURL.pathExtension
+            
+            guard elemento.nombre != nuevoNombre else {
+                print("🟡 El nuevo nombre es igual al actual. No se realiza cambio.")
+                return
+            }
+            
+            let origenURL = elemento.url
+            let extensionOriginal = origenURL.pathExtension
             
             var nuevoNombre = nuevoNombre
-            if !self.sau.isDirectory(elementURL: originalURL) {
+            if !self.sau.isDirectory(elementURL: origenURL) {
                 nuevoNombre = ManipulacionCadenas().joinNameWithExtension(name: nuevoNombre, ext: extensionOriginal)
             }
             
-            let newURL = originalURL.deletingLastPathComponent().appendingPathComponent(nuevoNombre)
+            let destinoURL = origenURL.deletingLastPathComponent().appendingPathComponent(nuevoNombre)
             nuevoNombre = self.sau.eliminarExtension(nombreArchivo: nuevoNombre)
             
             do {
-                try self.fm.moveItem(at: originalURL, to: newURL) //Renombrar dentro del sistema de archivos
+                try self.fm.moveItem(at: origenURL, to: destinoURL) //Renombrar dentro del sistema de archivos
                 
                 //--- Actualizamos vista --- 
                 if let archivo = elemento as? Archivo {
                     print("Renombrando archivo a ", nuevoNombre)
                     withAnimation { archivo.nombre = nuevoNombre }
-                    archivo.url = newURL
+                    archivo.url = destinoURL
                 } else if let coleccion = elemento as? Coleccion {
                     print("Renombrando coleccion a ", nuevoNombre)
                     withAnimation { coleccion.nombre = nuevoNombre }
-                    coleccion.url = newURL
+                    coleccion.url = destinoURL
                     //--- si es una coleccion actualizamos el cache de colecciones del sa ---
-                    let valor = self.cacheColecciones.removeValue(forKey: originalURL)
-                    self.cacheColecciones[newURL] = valor
-
+                    let valor = self.cacheColecciones.removeValue(forKey: origenURL)
+                    self.cacheColecciones[destinoURL] = valor
                 }
+                
+                // --- actualizar persistencia ---
+                PersistenciaDatos().actualizarClaveURL(origen: origenURL, destino: destinoURL)
                 
             } catch {
                 DispatchQueue.main.async {
@@ -168,30 +196,120 @@ class SistemaArchivos: ObservableObject {
     }
     
     // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
-    public func moverElemento(_ elemento: Any, a nuevaURL: URL) throws {
+    public func moverElemento(_ elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion, a nuevaURL: URL) throws {
         fileQueue.sync {
-            // --- Lógica para mover/renombrar en disco ---
-            // try FileManager.default.moveItem(at: (elemento as! URL), to: nuevaURL)
-            //
-            // Luego, actualizar caches internas si tienes, y finalmente:
             
-            DispatchQueue.main.async {
-                // Actualizas `elements` para reflejar la nueva URL/nombre, etc.
+            let origenURL = elemento.url
+            let destinoURL = nuevaURL.appendingPathComponent(origenURL.lastPathComponent)
+            
+            do {
+                
+                try self.fm.moveItem(at: origenURL, to: destinoURL)
+                
+                //--- actualizar la vista ---
+                let coleccionActual: Coleccion = vm.coleccion
+                
+                guard let coleccionDestino: Coleccion = self.cacheColecciones[nuevaURL]?.coleccion else {
+                    print("No se ha podido obtener la coleccion destino")
+                    return
+                }
+                
+                DispatchQueue.main.async { withAnimation(.easeInOut(duration: 0.35)) { vm.elementos.removeAll(where: { $0.id == elemento.id }) } }
+                
+                if let _ = elemento as? Archivo {
+                    coleccionActual.totalArchivos -= 1
+                    coleccionDestino.totalArchivos += 1
+                } else if let coleccion = elemento as? Coleccion { // si es coleccion
+                    coleccionActual.totalColecciones -= 1
+                    coleccionDestino.totalColecciones += 1
+                    
+                    //--- actualizar cache colecciones ---
+                    coleccion.url = destinoURL
+                    self.borrarColeccionDeCache(claveURL: origenURL)
+                    
+                    let nuevaColeccionValor = ColeccionValor(coleccion: coleccion)
+                    self.cacheColecciones[destinoURL] = nuevaColeccionValor
+                    
+                    // 2. Actualizar la colección padre
+                    if let valorPadre = self.cacheColecciones[nuevaURL] {
+                        valorPadre.subColecciones.insert(destinoURL)
+                        valorPadre.listaElementos.append(coleccion)
+                    }
+                }
+                
+                // --- actualizar persistencia ---
+                PersistenciaDatos().actualizarClaveURL(origen: origenURL, destino: destinoURL)
+        
+            } catch {
+                print("⚠️ Error al mover \(origenURL.lastPathComponent) a \(destinoURL.lastPathComponent)")
             }
         }
     }
     
     // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
-    public func copiarElemento(_ elemento: Any, a nuevaURL: URL) throws {
+    public func copiarElemento(_ elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion, a nuevaURL: URL) throws {
         fileQueue.sync {
-            // --- Lógica para mover/renombrar en disco ---
-            // try FileManager.default.moveItem(at: (elemento as! URL), to: nuevaURL)
-            //
-            // Luego, actualizar caches internas si tienes, y finalmente:
+            let origenURL = elemento.url
+            let destinoURL = nuevaURL.appendingPathComponent(origenURL.lastPathComponent)
             
-            DispatchQueue.main.async {
-                // Actualizas `elements` para reflejar la nueva URL/nombre, etc.
+            do {
+                try self.fm.copyItem(at: origenURL, to: destinoURL)
+                
+                //--- actualizamos la instancia de la coleccion destino ---
+                guard let coleccionDestino: Coleccion = self.cacheColecciones[nuevaURL]?.coleccion else {
+                    print("No se ha podido obtener la coleccion destino")
+                    return
+                }
+                
+                if let _ = elemento as? Archivo {
+                    coleccionDestino.totalArchivos += 1
+                } else if let coleccion = elemento as? Coleccion {
+                    coleccionDestino.totalArchivos += 1
+                    
+                    let nuevaColeccionValor = ColeccionValor(coleccion: coleccion)
+                    self.cacheColecciones[destinoURL] = nuevaColeccionValor
+                    
+                    // 2. Actualizar la colección padre
+                    if let valorPadre = self.cacheColecciones[nuevaURL] {
+                        valorPadre.subColecciones.insert(destinoURL)
+                        valorPadre.listaElementos.append(coleccion)
+                    }
+                    
+                    //--- duplicar en persistencia ---
+                    PersistenciaDatos().duplicarDatosClave(origen: origenURL, destino: destinoURL)
+                }
+                
+            } catch {
+                print("⚠️ Error al copiar \(origenURL.lastPathComponent) a \(destinoURL.lastPathComponent)")
             }
+        }
+    }
+    
+    //MARK: --- DUPLICACION RAPIDA DE UN ELEMENTO EN LA MISMA COLECCION ---
+    public func duplicarElemento(_ elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion) throws {
+        fileQueue.sync {
+            
+            let origenURL = elemento.url
+            let nombreOrigen = origenURL.deletingPathExtension().lastPathComponent + "(1)" + "." + origenURL.pathExtension
+            
+            let duplicadaURL = origenURL.deletingLastPathComponent().appendingPathComponent(nombreOrigen)
+            
+            print("Nombre duplicado -> ", nombreOrigen)
+            print("URL nueva -> ", duplicadaURL)
+            
+            let _ = self.crearInstancia(elementoURL: duplicadaURL, coleccionDestinoURL: origenURL.deletingLastPathComponent())
+            
+            //--- actualizar instancia de la coleccion actual ---
+            let coleccionActual = vm.coleccion
+            if let _ = elemento as? Archivo {
+                coleccionActual.totalArchivos += 1
+            } else if let _ = elemento as? Coleccion {
+                coleccionActual.totalArchivos += 1
+            }
+            
+            //--- duplicar en persistencia ---
+            PersistenciaDatos().duplicarDatosClave(origen: origenURL, destino: duplicadaURL)
+            
         }
     }
     
@@ -216,15 +334,11 @@ class SistemaArchivos: ObservableObject {
                             vm.elementos.removeAll(where: { $0.id == elemento.id }) //borramos de la vista del vm
                         }
                         
-                        if self.sau.isDirectory(elementURL: elemento.url) {
+                        if self.sau.isDirectory(elementURL: url) {
                             vm.coleccion.totalColecciones -= 1
+                            self.borrarColeccionDeCache(claveURL: url)
                         } else {
                             vm.coleccion.totalArchivos -= 1
-                        }
-                        
-                        if self.cacheColecciones[url] != nil {
-                            self.cacheColecciones.removeValue(forKey: url) //borramos del cache de coleccion en sa
-                            print("✅ Colección eliminada del cache")
                         }
                     }
                 }
@@ -273,7 +387,10 @@ class SistemaArchivos: ObservableObject {
                 }
                 
                 // --- Agregamos el archivo a la listaElementos para actualizar la UI solo con ese elemento
-                self.actualizarUISoloElemento(elementoURL: nuevoArchivoURL)
+                Task { @MainActor in
+                    self.actualizarUISoloElemento(elementoURL: nuevoArchivoURL)
+                }
+                
                 return
             }
         }
@@ -298,7 +415,9 @@ class SistemaArchivos: ObservableObject {
                 try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
                 
                 // --- Creamos la instancia de la coleccion ---
-                self.actualizarUISoloElemento(elementoURL: nuevaColeccionURL, coleccionDestino: coleccionDestino)
+                Task { @MainActor in
+                    self.actualizarUISoloElemento(elementoURL: nuevaColeccionURL, coleccionDestino: coleccionDestino)
+                }
             }
             else {
                 print("La coleccion ya existe no se creara otra")
