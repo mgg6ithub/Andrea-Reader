@@ -12,26 +12,18 @@ struct ProgresoCuadricula: View, Equatable {
     }
 
     var body: some View {
-        HStack(spacing: 4) {
-            // Barra de fondo
-            ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 3)
-                    .fill(progreso > 0 ? Color.gray.opacity(0.7) : Color.gray.opacity(0.3))
-                    .frame(width: totalWidth, height: 4)
+        ZStack(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 3)
+                .fill(progreso > 0 ? Color.gray.opacity(0.7) : Color.gray.opacity(0.3))
+                .frame(width: totalWidth, height: 4)
 
-                // Barra rellena
-                RoundedRectangle(cornerRadius: 3)
-                    .fill(coleccionColor)
-                    .frame(width: totalWidth * CGFloat(progreso) / 100.0, height: 4)
-            }
-            .frame(height: 4)
-
-            Text("\(progreso)%")
-                .font(.caption2)
-                .foregroundColor(coleccionColor)
+            // Barra rellena
+            RoundedRectangle(cornerRadius: 3)
+                .fill(coleccionColor)
+                .frame(width: totalWidth * CGFloat(progreso) / 100.0, height: 4)
         }
+        .frame(height: 4)
         .padding(.horizontal, 10)
-        .padding(.vertical, 4)
     }
 }
 

@@ -29,52 +29,91 @@ struct CuadriculaArchivo: View {
                         .onAppear {
                             mostrarMiniatura = true
                         }
+                        .zIndex(1)
                 } else {
                     ProgressView()
+                        .zIndex(1)
                 }
                 
-                VStack(spacing: 0) {
-                    Spacer()
-                    HStack(spacing: 0) {
-                        Text("%\(archivo.progreso)")
-                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.80))
-                            .bold()
-                            .foregroundColor(coleccionVM.color)
-                            .frame(maxWidth: width * 0.3, alignment: .trailing)
-                        Spacer()
-                    }
+                // 🌙 Nueva sombra más suave y oscura en la esquina inferior izquierda
+                if mostrarMiniatura {
                     
-                    ProgresoCuadricula(
-                        progreso: archivo.progreso,
-                        coleccionColor: coleccionVM.color,
-                        totalWidth: width - 20
-                    )
-                    .frame(maxHeight: 24)
-                }
-                .frame(maxHeight: .infinity, alignment: .bottom)
-                
-                // 👇 Esta capa es la "sombra" simulada encima de la esquina inferior izquierda
-                VStack {
-                    Spacer()
-                    HStack {
-                        Rectangle()
-                            .fill(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color.black.opacity(0.85),
-                                        Color.clear
-                                    ]),
-                                    startPoint: .bottomLeading,
-                                    endPoint: .topTrailing
-                                )
-                            )
-                            .frame(width: 60, height: 60)
-                            .allowsHitTesting(false)
+                    VStack(spacing: 0) {
                         Spacer()
+                        HStack(spacing: 3.5) {
+                            
+                            if archivo.progreso > 0 {
+                                HStack(spacing: 0) {
+                                    Text("%")
+                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.75))
+                                        .bold()
+                                        .foregroundColor(coleccionVM.color)
+                                        .zIndex(3)
+                                    
+                                    Text("\(archivo.progreso)")
+                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.95))
+                                        .bold()
+                                        .foregroundColor(coleccionVM.color)
+                                        .zIndex(3)
+                                }
+                            }
+                            
+                            // --- ICONOS DE LOS ESTADOS DE UN ARCHIVO ---
+//                            Image(systemName: "lock.shield")
+//                                .font(.system(size: 15))
+//                                .symbolRenderingMode(.palette)
+//                                .foregroundStyle(.red.gradient, .gray.gradient)
+//                            
+//                            Image(systemName: "star.fill")
+//                                .font(.system(size: 14))
+//                                .symbolRenderingMode(.palette)
+//                                .foregroundStyle(.yellow.gradient)
+//                                .padding(.bottom, 1)
+//                                .padding(.leading, -2)
+                            
+                            Spacer()
+                        }
+                        .frame(alignment: .leading)
+                        .padding(.horizontal, 10)
+                        .padding(.bottom, -6)
+                        
+                        ProgresoCuadricula(
+                            progreso: archivo.progreso,
+                            coleccionColor: coleccionVM.color,
+                            totalWidth: width - 20
+                        )
+                        .frame(maxHeight: 24)
                     }
+                    .frame(maxHeight: .infinity, alignment: .bottom)
+                    .zIndex(3)
+                    
+                    VStack {
+                        Spacer()
+                        HStack {
+                            RadialGradient(
+                                gradient: Gradient(colors: [
+                                    Color.black,
+                                    Color.black.opacity(0.95)
+                                ]),
+                                center: .bottomLeading,
+                                startRadius: 10,
+                                endRadius: 90
+                            )
+                            .frame(width: 120, height: 80)
+                            .blur(radius: 20)
+                            .offset(x: -20, y: 20)
+                            .allowsHitTesting(false)
+
+                            Spacer()
+                        }
+                    }
+                    .zIndex(2) // 🔽 Importante: para que quede detrás de la barra y texto
                 }
+                
             }
             .frame(width: width)
+            
+            Spacer()
 
             
             // --- Titulo e informacion ---
