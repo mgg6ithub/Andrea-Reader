@@ -25,7 +25,13 @@ struct HistorialColecciones: View {
                             horizontalPadding: 11,
                             animationDelay: delay(0)
                         ) {
-                            Image(systemName: "house").opacity(0.75)
+                            HStack(spacing: 10) {
+                                Image(systemName: "house").opacity(0.75)
+                                
+                                Text("Home")
+                                    .font(.system(size: 20))
+                                    .bold()
+                            }
                         }
                         .padding(.trailing, 4)
                         
@@ -55,6 +61,8 @@ struct HistorialColecciones: View {
                                         Image(systemName: "chevron.forward")
                                             .font(.system(size: 16))
                                             .foregroundColor(.gray)
+                                            .transition(.opacity.combined(with: .scale)) // animación al aparecer/desaparecer
+                                            .animation(.easeInOut(duration: 0.3), value: pc.getColeccionActual().coleccion)
                                         
                                         ColeccionRectanguloAvanzado(
                                             textoSize: 21,
@@ -75,6 +83,8 @@ struct HistorialColecciones: View {
                                             Image(systemName: "chevron.forward")
                                                 .font(.system(size: 10))
                                                 .foregroundColor(.gray.opacity(0.8))
+                                                .transition(.opacity.combined(with: .scale)) // animación al aparecer/desaparecer
+                                                .animation(.easeInOut(duration: 0.3), value: pc.getColeccionActual().coleccion)
                                             
                                             ColeccionRectanguloAvanzado(
                                                 textoSize: 14,
@@ -216,7 +226,7 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(color.opacity(isActive ? 0.7 : 0.4).gradient, lineWidth: isActive ? 2 : 1)
                     )
-                    .shadow(color: color.opacity(0.3), radius: isActive ? 4 : 2, x: 0, y: 2)
+                    .shadow(color: color.opacity(0.275), radius: isActive ? 4 : 2, x: 0, y: 2)
             )
             .scaleEffect(scale)
             .offset(x: offset)

@@ -24,7 +24,7 @@ struct VistaPrincipal: View {
                     
                     HistorialColecciones()
                         .frame(height: 50)
-                        .padding(.bottom, 8)
+//                        .padding(.bottom, 8)
                 }
                 .padding(.horizontal, constantes.horizontalPadding)
                 

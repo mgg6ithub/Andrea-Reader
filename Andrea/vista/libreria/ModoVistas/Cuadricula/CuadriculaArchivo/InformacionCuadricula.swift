@@ -28,28 +28,23 @@ struct InformacionCuadricula: View, Equatable {
         VStack(spacing: 4) {
             HStack(spacing: 0) {
                 Text(nombre)
+                    .bold()
                     .id(nombre) // fuerza la transición
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .transition(.opacity.combined(with: .scale)) // o .slide, .move(edge:), etc.
                     .animation(.easeInOut(duration: 0.3), value: nombre)
-                    .font(.system(size: ConstantesPorDefecto().titleSize * 0.5))
+                    .font(.system(size: ConstantesPorDefecto().titleSize * 0.80))
                     .foregroundColor(appEstado.temaActual.textColor)
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.6)
                     .lineLimit(1)
-                    .frame(maxWidth: maxWidth * 0.7)
 
                 Spacer()
-
-                Text("%\(progreso)")
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.5))
-                    .bold()
-                    .foregroundColor(coleccionColor)
-                    .frame(maxWidth: maxWidth * 0.3, alignment: .trailing)
             }
 
             HStack {
                 Text(tipo)
-                    .font(.system(size: 8))
+                    .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.80))
                     .foregroundColor(.gray)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
@@ -57,7 +52,7 @@ struct InformacionCuadricula: View, Equatable {
                 Spacer()
 
                 Text("\(tamanioMB) MB")
-                    .font(.system(size: 8))
+                    .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.80))
                     .foregroundColor(.gray)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
@@ -65,7 +60,7 @@ struct InformacionCuadricula: View, Equatable {
                 Spacer()
 
                 Text("\(totalPaginas.map { "\($0) pages" } ?? "—")")
-                    .font(.system(size: 8))
+                    .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.80))
                     .foregroundColor(.gray)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
