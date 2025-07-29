@@ -81,6 +81,18 @@ extension Color {
 
     static let fixedSecondaryGray_light = Color(red: 242/255, green: 242/255, blue: 247/255) // Aproximado a systemGray6 (modo claro)
     static let fixedSecondaryGray_dark = Color(red: 28/255, green: 28/255, blue: 30/255)     // Aproximado a systemGray6 (modo oscuro)
+    
+    func darken(by percentage: Double) -> Color {
+        let uiColor = UIColor(self)
+        var hue: CGFloat = 0, saturation: CGFloat = 0, brightness: CGFloat = 0, alpha: CGFloat = 0
+
+        uiColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        
+        return Color(hue: hue,
+                     saturation: saturation,
+                     brightness: max(brightness - CGFloat(percentage), 0),
+                     opacity: Double(alpha))
+    }
 }
 
 

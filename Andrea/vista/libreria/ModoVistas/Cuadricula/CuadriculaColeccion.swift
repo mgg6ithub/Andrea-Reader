@@ -11,45 +11,39 @@ struct CuadriculaColeccion: View {
     
     let coleccion: Coleccion
     
-    @State private var isExpanded = false
-    @State private var isVisible = false
+    var width: CGFloat
+    var height: CGFloat
     
     var body: some View {
         
-        Button(action: {
-            coleccion.meterColeccion()
-        }) {
-            VStack {
-                ZStack {
-                    Image("CARPETA-ATRAS")
-                        .resizable()
-                        .frame(width: 120, height: 125)
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(Color.cyan, Color.blue)
-                        .zIndex(1)
+        VStack(alignment: .center, spacing: 0) {
+            Button(action: {
+                coleccion.meterColeccion()
+            }) {
+                VStack {
+                    ZStack {
+                        Image("CARPETA-ATRAS")
+                            .resizable()
+                            .frame(width: 150, height: 145)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(coleccion.color, coleccion.color.darken(by: 0.2)) // 20% más oscuro
+                            .zIndex(1)
+                        
+//                        Image("CARPETA-DELANTE")
+//                            .resizable()
+//                            .frame(width: 150, height: 92.5)
+//                            .foregroundColor(coleccion.color)
+//                            .zIndex(2)
+                    }
                     
-                    Image(isExpanded ? "CARPETA-ALANTE-ABIERTA" : "CARPETA-DELANTE")
-                        .resizable()
-//                        .frame(width: isExpanded ? 125 : 120, height: 72.5)
-                        .foregroundColor(Color.cyan)
-                        .zIndex(2)
-//                        .animation(.easeInOut(duration: 0.3), value: isExpanded)
+                    Text(coleccion.nombre)
+                        .font(.title)
+                        .frame(alignment: .center)
+                    
                 }
-                
-                Text(coleccion.nombre)
-                    .font(.title)
-                    .frame(alignment: .center)
-                
             }
         }
-//        .scaleEffect(isVisible ? 1 : 0.95)
-//        .opacity(isVisible ? 1 : 0)
-//        .onAppear {
-//            isVisible = true
-//        }
-//        .onDisappear {
-//            isVisible = false
-//        }
+        .frame(width: width, height: height)
         
     }
     

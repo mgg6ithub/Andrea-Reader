@@ -112,6 +112,9 @@ struct HistorialColecciones: View {
 
             if pc.getColeccionActual().coleccion.nombre != "HOME" {
                 Button(action: {
+                    
+                    self.colorTemporal = pc.getColeccionActual().color
+                    
                     if appEstado.animaciones {
                         withAnimation {
                             esVerColeccionPresionado.toggle()
@@ -140,7 +143,7 @@ struct HistorialColecciones: View {
                     }
                 }
                 .sheet(isPresented: $esVerColeccionPresionado, onDismiss: {
-                    pc.getColeccionActual().color = colorTemporal
+                    pc.getColeccionActual().color = colorTemporal //Al cerrar asignamos el color seleccionado
                 }) {
                     MasInformacionColeccion(coleccionVM: pc.getColeccionActual(), colorTemporal: $colorTemporal)
                 }

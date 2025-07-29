@@ -74,7 +74,7 @@ struct CuadriculaVista: View {
                                             .shadow(color: appEstado.temaActual == .dark ? Color.black.opacity(0.6) : Color.black.opacity(0.2), radius: 7, x: 0, y: 3)
                                             .contentShape(ContentShapeKinds.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
                                     } else if let coleccion = elemento as? Coleccion {
-                                        CuadriculaColeccion(coleccion: coleccion)
+                                        CuadriculaColeccion(coleccion: coleccion, width: itemWidth, height: itemHeight)
                                     }
                                 }
                                 .matchedGeometryEffect(id: elemento.id, in: namespace)

@@ -15,13 +15,12 @@ struct MasInformacionColeccion: View {
             
             ColorPicker("Selecciona un color", selection: $colorTemporal)
                 .padding()
-                .onChange(of: colorTemporal) { nuevoColor in
-                    print("Has seleccionado color: \(nuevoColor)")
+                .onChange(of: colorTemporal) {
                     // --- VISTA ---
-//                    coleccionVM.color = nuevoColor
+                    coleccionVM.coleccion.color = colorTemporal
                     
                     // --- PERSISTENCIA ---
-                    PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionVM.coleccion, atributo: "color", valor: nuevoColor)
+                    PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionVM.coleccion, atributo: "color", valor: colorTemporal)
                 }
             
             RoundedRectangle(cornerRadius: 10)

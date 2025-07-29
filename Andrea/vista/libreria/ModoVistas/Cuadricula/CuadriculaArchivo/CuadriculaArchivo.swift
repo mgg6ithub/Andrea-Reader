@@ -31,6 +31,9 @@ struct CuadriculaArchivo: View {
                         }
                         .zIndex(1)
                 } else {
+                    
+                    Spacer()
+                    
                     ProgressView()
                         .zIndex(1)
                 }
@@ -112,6 +115,7 @@ struct CuadriculaArchivo: View {
                 
             }
             .frame(width: width)
+            .clipped()
             
             Spacer()
 
@@ -128,6 +132,7 @@ struct CuadriculaArchivo: View {
             )
             .equatable()
             .frame(height: 55)
+            .padding(.top, -10)
             
         }
         .frame(width: width, height: height)

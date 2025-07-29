@@ -17,7 +17,7 @@ struct BotonMenu<T: Equatable>: View {
 
     var body: some View {
         Button(action: accion) {
-            Label(nombre, systemImage: isActive ? "checkmark" : icono)
+            Label(nombre, systemImage: icono)
                 .foregroundStyle(
                     isActive ? color : ap.temaActual.textColor,
                     isActive ? ap.temaActual.textColor : ap.temaActual.textColor,
@@ -117,7 +117,6 @@ struct MenuCentro: View {
                 Label(coleccionActualVM.coleccion.nombre, systemImage: "folder")
                 
                 Section(header: Text("Vista")) {
-                    
                     BotonMenu(
                         nombre: "Cuadrícula",
                         icono: "square.grid.2x2",
