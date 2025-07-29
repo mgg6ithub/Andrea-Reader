@@ -34,10 +34,14 @@ struct CuadriculaArchivo: View {
                             .zIndex(1)
                     } else {
                         
-                        Spacer()
-                        
-                        ProgressView()
-                            .zIndex(1)
+                        VStack(alignment: .center) {
+                            Spacer()
+                            
+                            ProgressView()
+                                .zIndex(1)
+                            
+                            Spacer()
+                        }
                     }
                 }
                 .onChange(of: coleccionVM.color) { //Si se cambia de color volvemos a genera la imagen base
@@ -85,16 +89,18 @@ struct CuadriculaArchivo: View {
                             Spacer()
                         }
                         .frame(alignment: .leading)
-                        .padding(.horizontal, 10)
+                        .padding(.horizontal, archivo.tipoMiniatura == .imagenBase ? 13 : 10)
                         .padding(.bottom, -6)
                         
                         ProgresoCuadricula(
                             progreso: archivo.progreso,
                             coleccionColor: coleccionVM.color,
-                            totalWidth: width - 20
+                            totalWidth: width - 20,
+                            padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
                         )
                         .frame(maxHeight: 24)
                     }
+                    .padding(.bottom, 2)
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     .zIndex(3)
                     

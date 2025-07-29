@@ -4,6 +4,7 @@ struct ProgresoCuadricula: View, Equatable {
     let progreso: Int
     let coleccionColor: Color
     let totalWidth: CGFloat     // ancho disponible para la barra
+    let padding: CGFloat
 
     static func == (lhs: ProgresoCuadricula, rhs: ProgresoCuadricula) -> Bool {
         lhs.progreso == rhs.progreso &&
@@ -23,7 +24,7 @@ struct ProgresoCuadricula: View, Equatable {
                 .frame(width: totalWidth * CGFloat(progreso) / 100.0, height: 4)
         }
         .frame(height: 4)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, padding)
     }
 }
 
