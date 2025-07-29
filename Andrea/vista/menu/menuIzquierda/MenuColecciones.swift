@@ -106,9 +106,6 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
                         .font(.system(size: 20))
                         .bold()
                         .frame(alignment: .bottom)
-                        .onAppear {
-                            print("total de elementos: ", totalElements)
-                        }
                 }
                 
             }

@@ -86,9 +86,6 @@ struct ListaColeccionMenu: View {
                                 .fill(Color.gray) // O ap.temaActual.separatorColor
                                 .frame(height: 0.5)
                                 .padding(.leading, 50)
-                                .onAppear {
-                                    print(coleccionesFiltradas)
-                                }
                         }
                     }
                 }
