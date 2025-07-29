@@ -3,6 +3,8 @@ import SwiftUI
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
     
+    @Published var tipoMiniatura: EnumTipoMiniatura = .primeraPagina
+    
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
     var dirName: String = ""
@@ -87,11 +89,17 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         self.cargarPaginasAsync()
         
         if let paginaConcreta = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "paginaGuardada") {
-            print("Se cagra la pagina guardada desde persistencia")
+//            print("Se cagra la pagina guardada desde persistencia")
             self.setCurrentPage(currentPage: paginaConcreta as! Int)
         } else {
             self.setCurrentPage(currentPage: 10)
 //            PersistenciaDatos().guardarDatoElemento(url: archivo.url, atributo: "paginaGuardada", valor: 10)
+        }
+        
+        if let tipoRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "tipoMiniatura") as? String,
+           let tipo = EnumTipoMiniatura(rawValue: tipoRaw) {
+//            print("Se carga el tipo de miniatura desde persistencia: ", tipo)
+            self.tipoMiniatura = tipo
         }
         
     }

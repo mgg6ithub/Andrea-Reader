@@ -14,28 +14,36 @@ struct CuadriculaArchivo: View {
     var height: CGFloat
     
     @State private var mostrarMiniatura = false
-
+    @State private var idImagen = UUID()
+    
     var body: some View {
         VStack(spacing: 0) {
 
             // --- Imagen ---
             ZStack {
-                if let img = viewModel.miniatura {
-                    Image(uiImage: img)
-                        .resizable()
-                        .scaleEffect(mostrarMiniatura ? 1 : 0.95)
-                        .opacity(mostrarMiniatura ? 1 : 0)
-                        .animation(.easeOut(duration: 0.3), value: mostrarMiniatura)
-                        .onAppear {
-                            mostrarMiniatura = true
-                        }
-                        .zIndex(1)
-                } else {
-                    
-                    Spacer()
-                    
-                    ProgressView()
-                        .zIndex(1)
+                ZStack {
+                    if let img = viewModel.miniatura {
+                        Image(uiImage: img)
+                            .resizable()
+                            .scaleEffect(mostrarMiniatura ? 1 : 0.95)
+                            .opacity(mostrarMiniatura ? 1 : 0)
+                            .animation(.easeOut(duration: 0.3), value: mostrarMiniatura)
+                            .onAppear {
+                                mostrarMiniatura = true
+                            }
+                            .zIndex(1)
+                    } else {
+                        
+                        Spacer()
+                        
+                        ProgressView()
+                            .zIndex(1)
+                    }
+                }
+                .onChange(of: coleccionVM.color) { //Si se cambia de color volvemos a genera la imagen base
+                    if archivo.tipoMiniatura == .imagenBase {
+                        viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
+                    }
                 }
                 
                 // 🌙 Nueva sombra más suave y oscura en la esquina inferior izquierda
@@ -48,7 +56,7 @@ struct CuadriculaArchivo: View {
                             if archivo.progreso > 0 {
                                 HStack(spacing: 0) {
                                     Text("%")
-                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.75))
+                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.65))
                                         .bold()
                                         .foregroundColor(coleccionVM.color)
                                         .zIndex(3)
@@ -90,27 +98,29 @@ struct CuadriculaArchivo: View {
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     .zIndex(3)
                     
-                    VStack {
-                        Spacer()
-                        HStack {
-                            RadialGradient(
-                                gradient: Gradient(colors: [
-                                    Color.black,
-                                    Color.black.opacity(0.95)
-                                ]),
-                                center: .bottomLeading,
-                                startRadius: 10,
-                                endRadius: 90
-                            )
-                            .frame(width: 120, height: 80)
-                            .blur(radius: 20)
-                            .offset(x: -20, y: 20)
-                            .allowsHitTesting(false)
-
+                    if archivo.tipoMiniatura != .imagenBase {
+                        VStack {
                             Spacer()
+                            HStack {
+                                RadialGradient(
+                                    gradient: Gradient(colors: [
+                                        Color.black,
+                                        Color.black.opacity(0.95)
+                                    ]),
+                                    center: .bottomLeading,
+                                    startRadius: 10,
+                                    endRadius: 90
+                                )
+                                .frame(width: 120, height: 80)
+                                .blur(radius: 20)
+                                .offset(x: -20, y: 20)
+                                .allowsHitTesting(false)
+
+                                Spacer()
+                            }
                         }
+                        .zIndex(2) // 🔽 Importante: para que quede detrás de la barra y texto
                     }
-                    .zIndex(2) // 🔽 Importante: para que quede detrás de la barra y texto
                 }
                 
             }
@@ -151,7 +161,6 @@ struct CuadriculaArchivo: View {
             viewModel.unloadThumbnail(for: archivo)
         }
         .onChange(of: archivo.tipoMiniatura) {
-            print("CAMBIANDO MINIATURA EN LA VISTA")
             viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
         }
 

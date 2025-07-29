@@ -33,8 +33,13 @@ class ModeloMiniatura {
         DispatchQueue.global(qos: .userInitiated).async {
             //--- obtener imagen por defecto ---
             let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
-
+            //--- si el tipo de archivo es desconodio ---
             guard archivo.fileType != .unknown else {
+                DispatchQueue.main.async { completion(imagenBase) }
+                return
+            }
+            //--- si el tipo miniatura es la imagen base ---
+            guard archivo.tipoMiniatura != .imagenBase else {
                 DispatchQueue.main.async { completion(imagenBase) }
                 return
             }
@@ -149,38 +154,4 @@ class ModeloMiniatura {
     }
     
 }
-
-
-//actor ThumbnailLoader {
-//    static let shared = ThumbnailLoader()
-//
-//    private let modelo = ModeloMiniatura.getModeloMiniaturaSingleton
-////    private var cache = NSCache<NSString, UIImage>()
-//
-//    /// Devuelve inmediatamente la imagen cacheada si existe, o la genera y cachea.
-//    func image(for archivo: Archivo, color: Color, targetSize: CGSize) async -> UIImage? {
-//        let key = modelo.obtenerLLave(archivoURL: archivo.url)
-//
-//        // 1. Consultar caché del singleton directamente
-//        if let img = modelo.obtenerMiniatura(archivo: archivo) {
-//            return img
-//        }
-//
-//        // 2. Si no existe, generar y cachear
-//        let thumbnail = await withCheckedContinuation { cont in
-//            modelo.construirMiniatura(color: color, archivo: archivo) { img in
-//                cont.resume(returning: img)
-//            }
-//        }
-//
-//        return thumbnail
-//    }
-//
-//
-//    /// Opcional: expulsa del cache (en respuesta a warnings de memoria)
-////    func removeImage(for archivo: Archivo) {
-////        let key = modelo.obtenerLLave(archivoURL: archivo.url)
-////        cache.removeObject(forKey: key)
-////    }
-//}
 

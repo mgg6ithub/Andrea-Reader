@@ -23,6 +23,10 @@ struct PersistenciaDatos {
             dict[atributo] = valor
         } else if let valor = valor as? String {
             dict[atributo] = valor
+        } else if let tipoMiniatura = valor as? EnumTipoMiniatura {
+            dict[atributo] = tipoMiniatura.rawValue
+        } else if let tipoMiniatura = valor as? EnumTipoMiniaturaColeccion {
+            dict[atributo] = tipoMiniatura.rawValue
         } else {
             print("⚠️ Tipo no soportado para persistencia en elemento: \(type(of: valor))")
             return

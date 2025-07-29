@@ -7,7 +7,10 @@ struct ElementoVista<Content: View>: View {
     @ObservedObject var vm: ModeloColeccion
     let elemento: any ElementoSistemaArchivosProtocolo
     let scrollIndex: Int?
-    var cambiarMiniatura: ((EnumTipoMiniatura) -> Void)? = nil
+    // Cambiar miniatura para archivo
+    var cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)? = nil
+    // Cambiar miniatura para colección
+    var cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)? = nil
     
     @ViewBuilder let content: () -> Content
 
@@ -61,9 +64,13 @@ struct ElementoVista<Content: View>: View {
 //                    borrarPresionado = true
 //                }
                 ZStack {
-                    ContextMenuContenido(elemento: elemento, cambiarMiniatura: cambiarMiniatura, borrarPresionado: $borrarPresionado)
+                    ContextMenuContenido(
+                        elemento: elemento,
+                        cambiarMiniaturaArchivo: cambiarMiniaturaArchivo,
+                        cambiarMiniaturaColeccion: cambiarMiniaturaColeccion,
+                        borrarPresionado: $borrarPresionado
+                    )
                 }
-                
             }
             .confirmationDialog(
                 "¿Estás seguro de que quieres borrar \(elemento.nombre)?",
@@ -81,7 +88,8 @@ struct ElementoVista<Content: View>: View {
 
 struct ContextMenuContenido: View {
     let elemento: any ElementoSistemaArchivosProtocolo
-    let cambiarMiniatura: ((EnumTipoMiniatura) -> Void)?
+    let cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)?
+    let cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)?
     @Binding var borrarPresionado: Bool
     
     var body: some View {
@@ -90,15 +98,28 @@ struct ContextMenuContenido: View {
             Text("Completar lectura")
             
             Menu {
-                Button(action: {
-                    cambiarMiniatura?(.imagenBase)
-                }) {
-                    Label("Imagen base", systemImage: "text.document")
-                }
-                Button(action: {
-                    cambiarMiniatura?(.primeraPagina)
-                }) {
-                    Label("Primera página", systemImage: "doc.text")
+                if let _ = elemento as? Archivo {
+                    Button {
+                        cambiarMiniaturaArchivo?(.imagenBase)
+                    } label: {
+                        Label("Imagen base", systemImage: "photo")
+                    }
+                    Button {
+                        cambiarMiniaturaArchivo?(.primeraPagina)
+                    } label: {
+                        Label("Primera página", systemImage: "doc.text")
+                    }
+                } else if let _ = elemento as? Coleccion {
+                    Button {
+                        cambiarMiniaturaColeccion?(.carpeta)
+                    } label: {
+                        Label("Carpeta", systemImage: "folder")
+                    }
+                    Button {
+                        cambiarMiniaturaColeccion?(.tray)
+                    } label: {
+                        Label("Bandeja", systemImage: "tray")
+                    }
                 }
             } label: {
                 Label("Cambiar portada", systemImage: "paintbrush")

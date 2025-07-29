@@ -61,4 +61,8 @@ class ModeloMiniaturaArchivo: ObservableObject {
         
     }
     
+    public func cambiarMiniaturaColeccion() {
+        
+    }
+    
 }

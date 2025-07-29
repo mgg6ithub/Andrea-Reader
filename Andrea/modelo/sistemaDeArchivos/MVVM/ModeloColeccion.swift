@@ -154,11 +154,11 @@ class ModeloColeccion: ObservableObject {
             let elementosOrdenados = await Algoritmos().ordenarElementos(todosLosElementos.map { $0.1 }, por: ordenacion, esInvertido: self.esInvertido)
 
             await MainActor.run {
-//                withAnimation(.easeInOut(duration: 0.1)) {
-                    self.elementos = elementosOrdenados
-                    self.isLoading = false
-                    self.elementosCargados = true
-//                }
+                
+                self.elementos = elementosOrdenados
+                self.isLoading = false
+                self.elementosCargados = true
+                
                 let endTime = CFAbsoluteTimeGetCurrent()
                 self.tiempoCarga = endTime - startTime
             }
