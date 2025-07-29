@@ -59,6 +59,7 @@ struct CuadriculaColeccion: View {
 
                     Text(coleccion.nombre)
                         .font(.title)
+                        .bold()
                         .frame(alignment: .center)
                 }
             }

@@ -23,6 +23,11 @@ struct ListaArchivo: View {
                 }
             }
             .frame(width: coleccionVM.altura - 47.5)
+            .onChange(of: coleccionVM.color) { //Si se cambia de color volvemos a genera la imagen base
+                if archivo.tipoMiniatura == .imagenBase {
+                    viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
+                }
+            }
             
             HStack(spacing: 40) {
                 VStack(alignment: .leading, spacing: 8) {

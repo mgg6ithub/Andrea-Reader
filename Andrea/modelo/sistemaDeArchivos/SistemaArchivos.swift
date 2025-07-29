@@ -162,6 +162,34 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
+    // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
+    public func moverElemento(_ elemento: Any, a nuevaURL: URL) throws {
+        fileQueue.sync {
+            // --- Lógica para mover/renombrar en disco ---
+            // try FileManager.default.moveItem(at: (elemento as! URL), to: nuevaURL)
+            //
+            // Luego, actualizar caches internas si tienes, y finalmente:
+            
+            DispatchQueue.main.async {
+                // Actualizas `elements` para reflejar la nueva URL/nombre, etc.
+            }
+        }
+    }
+    
+    // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
+    public func copiarElemento(_ elemento: Any, a nuevaURL: URL) throws {
+        fileQueue.sync {
+            // --- Lógica para mover/renombrar en disco ---
+            // try FileManager.default.moveItem(at: (elemento as! URL), to: nuevaURL)
+            //
+            // Luego, actualizar caches internas si tienes, y finalmente:
+            
+            DispatchQueue.main.async {
+                // Actualizas `elements` para reflejar la nueva URL/nombre, etc.
+            }
+        }
+    }
+    
     
     // MARK: – Ejemplo de método para borrar un elemento (protegido por fileQueue)
     public func borrarElemento(elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion) {
@@ -200,21 +228,6 @@ class SistemaArchivos: ObservableObject {
                     // Aquí podrías mostrar un alert en la UI si usas un binding
                     print("⚠️ Error al borrar el archivo: \(error)")
                 }
-            }
-        }
-    }
-    
-    
-    // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
-    public func moverElemento(_ elemento: Any, a nuevaURL: URL) throws {
-        fileQueue.sync {
-            // --- Lógica para mover/renombrar en disco ---
-            // try FileManager.default.moveItem(at: (elemento as! URL), to: nuevaURL)
-            //
-            // Luego, actualizar caches internas si tienes, y finalmente:
-            
-            DispatchQueue.main.async {
-                // Actualizas `elements` para reflejar la nueva URL/nombre, etc.
             }
         }
     }

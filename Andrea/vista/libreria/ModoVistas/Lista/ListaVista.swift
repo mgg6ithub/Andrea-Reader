@@ -31,15 +31,27 @@ struct ListaVista: View {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 20) {
                     ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
-                        ElementoVista(vm: vm, elemento: elemento, scrollIndex: index) {
-                            // Miniatura + título en fila
+                        ElementoVista(vm: vm, elemento: elemento, scrollIndex: index,
+                            cambiarMiniaturaArchivo: { nuevoTipo in
+                            if let archivo = elemento as? Archivo {
+                                    archivo.tipoMiniatura = nuevoTipo
+                                    PersistenciaDatos().guardarDatoElemento(url: archivo.url, atributo: "tipoMiniatura", valor: nuevoTipo)
+                                }
+                            },
+                            cambiarMiniaturaColeccion: { nuevoTipo in
+                                if let coleccion = elemento as? Coleccion {
+                                    coleccion.tipoMiniatura = nuevoTipo
+                                    PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "tipoMiniatura", valor: nuevoTipo)
+                                }
+                            }
+                        ) {
                             if let placeholder = elemento as? ElementoPlaceholder {
                                 PlaceholderLista(placeholder: placeholder, coleccionVM: vm)
                             } else if let archivo = elemento as? Archivo {
                                 ListaArchivo(archivo: archivo, coleccionVM: vm)
                                     .contentShape(ContentShapeKinds.contextMenuPreview, RoundedCorner(radius: 8, corners: [.topLeft, .bottomLeft]))
                             } else if let coleccion = elemento as? Coleccion {
-                                ListaColeccion(coleccion: coleccion)
+                                ListaColeccion(coleccion: coleccion, coleccionVM: vm)
                             }
                         }
                         .colorScheme(ap.temaActual == .dark ? .dark : .light)
