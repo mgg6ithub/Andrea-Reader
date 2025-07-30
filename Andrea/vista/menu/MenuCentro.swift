@@ -52,7 +52,7 @@ struct MenuCentro: View {
         HStack {
             
             Button(action: {
-                
+                menuEstado.seleccionMultiplePresionada = true
             }) {
                 Image("custom.hand.grid")
                     .font(.system(size: appEstado.constantes.iconSize * 1.35))

@@ -62,6 +62,8 @@
 		D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB812DE9C0530097A010 /* MenuEstado.swift */; };
 		D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB882DE9C2E30097A010 /* AppEstado.swift */; };
 		D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AECEBA2DEE33620032917F /* PilaColecciones.swift */; };
+		D4B3C3BB2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */; };
+		D4B3C3BD2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */; };
 		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
 		D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8B3882E1324B200585A6D /* ThumbnailService.swift */; };
 		D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */; };
@@ -143,6 +145,8 @@
 		D4ADDB812DE9C0530097A010 /* MenuEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEstado.swift; sourceTree = "<group>"; };
 		D4ADDB882DE9C2E30097A010 /* AppEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado.swift; sourceTree = "<group>"; };
 		D4AECEBA2DEE33620032917F /* PilaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilaColecciones.swift; sourceTree = "<group>"; };
+		D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSeleccionMultipleArriba.swift; sourceTree = "<group>"; };
+		D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSeleccionMultipleAbajo.swift; sourceTree = "<group>"; };
 		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
 		D4B8B3882E1324B200585A6D /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
 		D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformacionCuadricula.swift; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 			children = (
 				D4ADDB732DE9B69C0097A010 /* principal */,
 				D4ADDB722DE9B4E90097A010 /* menu */,
+				D4B3C3B92E3A8E0B00CA6064 /* MenuSeleccionMultiple */,
 				D4ADDB7F2DE9BE730097A010 /* historial */,
 				D4ADDB712DE9B4DB0097A010 /* libreria */,
 				D49F12F42E25348300C67FB8 /* MasInformacion */,
@@ -428,6 +433,15 @@
 				D48589642DEB9CB50074DB8E /* herencia */,
 			);
 			path = sistemaDeArchivos;
+			sourceTree = "<group>";
+		};
+		D4B3C3B92E3A8E0B00CA6064 /* MenuSeleccionMultiple */ = {
+			isa = PBXGroup;
+			children = (
+				D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */,
+				D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */,
+			);
+			path = MenuSeleccionMultiple;
 			sourceTree = "<group>";
 		};
 		D4BA32EF2E0BDCD600CF3219 /* CuadriculaArchivo */ = {
@@ -656,6 +670,7 @@
 				D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */,
 				D4D8CCF62E377CD600F7F18D /* ListaColeccionMenu.swift in Sources */,
 				D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */,
+				D4B3C3BB2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift in Sources */,
 				D49E266A2E3A77BD009A0EDC /* MasInformacionArchivo.swift in Sources */,
 				D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */,
 				D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */,
@@ -672,6 +687,7 @@
 				D485896C2DEB9DF10074DB8E /* Utilidades.swift in Sources */,
 				D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */,
 				D4BF4B1C2E168D1400224C71 /* Algoritmos.swift in Sources */,
+				D4B3C3BD2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift in Sources */,
 				D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */,
 				D4ADDB7E2DE9B9FA0097A010 /* MenuDerecha.swift in Sources */,
 				D47139C52E0AE47C00B5FA35 /* ElementoVista.swift in Sources */,

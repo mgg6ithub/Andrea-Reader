@@ -16,6 +16,8 @@ class MenuEstado: ObservableObject {
     
     //MARK: - AJUSTES GLOBALES
     
+    @Published var seleccionMultiplePresionada: Bool = false
+    @Published var elementosSeleccionados: Set<URL> = []
     @Published var isGlobalSettingsPressed: Bool = false //Para desplegar y cerrar el menu global de ajustes
     
     //Variables resizable del menu de indices con puntos lateral

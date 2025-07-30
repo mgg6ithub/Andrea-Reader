@@ -14,19 +14,28 @@ struct VistaPrincipal: View {
     var body: some View {
         ZStack {
             appEstado.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
-            
             VStack(spacing: 0) {
                 
                 VStack(spacing: 0) {
-                    MenuVista()
-                        .padding(.vertical, 8)
-                        .padding(.bottom, 15)
-                    
-                    HistorialColecciones()
-                        .frame(height: 50)
-//                        .padding(.bottom, 8)
+                    if menuEstado.seleccionMultiplePresionada {
+                        if let coleccion = coleccionMostrada {
+                            MenuSeleccionMultipleArriba(vm: coleccion)
+                                .frame(width: .infinity, height: 50)
+                                .background(.gray.opacity(0.2))
+                        }
+                    } else {
+                        VStack(spacing: 0) {
+                            MenuVista()
+                                .padding(.vertical, 8)
+                                .padding(.bottom, 15)
+                            
+                            HistorialColecciones()
+                                .frame(height: 50)
+                        }
+                        .padding(.horizontal, constantes.horizontalPadding)
+                    }
                 }
-                .padding(.horizontal, constantes.horizontalPadding)
+                .animation(.easeInOut(duration: 0.2), value: menuEstado.seleccionMultiplePresionada)
                 
                 Spacer()
                 
@@ -36,6 +45,17 @@ struct VistaPrincipal: View {
                         .id(coleccion.coleccion.id)
                         .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 }
+                
+                VStack(spacing: 0) {
+                    if menuEstado.seleccionMultiplePresionada {
+                        MenuSeleccionMultipleAbajo()
+                            .frame(width: .infinity, height: 50)
+                            .background(.gray.opacity(0.2))
+                    } else {
+                        EmptyView()
+                    }
+                }
+                .animation(.easeInOut(duration: 0.2), value: menuEstado.seleccionMultiplePresionada)
                 
             }
             .onAppear {
