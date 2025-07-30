@@ -125,46 +125,74 @@ struct ContextMenuContenido: View {
     @Binding var accionDocumento: EnumAccionDocumento?
     
     private let sa: SistemaArchivos = SistemaArchivos.sa
-    @State private var buttonFrame: CGRect = .zero
+    @State private var masInformacionPresionado: Bool = false
     
     var body: some View {
         Section(header: Text(elemento.nombre)) {
             
             Button(action: {
-
+                
             }) {
                 Label("Seleccionar", systemImage: "hand.tap")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, .gray)
+            }
+            
+        }
+        
+        Section {
+            Button(action: {
+                self.masInformacionPresionado = true
+            }) {
+                Label("Más Información", systemImage: "info")
+            }
+            .sheet(isPresented: $masInformacionPresionado){
+                MasInformacionArchivo(vm: vm, elemento: elemento)
             }
             
             Button(action: {
-
+                //vista previa de mi programa personalizada. se motrara la miniatura y 3 datos basicos.
             }) {
-                Label("Agregar a favoritos", systemImage: "star")
+                Label("Vista previa", systemImage: "eye")
             }
             
-            Button(action: {
-
-            }) {
-                Label("Proteger", systemImage: "lock.shield")
-            }
+            CambiarMiniaturaMenu(elemento: elemento, cambiarMiniaturaArchivo: cambiarMiniaturaArchivo, cambiarMiniaturaColeccion: cambiarMiniaturaColeccion)
             
-            Button(action: {
-
-            }) {
-                Label("Informacion", systemImage: "info")
-            }
+        }
+            
+        Section {
             
             Button(action: {
 
             }) {
                 Label("Completar lectura", systemImage: "arrow.up")
             }
-
+        
+            Button(action: {
+                
+            }) {
+                Label("Agregar a favoritos", systemImage: "star.fill")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(Color.yellow)
+            }
             
+            Button(action: {
+                
+            }) {
+                Label("Proteger", systemImage: "lock.shield")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.red, .gray)
+            }
+        
+        }
+        
+
+        Section {
+
             Button(action: {
                 self.renombrarPresionado = true
             }) {
-                Label("Renombrar", systemImage: "square.and.pencil")
+                Label("Renombrar", systemImage: "pencil")
             }
             
             Button(action: {
@@ -184,24 +212,19 @@ struct ContextMenuContenido: View {
             }) {
                 Label("Duplicar", systemImage: "rectangle.on.rectangle")
             }
-            
-            ShareLink(item: elemento.url) {
-                Label("Compartir", systemImage: "square.and.arrow.up")
-            }
-            
-            // OPCIÓN B: Previsualizar con QuickLook
-            Button(action: {
-                //vista previa de mi programa personalizada. se motrara la miniatura y 3 datos basicos.
-            }) {
-                Label("Vista previa", systemImage: "eye")
-            }
-
+        }
+        
+        Section {
             Button(action: {
                 FilesAppManager.abrirConOpciones(url: elemento.url)
             }) {
                 Label("Abrir con", systemImage: "ellipsis")
             }
             
+            ShareLink(item: elemento.url) {
+                Label("Compartir", systemImage: "square.and.arrow.up")
+            }
+
             Menu {
                 
                 Button(action: {
@@ -225,78 +248,14 @@ struct ContextMenuContenido: View {
             } label: {
                 Label("Mostrar en Archivos", systemImage: "folder")
             }
-            
-            Menu {
-                if let _ = elemento as? Archivo {
-                    Button {
-                        cambiarMiniaturaArchivo?(.imagenBase)
-                    } label: {
-                        Label("Imagen base", systemImage: "document")
-                    }
-                    Button {
-                        cambiarMiniaturaArchivo?(.primeraPagina)
-                    } label: {
-                        Label("Primera página", systemImage: "photo")
-                    }
-                    
-                    Button {
-                        
-                    } label: {
-                        Label("Página aleatoria", systemImage: "photo.on.rectangle.angled.fill")
-                    }
-                    
-                    Button {
-                        
-                    } label: {
-                        Label("Personalizada", systemImage: "photo.artframe")
-                    }
-                    
-                } else if let _ = elemento as? Coleccion {
-                    Button {
-                        cambiarMiniaturaColeccion?(.carpeta)
-                    } label: {
-                        Label("Carpeta", systemImage: "folder")
-                    }
-                    Button {
-                        cambiarMiniaturaColeccion?(.tray)
-                    } label: {
-                        Label("Bandeja", systemImage: "tray")
-                    }
-                    
-                    Menu {
-                        
-                        Button {
-                            
-                        } label: {
-                            Label("Aleatorias", systemImage: "photo.artframe")
-                        }
-                        
-                        Button {
-                            
-                        } label: {
-                            Label("Hacia la izquierda", systemImage: "photo.artframe")
-                        }
-                        
-                        Button {
-                            
-                        } label: {
-                            Label("Hacia la derecha", systemImage: "photo.artframe")
-                        }
-                        
-                    } label: {
-                        Label("Miniaturas", systemImage: "photo.on.rectangle.angled.fill")
-                    }
-                    
-                }
-            } label: {
-                Label("Cambiar portada", systemImage: "paintbrush")
-            }
         }
         
-        Button(role: .destructive) {
-            self.borrarPresionado = true
-        } label: {
-            Label("Borrar", systemImage: "trash")
+        Section {
+            Button(role: .destructive) {
+                self.borrarPresionado = true
+            } label: {
+                Label("Eliminar archivo", systemImage: "trash")
+            }
         }
 
         
