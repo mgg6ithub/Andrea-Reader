@@ -125,11 +125,41 @@ struct ContextMenuContenido: View {
     @Binding var accionDocumento: EnumAccionDocumento?
     
     private let sa: SistemaArchivos = SistemaArchivos.sa
+    @State private var buttonFrame: CGRect = .zero
     
     var body: some View {
         Section(header: Text(elemento.nombre)) {
-            Text("Mostrar información")
-            Text("Completar lectura")
+            
+            Button(action: {
+
+            }) {
+                Label("Seleccionar", systemImage: "hand.tap")
+            }
+            
+            Button(action: {
+
+            }) {
+                Label("Agregar a favoritos", systemImage: "star")
+            }
+            
+            Button(action: {
+
+            }) {
+                Label("Proteger", systemImage: "lock.shield")
+            }
+            
+            Button(action: {
+
+            }) {
+                Label("Informacion", systemImage: "info")
+            }
+            
+            Button(action: {
+
+            }) {
+                Label("Completar lectura", systemImage: "arrow.up")
+            }
+
             
             Button(action: {
                 self.renombrarPresionado = true
@@ -161,19 +191,15 @@ struct ContextMenuContenido: View {
             
             // OPCIÓN B: Previsualizar con QuickLook
             Button(action: {
-                
+                //vista previa de mi programa personalizada. se motrara la miniatura y 3 datos basicos.
             }) {
                 Label("Vista previa", systemImage: "eye")
             }
-            
+
             Button(action: {
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                   let window = windowScene.windows.first,
-                   let rootView = window.rootViewController?.view {
-                    FilesAppManager.abrirConOpciones(url: elemento.url, desde: rootView)
-                }
+                FilesAppManager.abrirConOpciones(url: elemento.url)
             }) {
-                Label("Abrir con", systemImage: "door.french.open")
+                Label("Abrir con", systemImage: "ellipsis")
             }
             
             Menu {
@@ -205,13 +231,26 @@ struct ContextMenuContenido: View {
                     Button {
                         cambiarMiniaturaArchivo?(.imagenBase)
                     } label: {
-                        Label("Imagen base", systemImage: "photo")
+                        Label("Imagen base", systemImage: "document")
                     }
                     Button {
                         cambiarMiniaturaArchivo?(.primeraPagina)
                     } label: {
-                        Label("Primera página", systemImage: "doc.text")
+                        Label("Primera página", systemImage: "photo")
                     }
+                    
+                    Button {
+                        
+                    } label: {
+                        Label("Página aleatoria", systemImage: "photo.on.rectangle.angled.fill")
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Label("Personalizada", systemImage: "photo.artframe")
+                    }
+                    
                 } else if let _ = elemento as? Coleccion {
                     Button {
                         cambiarMiniaturaColeccion?(.carpeta)
@@ -223,6 +262,31 @@ struct ContextMenuContenido: View {
                     } label: {
                         Label("Bandeja", systemImage: "tray")
                     }
+                    
+                    Menu {
+                        
+                        Button {
+                            
+                        } label: {
+                            Label("Aleatorias", systemImage: "photo.artframe")
+                        }
+                        
+                        Button {
+                            
+                        } label: {
+                            Label("Hacia la izquierda", systemImage: "photo.artframe")
+                        }
+                        
+                        Button {
+                            
+                        } label: {
+                            Label("Hacia la derecha", systemImage: "photo.artframe")
+                        }
+                        
+                    } label: {
+                        Label("Miniaturas", systemImage: "photo.on.rectangle.angled.fill")
+                    }
+                    
                 }
             } label: {
                 Label("Cambiar portada", systemImage: "paintbrush")

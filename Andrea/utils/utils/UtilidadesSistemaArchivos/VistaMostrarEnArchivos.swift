@@ -45,7 +45,10 @@ struct FilesAppManager {
         }
     }
     
-    static func abrirConOpciones(url: URL, desde view: UIView) {
+    static func abrirConOpciones(url: URL) {
+        
+        guard let view = obtenerRootView() else { return }
+        
         let documentController = UIDocumentInteractionController(url: url)
         documentController.delegate = documentInteractionControllerDelegate
         
@@ -55,6 +58,16 @@ struct FilesAppManager {
         // Aquí usamos el frame completo de la vista para que salga centrado, puedes cambiarlo por el frame de un botón u otro elemento
         documentController.presentOptionsMenu(from: view.bounds, in: view, animated: true)
     }
+    
+    static func obtenerRootView() -> UIView? {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootView = window.rootViewController?.view {
+            return rootView
+        }
+        return nil
+    }
+
     
 }
 
