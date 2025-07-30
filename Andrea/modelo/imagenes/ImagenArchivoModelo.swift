@@ -42,14 +42,14 @@ struct ImagenArchivoModelo {
     //        if let archivoPDFImage = UIImage(named: miniatura) {
                 
     //                let azulSuave = UIColor(red: 0.5, green: 0.7, blue: 1.0, alpha: 1.0)
-                    let verdeSuave = UIColor(red: 0.4, green: 0.7, blue: 0.4, alpha: 1.0) // Verde suave
+        _ = UIColor(red: 0.4, green: 0.7, blue: 0.4, alpha: 1.0) // Verde suave
     //            let rojoSuave = UIColor(red: 0.9, green: 0.5, blue: 0.5, alpha: 1.0) // Rojo suave
 
 
                 let negroGrisAzul = UIColor(red: 51/255.0, green: 62/255.0, blue: 72/255.0, alpha: 1.0)
                 let blanco = UIColor(red: 228/255.0, green: 228/255.0, blue: 228/255.0, alpha: 1.0)
             
-            var ternariColor: UIColor = color ?? UIColor(Color.blue)
+        let ternariColor: UIColor = color ?? UIColor(Color.blue)
                 
             let symbolColorConfig = UIImage.SymbolConfiguration(paletteColors: [negroGrisAzul, blanco, ternariColor])  // Ajusta los colores según sea necesario
                 let coloredImage = miniatura.applyingSymbolConfiguration(symbolColorConfig)

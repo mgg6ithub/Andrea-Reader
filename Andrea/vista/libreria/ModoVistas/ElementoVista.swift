@@ -3,8 +3,10 @@ import SwiftUI
 
 struct ElementoVista<Content: View>: View {
     @EnvironmentObject var appEstado: AppEstado
-
     @ObservedObject var vm: ModeloColeccion
+    @StateObject private var documentManager = DocumentInteractionManager()
+    @StateObject private var quickLookManager = QuickLookManager()
+    
     let elemento: any ElementoSistemaArchivosProtocolo
     let scrollIndex: Int?
     // Cambiar miniatura para archivo
@@ -21,7 +23,8 @@ struct ElementoVista<Content: View>: View {
     @State private var renombrarPresionado = false
     @State private var nuevoNombre = ""
     
-    @State private var accionDocumento: EnumAccionDocumento? = nil
+    @State private var accionDocumento: EnumAccionDocumento? = nil //MOVER,COPIAR
+
 
     private let sa: SistemaArchivos = SistemaArchivos.sa
 
@@ -47,7 +50,9 @@ struct ElementoVista<Content: View>: View {
                     cambiarMiniaturaColeccion: cambiarMiniaturaColeccion,
                     borrarPresionado: $borrarPresionado,
                     renombrarPresionado: $renombrarPresionado,
-                    accionDocumento: $accionDocumento
+                    accionDocumento: $accionDocumento,
+                    documentManager: documentManager,
+                    quickLookManager: quickLookManager
                 )
             }
             .confirmationDialog(
@@ -63,7 +68,7 @@ struct ElementoVista<Content: View>: View {
             .alert("Renombrar \"\(elemento.nombre)\"", isPresented: $renombrarPresionado, actions: {
                 TextField("Nuevo nombre", text: $nuevoNombre)
                 
-                Button("Aceptar", role: .destructive) {
+                Button("Aceptar") {
                     let nombreLimpio = nuevoNombre.trimmingCharacters(in: .whitespacesAndNewlines)
                     guard !nombreLimpio.isEmpty else { return }
                     sa.renombrarElemento(elemento: elemento, nuevoNombre: nombreLimpio)
@@ -78,11 +83,11 @@ struct ElementoVista<Content: View>: View {
                         guard let destino = urls.first else { return }
                         switch accion {
                         case .mover:
-                            print("Moviendo \(elemento) a \(destino)")
                             try? sa.moverElemento(elemento, vm: vm, a: destino)
                         case .copiar:
-                            print("Copiando \(elemento) a \(destino)")
                             try? sa.copiarElemento(elemento, vm: vm, a: destino)
+                        default:
+                            break
                         }
                     },
                     onCancel: {
@@ -92,13 +97,16 @@ struct ElementoVista<Content: View>: View {
                     contentTypes: [.folder]
                 )
             }
-
+            .sheet(isPresented: $quickLookManager.isPresented) {
+                QuickLookView(manager: quickLookManager)
+            }
     }
 }
 
 enum EnumAccionDocumento {
     case mover
     case copiar
+    case mostrarEnArchivos
 }
 
 extension EnumAccionDocumento: Identifiable {
@@ -106,6 +114,7 @@ extension EnumAccionDocumento: Identifiable {
         switch self {
         case .mover: return "mover"
         case .copiar: return "copiar"
+        case .mostrarEnArchivos: return "mostrarEnArchivos"
         }
     }
 }
@@ -121,6 +130,9 @@ struct ContextMenuContenido: View {
     @Binding var borrarPresionado: Bool
     @Binding var renombrarPresionado: Bool
     @Binding var accionDocumento: EnumAccionDocumento?
+    
+    let documentManager: DocumentInteractionManager
+    let quickLookManager: QuickLookManager
     
     private let sa: SistemaArchivos = SistemaArchivos.sa
     
@@ -154,21 +166,23 @@ struct ContextMenuContenido: View {
             }
             
             Button(action: {
-                print("Mostrar en archivos del dispositivo")
+                documentManager.mostrarEnArchivos(url: elemento.url)
             }) {
-                Label("Mostrar en Archivos", systemImage: "folder")
+                Label("Mostrar opciones", systemImage: "square.and.arrow.up")
             }
             
+            // OPCIÓN B: Previsualizar con QuickLook
             Button(action: {
-                print("Exportar")
+                quickLookManager.mostrarArchivo(url: elemento.url)
             }) {
-                Label("Exportar", systemImage: "square.and.arrow.up")
+                Label("Vista previa", systemImage: "eye")
             }
             
+            // OPCIÓN C: Abrir en Files app (si es posible)
             Button(action: {
-                print("Compartir")
+                FilesAppManager.abrirEnFilesApp(url: elemento.url)
             }) {
-                Label("Compartir", systemImage: "square.and.arrow.up.on.square")
+                Label("Abrir en Archivos", systemImage: "folder")
             }
             
             Menu {
@@ -209,7 +223,3 @@ struct ContextMenuContenido: View {
         
     }
 }
-
-
-
-

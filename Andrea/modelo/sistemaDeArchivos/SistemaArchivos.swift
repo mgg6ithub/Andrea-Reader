@@ -40,8 +40,6 @@ class SistemaArchivos: ObservableObject {
      */
     private init() {
         
-        print("URL HOME: ", self.homeURL)
-        
         self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
         
         // Crear la coleccion raiz y asignarla
@@ -50,9 +48,6 @@ class SistemaArchivos: ObservableObject {
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: homeURL)
-        
-        print("Indexamiento recursivo terminado")
-        print(self.cacheColecciones)
         
     }
     
@@ -297,14 +292,16 @@ class SistemaArchivos: ObservableObject {
             print("Nombre duplicado -> ", nombreOrigen)
             print("URL nueva -> ", duplicadaURL)
             
-            let _ = self.crearInstancia(elementoURL: duplicadaURL, coleccionDestinoURL: origenURL.deletingLastPathComponent())
-            
-            //--- actualizar instancia de la coleccion actual ---
-            let coleccionActual = vm.coleccion
-            if let _ = elemento as? Archivo {
-                coleccionActual.totalArchivos += 1
-            } else if let _ = elemento as? Coleccion {
-                coleccionActual.totalArchivos += 1
+            do {
+                
+                try self.fm.copyItem(at: origenURL, to: duplicadaURL)
+                
+                Task { @MainActor in
+                    self.actualizarUISoloElemento(elementoURL: duplicadaURL)
+                }
+                
+            } catch {
+                print("⚠️ Error al duplicar \(origenURL.lastPathComponent) a \(duplicadaURL.lastPathComponent)")
             }
             
             //--- duplicar en persistencia ---
