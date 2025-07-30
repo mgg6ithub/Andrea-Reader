@@ -11,7 +11,7 @@ struct MenuSeleccionMultipleArriba: View {
     private let constantes = ConstantesPorDefecto()
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 15) {
             
             Text("\(vm.elementos.count) elementos")
             
@@ -23,11 +23,15 @@ struct MenuSeleccionMultipleArriba: View {
             
             Spacer()
             
-            HStack(spacing: 15) {
+//            HStack(spacing: 0) {
                 Button(action: {
-                    
+                    if !me.todosSeleccionados {
+                        me.seleccionarTodos()
+                    } else {
+                        me.deseleccionarTodos()
+                    }
                 }) {
-                    Text("Seleccionar todos")
+                    Text(me.todosSeleccionados ? "Deseleccionar todos" : "Seleccionar todos")
                 }
                 
                 Button(action: {
@@ -46,7 +50,7 @@ struct MenuSeleccionMultipleArriba: View {
                     RoundedRectangle(cornerRadius: 12) // Fondo con bordes redondeados
                         .fill(Color.gray.opacity(0.1)) // Cambia el color del fondo aquí
                 )
-            }
+//            }
 
         }
         .padding(.horizontal, constantes.horizontalPadding)

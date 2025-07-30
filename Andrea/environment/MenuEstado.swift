@@ -16,8 +16,17 @@ class MenuEstado: ObservableObject {
     
     //MARK: - AJUSTES GLOBALES
     
-    @Published var seleccionMultiplePresionada: Bool = false
+    @Published var seleccionMultiplePresionada: Bool = false {
+        didSet {
+            if seleccionMultiplePresionada == false {
+                deseleccionarTodos()
+            }
+        }
+    }
+
     @Published var elementosSeleccionados: Set<URL> = []
+    @Published var todosSeleccionados: Bool = false
+    
     @Published var isGlobalSettingsPressed: Bool = false //Para desplegar y cerrar el menu global de ajustes
     
     //Variables resizable del menu de indices con puntos lateral
@@ -54,5 +63,30 @@ class MenuEstado: ObservableObject {
     }
     
     init() {}
+    
+    public func seleccionarElemento(url: URL) {
+        self.elementosSeleccionados.insert(url)
+    }
+    
+    public func deseleccionarElemento(url: URL) {
+        self.elementosSeleccionados.remove(url)
+    }
+    
+    public func seleccionarTodos() {
+        Task {
+            let elementos = await PilaColecciones.pilaColecciones.getColeccionActual().elementos
+            await MainActor.run {
+                for elemento in elementos {
+                    self.seleccionarElemento(url: elemento.url)
+                }
+            }
+        }
+        self.todosSeleccionados = true
+    }
+    
+    public func deseleccionarTodos() {
+        self.elementosSeleccionados.removeAll()
+        self.todosSeleccionados = false
+    }
     
 }

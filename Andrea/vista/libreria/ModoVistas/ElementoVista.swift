@@ -2,7 +2,10 @@
 import SwiftUI
 
 struct ElementoVista<Content: View>: View {
+    
     @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var me: MenuEstado
+    
     @ObservedObject var vm: ModeloColeccion
     
     let elemento: any ElementoSistemaArchivosProtocolo
@@ -92,6 +95,16 @@ struct ElementoVista<Content: View>: View {
                     allowMultipleSelection: false,
                     contentTypes: [.folder]
                 )
+            }
+            .onTapGesture {
+                let url = elemento.url
+                if me.seleccionMultiplePresionada {
+                    if !me.elementosSeleccionados.contains(url) {
+                        me.seleccionarElemento(url: url)
+                    } else {
+                        me.deseleccionarElemento(url: url)
+                    }
+                }
             }
     }
 }

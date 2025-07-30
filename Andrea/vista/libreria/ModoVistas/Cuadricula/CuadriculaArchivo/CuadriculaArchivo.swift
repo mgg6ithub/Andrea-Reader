@@ -3,6 +3,7 @@ import SwiftUI
 struct CuadriculaArchivo: View {
     
     @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var me: MenuEstado
     
     @ObservedObject var archivo: Archivo
     @StateObject private var viewModel = ModeloMiniaturaArchivo()
@@ -16,11 +17,27 @@ struct CuadriculaArchivo: View {
     @State private var mostrarMiniatura = false
     @State private var idImagen = UUID()
     
+    private let constantes = ConstantesPorDefecto()
+    
     var body: some View {
         VStack(spacing: 0) {
 
             // --- Imagen ---
             ZStack {
+                
+                if me.seleccionMultiplePresionada {
+                    VStack(alignment: .center, spacing: 0) {
+                        let seleccionado = me.elementosSeleccionados.contains(archivo.url)
+                        Image(systemName: seleccionado ? "checkmark.circle.fill" : "circle")
+                            .font(.system(size: constantes.iconSize))
+                            .foregroundColor(seleccionado ? coleccionVM.color : .gray)
+                            .transition(.scale.combined(with: .opacity))
+                            
+                    }
+                    .padding(.top, 60)
+                    .zIndex(2)
+                }
+                
                 ZStack {
                     if let img = viewModel.miniatura {
                         Image(uiImage: img)
