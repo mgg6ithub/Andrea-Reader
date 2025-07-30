@@ -4,8 +4,6 @@ import SwiftUI
 struct ElementoVista<Content: View>: View {
     @EnvironmentObject var appEstado: AppEstado
     @ObservedObject var vm: ModeloColeccion
-    @StateObject private var documentManager = DocumentInteractionManager()
-    @StateObject private var quickLookManager = QuickLookManager()
     
     let elemento: any ElementoSistemaArchivosProtocolo
     let scrollIndex: Int?
@@ -50,9 +48,7 @@ struct ElementoVista<Content: View>: View {
                     cambiarMiniaturaColeccion: cambiarMiniaturaColeccion,
                     borrarPresionado: $borrarPresionado,
                     renombrarPresionado: $renombrarPresionado,
-                    accionDocumento: $accionDocumento,
-                    documentManager: documentManager,
-                    quickLookManager: quickLookManager
+                    accionDocumento: $accionDocumento
                 )
             }
             .confirmationDialog(
@@ -97,9 +93,6 @@ struct ElementoVista<Content: View>: View {
                     contentTypes: [.folder]
                 )
             }
-            .sheet(isPresented: $quickLookManager.isPresented) {
-                QuickLookView(manager: quickLookManager)
-            }
     }
 }
 
@@ -130,9 +123,6 @@ struct ContextMenuContenido: View {
     @Binding var borrarPresionado: Bool
     @Binding var renombrarPresionado: Bool
     @Binding var accionDocumento: EnumAccionDocumento?
-    
-    let documentManager: DocumentInteractionManager
-    let quickLookManager: QuickLookManager
     
     private let sa: SistemaArchivos = SistemaArchivos.sa
     
@@ -165,24 +155,49 @@ struct ContextMenuContenido: View {
                 Label("Duplicar", systemImage: "rectangle.on.rectangle")
             }
             
-            Button(action: {
-                documentManager.mostrarEnArchivos(url: elemento.url)
-            }) {
-                Label("Mostrar opciones", systemImage: "square.and.arrow.up")
+            ShareLink(item: elemento.url) {
+                Label("Compartir", systemImage: "square.and.arrow.up")
             }
             
             // OPCIÓN B: Previsualizar con QuickLook
             Button(action: {
-                quickLookManager.mostrarArchivo(url: elemento.url)
+                
             }) {
                 Label("Vista previa", systemImage: "eye")
             }
             
-            // OPCIÓN C: Abrir en Files app (si es posible)
             Button(action: {
-                FilesAppManager.abrirEnFilesApp(url: elemento.url)
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first,
+                   let rootView = window.rootViewController?.view {
+                    FilesAppManager.abrirConOpciones(url: elemento.url, desde: rootView)
+                }
             }) {
-                Label("Abrir en Archivos", systemImage: "folder")
+                Label("Abrir con", systemImage: "door.french.open")
+            }
+            
+            Menu {
+                
+                Button(action: {
+                    FilesAppManager.abrirDirectorioDelArchivo(url: elemento.url)
+                }) {
+                    Label("Abrir en Archivos", systemImage: "folder")
+                }
+                
+                Button(action: {
+                    FilesAppManager.copiarYAbrirEnFiles(url: elemento.url)
+                }) {
+                    Label("Exportar a Archivos", systemImage: "square.and.arrow.up.on.square")
+                }
+                
+                Button(action: {
+                    FilesAppManager.vistaPreviaDeArchivos(url: elemento.url)
+                }) {
+                    Label("Vista previa en Archivos", systemImage: "eye")
+                }
+                
+            } label: {
+                Label("Mostrar en Archivos", systemImage: "folder")
             }
             
             Menu {
