@@ -23,7 +23,10 @@ struct FabricaColeccion {
         let totalArchivos = archivosYcolecciones.0
         let totalColecciones = archivosYcolecciones.1
         
-        let coleccion = Coleccion(directoryName: coleccionNombre, directoryURL: coleccionURL, creationDate: creationDate, modificationDate: modificationDate, color: color, totalArchivos: totalArchivos, totalColecciones: totalColecciones)
+        let favorito = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "favorito") as? Bool ?? false
+        let protegido = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "protegido") as? Bool ?? false
+        
+        let coleccion = Coleccion(directoryName: coleccionNombre, directoryURL: coleccionURL, creationDate: creationDate, modificationDate: modificationDate, color: color, totalArchivos: totalArchivos, totalColecciones: totalColecciones, favorito: favorito, protegido: protegido)
         
         return coleccion
     

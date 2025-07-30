@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
+class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     @Published var tipoMiniatura: EnumTipoMiniatura = .primeraPagina
     
@@ -71,7 +71,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         super.init()
     }
     
-    init(fileName: String, fileURL: URL, creationDate: Date, modificationDate: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int) {
+    init(fileName: String, fileURL: URL, creationDate: Date, modificationDate: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int, favorito: Bool, protegido: Bool) {
             
         self.fileType = fileType
         self.fileExtension = fileExtension
@@ -84,21 +84,20 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
         self.isWritable = permissions.writable
         self.isExecutable = permissions.executable
         
-        super.init(nombre: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate)
+        super.init(nombre: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate, favortio: favorito, protegido: protegido)
         
         self.cargarPaginasAsync()
         
-        if let paginaConcreta = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "paginaGuardada") {
-//            print("Se cagra la pagina guardada desde persistencia")
+        //--- PROGRESO DEL ARCHIVO ---
+        if let paginaConcreta = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "progreso") {
             self.setCurrentPage(currentPage: paginaConcreta as! Int)
         } else {
             self.setCurrentPage(currentPage: 10)
-//            PersistenciaDatos().guardarDatoElemento(url: archivo.url, atributo: "paginaGuardada", valor: 10)
         }
         
+        //--- TIPO DE IMAGEN ---
         if let tipoRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "tipoMiniatura") as? String,
            let tipo = EnumTipoMiniatura(rawValue: tipoRaw) {
-//            print("Se carga el tipo de miniatura desde persistencia: ", tipo)
             self.tipoMiniatura = tipo
         }
         
@@ -148,6 +147,15 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo, ObservableObject {
 
         let porcentaje = Int((Double(paginaActual) / Double(total)) * 100)
         progreso = min(max(porcentaje, 0), 100)
+    }
+    
+    public func completarLectura() {
+        if self.progreso != 100 {
+            withAnimation { self.progreso = 100 }
+        } else {
+            withAnimation { self.progreso = 0 }
+        }
+        PersistenciaDatos().guardarDatoElemento(url: self.url, atributo: "progreso", valor: self.progreso)
     }
     
 }

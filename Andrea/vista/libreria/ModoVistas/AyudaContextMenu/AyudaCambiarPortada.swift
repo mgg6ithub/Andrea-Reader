@@ -5,6 +5,8 @@ import SwiftUI
 
 struct CambiarMiniaturaMenu: View {
     
+    @EnvironmentObject var ap: AppEstado
+    
     let elemento: any ElementoSistemaArchivosProtocolo
     let cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)?
     let cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)?
@@ -74,7 +76,15 @@ struct CambiarMiniaturaMenu: View {
                 
             }
         } label: {
-            Label("Cambiar portada", systemImage: "paintbrush")
+            Label {
+                Text("Cambiar portada")
+            } icon: {
+                Image("custom-paintbrush") // <- tu símbolo personalizado
+                    .renderingMode(.template) // permite aplicar `foregroundStyle`
+            }
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(ap.temaActual.colorContrario, .gray)
+
         }
         
     }

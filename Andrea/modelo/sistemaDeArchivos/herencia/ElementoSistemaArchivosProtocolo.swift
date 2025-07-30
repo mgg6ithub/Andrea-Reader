@@ -12,7 +12,14 @@ protocol ElementoSistemaArchivosProtocolo: Transferable, Hashable, Identifiable 
     var firstTimeAccessedDate: Date? { get set }
     var lastAccessDate: Date? { get set }
     
+    //Atributos de estado avanzados
+    var favorito: Bool { get set }
+    var protegido: Bool { get set }
+    
     //DEFAULT ELEMENT ACTIONS
     func getConcreteInstance() -> Self
+    
+    func cambiarEstadoFavorito() -> Void
+    func cambiarEstadoProtegido() -> Void
     
 }

@@ -14,16 +14,49 @@ struct FactoryArchivo {
         
         var archivo: Archivo
         
+        let favorito = PersistenciaDatos().obtenerAtributoConcreto(url: fileURL, atributo: "favorito") as? Bool ?? false
+        let protegido = PersistenciaDatos().obtenerAtributoConcreto(url: fileURL, atributo: "protegido") as? Bool ?? false
+        
         switch(fileType) {
             
         case .txt:
-            archivo = TXTArchivo(fileName: fileName, fileURL: fileURL, creationDate: creationDate, modificationDate: modificationDate, fileType: fileType, fileExtension: fileURL.pathExtension, fileSize: fileSize)
+            archivo = TXTArchivo(
+                fileName: fileName,
+                fileURL: fileURL,
+                creationDate: creationDate,
+                modificationDate: modificationDate,
+                fileType: fileType,
+                fileExtension: fileURL.pathExtension,
+                fileSize: fileSize,
+                favorito: favorito,
+                protegido: protegido
+            )
 
         case .cbr:
-            archivo = CBRArchivo(fileName: fileName, fileURL: fileURL, creationDate: creationDate, modificationDate: modificationDate, fileType: fileType, fileExtension: fileURL.pathExtension, fileSize: fileSize)
-            
+            archivo = CBRArchivo(
+                fileName: fileName,
+                fileURL: fileURL,
+                creationDate: creationDate,
+                modificationDate: modificationDate,
+                fileType: fileType,
+                fileExtension: fileURL.pathExtension,
+                fileSize: fileSize,
+                favorito: favorito,
+                protegido: protegido
+            )
+
         case .cbz:
-            archivo = CBZArchivo(fileName: fileName, fileURL: fileURL, creationDate: creationDate, modificationDate: modificationDate, fileType: fileType, fileExtension: fileURL.pathExtension, fileSize: fileSize)
+            archivo = CBZArchivo(
+                fileName: fileName,
+                fileURL: fileURL,
+                creationDate: creationDate,
+                modificationDate: modificationDate,
+                fileType: fileType,
+                fileExtension: fileURL.pathExtension,
+                fileSize: fileSize,
+                favorito: favorito,
+                protegido: protegido
+            )
             
 //        case .epub:
 //            archivo = EPUBArchivo(fileName: fileName, fileURL: fileURL, creationDate: creationDate, modificationDate: modificationDate, fileType: fileType.rawValue, fileExtension: fileURL.pathExtension, fileSize: fileSize)

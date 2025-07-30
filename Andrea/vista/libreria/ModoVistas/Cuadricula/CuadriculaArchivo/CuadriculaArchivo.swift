@@ -91,17 +91,30 @@ struct CuadriculaArchivo: View {
                             }
                             
                             // --- ICONOS DE LOS ESTADOS DE UN ARCHIVO ---
-//                            Image(systemName: "lock.shield")
-//                                .font(.system(size: 15))
-//                                .symbolRenderingMode(.palette)
-//                                .foregroundStyle(.red.gradient, .gray.gradient)
-//                            
-//                            Image(systemName: "star.fill")
-//                                .font(.system(size: 14))
-//                                .symbolRenderingMode(.palette)
-//                                .foregroundStyle(.yellow.gradient)
-//                                .padding(.bottom, 1)
-//                                .padding(.leading, -2)
+                            if archivo.protegido {
+                                Image(systemName: "lock.shield")
+                                    .font(.system(size: 15))
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(.red.gradient, .gray.gradient)
+                                    .transition(.asymmetric(
+                                        insertion: .scale.combined(with: .opacity),
+                                        removal: .scale.combined(with: .opacity))
+                                    )
+                                    .animation(.easeInOut(duration: 0.3), value: archivo.protegido)
+                            }
+                            
+                            if archivo.favorito {
+                                Image(systemName: "star.fill")
+                                    .font(.system(size: 14))
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(.yellow.gradient)
+                                    .padding(.bottom, 1)
+                                    .transition(.asymmetric(
+                                        insertion: .scale.combined(with: .opacity),
+                                        removal: .scale.combined(with: .opacity))
+                                    )
+                                    .animation(.easeInOut(duration: 0.3), value: archivo.favorito)
+                            }
                             
                             Spacer()
                         }
@@ -116,6 +129,7 @@ struct CuadriculaArchivo: View {
                             padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
                         )
                         .frame(maxHeight: 24)
+                        
                     }
                     .padding(.bottom, 2)
                     .frame(maxHeight: .infinity, alignment: .bottom)

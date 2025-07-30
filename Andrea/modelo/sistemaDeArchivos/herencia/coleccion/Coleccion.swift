@@ -13,7 +13,7 @@ class ColeccionValor {
     
 }
 
-class Coleccion: ElementoSistemaArchivos, ObservableObject {
+class Coleccion: ElementoSistemaArchivos {
     
     @Published var miniaturasBandeja: [UIImage] = []
     @Published var tipoMiniatura: EnumTipoMiniaturaColeccion = .carpeta
@@ -30,24 +30,24 @@ class Coleccion: ElementoSistemaArchivos, ObservableObject {
     @State private var showIconAlert = false
     
     //--- CONSTRUCTOR DUMMY ---
-    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date) {
+    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, favorito: Bool, protegido: Bool) {
         
         self.color = .blue
         self.totalArchivos = 0
         self.totalColecciones = 0
         
-        super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate)
+        super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate, favortio: favorito, protegido: protegido)
         
     }
     
     //--- CONSTRUCTOR ---
-    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, color: Color, totalArchivos: Int, totalColecciones: Int) {
+    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, color: Color, totalArchivos: Int, totalColecciones: Int, favorito: Bool, protegido: Bool) {
         
         self.color = color
         self.totalArchivos = totalArchivos
         self.totalColecciones = totalColecciones
         
-        super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate)
+        super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate, favortio: favorito, protegido: protegido)
         
         if let tipoRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "tipoMiniatura") as? String,
            let tipo = EnumTipoMiniaturaColeccion(rawValue: tipoRaw) {

@@ -9,6 +9,7 @@ struct ElementoVista<Content: View>: View {
     @ObservedObject var vm: ModeloColeccion
     
     let elemento: any ElementoSistemaArchivosProtocolo
+    var elementoURL: URL { elemento.url }
     let scrollIndex: Int?
     // Cambiar miniatura para archivo
     var cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)? = nil
@@ -97,12 +98,11 @@ struct ElementoVista<Content: View>: View {
                 )
             }
             .onTapGesture {
-                let url = elemento.url
                 if me.seleccionMultiplePresionada {
-                    if !me.elementosSeleccionados.contains(url) {
-                        me.seleccionarElemento(url: url)
+                    if !me.elementosSeleccionados.contains(elementoURL) {
+                        me.seleccionarElemento(url: elementoURL)
                     } else {
-                        me.deseleccionarElemento(url: url)
+                        me.deseleccionarElemento(url: elementoURL)
                     }
                 }
             }
@@ -128,9 +128,13 @@ extension EnumAccionDocumento: Identifiable {
 
 struct ContextMenuContenido: View {
     
+    @EnvironmentObject var me: MenuEstado
+    @EnvironmentObject var ap: AppEstado
+    
     @ObservedObject var vm: ModeloColeccion
     
-    let elemento: any ElementoSistemaArchivosProtocolo
+    var elemento: any ElementoSistemaArchivosProtocolo
+    var elementoURL: URL { elemento.url }
     let cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)?
     let cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)?
     @Binding var borrarPresionado: Bool
@@ -140,24 +144,32 @@ struct ContextMenuContenido: View {
     private let sa: SistemaArchivos = SistemaArchivos.sa
     @State private var masInformacionPresionado: Bool = false
     
+    @State private var menuRefreshTrigger = UUID()
+    
+    var cDinamico: Color { ap.temaActual.colorContrario }
+    var cGris: Color { ap.temaActual == .dark ? .gray.opacity(0.5) : .gray }
+    
     var body: some View {
-        Section(header: Text(elemento.nombre)) {
-            
+        Section(header: Label(elemento.nombre, systemImage: "document")) {
+        
+            // --- SELECCIONAR ELEMENTO ---
             Button(action: {
-                
+                me.seleccionMultiplePresionada = true
+                me.seleccionarElemento(url: elementoURL)
             }) {
                 Label("Seleccionar", systemImage: "hand.tap")
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(.white, .gray)
+                    .foregroundStyle(cDinamico, cGris)
             }
-            
         }
         
         Section {
             Button(action: {
                 self.masInformacionPresionado = true
             }) {
-                Label("Más Información", systemImage: "info")
+                Label("Más Información", systemImage: "info.circle")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(cGris, cDinamico)
             }
             .sheet(isPresented: $masInformacionPresionado){
                 MasInformacionArchivo(vm: vm, elemento: elemento)
@@ -166,37 +178,26 @@ struct ContextMenuContenido: View {
             Button(action: {
                 //vista previa de mi programa personalizada. se motrara la miniatura y 3 datos basicos.
             }) {
-                Label("Vista previa", systemImage: "eye")
+                Label {
+                    Text("Vista previa")
+                } icon: {
+                    Image("custom-eye") // <- tu símbolo personalizado
+                        .renderingMode(.template) // permite aplicar `foregroundStyle`
+                }
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(cGris, cDinamico)
+
             }
             
             CambiarMiniaturaMenu(elemento: elemento, cambiarMiniaturaArchivo: cambiarMiniaturaArchivo, cambiarMiniaturaColeccion: cambiarMiniaturaColeccion)
             
         }
-            
+        
+        //--- ESTADO DEL ARCHIVO ---
         Section {
-            
-            Button(action: {
-
-            }) {
-                Label("Completar lectura", systemImage: "arrow.up")
-            }
-        
-            Button(action: {
-                
-            }) {
-                Label("Agregar a favoritos", systemImage: "star.fill")
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(Color.yellow)
-            }
-            
-            Button(action: {
-                
-            }) {
-                Label("Proteger", systemImage: "lock.shield")
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.red, .gray)
-            }
-        
+            if let archivo = elemento as? Archivo { BotonCompletarLectura(archivo: archivo) }
+            if let elementoConcreto = elemento as? ElementoSistemaArchivos { BotonFavorito(elemento: elementoConcreto) }
+            if let elementoConcreto = elemento as? ElementoSistemaArchivos { BotonProteccion(elemento: elementoConcreto) }
         }
         
 
@@ -229,31 +230,31 @@ struct ContextMenuContenido: View {
         
         Section {
             Button(action: {
-                FilesAppManager.abrirConOpciones(url: elemento.url)
+                FilesAppManager.abrirConOpciones(url: elementoURL)
             }) {
                 Label("Abrir con", systemImage: "ellipsis")
             }
             
-            ShareLink(item: elemento.url) {
+            ShareLink(item: elementoURL) {
                 Label("Compartir", systemImage: "square.and.arrow.up")
             }
 
             Menu {
                 
                 Button(action: {
-                    FilesAppManager.abrirDirectorioDelArchivo(url: elemento.url)
+                    FilesAppManager.abrirDirectorioDelArchivo(url: elementoURL)
                 }) {
                     Label("Abrir en Archivos", systemImage: "folder")
                 }
                 
                 Button(action: {
-                    FilesAppManager.copiarYAbrirEnFiles(url: elemento.url)
+                    FilesAppManager.copiarYAbrirEnFiles(url: elementoURL)
                 }) {
                     Label("Exportar a Archivos", systemImage: "square.and.arrow.up.on.square")
                 }
                 
                 Button(action: {
-                    FilesAppManager.vistaPreviaDeArchivos(url: elemento.url)
+                    FilesAppManager.vistaPreviaDeArchivos(url: elementoURL)
                 }) {
                     Label("Vista previa en Archivos", systemImage: "eye")
                 }
@@ -272,5 +273,93 @@ struct ContextMenuContenido: View {
         }
 
         
+    }
+}
+
+
+struct BotonCompletarLectura: View {
+    
+    @ObservedObject var archivo: Archivo
+    @EnvironmentObject var ap: AppEstado
+    
+    var cDinamico: Color { ap.temaActual.colorContrario }
+    var cGris: Color { ap.temaActual == .dark ? .gray.opacity(0.5) : .gray }
+    
+    var body: some View {
+        Button(action: {
+            archivo.completarLectura()
+        }) {
+            let completado: Bool = archivo.progreso == 100
+            Label {
+                Text(completado ? "Reiniciar lectura" : "Completar lectura")
+            } icon: {
+                Image(completado ? "custom-reiniciar" : "custom-completar")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(cDinamico, cGris)
+            }
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(cDinamico, cGris)
+            .onAppear {
+                print(completado)
+                print(archivo.progreso)
+            }
+        }
+    }
+}
+
+struct BotonFavorito<Elemento: ObservableObject & ElementoSistemaArchivosProtocolo>: View {
+    @ObservedObject var elemento: Elemento
+    @EnvironmentObject var ap: AppEstado
+    
+    var cDinamico: Color { ap.temaActual.colorContrario }
+    var cGris: Color { ap.temaActual == .dark ? .gray : .gray }
+    
+    var body: some View {
+        Button(action: {
+            elemento.cambiarEstadoFavorito()
+        }) {
+            if !elemento.favorito {
+                Label {
+                    Text("Agregar a favoritos")
+                } icon: {
+                    Image("custom-star") // <- tu símbolo personalizado
+                        .renderingMode(.template) // permite aplicar `foregroundStyle`
+                }
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(cGris, cDinamico)
+            } else {
+                Label("Quitar de favoritos", systemImage: "star.fill")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(Color.yellow)
+            }
+        }
+    }
+}
+
+
+struct BotonProteccion<Elemento: ObservableObject & ElementoSistemaArchivosProtocolo>: View {
+    @ObservedObject var elemento: Elemento
+    @EnvironmentObject var ap: AppEstado
+    
+    var cDinamico: Color { ap.temaActual.colorContrario }
+    var cGris: Color { ap.temaActual == .dark ? .gray.opacity(0.5) : .gray }
+    
+    var body: some View {
+        Button(action: {
+            elemento.cambiarEstadoProtegido()
+        }) {
+            
+            let p = elemento.protegido
+            
+            Label {
+                Text(p ? "Quitar protección" : "Proteger")
+            } icon: {
+                Image(systemName: "lock.shield")
+                    .font(.system(size: 60))
+            }
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(elemento.protegido ? .red : cGris, cGris)
+
+        }
     }
 }
