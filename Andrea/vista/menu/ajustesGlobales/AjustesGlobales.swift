@@ -10,7 +10,7 @@ import SwiftUI
 struct AjustesGlobales_Previews: PreviewProvider {
     static var previews: some View {
         // Instancias de ejemplo para los objetos de entorno
-        let appEstadoPreview = AppEstado() // Reemplaza con la inicialización adecuada
+        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
         let menuEstadoPreview = MenuEstado() // Reemplaza con la inicialización adecuada
 
         return AjustesGlobales()
@@ -34,6 +34,8 @@ struct AjustesGlobales: View {
     @State private var scrollProxy: ScrollViewProxy?
     @State private var sectionOffsets: [String: CGFloat] = [:]
     
+    @State private var showEmptyState = false // Para controlar la animación
+    
     var sections: [String] { menuEstado.sections }
 
     func updateActiveSection() {
@@ -56,27 +58,53 @@ struct AjustesGlobales: View {
     var body: some View {
             
             VStack(alignment: .center, spacing: 0) {
-                Text("Ajustes generales")
-                    .font(.system(size: appEstado.constantes.titleSize, weight: .bold))
-                    .bold()
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, paddingHorizontal)
-                    .padding(.vertical, paddingVertical) // 20
-                    
-                                    
-                    // Descripción
-                    Text("Personaliza la apariencia y funcionalidad a tu gusto. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
-                        .font(.system(size: appEstado.constantes.subTitleSize, weight: .bold))
-                        .multilineTextAlignment(.center)
-//                        .foregroundColor(.primary)
-                        .frame(width: 400 * appEstado.constantes.scaleFactor)
-                        .padding(.horizontal, paddingHorizontal)
-                        .padding(.bottom, paddingVertical + 5) // 25
+                    ZStack(alignment: .leading) {
+                        // Imagen alineada a la izquierda
+                        Image("book1")
+                            .resizable()
+                            .frame(width: 160, height: 160)
+                            .aspectRatio(contentMode: .fit)
+                            .scaleEffect(showEmptyState ? 1 : 0.9)
+                            .opacity(showEmptyState ? 1 : 0)
+                            .offset(y: showEmptyState ? 0 : 20)
+                            .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
+                            .padding(.leading, 0)
+                        
+                        // Texto centrado en pantalla, por encima de la imagen
+                        HStack {
+                            Spacer()
+                            
+                            VStack(alignment: .center, spacing: 10) {
+                                // Título centrado
+                                Text("Ajustes generales")
+                                    .font(.system(size: appEstado.constantes.titleSize * 1.7, weight: .bold))
+                                    .bold()
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, paddingHorizontal)
+                                    .offset(x: 35)
+                                
+                                Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
+                                    .font(.system(size: appEstado.constantes.subTitleSize))
+                                    .bold()
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: 380 * appEstado.constantes.scaleFactor)
+                                    .padding(.horizontal, paddingHorizontal)
+                                    .offset(x: 35)
+                            }
+                            
+                            Spacer()
+                        }
+                    }
+                    .padding(.top, paddingVertical)
+                    .frame(maxWidth: .infinity, minHeight: 140) // Altura mínima para que imagen y texto se alineen bien
+                    .onAppear { showEmptyState = true }
+                    .onDisappear { showEmptyState = false }
                 
                 Rectangle()
-                    .fill(Color.gray.opacity(0.7))
+                    .fill(Color.gray.opacity(0.2))
                     .frame(height: 2.5)
                     .frame(maxWidth: .infinity, alignment: .trailing)
+//                    .padding(.vertical, 10)
                 
                 GeometryReader { hStackGeo in
                     HStack(spacing: 0) {
@@ -111,7 +139,7 @@ struct AjustesGlobales: View {
                                     
                                     Rectangle()
                                        .fill(Color.gray.opacity(0.5))
-                                       .frame(width: 2, height: totalHeightForLine, alignment: .trailing)
+                                       .frame(width: 1, height: totalHeightForLine, alignment: .trailing)
                                        .zIndex(0)
                                     
                                 } //FIN ZSTACK
@@ -122,7 +150,7 @@ struct AjustesGlobales: View {
                             .frame(maxHeight: .infinity)
                         } //fin vstack
                         .frame(maxHeight: .infinity)
-                        .frame(maxWidth: 57)
+                        .frame(maxWidth: 68)
                         
                         ScrollViewReader { proxy in
                             ScrollView {
@@ -205,6 +233,8 @@ struct AjustesGlobales: View {
     }
     
 }
+
+
 
 struct AjustesGlobalesWrapper: View {
     @EnvironmentObject var appEstado: AppEstado

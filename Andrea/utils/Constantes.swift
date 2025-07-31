@@ -17,7 +17,7 @@ struct ConstantesPorDefecto {
     var horizontalPadding: CGFloat = 15
     var verticalPadding: CGFloat = 20
     
-    var paddingCorto: CGFloat = 4.5
+    var paddingCorto: CGFloat = 14.5
     
     //MARK: - ICONO
     var iconSize: CGFloat = 25

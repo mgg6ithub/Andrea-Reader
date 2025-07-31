@@ -30,10 +30,10 @@ class MenuEstado: ObservableObject {
     @Published var isGlobalSettingsPressed: Bool = false //Para desplegar y cerrar el menu global de ajustes
     
     //Variables resizable del menu de indices con puntos lateral
-    @Published var anchoIndicePuntos: CGFloat = 60
+    @Published var anchoIndicePuntos: CGFloat = 77.5
     @Published var separacionBarra: CGFloat = 69
     @Published var alturaBarra: CGFloat = 72.5
-    @Published var anchoTexto: CGFloat = 65
+    @Published var anchoTexto: CGFloat = 72.5
     
     //Variables secciones de cada ajustes
     @Published var altoRectanguloFondo: CGFloat = 230 //Alto del rectangulo de fondo para los ajustes general

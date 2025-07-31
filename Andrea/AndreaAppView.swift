@@ -67,12 +67,12 @@ struct AndreaAppView: View {
 ////        let appEstadoPreview = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
 ////        let appEstadoPreview = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
 //        let menuEstadoPreview = MenuEstado() // Reemplaza con inicialización adecuada
-//        let pc = PilaColecciones.getPilaColeccionesSingleton
+////        let pc = PilaColecciones.pilaColecciones
 //
 //        return AndreaAppView()
 //            .environmentObject(appStatePreview)
 //            .environmentObject(appEstadoPreview)
 //            .environmentObject(menuEstadoPreview)
-//            .environmentObject(pc)
+////            .environmentObject(pc)
 //    }
 //}

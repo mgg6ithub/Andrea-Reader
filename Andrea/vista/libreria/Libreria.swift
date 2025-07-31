@@ -13,7 +13,7 @@ struct Libreria: View {
                     Spacer()
 
                     VStack(spacing: 10) {
-                        Image("caja")
+                        Image("caja-vacia")
                             .resizable()
                             .frame(width: 235, height: 235)
                             .aspectRatio(contentMode: .fit)
