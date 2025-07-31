@@ -1,9 +1,4 @@
-//
-//  RigthMenu.swift
-//  Andrea
-//
-//  Created by mgg on 30/5/25.
-//
+
 
 import SwiftUI
 
@@ -17,6 +12,16 @@ struct MenuDerecha: View {
             
             Spacer()
             
+            Button(action: {
+                
+            }) {
+                Image(systemName: "questionmark.circle")
+                    .font(.system(size: appEstado.constantes.iconSize * 1.1))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                    .contentTransition(.symbolEffect(.replace))
+                    .fontWeight(appEstado.constantes.iconWeight)
+            }
             
             Button(action: {
 

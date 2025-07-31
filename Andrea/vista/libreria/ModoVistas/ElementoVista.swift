@@ -151,7 +151,22 @@ struct ContextMenuContenido: View {
     
     var body: some View {
         Section(header: Label(elemento.nombre, systemImage: "document")) {
-        
+            
+            // --- LEER O ENTRAR: SEGUN ARCHIVO O DIRECTORIO---
+            Button(action: {
+                
+            }) {
+                if let _ = elemento as? Archivo {
+                    Label("Leer", systemImage: "text.document")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(cDinamico, cGris)
+                } else {
+                    Label("Entrar", systemImage: "folder")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(cDinamico, cGris)
+                }
+            }
+            
             // --- SELECCIONAR ELEMENTO ---
             Button(action: {
                 me.seleccionMultiplePresionada = true
@@ -200,38 +215,42 @@ struct ContextMenuContenido: View {
             if let elementoConcreto = elemento as? ElementoSistemaArchivos { BotonFavorito(elemento: elementoConcreto) }
             if let elementoConcreto = elemento as? ElementoSistemaArchivos { BotonProteccion(elemento: elementoConcreto) }
         }
-        
 
         Section {
-
-            Button(action: {
-                self.renombrarPresionado = true
-            }) {
-                Label("Renombrar", systemImage: "pencil")
-            }
-            
-            Button(action: {
-                self.accionDocumento = .mover
-            }) {
-                Label("Mover", systemImage: "arrow.right.doc.on.clipboard")
+            Menu {
+                Button(action: {
+                    self.renombrarPresionado = true
+                }) {
+                    Label("Renombrar", systemImage: "pencil")
+                }
+                
+                Button(action: {
+                    self.accionDocumento = .mover
+                }) {
+                    Label("Mover", systemImage: "arrow.right.doc.on.clipboard")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(cDinamico, cGris)
+                }
+                
+                Button(action: {
+                    self.accionDocumento = .copiar
+                }) {
+                    Label("Copiar", systemImage: "doc.on.doc")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(cDinamico, cGris)
+                }
+                
+                Button(action: {
+                    try? sa.duplicarElemento(elemento, vm: vm)
+                }) {
+                    Label("Duplicar", systemImage: "plus.rectangle.on.rectangle")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(cDinamico, cGris)
+                }
+            } label: {
+                Label("Acciones", systemImage: "hand.point.right")
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(cDinamico, cGris)
-            }
-            
-            Button(action: {
-                self.accionDocumento = .copiar
-            }) {
-                Label("Copiar", systemImage: "doc.on.doc")
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(cDinamico, cGris)
-            }
-            
-            Button(action: {
-                try? sa.duplicarElemento(elemento, vm: vm)
-            }) {
-                Label("Duplicar", systemImage: "plus.rectangle.on.rectangle")
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(cDinamico, cGris)
+                    .foregroundStyle(cDinamico, .gray)
             }
         }
         
@@ -243,7 +262,9 @@ struct ContextMenuContenido: View {
             }
             
             ShareLink(item: elementoURL) {
-                Label("Compartir", systemImage: "square.and.arrow.up")
+                Label("Compartir", systemImage: "square.and.arrow.up.on.square")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(cDinamico, cGris)
             }
 
             Menu {
@@ -251,16 +272,16 @@ struct ContextMenuContenido: View {
                 Button(action: {
                     FilesAppManager.abrirDirectorioDelArchivo(url: elementoURL)
                 }) {
-                    Label("Abrir en Archivos", systemImage: "folder")
+                    Label("Abrir en archivos", systemImage: "folder")
                 }
                 
                 Button(action: {
                     FilesAppManager.copiarYAbrirEnFiles(url: elementoURL)
                 }) {
                     Label {
-                        Text("Compartir")
+                        Text("Exportar a archivos")
                     } icon: {
-                        Image("custom-compartir") // <- tu símbolo personalizado
+                        Image(systemName: "square.and.arrow.up") // <- tu símbolo personalizado
                             .renderingMode(.template) // permite aplicar `foregroundStyle`
                     }
                     .symbolRenderingMode(.palette)

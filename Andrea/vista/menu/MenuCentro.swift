@@ -50,6 +50,7 @@ struct MenuCentro: View {
         
         HStack {
             
+            //MARK: --- SELECCION MULTIPLE DE ELEMENTOS ---
             Button(action: {
                 withAnimation { menuEstado.seleccionMultiplePresionada = true }
             }) {
@@ -63,7 +64,7 @@ struct MenuCentro: View {
             }
             .offset(y: 0.6)
             
-            //MARK: - IMPORTAR
+            //MARK: --- IMPORTAR ELEMENTOS A LA APLICACION ---
             
             Button(action: {
                 self.mostrarDocumentPicker.toggle()
@@ -91,7 +92,8 @@ struct MenuCentro: View {
             }
             .offset(y: -2)
             
-            //MARK: - CREAR COLECCION
+            
+            //MARK: --- CREAR NUEVA COLECCION ---
             
             Button(action: {
                 self.esNuevaColeccionPresionado.toggle()

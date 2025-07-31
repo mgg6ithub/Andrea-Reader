@@ -30,7 +30,7 @@ class ModeloMiniatura {
         completion: @escaping (UIImage?) -> Void
     ) {
         // 1) Lanza todo el trabajo pesado en un hilo userInitiated
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .utility).async {
             //--- obtener imagen por defecto ---
             let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
             //--- si el tipo de archivo es desconodio ---
