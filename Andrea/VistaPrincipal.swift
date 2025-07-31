@@ -85,6 +85,8 @@ struct VistaPrincipal: View {
             
             if appEstado.vistaPrevia, let elementoSelecionado = appEstado.elementoSeleccionado {
                 CartaHolografica3D(vm: pc.getColeccionActual(), elemento: elementoSelecionado)
+                    .edgesIgnoringSafeArea(.all)
+                    .zIndex(10)
             }
             
         }
