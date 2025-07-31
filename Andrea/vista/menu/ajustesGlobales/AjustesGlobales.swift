@@ -81,7 +81,7 @@ struct AjustesGlobales: View {
                                     .bold()
                                     .multilineTextAlignment(.center)
                                     .padding(.horizontal, paddingHorizontal)
-                                    .offset(x: 35)
+                                    .offset(x: 30)
                                 
                                 Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
                                     .font(.system(size: appEstado.constantes.subTitleSize))
@@ -89,7 +89,7 @@ struct AjustesGlobales: View {
                                     .multilineTextAlignment(.center)
                                     .frame(width: 380 * appEstado.constantes.scaleFactor)
                                     .padding(.horizontal, paddingHorizontal)
-                                    .offset(x: 35)
+                                    .offset(x: 30)
                             }
                             
                             Spacer()

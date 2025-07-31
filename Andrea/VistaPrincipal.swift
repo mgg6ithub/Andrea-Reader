@@ -76,7 +76,13 @@ struct VistaPrincipal: View {
                     }
                 }
             }
-
+            
+            if appEstado.masInformacion, let elementoSelecionado = appEstado.elementoSeleccionado {
+                MasInformacion(vm: pc.getColeccionActual(), pantallaCompleta: $appEstado.pantallaCompleta, elemento: elementoSelecionado)
+                    .edgesIgnoringSafeArea(.all)
+                    .zIndex(10)
+            }
+            
         }
         .foregroundColor(appEstado.temaActual.textColor)
         .animation(.easeInOut, value: appEstado.temaActual)

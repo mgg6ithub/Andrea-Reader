@@ -165,15 +165,16 @@ struct ContextMenuContenido: View {
         
         Section {
             Button(action: {
-                self.masInformacionPresionado = true
+                ap.elementoSeleccionado = elemento
+                withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacion = true }
             }) {
                 Label("Más Información", systemImage: "info.circle")
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(cDinamico, cGris)
             }
-            .sheet(isPresented: $masInformacionPresionado){
-                MasInformacionArchivo(vm: vm, elemento: elemento)
-            }
+//            .sheet(isPresented: $masInformacionPresionado){ //Puedo sacarlo de aqui con una .sheet o desde la vista principal
+//                MasInformacionArchivo(vm: vm, elemento: elemento)
+//            }
             
             Button(action: {
                 //vista previa de mi programa personalizada. se motrara la miniatura y 3 datos basicos.

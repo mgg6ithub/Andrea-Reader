@@ -27,6 +27,11 @@ class AppEstado: ObservableObject {
     
     @Published var isScrolling: Bool = false
     
+    //MARK: --- mas informacion ---
+    @Published var masInformacion: Bool = false
+    @Published var elementoSeleccionado: (any ElementoSistemaArchivosProtocolo)? = nil
+    @Published var pantallaCompleta: Bool = false
+    
     init(screenWidth: CGFloat? = nil, screenHeight: CGFloat? = nil) {
         self.isFirstTimeLaunch = true
         
