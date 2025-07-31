@@ -169,8 +169,8 @@ struct ContextMenuContenido: View {
             
             // --- SELECCIONAR ELEMENTO ---
             Button(action: {
-                me.seleccionMultiplePresionada = true
                 me.seleccionarElemento(url: elementoURL)
+                withAnimation { me.seleccionMultiplePresionada = true }
             }) {
                 Label("Seleccionar", systemImage: "hand.tap")
                     .symbolRenderingMode(.palette)

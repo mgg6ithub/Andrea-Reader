@@ -13,44 +13,50 @@ struct MenuSeleccionMultipleArriba: View {
     var body: some View {
         HStack(spacing: 15) {
             
-            Text("\(vm.elementos.count) elementos")
+            let totalElementos = vm.elementos.count
+            if totalElementos > 0 {
+                Text("\(totalElementos) \(totalElementos == 1 ? "elemento" : "elementos")")
+            } else {
+                Text("El estante está listo, falta el primer libro.")
+            }
             
+            let totalSeleccioandos = me.elementosSeleccionados.count
             if !me.elementosSeleccionados.isEmpty {
-                withAnimation(.easeOut(duration: 1.5)) {
-                    Text("\(me.elementosSeleccionados.count) seleccionados")
+                HStack(spacing: 3.5) {
+//                    withAnimation(.easeOut(duration: 0.3)) {
+                        Text("\(totalSeleccioandos)")
+//                    }
+                    Text("\(totalSeleccioandos == 1 ? "seleccionado" : "seleccionados")")
                 }
             }
             
             Spacer()
             
-//            HStack(spacing: 0) {
-                Button(action: {
-                    if !me.todosSeleccionados {
-                        me.seleccionarTodos()
-                    } else {
-                        me.deseleccionarTodos()
-                    }
-                }) {
-                    Text(me.todosSeleccionados ? "Deseleccionar todos" : "Seleccionar todos")
+            Button(action: {
+                if !me.todosSeleccionados {
+                    me.seleccionarTodos()
+                } else {
+                    me.deseleccionarTodos()
                 }
+            }) {
+                Text(me.todosSeleccionados ? "Deseleccionar todos" : "Seleccionar todos")
+            }
+            
+            Button(action: {
+                withAnimation { me.seleccionMultiplePresionada = false }
+            }) {
+                Text("Cancelar")
                 
-                Button(action: {
-                    withAnimation { me.seleccionMultiplePresionada = false }
-                }) {
-                    Text("Cancelar")
-    //                    .font(.subheadline)
-                    
-                    Image(systemName: "xmark.square.fill")
-                        .font(.system(size: 25))
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.white, Color.red)
-                }
-                .padding(5.9) // Añade relleno dentro del botón
-                .background(
-                    RoundedRectangle(cornerRadius: 12) // Fondo con bordes redondeados
-                        .fill(Color.gray.opacity(0.1)) // Cambia el color del fondo aquí
+                Image(systemName: "xmark.square.fill")
+                    .font(.system(size: 25))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, Color.red)
+            }
+            .padding(5.9) // Añade relleno dentro del botón
+            .background(
+                RoundedRectangle(cornerRadius: 12) // Fondo con bordes redondeados
+                    .fill(Color.gray.opacity(0.1)) // Cambia el color del fondo aquí
                 )
-//            }
 
         }
         .padding(.horizontal, constantes.horizontalPadding)

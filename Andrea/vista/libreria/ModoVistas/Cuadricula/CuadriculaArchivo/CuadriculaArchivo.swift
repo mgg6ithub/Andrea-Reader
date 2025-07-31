@@ -29,9 +29,11 @@ struct CuadriculaArchivo: View {
                     VStack(alignment: .center, spacing: 0) {
                         let seleccionado = me.elementosSeleccionados.contains(archivo.url)
                         Image(systemName: seleccionado ? "checkmark.circle.fill" : "circle")
-                            .font(.system(size: constantes.iconSize))
-                            .foregroundColor(seleccionado ? coleccionVM.color : .gray)
+                            .font(.system(size: constantes.iconSize * 1.5))
+                            .fontWeight(.light)
+                            .foregroundColor(coleccionVM.color)
                             .transition(.scale.combined(with: .opacity))
+                            .contentTransition(.symbolEffect(.replace))
                             
                     }
                     .padding(.top, 60)

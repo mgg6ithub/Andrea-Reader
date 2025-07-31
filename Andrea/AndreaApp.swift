@@ -16,8 +16,13 @@ struct AndreaApp: App {
             AndreaAppView()
                 .task {
 //                    try? Tips.resetDatastore()
+//                    try? Tips.configure(
+//                        [   .displayFrequency(.immediate),
+//                            .datastoreLocation(.applicationDefault)
+//                        ]
+//                    )
                     try? Tips.configure(
-                        [   .displayFrequency(.immediate),
+                        [
                             .datastoreLocation(.applicationDefault)
                         ]
                     )
