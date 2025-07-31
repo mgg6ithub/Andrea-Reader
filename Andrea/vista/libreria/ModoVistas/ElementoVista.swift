@@ -213,18 +213,24 @@ struct ContextMenuContenido: View {
                 self.accionDocumento = .mover
             }) {
                 Label("Mover", systemImage: "arrow.right.doc.on.clipboard")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(cDinamico, cGris)
             }
             
             Button(action: {
                 self.accionDocumento = .copiar
             }) {
                 Label("Copiar", systemImage: "doc.on.doc")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(cDinamico, cGris)
             }
             
             Button(action: {
                 try? sa.duplicarElemento(elemento, vm: vm)
             }) {
-                Label("Duplicar", systemImage: "rectangle.on.rectangle")
+                Label("Duplicar", systemImage: "plus.rectangle.on.rectangle")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(cDinamico, cGris)
             }
         }
         
