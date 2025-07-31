@@ -83,6 +83,10 @@ struct VistaPrincipal: View {
                     .zIndex(10)
             }
             
+            if appEstado.vistaPrevia, let elementoSelecionado = appEstado.elementoSeleccionado {
+                CartaHolografica3D(vm: pc.getColeccionActual(), elemento: elementoSelecionado)
+            }
+            
         }
         .foregroundColor(appEstado.temaActual.textColor)
         .animation(.easeInOut, value: appEstado.temaActual)

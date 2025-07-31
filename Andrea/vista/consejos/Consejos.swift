@@ -49,9 +49,9 @@ struct ConsejoImportarElementos: Tip {
            ]
     }
     
-    var options: [TipOption] {
-        [Tips.MaxDisplayCount(1)]
-    }
+//    var options: [TipOption] {
+//        [Tips.MaxDisplayCount(1)]
+//    }
 
     
 }
@@ -77,8 +77,8 @@ struct ConsejoCrearColeccion: Tip {
         [#Rule(Self.$estamosHome) { $0 == true }]
     }
     
-    var options: [TipOption] {
-        [Tips.MaxDisplayCount(3)]
-    }
+//    var options: [TipOption] {
+//        [Tips.MaxDisplayCount(3)]
+//    }
     
 }

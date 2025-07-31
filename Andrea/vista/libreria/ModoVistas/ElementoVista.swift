@@ -193,6 +193,8 @@ struct ContextMenuContenido: View {
             
             Button(action: {
                 //vista previa de mi programa personalizada. se motrara la miniatura y 3 datos basicos.
+                ap.elementoSeleccionado = elemento
+                withAnimation(.easeInOut(duration: 0.3)) { ap.vistaPrevia = true }
             }) {
                 Label {
                     Text("Vista previa")

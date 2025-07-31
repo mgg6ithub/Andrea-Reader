@@ -32,6 +32,9 @@ class AppEstado: ObservableObject {
     @Published var elementoSeleccionado: (any ElementoSistemaArchivosProtocolo)? = nil
     @Published var pantallaCompleta: Bool = false
     
+    //MARK: --- vista previa seleccionada ---
+    @Published var vistaPrevia: Bool = false
+    
     init(screenWidth: CGFloat? = nil, screenHeight: CGFloat? = nil) {
         self.isFirstTimeLaunch = true
         
