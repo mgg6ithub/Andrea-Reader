@@ -169,7 +169,7 @@ struct ContextMenuContenido: View {
             }) {
                 Label("Más Información", systemImage: "info.circle")
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(cGris, cDinamico)
+                    .foregroundStyle(cDinamico, cGris)
             }
             .sheet(isPresented: $masInformacionPresionado){
                 MasInformacionArchivo(vm: vm, elemento: elemento)
@@ -256,7 +256,14 @@ struct ContextMenuContenido: View {
                 Button(action: {
                     FilesAppManager.copiarYAbrirEnFiles(url: elementoURL)
                 }) {
-                    Label("Exportar a Archivos", systemImage: "square.and.arrow.up.on.square")
+                    Label {
+                        Text("Compartir")
+                    } icon: {
+                        Image("custom-compartir") // <- tu símbolo personalizado
+                            .renderingMode(.template) // permite aplicar `foregroundStyle`
+                    }
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(cDinamico, cGris)
                 }
                 
                 Button(action: {

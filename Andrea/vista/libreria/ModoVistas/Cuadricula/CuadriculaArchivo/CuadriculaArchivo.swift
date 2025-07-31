@@ -35,16 +35,16 @@ struct CuadriculaArchivo: View {
                             
                     }
                     .padding(.top, 60)
-                    .zIndex(2)
+                    .zIndex(5)
                 }
                 
                 ZStack {
                     if let img = viewModel.miniatura {
                         Image(uiImage: img)
                             .resizable()
-                            .scaleEffect(mostrarMiniatura ? 1 : 0.95)
+                            .scaleEffect(mostrarMiniatura ? 1 : 1.05)
                             .opacity(mostrarMiniatura ? 1 : 0)
-                            .animation(.easeOut(duration: 0.3), value: mostrarMiniatura)
+                            .animation(.easeOut(duration: 0.25), value: mostrarMiniatura)
                             .onAppear {
                                 mostrarMiniatura = true
                             }
@@ -135,29 +135,29 @@ struct CuadriculaArchivo: View {
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     .zIndex(3)
                     
-                    if archivo.tipoMiniatura != .imagenBase {
-                        VStack {
-                            Spacer()
-                            HStack {
-                                RadialGradient(
-                                    gradient: Gradient(colors: [
-                                        Color.black,
-                                        Color.black.opacity(0.95)
-                                    ]),
-                                    center: .bottomLeading,
-                                    startRadius: 10,
-                                    endRadius: 90
-                                )
-                                .frame(width: 120, height: 80)
-                                .blur(radius: 20)
-                                .offset(x: -20, y: 20)
-                                .allowsHitTesting(false)
-
-                                Spacer()
-                            }
-                        }
-                        .zIndex(2) // 🔽 Importante: para que quede detrás de la barra y texto
-                    }
+//                    if archivo.tipoMiniatura != .imagenBase {
+//                        VStack {
+//                            Spacer()
+//                            HStack {
+//                                RadialGradient(
+//                                    gradient: Gradient(colors: [
+//                                        Color.black,
+//                                        Color.black.opacity(0.95)
+//                                    ]),
+//                                    center: .bottomLeading,
+//                                    startRadius: 10,
+//                                    endRadius: 90
+//                                )
+//                                .frame(width: 120, height: 80)
+//                                .blur(radius: 20)
+//                                .offset(x: -20, y: 20)
+//                                .allowsHitTesting(false)
+//
+//                                Spacer()
+//                            }
+//                        }
+//                        .zIndex(2) // 🔽 Importante: para que quede detrás de la barra y texto
+//                    }
                 }
                 
             }
@@ -185,7 +185,7 @@ struct CuadriculaArchivo: View {
         .frame(width: width, height: height)
         .background(appEstado.temaActual.cardColor)
         .cornerRadius(15)
-        .shadow(color: Color.black.opacity(0.2), radius: 2.5, x: 1, y: 1)
+        .shadow(color: appEstado.temaActual == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 3)
 //        .scaleEffect(isVisible ? 1 : 0.95)
 //        .opacity(isVisible ? 1 : 0)
         .onAppear {

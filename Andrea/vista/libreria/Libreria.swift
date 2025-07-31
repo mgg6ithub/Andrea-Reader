@@ -13,7 +13,7 @@ struct Libreria: View {
                     Spacer()
 
                     VStack(spacing: 10) {
-                        Image("caja-carton")
+                        Image("caja")
                             .resizable()
                             .frame(width: 235, height: 235)
                             .aspectRatio(contentMode: .fit)
@@ -22,7 +22,7 @@ struct Libreria: View {
                             .offset(y: showEmptyState ? 0 : 20)
                             .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
 
-                        Text("Vacia, sin elementos.")
+                        Text("Colección vacia, sin elementos.")
                             .font(.headline)
                             .opacity(showEmptyState ? 1 : 0)
                             .animation(.easeOut.delay(0.4), value: showEmptyState)

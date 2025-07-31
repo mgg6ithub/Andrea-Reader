@@ -35,7 +35,7 @@ struct MenuSeleccionMultipleArriba: View {
                 }
                 
                 Button(action: {
-                    me.seleccionMultiplePresionada = false
+                    withAnimation { me.seleccionMultiplePresionada = false }
                 }) {
                     Text("Cancelar")
     //                    .font(.subheadline)

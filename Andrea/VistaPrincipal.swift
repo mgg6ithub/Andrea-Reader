@@ -15,7 +15,6 @@ struct VistaPrincipal: View {
         ZStack {
             appEstado.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
-                
                 VStack(spacing: 0) {
                     if menuEstado.seleccionMultiplePresionada {
                         if let coleccion = coleccionMostrada {

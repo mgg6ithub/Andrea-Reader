@@ -65,11 +65,11 @@ class MenuEstado: ObservableObject {
     init() {}
     
     public func seleccionarElemento(url: URL) {
-        self.elementosSeleccionados.insert(url)
+        withAnimation { self.elementosSeleccionados.insert(url) }
     }
     
     public func deseleccionarElemento(url: URL) {
-        self.elementosSeleccionados.remove(url)
+        withAnimation { self.elementosSeleccionados.remove(url) }
     }
     
     public func seleccionarTodos() {
@@ -85,7 +85,7 @@ class MenuEstado: ObservableObject {
     }
     
     public func deseleccionarTodos() {
-        self.elementosSeleccionados.removeAll()
+        withAnimation { self.elementosSeleccionados.removeAll() }
         self.todosSeleccionados = false
     }
     

@@ -181,7 +181,9 @@ class ModeloColeccion: ObservableObject {
     //MARK: --- METODO PARA CAMBIAR EL MODO DE VISTA DE LA COLECCION
     
     func cambiarModoVista(modoVista: EnumModoVista) {
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.modoVista = modoVista }
+//        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.modoVista = modoVista }
+        withAnimation(.easeInOut(duration: 0.3)) {  self.modoVista = modoVista }
+//        self.modoVista = modoVista
         PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "tipoVista", valor: modoVista)
     }
 

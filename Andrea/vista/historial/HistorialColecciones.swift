@@ -57,12 +57,12 @@ struct HistorialColecciones: View {
                         ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
                             Group {
                                 if pc.esColeccionActual(coleccion: vm.coleccion) {
-                                    HStack(spacing: 4) {
+                                    HStack(spacing: 5) {
                                         Image(systemName: "chevron.forward")
                                             .font(.system(size: 16))
                                             .foregroundColor(.gray)
                                             .transition(.opacity.combined(with: .scale)) // animación al aparecer/desaparecer
-                                            .animation(.easeInOut(duration: 0.3), value: pc.getColeccionActual().coleccion)
+                                            .animation(.easeInOut(duration: 1.5), value: pc.getColeccionActual().coleccion)
                                         
                                         ColeccionRectanguloAvanzado(
                                             textoSize: 21,
@@ -84,7 +84,7 @@ struct HistorialColecciones: View {
                                                 .font(.system(size: 10))
                                                 .foregroundColor(.gray.opacity(0.8))
                                                 .transition(.opacity.combined(with: .scale)) // animación al aparecer/desaparecer
-                                                .animation(.easeInOut(duration: 0.3), value: pc.getColeccionActual().coleccion)
+                                                .animation(.easeInOut(duration: 1.5), value: pc.getColeccionActual().coleccion)
                                             
                                             ColeccionRectanguloAvanzado(
                                                 textoSize: 14,

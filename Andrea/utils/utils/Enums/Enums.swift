@@ -124,8 +124,8 @@ enum EnumTemas: String, CaseIterable {
         
         switch self {
         case .light: return .fixedSystemGray6_light
-//        case .dark: return .fixedSystemGray5_dark
-        case .dark: return .black.opacity(0.3)
+        case .dark: return .fixedSystemGray5_dark
+//        case .dark: return .black.opacity(0.3)
         case .dayNight: return .black.opacity(0.5)
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)

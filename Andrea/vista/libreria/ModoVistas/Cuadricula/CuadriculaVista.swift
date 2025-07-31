@@ -25,7 +25,6 @@ struct CuadriculaVista: View {
 //                        .transition(.opacity)
 //                }
 
-
                let outerPadding: CGFloat = 20      // ← cuanto quieras de margen a cada lado
                let spacing: CGFloat = 20           // ← spacing interno entre celdas
                let columnsCount = vm.columnas
@@ -80,7 +79,6 @@ struct CuadriculaVista: View {
                                         PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
                                     } else if let archivo = elemento as? Archivo {
                                         CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
-                                            .shadow(color: appEstado.temaActual == .dark ? Color.black.opacity(0.6) : Color.black.opacity(0.2), radius: 7, x: 0, y: 3)
                                             .contentShape(ContentShapeKinds.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
                                     } else if let coleccion = elemento as? Coleccion {
                                         CuadriculaColeccion(coleccion: coleccion, width: itemWidth, height: itemHeight)
