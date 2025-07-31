@@ -112,6 +112,8 @@ class PilaColecciones: ObservableObject {
         // 2. Asigna la nueva VM
         coleccionActualVM = nuevaVM
 
+//        ConsejoCrearColeccion.estamosHome = coleccionActualVM?.coleccion.nombre == "HOME"
+        
         // 3. Resetea su estado de carga y vuelve a cargar
         nuevaVM.reiniciarCarga()          // elementosCargados = false
         nuevaVM.elementos = []            // limpia placeholders anteriores si quieres

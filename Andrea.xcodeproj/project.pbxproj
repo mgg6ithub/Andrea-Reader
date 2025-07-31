@@ -81,6 +81,7 @@
 		D4CF28E92E323F15003B3ABC /* Libreria.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E82E323F15003B3ABC /* Libreria.swift */; };
 		D4D8CCF42E377C5700F7F18D /* MenuColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8CCF32E377C5700F7F18D /* MenuColecciones.swift */; };
 		D4D8CCF62E377CD600F7F18D /* ListaColeccionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D8CCF52E377CD600F7F18D /* ListaColeccionMenu.swift */; };
+		D4DA1BD72E3BC9DE00529C47 /* Consejos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DA1BD62E3BC9DE00529C47 /* Consejos.swift */; };
 		D4DEBBEC2DE9CCD500F06C30 /* AjustesGlobales.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */; };
 		D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */; };
 		D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */; };
@@ -165,6 +166,7 @@
 		D4CF28E82E323F15003B3ABC /* Libreria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Libreria.swift; sourceTree = "<group>"; };
 		D4D8CCF32E377C5700F7F18D /* MenuColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuColecciones.swift; sourceTree = "<group>"; };
 		D4D8CCF52E377CD600F7F18D /* ListaColeccionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListaColeccionMenu.swift; sourceTree = "<group>"; };
+		D4DA1BD62E3BC9DE00529C47 /* Consejos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Consejos.swift; sourceTree = "<group>"; };
 		D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesGlobales.swift; sourceTree = "<group>"; };
 		D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesTema.swift; sourceTree = "<group>"; };
 		D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesColor.swift; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 		D4ADDB6E2DE9B4A00097A010 /* vista */ = {
 			isa = PBXGroup;
 			children = (
+				D4DA1BD52E3BC9CA00529C47 /* consejos */,
 				D4ADDB732DE9B69C0097A010 /* principal */,
 				D4ADDB722DE9B4E90097A010 /* menu */,
 				D4B3C3B92E3A8E0B00CA6064 /* MenuSeleccionMultiple */,
@@ -522,6 +525,14 @@
 			path = menuIzquierda;
 			sourceTree = "<group>";
 		};
+		D4DA1BD52E3BC9CA00529C47 /* consejos */ = {
+			isa = PBXGroup;
+			children = (
+				D4DA1BD62E3BC9DE00529C47 /* Consejos.swift */,
+			);
+			path = consejos;
+			sourceTree = "<group>";
+		};
 		D4DEBBEA2DE9CCB100F06C30 /* ajustesGlobales */ = {
 			isa = PBXGroup;
 			children = (
@@ -669,6 +680,7 @@
 				D4CF28E32E323CF3003B3ABC /* ModificarTamano.swift in Sources */,
 				D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */,
 				D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */,
+				D4DA1BD72E3BC9DE00529C47 /* Consejos.swift in Sources */,
 				D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */,
 				D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */,
 				D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */,
@@ -846,9 +858,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Andrea/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -877,9 +891,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Andrea/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

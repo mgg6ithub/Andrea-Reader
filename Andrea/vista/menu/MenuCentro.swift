@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct BotonMenu<T: Equatable>: View {
     
@@ -45,6 +46,9 @@ struct MenuCentro: View {
     @State private var mostrarDocumentPicker: Bool = false
     @State private var esNuevaColeccionPresionado: Bool = false
     @State private var nuevaColeccionNombre: String = ""
+    
+    private let testTimer = Timer.publish(every: 10, on: .main, in: .common)
+            .autoconnect()
 
     var body: some View {
         
@@ -62,6 +66,7 @@ struct MenuCentro: View {
                     .fontWeight(appEstado.constantes.iconWeight)
                     .contentShape(Rectangle())
             }
+            .popoverTip(ConsejoSeleccionMultiple())
             .offset(y: 0.6)
             
             //MARK: --- IMPORTAR ELEMENTOS A LA APLICACION ---
@@ -75,6 +80,7 @@ struct MenuCentro: View {
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
             }
+            .popoverTip(ConsejoImportarElementos())
             .sheet(isPresented: $mostrarDocumentPicker) {
                 DocumentPicker(
                     onPick: { urls in
@@ -90,7 +96,16 @@ struct MenuCentro: View {
                     contentTypes: [.item]
                 )
             }
+            
             .offset(y: -2)
+//            .simultaneousGesture(
+//                LongPressGesture(minimumDuration: 0.6)
+//                    .onEnded { _ in
+//                        print("Mostrando el consejo de como se utiliza.")
+//                        mostrarTipManual = true
+//                    }
+//            )
+            
             
             
             //MARK: --- CREAR NUEVA COLECCION ---
@@ -104,6 +119,7 @@ struct MenuCentro: View {
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
             }
+            .popoverTip(ConsejoCrearColeccion())
             .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)
                 Button("Aceptar") {

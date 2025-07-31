@@ -156,6 +156,8 @@ class ModeloColeccion: ObservableObject {
             await MainActor.run {
                 
                 self.elementos = elementosOrdenados
+                ConsejoImportarElementos.coleccionVacia = self.elementos.isEmpty
+                
                 self.isLoading = false
                 self.elementosCargados = true
                 
