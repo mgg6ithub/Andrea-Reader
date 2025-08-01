@@ -13,12 +13,16 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
     @State private var animatedView: Bool = false
     @State private var haptics: Bool = false
     
+    @State private var isRightSide: Bool = false
+    
     var body: some View {
         
         header(animatedView)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .onGeometryChange1 { newValue in
                 sourceRect = newValue
+                let screenWidth = UIScreen.main.bounds.width
+                isRightSide = newValue.midX > screenWidth / 2
             }
             .contentShape(RoundedRectangle(cornerRadius: 10))
             .opacity(showFullScreenCover ? 0 : 1)
@@ -34,7 +38,8 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
                    header: header,
                    content: { isExpandable, cerrarMenu in
                        content(isExpandable, cerrarMenu)
-                   }
+                   },
+                   isRightSide: isRightSide
                ) {
                    cerrarMenu()
                }
@@ -90,6 +95,8 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     @Binding var animateView: Bool
     @ViewBuilder var header: (Bool) -> Header
     @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
+    var isRightSide: Bool
+
     var dismissView: () -> ()
     
     @State private var edgeInsets: EdgeInsets = .init()
@@ -98,16 +105,27 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 15) {
-                
-                header(animateView)
-                
-                if animateView {
-                    Text("Colecciones")
-                        .font(.system(size: 20))
-                        .bold()
-                        .frame(alignment: .bottom)
+                if isRightSide {
+                    Spacer()
+                    if animateView {
+                        Text("Historial de acciones")
+                            .font(.system(size: 20))
+                            .bold()
+                            .frame(alignment: .bottom)
+                    }
+                    
+                    header(animateView)
+                } else {
+                    
+                    header(animateView)
+                    
+                    if animateView {
+                        Text("Colecciones")
+                            .font(.system(size: 20))
+                            .bold()
+                            .frame(alignment: .bottom)
+                    }
                 }
-                
             }
             .padding(.bottom, 5)
             .padding([.leading, .trailing, .top], animateView ? 10 : 0)
@@ -133,17 +151,16 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
         .background(.clear)
         .clipShape(RoundedRectangle(cornerRadius: animateView ? 20 : 10))
         .frame(width: animateView ? nil : sourceRect.width, height: animateView ? nil : sourceRect.height)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: isRightSide ? .topTrailing : .topLeading)
         .scaleEffect(scale, anchor: .topLeading)
         .animation(.easeInOut(duration: 0.3), value: scale)
         // --- controla el desplazamiento ---
-        .offset(x: animateView ? 0 : sourceRect.minX,
+        .offset(x: animateView ? 0 : (isRightSide ? sourceRect.maxX - 300 : sourceRect.minX),
                 y: animateView ? 0 : sourceRect.minY)
         .padding(.top, animateView ? 25 : 0)
         .padding(.leading, animateView ? 20 : 0)
         // ---
         .animation(.easeInOut(duration: 0.3), value: animateView)
-
         .ignoresSafeArea()
         .presentationBackground {
             GeometryReader { geo in
