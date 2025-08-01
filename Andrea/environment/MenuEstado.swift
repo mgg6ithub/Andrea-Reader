@@ -104,20 +104,5 @@ class MenuEstado: ObservableObject {
         self.deseleccionarTodos()
         
     }
-
-    
-    public func eliminarTodosLosSeleccionados() {
-        let sa: SistemaArchivos = SistemaArchivos.sa
-        for url in self.elementosSeleccionados {
-            Task {
-                let coleccionActual = await PilaColecciones.pilaColecciones.getColeccionActual()
-                guard let elemento = await coleccionActual.elementos.first(where: { $0.url == url }) else { return } // ❌
-                sa.borrarElemento(elemento: elemento, vm: coleccionActual)
-            }
-        }
-        
-        self.deseleccionarTodos()
-        
-    }
     
 }

@@ -242,10 +242,16 @@ class SistemaArchivosUtilidades {
         do {
             let elementos = try fm.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [])
             
+            let elementosFiltrados = elementos.filter { url in
+                SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
+                    $0.shouldInclude(url : url)
+                }
+            }
+            
             var archivos = 0
             var subdirectorios = 0
             
-            for item in elementos {
+            for item in elementosFiltrados {
                 if self.isDirectory(elementURL: item) {
                     subdirectorios += 1
                 } else {

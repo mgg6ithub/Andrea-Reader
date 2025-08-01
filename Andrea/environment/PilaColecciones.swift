@@ -111,8 +111,19 @@ class PilaColecciones: ObservableObject {
 
         // 2. Asigna la nueva VM
         coleccionActualVM = nuevaVM
-
-//        ConsejoCrearColeccion.estamosHome = coleccionActualVM?.coleccion.nombre == "HOME"
+        
+        //MARK: --- CONSEJO PARA CREAR UNA COLECCION ---
+        if let coleccionActual: Coleccion = coleccionActualVM?.coleccion {
+            if coleccionActual.nombre == "HOME" {
+                ConsejoCrearColeccion.estamosHome = true
+                if coleccionActual.totalColecciones == 0 { ConsejoCrearColeccion.noTieneColeccion = true }
+                ConsejoImportarElementos.mostrarConsejoCrearColeccion = false
+            } else {
+                ConsejoImportarElementos.mostrarConsejoCrearColeccion = true
+            }
+        }
+        //MARK: -
+        
         
         // 3. Resetea su estado de carga y vuelve a cargar
         nuevaVM.reiniciarCarga()          // elementosCargados = false

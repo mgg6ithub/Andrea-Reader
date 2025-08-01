@@ -21,6 +21,7 @@ struct AndreaApp: App {
 //                            .datastoreLocation(.applicationDefault)
 //                        ]
 //                    )
+                    try? Tips.resetDatastore()
                     try? Tips.configure(
                         [
                             .datastoreLocation(.applicationDefault)

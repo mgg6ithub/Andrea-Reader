@@ -67,7 +67,9 @@ struct MenuSeleccionMultipleAbajo: View {
             titleVisibility: .visible
         ) {
             Button("Borrar", role: .destructive) {
-                me.eliminarTodosLosSeleccionados()
+                me.aplicarAccionPorElemento { elemento in
+                    sa.borrarElemento(elemento: elemento, vm: coleccionActualVM)
+                }
             }
             Button("Cancelar", role: .cancel) {}
         }
@@ -150,7 +152,7 @@ struct MenuAcciones: View {
             }
             
         } label: {
-            Label("Más", systemImage: "ellipsis")
+            Label("", systemImage: "ellipsis")
         }
     }
 }

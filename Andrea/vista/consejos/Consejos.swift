@@ -3,9 +3,11 @@
 import TipKit
 import SwiftUI
 
-
+//Al mostrar el icono 3 veces
 struct ConsejoSeleccionMultiple: Tip {
 
+
+    static let seMuestra: Event = Event(id: "iconoSeleccionMultiple")
     
     var title: Text {
         Text("Selección multiple")
@@ -19,16 +21,27 @@ struct ConsejoSeleccionMultiple: Tip {
         Image("custom.hand.grid")
     }
     
+    var rules: [Rule] {
+        #Rule(Self.seMuestra) {
+            $0.donations.count >= 3
+        }
+    }
+    
+    var options: [TipOption] {
+        return [MaxDisplayCount(1)]
+    }
     
 }
 
+//Al indexar desde modeloColeccion, al borrar un elemento desde sa
 struct ConsejoImportarElementos: Tip {
     
     @Parameter
     static var coleccionVacia: Bool = false
     
     @Parameter
-    static var ultimaVezMostrado: Date = Date.distantPast
+    static var mostrarConsejoCrearColeccion: Bool = false
+
     
     var title: Text {
         Text("Importar archivos")
@@ -43,23 +56,27 @@ struct ConsejoImportarElementos: Tip {
     }
     
     var rules: [Rule] {
-        
         [
-               #Rule(Self.$coleccionVacia) { $0 == true }
-           ]
+            #Rule(Self.$coleccionVacia) { $0 == true },
+            #Rule(Self.$mostrarConsejoCrearColeccion) { $0 == true }
+        ]
     }
     
-//    var options: [TipOption] {
-//        [Tips.MaxDisplayCount(1)]
-//    }
+    var options: [TipOption] {
+        return [MaxDisplayCount(1)]
+    }
 
     
 }
 
+//En pilacoleccion al actualizar la coleccion actual si es home
 struct ConsejoCrearColeccion: Tip {
     
     @Parameter
     static var estamosHome: Bool = false
+    
+    @Parameter
+    static var noTieneColeccion: Bool = false
     
     var title: Text {
         Text("Crear una nueva colección")
@@ -74,11 +91,11 @@ struct ConsejoCrearColeccion: Tip {
     }
     
     var rules: [Rule] {
-        [#Rule(Self.$estamosHome) { $0 == true }]
+        [
+            #Rule(Self.$estamosHome) { $0 == true },
+            #Rule(Self.$noTieneColeccion) { $0 == true }
+        ]
     }
-    
-//    var options: [TipOption] {
-//        [Tips.MaxDisplayCount(3)]
-//    }
+
     
 }

@@ -330,6 +330,7 @@ class SistemaArchivos: ObservableObject {
                         withAnimation(.easeInOut(duration: 0.35)) {
                             vm.elementos.removeAll(where: { $0.id == elemento.id }) //borramos de la vista del vm
                         }
+                        
                         ConsejoImportarElementos.coleccionVacia = vm.elementos.isEmpty
                         
                         if self.sau.isDirectory(elementURL: url) {

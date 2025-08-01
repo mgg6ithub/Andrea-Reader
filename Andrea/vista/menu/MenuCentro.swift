@@ -66,7 +66,10 @@ struct MenuCentro: View {
                     .fontWeight(appEstado.constantes.iconWeight)
                     .contentShape(Rectangle())
             }
-            .popoverTip(ConsejoSeleccionMultiple())
+//            .popoverTip(ConsejoSeleccionMultiple())
+//            .task {
+//                await ConsejoSeleccionMultiple.seMuestra.donate()
+//            }
             .offset(y: 0.6)
             
             //MARK: --- IMPORTAR ELEMENTOS A LA APLICACION ---
@@ -111,6 +114,9 @@ struct MenuCentro: View {
             
             Button(action: {
                 self.esNuevaColeccionPresionado.toggle()
+                if #available(iOS 17.0, *) {
+                    ConsejoCrearColeccion().invalidate(reason: .actionPerformed)
+                }
             }) {
                 Image(systemName: "folder.badge.plus")
                     .font(.system(size: appEstado.constantes.iconSize * 1.05))
