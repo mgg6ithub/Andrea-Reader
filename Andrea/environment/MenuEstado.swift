@@ -89,6 +89,23 @@ class MenuEstado: ObservableObject {
         self.todosSeleccionados = false
     }
     
+    //--- recorrer todos los elementos seleccionados y aplicar la accion por cada elemento ---
+    public func aplicarAccionPorElemento(_ accion: @escaping (ElementoSistemaArchivos) async -> Void) {
+
+        for url in self.elementosSeleccionados {
+            Task {
+                let coleccionActual = await PilaColecciones.pilaColecciones.getColeccionActual()
+                guard let elemento = await coleccionActual.elementos.first(where: { $0.url == url }) else { return }
+
+                await accion(elemento)
+            }
+        }
+        
+        self.deseleccionarTodos()
+        
+    }
+
+    
     public func eliminarTodosLosSeleccionados() {
         let sa: SistemaArchivos = SistemaArchivos.sa
         for url in self.elementosSeleccionados {
@@ -98,7 +115,9 @@ class MenuEstado: ObservableObject {
                 sa.borrarElemento(elemento: elemento, vm: coleccionActual)
             }
         }
+        
         self.deseleccionarTodos()
+        
     }
     
 }

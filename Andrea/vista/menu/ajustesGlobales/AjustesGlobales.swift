@@ -60,7 +60,7 @@ struct AjustesGlobales: View {
             VStack(alignment: .center, spacing: 0) {
                     ZStack(alignment: .leading) {
                         // Imagen alineada a la izquierda
-                        Image("book1")
+                        Image("book4")
                             .resizable()
                             .frame(width: 160, height: 160)
                             .aspectRatio(contentMode: .fit)

@@ -84,7 +84,6 @@ struct MenuCentro: View {
             .sheet(isPresented: $mostrarDocumentPicker) {
                 DocumentPicker(
                     onPick: { urls in
-                        print("Seleccionado: \(urls)")
                         for url in urls {
                             sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.pilaColecciones.getColeccionActual().coleccion.url)
                         }
