@@ -76,6 +76,7 @@ struct MenuCentro: View {
             
             Button(action: {
                 self.mostrarDocumentPicker.toggle()
+                if #available(iOS 17.0, *) { ConsejoImportarElementos().invalidate(reason: .actionPerformed) }
             }) {
                 Image(systemName: "tray.and.arrow.down")
                     .font(.system(size: appEstado.constantes.iconSize * 1.05))
@@ -240,13 +241,15 @@ struct MenuCentro: View {
                     }
                 }
                 
-                
                 Section(header: Text("Renombra y ordena a la vez")) {
                     Button(action: {
                         coleccionActualVM.smartSorting()
+                        if #available(iOS 17.0, *) { ConsejoSmartSorting().invalidate(reason: .actionPerformed) }
+                        
                     }) {
                         Label("Smart rename", systemImage: "brain")
                     }
+                    .popoverTip(ConsejoSmartSorting())
                 }
                 
             } label: {
@@ -260,6 +263,9 @@ struct MenuCentro: View {
             }
             .id(menuRefreshTrigger)
             .colorScheme(appEstado.temaActual == .dark ? .dark : .light)
+            .onTapGesture {
+                ConsejoSmartSorting.menuAbierto = true
+            }
             
             Button(action: {
                 self.menuEstado.isGlobalSettingsPressed.toggle()

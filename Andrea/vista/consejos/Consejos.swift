@@ -96,6 +96,45 @@ struct ConsejoCrearColeccion: Tip {
             #Rule(Self.$noTieneColeccion) { $0 == true }
         ]
     }
-
     
 }
+
+struct ConsejoSmartSorting: Tip {
+    
+    @Parameter
+    static var menuAbierto: Bool = false
+    
+    var title: Text {
+        Text("Smart Sorting")
+    }
+
+    var message: Text? {
+        Text("Utiliza regex para renombrar y reordenar tu coleccion con un solo click.")
+    }
+
+    var image: Image? {
+        Image(systemName: "brain.fill")
+    }
+    
+    var rules: [Rule] {
+        [
+            #Rule(Self.$menuAbierto) { $0 == true }
+        ]
+    }
+    
+    var actions: [Action] {
+        return [
+            .init(id: "learn", title: "Más información", perform: {
+                if let url = URL(string: "https://www.youtube.com/watch?v=-Uo38dWXGt8&list=RDMM&start_radio=1&rv=Oqgkg19yWEA") {
+                    UIApplication.shared.open(url)
+                }
+            })
+        ]
+    }
+    
+    var options: [TipOption] {
+        return [MaxDisplayCount(1)]
+    }
+    
+}
+

@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct VistaPrincipal: View {
     
@@ -55,6 +56,9 @@ struct VistaPrincipal: View {
                     }
                 }
                 .animation(.easeInOut(duration: 0.2), value: menuEstado.seleccionMultiplePresionada)
+                
+                
+                TipView(ConsejoSmartSorting())
                 
             }
             .onAppear {

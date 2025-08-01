@@ -331,7 +331,7 @@ class SistemaArchivos: ObservableObject {
                             vm.elementos.removeAll(where: { $0.id == elemento.id }) //borramos de la vista del vm
                         }
                         
-                        ConsejoImportarElementos.coleccionVacia = vm.elementos.isEmpty
+                        // --- BUEN LUGAR PARA MOSTRAR CONSEJOS AL BORRAR EL ELEMENTOS ---
                         
                         if self.sau.isDirectory(elementURL: url) {
                             vm.coleccion.totalColecciones -= 1
