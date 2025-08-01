@@ -264,6 +264,7 @@ struct MenuCentro: View {
             .id(menuRefreshTrigger)
             .colorScheme(appEstado.temaActual == .dark ? .dark : .light)
             .onTapGesture {
+                print("Abriendo menu")
                 ConsejoSmartSorting.menuAbierto = true
             }
             
@@ -281,6 +282,7 @@ struct MenuCentro: View {
             }
         }
         .id(coleccionActualVM.coleccion.id)
+        .alignmentGuide(.firstTextBaseline) { d in d[.bottom] }
 
     }
 }

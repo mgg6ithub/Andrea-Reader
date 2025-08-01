@@ -9,32 +9,57 @@ struct Libreria: View {
     var body: some View {
         ZStack {
             if vm.elementos.isEmpty {
-                VStack(alignment: .center) {
-                    Spacer()
-
-                    VStack(spacing: 10) {
-                        Image("caja-vacia")
-                            .resizable()
-                            .frame(width: 235, height: 235)
-                            .aspectRatio(contentMode: .fit)
-                            .scaleEffect(showEmptyState ? 1 : 0.8)
-                            .opacity(showEmptyState ? 1 : 0)
-                            .offset(y: showEmptyState ? 0 : 20)
-                            .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
-
-                        Text("Colección vacia, sin elementos.")
-                            .font(.headline)
-                            .opacity(showEmptyState ? 1 : 0)
-                            .animation(.easeOut.delay(0.4), value: showEmptyState)
+                
+                if vm.coleccion.nombre == "HOME" {
+                    VStack(alignment: .center) {
+                        Spacer()
+                        VStack(spacing: 0) {
+                            Image("esta")
+                                .resizable()
+                                .frame(width: 350, height: 550)
+                                .aspectRatio(contentMode: .fit)
+                                .scaleEffect(showEmptyState ? 1 : 0.8)
+                                .opacity(showEmptyState ? 1 : 0)
+                                .offset(y: showEmptyState ? 0 : 20)
+                                .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
+                            
+                        }
+                        Spacer()
                     }
+                    .onAppear {
+                        showEmptyState = true
+                    }
+                    .onDisappear {
+                        showEmptyState = false
+                    }
+                } else {
+                    VStack(alignment: .center) {
+                        Spacer()
 
-                    Spacer()
-                }
-                .onAppear {
-                    showEmptyState = true
-                }
-                .onDisappear {
-                    showEmptyState = false
+                        VStack(spacing: 10) {
+                            Image("caja-vacia")
+                                .resizable()
+                                .frame(width: 235, height: 235)
+                                .aspectRatio(contentMode: .fit)
+                                .scaleEffect(showEmptyState ? 1 : 0.8)
+                                .opacity(showEmptyState ? 1 : 0)
+                                .offset(y: showEmptyState ? 0 : 20)
+                                .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
+
+                            Text("Colección vacia, sin elementos.")
+                                .font(.headline)
+                                .opacity(showEmptyState ? 1 : 0)
+                                .animation(.easeOut.delay(0.4), value: showEmptyState)
+                        }
+
+                        Spacer()
+                    }
+                    .onAppear {
+                        showEmptyState = true
+                    }
+                    .onDisappear {
+                        showEmptyState = false
+                    }
                 }
 
             } else {

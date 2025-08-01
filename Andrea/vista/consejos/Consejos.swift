@@ -132,9 +132,9 @@ struct ConsejoSmartSorting: Tip {
         ]
     }
     
-    var options: [TipOption] {
-        return [MaxDisplayCount(1)]
-    }
+//    var options: [TipOption] {
+//        return [MaxDisplayCount(1)]
+//    }
     
 }
 

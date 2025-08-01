@@ -23,16 +23,31 @@ struct MenuDerecha: View {
                     .fontWeight(appEstado.constantes.iconWeight)
             }
             
-            Button(action: {
-
-            }) {
-                Image(systemName: "checkmark.rectangle.stack")
-                    .font(.system(size: appEstado.constantes.iconSize * 1.1))
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(appEstado.constantes.iconColor.gradient)
-                    .contentTransition(.symbolEffect(.replace))
-                    .fontWeight(appEstado.constantes.iconWeight)
+            ZStack {
+                Button(action: {
+                    
+                }) {
+                    PopOutCollectionsView() { isExpandable in
+                        Image(systemName: "checkmark.rectangle.stack")
+                            .font(.system(size: appEstado.constantes.iconSize * 1.1))
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                            .contentTransition(.symbolEffect(.replace))
+                            .fontWeight(appEstado.constantes.iconWeight)
+                    } content: { isExpandable, cerrarMenu in
+                        List {
+                            Text("Historial de acciones")
+                            Text("Accion1")
+                            Text("Accion2")
+                            Text("Accion3")
+                            Text("Accion4")
+                            
+                        }
+                        .frame(width: 300)
+                    }
+                }
             }
+            .padding(0)
             
         }
         .frame(maxWidth: 70)
