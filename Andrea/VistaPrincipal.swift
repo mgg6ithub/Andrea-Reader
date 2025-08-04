@@ -57,7 +57,6 @@ struct VistaPrincipal: View {
                 }
                 .animation(.easeInOut(duration: 0.2), value: menuEstado.seleccionMultiplePresionada)
                 
-                
                 TipView(ConsejoSmartSorting())
                 
             }

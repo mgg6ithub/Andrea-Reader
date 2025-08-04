@@ -14,14 +14,20 @@ struct Libreria: View {
                     VStack(alignment: .center) {
                         Spacer()
                         VStack(spacing: 0) {
-                            Image("esta")
+                            Image("estanteria9")
                                 .resizable()
-                                .frame(width: 350, height: 550)
-                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 300, height: 350)
+//                                .aspectRatio(contentMode: .fit)
                                 .scaleEffect(showEmptyState ? 1 : 0.8)
                                 .opacity(showEmptyState ? 1 : 0)
                                 .offset(y: showEmptyState ? 0 : 20)
                                 .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
+                            
+                            Text("Biblioteca \"Andrea\" vacía.")
+                                .font(.headline)
+                                .opacity(showEmptyState ? 1 : 0)
+                                .animation(.easeOut.delay(0.4), value: showEmptyState)
+                                .padding(.top, 20)
                             
                         }
                         Spacer()
