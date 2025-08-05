@@ -99,6 +99,38 @@ struct ConsejoCrearColeccion: Tip {
     
 }
 
+
+//Al mostrar el icono 3 veces
+struct ConsejoOpcionesColeccionActual: Tip {
+    
+    
+    //    static let seMuestra: Event = Event(id: "iconoSeleccionMultiple")
+    
+    var title: Text {
+        Text("Opciones para la colección")
+    }
+    
+    var message: Text? {
+        Text("Menu de ajustes para la vista y ordenación actual de la colección. ")
+    }
+    
+    var image: Image? {
+        Image(systemName: "square.grid.3x3.square")
+    }
+    
+    //    var rules: [Rule] {
+    //        #Rule(Self.seMuestra) {
+    //            $0.donations.count >= 3
+    //        }
+    //    }
+    
+    var options: [TipOption] {
+        return [MaxDisplayCount(1)]
+    }
+}
+   
+
+
 struct ConsejoSmartSorting: Tip {
     
     @Parameter
