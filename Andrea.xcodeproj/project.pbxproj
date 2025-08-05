@@ -23,6 +23,8 @@
 		D47139C52E0AE47C00B5FA35 /* ElementoVista.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47139C42E0AE47C00B5FA35 /* ElementoVista.swift */; };
 		D47139C72E0AE76500B5FA35 /* CuadriculaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47139C62E0AE76500B5FA35 /* CuadriculaArchivo.swift */; };
 		D47139C92E0AE77000B5FA35 /* CuadriculaColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47139C82E0AE77000B5FA35 /* CuadriculaColeccion.swift */; };
+		D480E76C2E42216300C8BBCC /* Rendimiento.swift in Sources */ = {isa = PBXBuildFile; fileRef = D480E76B2E42216300C8BBCC /* Rendimiento.swift */; };
+		D480E76E2E42236900C8BBCC /* TogglePersonalizado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D480E76D2E42236900C8BBCC /* TogglePersonalizado.swift */; };
 		D48589662DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589652DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift */; };
 		D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589672DEB9D7E0074DB8E /* ElementSistemaArchivos.swift */; };
 		D485896A2DEB9DC30074DB8E /* Extensiones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48589692DEB9DC30074DB8E /* Extensiones.swift */; };
@@ -110,6 +112,8 @@
 		D47139C42E0AE47C00B5FA35 /* ElementoVista.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementoVista.swift; sourceTree = "<group>"; };
 		D47139C62E0AE76500B5FA35 /* CuadriculaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuadriculaArchivo.swift; sourceTree = "<group>"; };
 		D47139C82E0AE77000B5FA35 /* CuadriculaColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuadriculaColeccion.swift; sourceTree = "<group>"; };
+		D480E76B2E42216300C8BBCC /* Rendimiento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rendimiento.swift; sourceTree = "<group>"; };
+		D480E76D2E42236900C8BBCC /* TogglePersonalizado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglePersonalizado.swift; sourceTree = "<group>"; };
 		D48589652DEB9CD50074DB8E /* ElementoSistemaArchivosProtocolo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementoSistemaArchivosProtocolo.swift; sourceTree = "<group>"; };
 		D48589672DEB9D7E0074DB8E /* ElementSistemaArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementSistemaArchivos.swift; sourceTree = "<group>"; };
 		D48589692DEB9DC30074DB8E /* Extensiones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensiones.swift; sourceTree = "<group>"; };
@@ -240,6 +244,7 @@
 				D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */,
 				D46E94342DEA287000ABD9EE /* Toggle.swift */,
 				D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */,
+				D480E76D2E42236900C8BBCC /* TogglePersonalizado.swift */,
 			);
 			path = vistasCompartidas;
 			sourceTree = "<group>";
@@ -553,6 +558,7 @@
 				D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */,
 				D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */,
 				D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */,
+				D480E76B2E42216300C8BBCC /* Rendimiento.swift */,
 			);
 			path = ajustesSeccion;
 			sourceTree = "<group>";
@@ -681,8 +687,10 @@
 				D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */,
 				D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */,
 				D4CF28E32E323CF3003B3ABC /* ModificarTamano.swift in Sources */,
+				D480E76E2E42236900C8BBCC /* TogglePersonalizado.swift in Sources */,
 				D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */,
 				D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */,
+				D480E76C2E42216300C8BBCC /* Rendimiento.swift in Sources */,
 				D4DA1BD72E3BC9DE00529C47 /* Consejos.swift in Sources */,
 				D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */,
 				D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */,

@@ -32,8 +32,8 @@ struct VistaPrincipal: View {
                             HistorialColecciones()
                                 .frame(height: 50)
                             
-                            TipView(ConsejoOpcionesColeccionActual())
-                                .padding(.top, 15)
+//                            TipView(ConsejoOpcionesColeccionActual())
+//                                .padding(.top, 15)
                         }
                         .padding(.horizontal, constantes.horizontalPadding)
                     }

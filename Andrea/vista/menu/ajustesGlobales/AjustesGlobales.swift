@@ -10,7 +10,9 @@ import SwiftUI
 struct AjustesGlobales_Previews: PreviewProvider {
     static var previews: some View {
         // Instancias de ejemplo para los objetos de entorno
-        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+//        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+        let appEstadoPreview = AppEstado(screenWidth: 820, screenHeight: 1180) //iphone 15
+        
         let menuEstadoPreview = MenuEstado() // Reemplaza con la inicialización adecuada
 
         return AjustesGlobales()
@@ -169,16 +171,18 @@ struct AjustesGlobales: View {
                                                     case "TemaPrincipal":
                                                         AjustesTema(isSection: selectedSection == section)
                                                     
-                                                        Rectangle()
-                                                            .fill(Color.gray.opacity(0.5))
-                                                            .frame(height: 1.1)
-                                                            .padding(.horizontal, appEstado.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
+                                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal)
                                                     
                                                     case "AjustesMenu":
                                                         AjustesMenu()
                                                     
                                                 case "SistemaArchivos":
                                                         AjustesSistemaColecciones(isSection: selectedSection == section)
+                                                    
+                                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal)
+                                                    
+                                                case "Rendimiento":
+                                                    Rendimiento(isSection: selectedSection == section)
                                                     
                                                     default:
                                                         EmptyView()
@@ -234,6 +238,18 @@ struct AjustesGlobales: View {
     
 }
 
+struct DividerPersonalizado: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    var paddingHorizontal: CGFloat
+    
+    var body: some View {
+        Rectangle()
+            .fill(Color.gray.opacity(0.5))
+            .frame(height: 1.1)
+            .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
+    }
+}
 
 
 struct AjustesGlobalesWrapper: View {

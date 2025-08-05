@@ -3,13 +3,13 @@ import SwiftUI
 
 struct AndreaAppView: View {
     
-//    @StateObject private var appEstado = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
-//    @StateObject private var appEstado = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
-//    @StateObject private var appEstado = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
-//    @StateObject private var appEstado = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
-//    @StateObject private var appEstado = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
-//    @StateObject private var appEstado = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
-    @StateObject private var ap = AppEstado()
+//    @StateObject private var ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
+//    @StateObject private var ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+//    @StateObject private var ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
+    @StateObject private var ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
+//    @StateObject private var ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
+//    @StateObject private var ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
+//    @StateObject private var ap = AppEstado()
     @StateObject private var me = MenuEstado()//Inicalizamos el sistema de archivos
     @StateObject private var pc = PilaColecciones.pilaColecciones
 
@@ -56,24 +56,24 @@ struct AndreaAppView: View {
     
 }
 
-//struct AndreaAppView_Preview: PreviewProvider {
-//    static var previews: some View {
-//        // Instancias de ejemplo para los objetos de entorno
-//        let appStatePreview = AppEstado()   // Reemplaza con inicialización adecuada
-////        let appEstadoPreview = AppEstado() // Reemplaza con inicialización adecuada
-////        let appEstadoPreview = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
-//        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
-////        let appEstadoPreview = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
-////        let appEstadoPreview = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
-////        let appEstadoPreview = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
-////        let appEstadoPreview = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
-//        let menuEstadoPreview = MenuEstado() // Reemplaza con inicialización adecuada
-////        let pc = PilaColecciones.pilaColecciones
-//
-//        return AndreaAppView()
-//            .environmentObject(appStatePreview)
-//            .environmentObject(appEstadoPreview)
-//            .environmentObject(menuEstadoPreview)
-////            .environmentObject(pc)
-//    }
-//}
+struct AndreaAppView_Preview: PreviewProvider {
+    static var previews: some View {
+        // Instancias de ejemplo para los objetos de entorno
+        let appStatePreview = AppEstado()   // Reemplaza con inicialización adecuada
+//        let appEstadoPreview = AppEstado() // Reemplaza con inicialización adecuada
+//        let appEstadoPreview = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
+        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+//        let appEstadoPreview = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
+//        let appEstadoPreview = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
+//        let appEstadoPreview = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
+//        let appEstadoPreview = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
+        let menuEstadoPreview = MenuEstado() // Reemplaza con inicialización adecuada
+        let pc = PilaColecciones.pilaColecciones
+
+        return AndreaAppView()
+            .environmentObject(appStatePreview)
+            .environmentObject(appEstadoPreview)
+            .environmentObject(menuEstadoPreview)
+            .environmentObject(pc)
+    }
+}
