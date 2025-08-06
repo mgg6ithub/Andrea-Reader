@@ -74,6 +74,7 @@ struct ClavesPersistenciaAjustesGenerales {
 struct Constantes {
     
     var scaleFactor: CGFloat
+    var resLog: EnumResolucionesLogicas
     
     //MARK: - ICONOS
     
@@ -87,13 +88,19 @@ struct Constantes {
     var subTitleSize: CGFloat
     var smallTitleSize: CGFloat
     
-    init(scaleFactor: CGFloat) {
+    init(scaleFactor: CGFloat, resLog: EnumResolucionesLogicas) {
         
         self.scaleFactor = scaleFactor
+        self.resLog = resLog
         
         let cpd = ConstantesPorDefecto()
         
-        self.iconSize = cpd.iconSize * scaleFactor
+        if resLog == .small {
+            self.iconSize = cpd.iconSize * scaleFactor + 5
+        } else {
+            self.iconSize = cpd.iconSize * scaleFactor + 2.5
+        }
+        
         self.iconWeight = cpd.iconWeight
         self.iconColor = cpd.iconColor
         

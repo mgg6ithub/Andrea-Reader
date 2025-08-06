@@ -6,25 +6,57 @@ import SwiftUI
 @MainActor
 class PilaColecciones: ObservableObject {
 
-    //MARK: --- Instancia singleton totalmente segura, lazy, thread-safe ---
-    static let pilaColecciones: PilaColecciones = PilaColecciones()
+//    //MARK: --- Instancia singleton totalmente segura, lazy, thread-safe ---
+//    static let pilaColecciones: PilaColecciones = PilaColecciones()
+//
+//    //MARK: --- Variables publicas para las vistas ---
+//    @Published private(set) var colecciones: [ModeloColeccion] = []
+//    @Published private(set) var coleccionActualVM: ModeloColeccion?
+//
+//    //MARK: --- Variables privadas para esta clase ---
+//    private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
+//    private let sa: SistemaArchivos = SistemaArchivos.sa
+//
+//    //MARK: --- CONSTRUCTOR PRIVADO (solo se instancia desde el singleton) ---
+//    private init() {
+//        //1
+//        self.cargarPila()
+//        
+//        //2
+//        actualizarColeccionActual()
+//    }
+    
+    //MARK: - PREVIEW
+    
+    //MARK: --- Singleton seguro con soporte para previews ---
+    static let pilaColecciones: PilaColecciones = {
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+            return PilaColecciones(preview: true)
+        }
+        #endif
+        return PilaColecciones()
+    }()
 
-    //MARK: --- Variables publicas para las vistas ---
-    @Published private(set) var colecciones: [ModeloColeccion] = []
-    @Published private(set) var coleccionActualVM: ModeloColeccion?
+    @Published var colecciones: [ModeloColeccion] = []
+    @Published var coleccionActualVM: ModeloColeccion?
 
-    //MARK: --- Variables privadas para esta clase ---
-    private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
-    private let sa: SistemaArchivos = SistemaArchivos.sa
+    private(set) var homeURL: URL!
+    private var sa: SistemaArchivos!
 
-    //MARK: --- CONSTRUCTOR PRIVADO (solo se instancia desde el singleton) ---
-    private init() {
-        //1
+    public init(preview: Bool = false) {
+        if preview {
+            return
+        }
+
+        self.homeURL = SistemaArchivosUtilidades.sau.home
+        self.sa = SistemaArchivos.sa
+
         self.cargarPila()
-        
-        //2
-        actualizarColeccionActual()
+        self.actualizarColeccionActual()
     }
+    
+    //MARK: - PREVIEW
 
     /**
       Carga la pila de colecciones desde `UserDefaults`.

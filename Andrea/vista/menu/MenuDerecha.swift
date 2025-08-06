@@ -16,7 +16,7 @@ struct MenuDerecha: View {
                 
             }) {
                 Image(systemName: "questionmark.circle")
-                    .font(.system(size: appEstado.constantes.iconSize * 1.1))
+                    .font(.system(size: appEstado.constantes.iconSize * 1.05))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .contentTransition(.symbolEffect(.replace))
@@ -29,7 +29,7 @@ struct MenuDerecha: View {
                 }) {
                     PopOutCollectionsView() { isExpandable in
                         Image(systemName: "checkmark.rectangle.stack")
-                            .font(.system(size: appEstado.constantes.iconSize * 1.1))
+                            .font(.system(size: appEstado.constantes.iconSize * 1.05))
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(appEstado.constantes.iconColor.gradient)
                             .contentTransition(.symbolEffect(.replace))

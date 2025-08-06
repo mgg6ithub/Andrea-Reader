@@ -18,6 +18,7 @@ class AppEstado: ObservableObject {
     @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { uds.setEnum(sistemaArchivos, forKey: cpag.sistemaArchivos) } }
     
     @Published var shadows: Bool = true
+    @Published var test: Bool = false
     @Published var animaciones: Bool = true
     
     @Published var screenWidth: CGFloat
@@ -41,27 +42,34 @@ class AppEstado: ObservableObject {
         let actualScreenWidth = screenWidth ?? UIScreen.main.bounds.width
         let actualScreenHeight = screenHeight ?? UIScreen.main.bounds.height
                 
-        var scaleFactor = min(actualScreenWidth / 820, actualScreenHeight / 1180)
+        var scaleFactor = max(0.49, min(actualScreenWidth / 820, actualScreenHeight / 1180))
+//        var scaleFactor = min(actualScreenWidth / 820, actualScreenHeight / 1180)
+        var resLog: EnumResolucionesLogicas = .small
         
         switch scaleFactor {
             case ..<0.5: // Dispositivos pequeños iPhone 8, 7, 6 ...
-                self.resolucionLogica = .small
+                resLog = .small
                 scaleFactor *= 1.4
             case 0.5...1.0:
-                self.resolucionLogica = .medium
+                resLog = .medium
                 break // No hacer nada
             case let x where x > 1.0: // Valores mayores a 1.0
-                self.resolucionLogica = .big
+                resLog = .big
 //            scaleFactor *= 1.1
             default:
-                self.resolucionLogica = .medium
+                resLog = .medium
                 break
         }
         
         self.screenWidth = actualScreenWidth
         self.screenHeigth = actualScreenHeight
-
-        self.constantes = Constantes(scaleFactor: scaleFactor)
+        
+        print(scaleFactor)
+        print(resLog)
+        print()
+        
+        self.constantes = Constantes(scaleFactor: scaleFactor, resLog: resLog)
+        self.resolucionLogica = resLog
         
         //Persistencia
         self.temaActual = uds.getEnum(forKey: cpag.temaActual, default: .light)

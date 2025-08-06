@@ -8,6 +8,21 @@
 import Foundation
 import SwiftUI
 
+//struct AjustesGlobales_Previews: PreviewProvider {
+//    static var previews: some View {
+//        // Instancias de ejemplo para los objetos de entorno
+//        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+////        let appEstadoPreview = AppEstado(screenWidth: 820, screenHeight: 1180) //iphone 15
+//        
+//        let menuEstadoPreview = MenuEstado() // Reemplaza con la inicialización adecuada
+//
+//        return AjustesGlobales()
+//            .environmentObject(appEstadoPreview)
+//            .environmentObject(menuEstadoPreview)
+//    }
+//}
+
+
 struct AjustesTema: View {
     
     @EnvironmentObject var appEstado: AppEstado
@@ -39,12 +54,14 @@ struct AjustesTema: View {
         VStack(alignment: .center, spacing: 0) {
                 
             Text("Tema principal") //TITULO
-                .font(.system(size: appEstado.constantes.titleSize, weight: .bold))
+//                .font(.system(size: appEstado.constantes.titleSize, weight: .bold))
+                .font(.headline)
                 .padding(.vertical, paddingVertical + 5) // 25
                 .padding(.trailing, paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
-                .font(.system(size: appEstado.constantes.subTitleSize))
+//                .font(.system(size: appEstado.constantes.subTitleSize))
+                .font(.subheadline)
                 .foregroundColor(appEstado.temaActual.secondaryText)
                 .frame(width: .infinity, alignment: .leading)
                 .padding(.bottom, paddingVertical) // 20
@@ -54,7 +71,8 @@ struct AjustesTema: View {
                 CirculoActivo(isSection: isSection)
                 
                 Text("Selecciona un tema para establecerlo como principal.")
-                    .font(.system(size: appEstado.constantes.subTitleSize))
+//                    .font(.system(size: appEstado.constantes.subTitleSize))
+                    .font(.caption2)
                     .foregroundColor(appEstado.temaActual.secondaryText)
                     .frame(alignment: .leading)
                 

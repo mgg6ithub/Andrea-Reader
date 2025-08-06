@@ -63,7 +63,7 @@ struct MenuIzquierda: View {
             ZStack {
                 PopOutCollectionsView() { isExpandable in
                     Image("custom.library")
-                        .font(.system(size: 30 * 0.8))
+                        .font(.system(size: appEstado.constantes.iconSize * 1.03))
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(appEstado.constantes.iconColor.gradient)
                         .fontWeight(.thin)

@@ -1,19 +1,20 @@
 
 import SwiftUI
 
-struct AjustesGlobales_Previews1: PreviewProvider {
-    static var previews: some View {
-        // Instancias de ejemplo para los objetos de entorno
-//        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
-        let appEstadoPreview = AppEstado(screenWidth: 820, screenHeight: 1180) //iphone 15
-        
-        let menuEstadoPreview = MenuEstado() // Reemplaza con la inicialización adecuada
-
-        return AjustesGlobales()
-            .environmentObject(appEstadoPreview)
-            .environmentObject(menuEstadoPreview)
-    }
-}
+//struct AjustesGlobales_Previews1: PreviewProvider {
+//    static var previews: some View {
+//        // Instancias de ejemplo para los objetos de entorno
+//        let appEstadoPreview = AppEstado(screenWidth: 375, screenHeight: 667)
+////        let appEstadoPreview = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+////        let appEstadoPreview = AppEstado(screenWidth: 820, screenHeight: 1180) //iphone 15
+//        
+//        let menuEstadoPreview = MenuEstado() // Reemplaza con la inicialización adecuada
+//
+//        return AjustesGlobales()
+//            .environmentObject(appEstadoPreview)
+//            .environmentObject(menuEstadoPreview)
+//    }
+//}
 
 struct Rendimiento: View {
     
@@ -27,17 +28,21 @@ struct Rendimiento: View {
     private var paddingVertical: CGFloat {cpd.verticalPadding * appEstado.constantes.scaleFactor} // 20
     private var altoRectanguloFondo: CGFloat {menuEstado.altoRectanguloFondo * appEstado.constantes.scaleFactor}
     
+    private var paddingCorto: CGFloat { cpd.paddingCorto }
+    
     var body: some View {
         
         VStack(alignment: .center, spacing: 0) {
             
             Text("Rendimiento")
-                .font(.system(size: appEstado.constantes.titleSize, weight: .bold))
+//                .font(.system(size: appEstado.constantes.titleSize, weight: .bold))
+                .font(.headline)
                 .padding(.vertical, paddingVertical + 5) // 25
                 .padding(.trailing, paddingHorizontal)
             
             Text("Ajustes para mejorar el rendimiento del programa sacrificando el aspecto visual.")
-                .font(.system(size: appEstado.constantes.subTitleSize))
+//                .font(.system(size: appEstado.constantes.subTitleSize))
+                .font(.subheadline)
                 .foregroundColor(appEstado.temaActual.secondaryText)
                 .frame(width: .infinity)
                 .padding(.bottom, paddingVertical) // 20
@@ -47,12 +52,14 @@ struct Rendimiento: View {
                     CirculoActivo(isSection: isSection)
                     
                     Text("Modifica las sombras")
-                        .font(.system(size: appEstado.constantes.subTitleSize))
+//                        .font(.system(size: appEstado.constantes.subTitleSize))
+                        .font(.caption2)
                         .foregroundColor(appEstado.temaActual.secondaryText)
                         .frame(alignment: .leading)
                     
                     Spacer()
                 }
+                .padding(.bottom, paddingCorto)
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 25)
@@ -72,6 +79,7 @@ struct Rendimiento: View {
                     }
                     .padding()
                 }
+                .padding(.bottom, paddingVertical)
                 
             }
             

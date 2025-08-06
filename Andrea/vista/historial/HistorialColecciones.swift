@@ -12,11 +12,11 @@ struct HistorialColecciones: View {
 
     private var iconSize: CGFloat { appEstado.constantes.iconSize }
     
-    @ObservedObject private var coleccionActualVM: ModeloColeccion
-        
-    init() {
-        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
-    }
+//    @ObservedObject private var coleccionActualVM: ModeloColeccion
+//        
+//    init() {
+//        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
+//    }
 
     var body: some View {
         HStack {
@@ -130,7 +130,7 @@ struct HistorialColecciones: View {
                     }
                 }) {
                     HStack(spacing: 6) {
-                        if let tiempo = coleccionActualVM.tiempoCarga {
+                        if let tiempo = pc.getColeccionActual().tiempoCarga {
                             Text("⏱ Carga en \(String(format: "%.2f", tiempo)) segundos")
                                 .font(.caption)
                                 .foregroundColor(.gray)
