@@ -1,29 +1,29 @@
 
 import SwiftUI
 
-struct AndreaAppView_Preview: PreviewProvider {
-    static var previews: some View {
-        // Instancias de ejemplo para los objetos de entorno
-//        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
-//        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
-//        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
-        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
-//        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
-//        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
-        let me = MenuEstado() // Reemplaza con inicialización adecuada
-        let pc = PilaColecciones.preview
-        
-
-        return AndreaAppView()
-            .environmentObject(ap)
-            .environmentObject(me)
-            .environmentObject(pc)
-    }
-}
+//struct AndreaAppView_Preview: PreviewProvider {
+//    static var previews: some View {
+//        // Instancias de ejemplo para los objetos de entorno
+////        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
+////        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+////        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
+//        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
+////        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
+////        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
+//        let me = MenuEstado() // Reemplaza con inicialización adecuada
+//        let pc = PilaColecciones.preview
+//        
+//
+//        return AndreaAppView()
+//            .environmentObject(ap)
+//            .environmentObject(me)
+//            .environmentObject(pc)
+//    }
+//}
 
 struct AjustesGlobales: View {
     
-    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     private var padding: CGFloat = 20
@@ -55,13 +55,13 @@ struct AjustesGlobales: View {
     }
 
     private let paddingHorizontal: CGFloat = ConstantesPorDefecto().horizontalPadding // 15
-    private var paddingVertical: CGFloat  { ConstantesPorDefecto().verticalPadding  * appEstado.constantes.scaleFactor}// 20
+    private var paddingVertical: CGFloat  { ConstantesPorDefecto().verticalPadding  * ap.constantes.scaleFactor}// 20
     
     var constanteResizable: CGFloat {
-        if appEstado.resolucionLogica == .small {
-            return appEstado.constantes.scaleFactor * 0.8
+        if ap.resolucionLogica == .small {
+            return ap.constantes.scaleFactor * 0.9
         } else {
-            return appEstado.constantes.scaleFactor
+            return ap.constantes.scaleFactor
         }
     }
     
@@ -112,32 +112,34 @@ struct AjustesGlobales: View {
 //                    .onDisappear { showEmptyState = false }
                 
                 Text("Ajustes generales")
-                    .font(.system(size: appEstado.constantes.titleSize * 1.7, weight: .bold))
+                    .font(.system(size: ap.constantes.titleSize * 1.7, weight: .bold))
+                    .foregroundColor(ap.temaActual.colorContrario)
                     .bold()
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, paddingHorizontal)
-                    .padding(10)
+                    .padding(.top, 20)
+                    .padding(.bottom, 10)
                 
-                if appEstado.resolucionLogica == .small {
+                if ap.resolucionLogica == .small {
                     IndicesHorizontal(sections: sections, selectedSection: $selectedSection, scrollProxy: $scrollProxy)
+                        .padding(.bottom, 10)
                 }
                 
-                if !haHechoScroll {
+                if haHechoScroll {
                     Rectangle()
                         .fill(Color.gray.opacity(0.2))
                         .frame(height: 2.5)
                         .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.vertical, 15)
                 }
                 
                 GeometryReader { hStackGeo in
-                    if appEstado.resolucionLogica == .medium || appEstado.resolucionLogica == .big {
+                    if ap.resolucionLogica == .medium || ap.resolucionLogica == .big {
                         HStack(spacing: 0) { //Cambiar por VStack si resolucionLogica es .small y el menu de los indices por el horizontal para ponerlo encima
                             IndicesVertical(isPressed: $isPressed, selectedSection: $selectedSection, isUserInteracting: $isUserInteracting, scrollProxy: $scrollProxy, sections: sections)
                             ContenidoAjustes(sections: sections, selectedSection: $selectedSection, paddingHorizontal: paddingHorizontal, sectionOffsets: $sectionOffsets, isUserInteracting: $isUserInteracting, scrollProxy: $scrollProxy, haHechoScroll: $haHechoScroll, scrollInicial: $scrollInicial)
                         }//gin hstack spacing 0
                         .frame(height: hStackGeo.size.height)
-                    } else if appEstado.resolucionLogica == .small {
+                    } else if ap.resolucionLogica == .small {
                         ContenidoAjustes(sections: sections, selectedSection: $selectedSection, paddingHorizontal: paddingHorizontal, sectionOffsets: $sectionOffsets, isUserInteracting: $isUserInteracting, scrollProxy: $scrollProxy, haHechoScroll: $haHechoScroll, scrollInicial: $scrollInicial)
                     }
                 } //fin geometry hStackGeo
@@ -148,8 +150,8 @@ struct AjustesGlobales: View {
                 maxHeight: .infinity,
                 alignment: .center
             )
-            .background(appEstado.temaActual.backgroundColor)
-            .animation(.easeInOut, value: appEstado.temaActual)
+            .background(ap.temaActual.backgroundColor)
+            .animation(.easeInOut, value: ap.temaActual)
     }
     
 }
@@ -176,8 +178,10 @@ struct ContenidoAjustes: View {
             return ap.constantes.scaleFactor
         }
     }
-    @State private var showEmptyState = false // Para controlar la animación
-    private var paddingVertical: CGFloat  { ConstantesPorDefecto().verticalPadding  * ap.constantes.scaleFactor}// 20
+    
+    @State private var showEmptyState = false
+    @State private var isScrollInitialized = false
+    private var paddingVertical: CGFloat { ConstantesPorDefecto().verticalPadding * ap.constantes.scaleFactor }
     
     var body: some View {
         ScrollViewReader { proxy in
@@ -198,45 +202,40 @@ struct ContenidoAjustes: View {
                         Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
                             .font(.system(size: ap.constantes.titleSize))
                             .multilineTextAlignment(.center)
+                        
                     }
+                    .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
                     // 🎨 ANIMACIÓN MODERNA DE SCROLL
-                    .opacity(haHechoScroll ? 0.0 : 1.0) // Desaparece al hacer scroll
-                    .scaleEffect(haHechoScroll ? 0.95 : 1.0) // Ligero efecto de escala
-                    .offset(y: haHechoScroll ? -10 : 0) // Sube ligeramente al desaparecer
-                    .blur(radius: haHechoScroll ? 2 : 0) // Desenfoque sutil
-                    .animation(.easeInOut(duration: 0.4), value: haHechoScroll) // Animación suave
-                    .id("top") // ID para el elemento superior
+                    .opacity(haHechoScroll ? 0.0 : 1.0)
+                    .scaleEffect(haHechoScroll ? 0.95 : 1.0)
+                    .offset(y: haHechoScroll ? -10 : 0)
+                    .blur(radius: haHechoScroll ? 2 : 0)
+                    .animation(.easeInOut(duration: 0.4), value: haHechoScroll)
+                    .id("top")
                     .background(
                         GeometryReader { geo in
                             Color.clear
                                 .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    // Delay mínimo para asegurar que la vista esté completamente cargada
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                         scrollInicial = geo.frame(in: .global).minY
                                         haHechoScroll = false
+                                        isScrollInitialized = true
                                         print("🔵 Scroll inicial establecido: \(scrollInicial ?? 0)")
-                                        print("🟢 Estado inicial: haHechoScroll = false")
                                     }
                                 }
                                 .onChange(of: geo.frame(in: .global).minY) { oldValue, newValue in
-                                    guard let inicial = scrollInicial else { return }
-                                    
-                                    DispatchQueue.main.async {
-                                        let diferencia = abs(inicial - newValue)
-                                        let estaEnTop = diferencia <= 15 // Tolerancia
-                                        let nuevoEstado = !estaEnTop
-                                        
-                                        if nuevoEstado != haHechoScroll {
-                                            haHechoScroll = nuevoEstado
-                                            print(estaEnTop ? "🟢 ARRIBA DEL TODO - MOSTRAR BARRA" : "🔴 HAY SCROLL - OCULTAR BARRA")
-                                            print("   Inicial: \(inicial), Actual: \(newValue), Diferencia: \(diferencia)")
-                                        }
-                                    }
+                                    handleScrollChange(newY: newValue)
                                 }
                         }
                     )
-//                    .frame(maxWidth: .infinity, minHeight: 140) // Altura mínima para que imagen y texto se alineen bien
-                    .onAppear { showEmptyState = true }
-                    .onDisappear { showEmptyState = false }
+                    .onAppear {
+                        showEmptyState = true
+                    }
+                    .onDisappear {
+                        showEmptyState = false
+                        isScrollInitialized = false
+                    }
                     
                     ForEach(sections, id: \.self) { section in
                         VStack {
@@ -252,7 +251,7 @@ struct ContenidoAjustes: View {
                                     case "TemaPrincipal":
                                         AjustesTema(isSection: selectedSection == section)
                                     
-                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal)
+                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal)
                                     
                                     case "SistemaArchivos":
                                             AjustesSistemaColecciones(isSection: selectedSection == section)
@@ -275,34 +274,55 @@ struct ContenidoAjustes: View {
                                 }
                             }
                             .id(section)
-                        } //fin vstack dentro dforeach
+                        }
                         .background(GeometryReader { geo in
                             Color.clear
                                 .onChange(of: geo.frame(in: .global).minY) { oldValue, newValue in
-                                    DispatchQueue.main.async {
-                                        sectionOffsets[section] = newValue
-                                        if !isUserInteracting {
-                                            updateActiveSection()
-                                        }
-                                        
-                                        if !isUserInteracting, newValue > 100 {
-                                            selectedSection = sections.first
-                                        }
+                                    sectionOffsets[section] = newValue
+                                    if !isUserInteracting {
+                                        updateActiveSection()
+                                    }
+                                    
+                                    if !isUserInteracting, newValue > 100 {
+                                        selectedSection = sections.first
                                     }
                                 }
                         })
                     }
                 }
-            } //FIN SCROLLVIEW
+            }
             .scrollTargetLayout()
             .scrollIndicators(.hidden)
             .frame(maxHeight: .infinity)
             .onAppear {
                 self.scrollProxy = proxy
-                if selectedSection == nil { // Si no hay sección seleccionada, selecciona la primera
+                if selectedSection == nil {
                     selectedSection = sections.first
                 }
             }
+        }
+    }
+    
+    // Función privada para manejar los cambios de scroll de forma más eficiente
+    private func handleScrollChange(newY: CGFloat) {
+        // Solo procesar si la inicialización está completa
+        guard isScrollInitialized, let inicial = scrollInicial else {
+            print("⚠️ Scroll no inicializado aún")
+            return
+        }
+        
+        let diferencia = inicial - newY // Cambiamos el abs() para detectar la dirección
+        let tolerancia: CGFloat = 20
+        
+        // Si el valor actual es mayor que el inicial + tolerancia, hay scroll hacia abajo
+        let hayScrollHaciaAbajo = diferencia > tolerancia
+        
+        // Solo actualizamos si hay un cambio real de estado
+        if hayScrollHaciaAbajo != haHechoScroll {
+            haHechoScroll = hayScrollHaciaAbajo
+            
+            print(hayScrollHaciaAbajo ? "🔴 SCROLL HACIA ABAJO - OCULTAR CONTENIDO" : "🟢 ARRIBA DEL TODO - MOSTRAR CONTENIDO")
+            print("   Inicial: \(inicial), Actual: \(newY), Diferencia: \(diferencia)")
         }
     }
     
@@ -337,8 +357,12 @@ struct IndicesHorizontal: View {
                     ForEach(sections, id: \.self) { section in
                         Button(action: {
                             selectedSection = section
-                            withAnimation {
-                                scrollProxy?.scrollTo(section, anchor: .top)
+                            withAnimation(.interpolatingSpring(stiffness: 70, damping: 12)) {
+                                if section == sections.first {
+                                    scrollProxy?.scrollTo("top", anchor: .top)
+                                } else {
+                                    scrollProxy?.scrollTo(section, anchor: .top)
+                                }
                             }
                         }) {
                             Text(menuEstado.sectionTitle(section))
@@ -389,7 +413,13 @@ struct IndicesVertical: View {
                                 withAnimation(.interpolatingSpring(stiffness: 70, damping: 12)) {
                                     selectedSection = sections[index]
                                     isUserInteracting = true
-                                    scrollProxy?.scrollTo(sections[index], anchor: .top)
+                                    if section == sections.first {
+                                        print("Primera seccion scroll hasyta arriba")
+                                        scrollProxy?.scrollTo("top", anchor: .top)
+                                    } else {
+                                        print("Aqui")
+                                        scrollProxy?.scrollTo(section, anchor: .top)
+                                    }
                                 }
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Ajusta el tiempo según la duración de la animación
                                     isUserInteracting = false
@@ -432,6 +462,7 @@ struct DividerPersonalizado: View {
             .fill(Color.gray.opacity(0.5))
             .frame(height: 1.1)
             .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
+            .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
     }
 }
 

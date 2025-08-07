@@ -64,10 +64,6 @@ class AppEstado: ObservableObject {
         self.screenWidth = actualScreenWidth
         self.screenHeigth = actualScreenHeight
         
-        print(scaleFactor)
-        print(resLog)
-        print()
-        
         self.constantes = Constantes(scaleFactor: scaleFactor, resLog: resLog)
         self.resolucionLogica = resLog
         

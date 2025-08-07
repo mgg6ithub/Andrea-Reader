@@ -100,7 +100,7 @@ extension Color {
 //MARK: - TEMAS
 
 enum EnumTemas: String, CaseIterable {
-    case light, dark, dayNight, blue, green
+    case light, dark, dayNight, blue, green, red, orange
     
     var backgroundColor: Color {
         switch self {
@@ -109,6 +109,8 @@ enum EnumTemas: String, CaseIterable {
         case .dayNight: return .black.opacity(0.5)
         case .blue: return .blue.opacity(0.2)
         case .green: return .green.opacity(0.2)
+        case .red: return .red.opacity(0.2)
+        case .orange: return .orange.opacity(0.2)
         }
     }
     
@@ -129,6 +131,8 @@ enum EnumTemas: String, CaseIterable {
         case .dayNight: return .black.opacity(0.5)
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)
+        case .red: return .red.opacity(0.5)
+        case .orange: return .orange.opacity(0.5)
         }
         
     }
@@ -140,6 +144,8 @@ enum EnumTemas: String, CaseIterable {
         case .dayNight: return .black.opacity(0.5)
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)
+        case .red: return .red.opacity(0.5)
+        case .orange: return .orange.opacity(0.5)
         }
     }
     
@@ -150,6 +156,8 @@ enum EnumTemas: String, CaseIterable {
         case .dayNight: return .white
         case .blue: return .blue
         case .green: return .green
+        case .red: return .red
+        case .orange: return .orange
         }
     }
     
@@ -160,6 +168,8 @@ enum EnumTemas: String, CaseIterable {
         case .dayNight: return .white
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)
+        case .red: return .red.opacity(0.5)
+        case .orange: return .orange.opacity(0.5)
         }
     }
 }

@@ -35,8 +35,8 @@ struct Rendimiento: View {
         VStack(alignment: .center, spacing: 0) {
             
             Text("Rendimiento")
-//                .font(.system(size: appEstado.constantes.titleSize, weight: .bold))
                 .font(.headline)
+                .foregroundColor(appEstado.temaActual.colorContrario)
                 .padding(.vertical, paddingVertical + 5) // 25
                 .padding(.trailing, paddingHorizontal)
             
@@ -73,7 +73,7 @@ struct Rendimiento: View {
                         
                         Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(appEstado.temaActual.secondaryText)
                             .padding(.top, 10)
                         
                     }

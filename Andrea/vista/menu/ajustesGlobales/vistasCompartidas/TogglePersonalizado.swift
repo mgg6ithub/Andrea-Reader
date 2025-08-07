@@ -17,6 +17,8 @@ import SwiftUI
 
 struct TogglePersonalizado: View {
     
+    @EnvironmentObject var ap: AppEstado
+    
     var titulo: String
     var descripcion: String
     
@@ -24,7 +26,6 @@ struct TogglePersonalizado: View {
     
     var opcionTrue: String
     var opcionFalse: String
-//    let w: CGFloat
     
     var isInsideToggle: Bool
     var isDivider: Bool
@@ -34,11 +35,11 @@ struct TogglePersonalizado: View {
         VStack(alignment: .leading, spacing: 0) {
             Text(titulo)
                 .font(.headline)
-                .foregroundColor(.primary)
+                .foregroundColor(ap.temaActual.colorContrario)
             
             Text(descripcion)
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundColor(ap.temaActual.secondaryText)
             
             if isInsideToggle {
                 Toggle(isOn: Binding(
@@ -51,7 +52,7 @@ struct TogglePersonalizado: View {
                 )) {
                     Text(opcionBinding ? opcionTrue : opcionFalse)
                         .font(.subheadline)
-                        .foregroundColor(.primary)
+                        .foregroundColor(ap.temaActual.colorContrario)
                 }
                 .toggleStyle(SwitchToggleStyle(tint: .blue))
                 .padding(.bottom, 10)
@@ -60,14 +61,16 @@ struct TogglePersonalizado: View {
                 Toggle(isOn: $opcionBinding) {
                     Text( opcionBinding ? opcionTrue : opcionFalse)
                         .font(.subheadline)
-                        .foregroundColor(.primary)
+                        .foregroundColor(ap.temaActual.colorContrario)
                 }
                 .toggleStyle(SwitchToggleStyle(tint: .blue))
                 .padding(.bottom, 10)
             }
             
             if isDivider && isInsideToggle {
-                Divider()
+                Rectangle()
+                    .fill(Color.gray.opacity(0.5))
+                    .frame(height: 0.5)
             }
             
         }

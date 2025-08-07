@@ -22,13 +22,12 @@ struct AjustesSistemaColecciones: View {
         VStack(alignment: .center, spacing: 0) {
             
             Text("Sistema de archivos") //TITULO
-//                .font(.system(size: appEstado.constantes.titleSize, weight: .bold))
+                .foregroundColor(appEstado.temaActual.colorContrario)
                 .font(.headline)
                 .padding(.vertical, paddingVertical + 5) // 25
                 .padding(.trailing, paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
-//                .font(.system(size: appEstado.constantes.subTitleSize))
                 .font(.subheadline)
                 .foregroundColor(appEstado.temaActual.secondaryText)
                 .frame(width: .infinity, alignment: .leading)
@@ -39,7 +38,6 @@ struct AjustesSistemaColecciones: View {
                 CirculoActivo(isSection: isSection)
                 
                 Text("Selecciona un tipo de sa.")
-//                    .font(.system(size: appEstado.constantes.subTitleSize))
                     .font(.caption2)
                     .foregroundColor(appEstado.temaActual.secondaryText)
                     .frame(alignment: .leading)

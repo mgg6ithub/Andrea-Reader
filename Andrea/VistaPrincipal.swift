@@ -26,8 +26,8 @@ struct VistaPrincipal: View {
                     } else {
                         VStack(spacing: 0) {
                             MenuVista()
-                                .padding(.vertical, 8)
-                                .padding(.bottom, 15)
+                                .padding(.vertical, 8 * appEstado.constantes.scaleFactor)
+                                .padding(.bottom, 12.5 * appEstado.constantes.scaleFactor)
                             
                             HistorialColecciones()
                                 .frame(height: 50)

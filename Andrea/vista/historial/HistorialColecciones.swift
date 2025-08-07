@@ -1,6 +1,71 @@
 
 import SwiftUI
 
+//struct AndreaAppView_Preview1: PreviewProvider {
+//    static var previews: some View {
+//        // Instancias de ejemplo para los objetos de entorno
+//        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
+////        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+////        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
+////        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
+////        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
+////        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
+//        let me = MenuEstado() // Reemplaza con inicialización adecuada
+//        let pc = PilaColecciones.preview
+//
+//        return AndreaAppView()
+//            .environmentObject(ap)
+//            .environmentObject(me)
+//            .environmentObject(pc)
+//    }
+//}
+
+struct ChevronAnimado: View {
+    var isActive: Bool
+    var delay: Double
+
+    @EnvironmentObject var appEstado: AppEstado
+    @State private var isVisible: Bool = false
+    @State private var scale: CGFloat = 0.8
+    @State private var offset: CGFloat = -10
+
+    var body: some View {
+        Image(systemName: "chevron.forward")
+            .font(.system(size: isActive ? 16 : 10))
+            .foregroundColor(.gray.opacity(isActive ? 1.0 : 0.8))
+            .scaleEffect(scale)
+            .offset(x: offset)
+            .opacity(isVisible ? 1.0 : 0.0)
+            .onAppear {
+                if appEstado.animaciones {
+                    withAnimation(.easeInOut(duration: 0.35).delay(delay)) {
+                        isVisible = true
+                        scale = 1.0
+                        offset = 0
+                    }
+                } else {
+                    isVisible = true
+                    scale = 1.0
+                    offset = 0
+                }
+            }
+            .onDisappear {
+                if appEstado.animaciones {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        isVisible = false
+                        scale = 0.9
+                        offset = -10
+                    }
+                } else {
+                    isVisible = false
+                    scale = 0.9
+                    offset = -10
+                }
+            }
+    }
+}
+
+
 struct HistorialColecciones: View {
     @Namespace private var breadcrumb
     @EnvironmentObject var pc: PilaColecciones
@@ -12,6 +77,13 @@ struct HistorialColecciones: View {
 
     private var iconSize: CGFloat { appEstado.constantes.iconSize }
     
+    private var grande: CGFloat { 21 * appEstado.constantes.scaleFactor }
+    private var peke: CGFloat { 14 * appEstado.constantes.scaleFactor }
+    
+    private var paddingScalado: CGFloat { 11 * appEstado.constantes.scaleFactor }
+    private var spacioG: CGFloat { 5 * appEstado.constantes.scaleFactor }
+    private var spacioP: CGFloat { 4 * appEstado.constantes.scaleFactor }
+    
 //    @ObservedObject private var coleccionActualVM: ModeloColeccion
 //        
 //    init() {
@@ -19,100 +91,99 @@ struct HistorialColecciones: View {
 //    }
 
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
+            
+            if pc.getColeccionActual().coleccion.nombre == "HOME" {
+                ColeccionRectanguloAvanzado(
+                    textoSize: grande,
+                    colorPrimario: appEstado.temaActual.textColor,
+                    color: Color.gray,
+                    isActive: true,
+                    horizontalPadding: paddingScalado,
+                    animationDelay: delay(0)
+                ) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "house").opacity(0.75)
+                        
+                        Text("Home")
+                            .font(.system(size: 20 * appEstado.constantes.scaleFactor))
+                            .bold()
+                    }
+                }
+                
+            } else {
+                Button(action: {
+                    pc.conservarSoloHome()
+                }) {
+                    ColeccionRectanguloAvanzado(
+                        textoSize: peke,
+                        colorPrimario: appEstado.temaActual.textColor,
+                        color: Color.gray,
+                        isActive: false,
+                        horizontalPadding: paddingScalado,
+                        animationDelay: delay(0)
+                    ) {
+                        Image(systemName: "house").opacity(0.75)
+                    }
+                }
+            
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
-                    if pc.getColeccionActual().coleccion.nombre == "HOME" {
-                        ColeccionRectanguloAvanzado(
-                            textoSize: 21,
-                            colorPrimario: appEstado.temaActual.textColor,
-                            color: Color.gray,
-                            isActive: true,
-                            horizontalPadding: 11,
-                            animationDelay: delay(0)
-                        ) {
-                            HStack(spacing: 10) {
-                                Image(systemName: "house").opacity(0.75)
-                                
-                                Text("Home")
-                                    .font(.system(size: 20))
-                                    .bold()
-                            }
-                        }
-                        .padding(.trailing, 4)
                         
-                    } else {
-                        Button(action: {
-                            pc.conservarSoloHome()
-                        }) {
-                            ColeccionRectanguloAvanzado(
-                                textoSize: 14,
-                                colorPrimario: appEstado.temaActual.textColor,
-                                color: Color.gray,
-                                isActive: false,
-                                horizontalPadding: 11,
-                                animationDelay: delay(0)
-                            ) {
-                                Image(systemName: "house").opacity(0.75)
-                            }
-                        }
-                        .padding(.trailing, 4)
-                        
-                        let coleccionesFiltradas = pc.colecciones.filter { $0.coleccion.nombre != "HOME" }
+                    let coleccionesFiltradas = pc.colecciones.filter { $0.coleccion.nombre != "HOME" }
 
-                        ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
-                            Group {
-                                if pc.esColeccionActual(coleccion: vm.coleccion) {
-                                    HStack(spacing: 5) {
+                    ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
+                        Group {
+                            if pc.esColeccionActual(coleccion: vm.coleccion) {
+                                HStack(spacing: spacioG) {
+                                    ChevronAnimado(
+                                        isActive: true,
+                                        delay: delay(Double(index))
+                                    )
+                                    
+                                    ColeccionRectanguloAvanzado(
+                                        textoSize: grande,
+                                        colorPrimario: appEstado.temaActual.textColor,
+                                        color: vm.color,
+                                        isActive: true,
+                                        horizontalPadding: paddingScalado,
+                                        animationDelay: delay(Double(index))
+                                    ) {
+                                        Text(vm.coleccion.nombre)
+                                    }
+                                }
+                            } else {
+                                Button(action: {
+                                    pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
+                                }) {
+                                    HStack(spacing: spacioP) {
                                         Image(systemName: "chevron.forward")
-                                            .font(.system(size: 16))
-                                            .foregroundColor(.gray)
+                                            .font(.system(size: 10))
+                                            .foregroundColor(.gray.opacity(0.8))
                                             .transition(.opacity.combined(with: .scale)) // animación al aparecer/desaparecer
                                             .animation(.easeInOut(duration: 1.5), value: pc.getColeccionActual().coleccion)
                                         
                                         ColeccionRectanguloAvanzado(
-                                            textoSize: 21,
-                                            colorPrimario: appEstado.temaActual.textColor,
+                                            textoSize: peke,
+                                            colorPrimario: appEstado.temaActual.secondaryText,
                                             color: vm.color,
-                                            isActive: true,
-                                            horizontalPadding: 11,
+                                            isActive: false,
+                                            horizontalPadding: paddingScalado,
                                             animationDelay: delay(Double(index))
                                         ) {
                                             Text(vm.coleccion.nombre)
                                         }
                                     }
-                                } else {
-                                    Button(action: {
-                                        pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
-                                    }) {
-                                        HStack(spacing: 4) {
-                                            Image(systemName: "chevron.forward")
-                                                .font(.system(size: 10))
-                                                .foregroundColor(.gray.opacity(0.8))
-                                                .transition(.opacity.combined(with: .scale)) // animación al aparecer/desaparecer
-                                                .animation(.easeInOut(duration: 1.5), value: pc.getColeccionActual().coleccion)
-                                            
-                                            ColeccionRectanguloAvanzado(
-                                                textoSize: 14,
-                                                colorPrimario: appEstado.temaActual.secondaryText,
-                                                color: vm.color,
-                                                isActive: false,
-                                                horizontalPadding: 11,
-                                                animationDelay: delay(Double(index))
-                                            ) {
-                                                Text(vm.coleccion.nombre)
-                                            }
-                                        }
-                                        .padding(.trailing, 4)
-                                    }
-                                    .buttonStyle(ColeccionButtonStyle())
+                                    .padding(.trailing, spacioP)
                                 }
+                                .buttonStyle(ColeccionButtonStyle())
                             }
                         }
                     }
                 }
-                .padding(.leading, 3.5)
             }
+            .padding(.leading, 3.5)
+        }
 
             Spacer()
 
@@ -130,20 +201,21 @@ struct HistorialColecciones: View {
                     }
                 }) {
                     HStack(spacing: 6) {
+//                        if let tiempo = coleccionActualVM.tiempoCarga {
                         if let tiempo = pc.getColeccionActual().tiempoCarga {
                             Text("⏱ Carga en \(String(format: "%.2f", tiempo)) segundos")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                                 .padding(.top, 4)
                         }
-                        Image(systemName: "info.circle")
+                        Image("custom-folder-lupa")
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(appEstado.temaActual.secondaryText)
-                            .font(.system(size: 16))
+                            .font(.system(size: 18))
                             .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
 
-                        Text("Ver colección")
-                            .font(.system(size: 14))
+                        Text("Ver")
+                            .font(.system(size: 16))
                             .foregroundColor(appEstado.temaActual.secondaryText)
                             .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
                     }
@@ -242,7 +314,7 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .opacity(isVisible ? 1.0 : 0.0)
             .onAppear {
                 if appEstado.animaciones {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5).delay(animationDelay)) {
+                    withAnimation(.interpolatingSpring(stiffness: 100, damping: 10).delay(animationDelay)) {
                         isVisible = true
                         scale = 1.0
                         offset = 0
@@ -255,17 +327,18 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             }
             .onDisappear {
                 if appEstado.animaciones {
-                    withAnimation(.easeIn(duration: 0.1)) {
+                    withAnimation(.interpolatingSpring(stiffness: 100, damping: 10)) {
                         isVisible = false
-                        scale = 0.8
-                        offset = -20
+                        scale = 0.9
+                        offset = 20
                     }
                 } else {
                     isVisible = false
-                    scale = 0.8
-                    offset = -20
+                    scale = 0.9
+                    offset = 20
                 }
             }
+
     }
 }
 

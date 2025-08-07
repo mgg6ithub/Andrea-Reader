@@ -7,6 +7,13 @@ class SistemaArchivos: ObservableObject {
     
     // MARK: --- Instancia singleton totalmente segura, lazy, thread-safe ---
     static let sa: SistemaArchivos = SistemaArchivos()
+//    static var sa: SistemaArchivos = {
+//        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+//            return SistemaArchivos(preview: true)
+//        } else {
+//            return SistemaArchivos()
+//        }
+//    }()
     
     //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual (Documents) coelccion raiz
     private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
@@ -38,13 +45,27 @@ class SistemaArchivos: ObservableObject {
      3. Se asigna en la pila para inicializar la coleccion del usuario
      4. Se realiza el primer indexado de dicha coleccion
      */
-    private init() {
+    private init(preview: Bool = false) {
         
         self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
         
         // Crear la coleccion raiz y asignarla
         let home = FabricaColeccion().crearColeccion(coleccionNombre: "HOME", coleccionURL: self.homeURL)
         cacheColecciones[homeURL] = ColeccionValor(coleccion: home)
+        
+//        if preview {
+//            let coleccion1 = homeURL.appendingPathComponent("Coleccion1")
+//            let coleccion2 = homeURL.appendingPathComponent("Coleccion2")
+//            let coleccion3 = homeURL.appendingPathComponent("Coleccion3")
+//            
+//            for url in [coleccion1, coleccion2, coleccion3] {
+//                let nombre = url.lastPathComponent
+//                let col = FabricaColeccion().crearColeccion(coleccionNombre: nombre, coleccionURL: url)
+//                cacheColecciones[url] = ColeccionValor(coleccion: col)
+//                cacheColecciones[homeURL]?.subColecciones.insert(url)
+//            }
+//            return
+//        }
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: homeURL)
@@ -128,6 +149,7 @@ class SistemaArchivos: ObservableObject {
      */
     func obtenerURLSDirectorio(coleccionURL: URL) -> [URL] {
         do {
+//            print(coleccionURL)
             let contentsURLs = try fm.contentsOfDirectory(at: coleccionURL, includingPropertiesForKeys: nil)
             let filteredURLs = contentsURLs.filter { url in
                 // Aplica filtros personalizados aquí (si es necesario)

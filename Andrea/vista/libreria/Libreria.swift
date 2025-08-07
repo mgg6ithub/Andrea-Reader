@@ -2,9 +2,13 @@ import SwiftUI
 
 struct Libreria: View {
 
+    @EnvironmentObject var ap: AppEstado
+    
     @ObservedObject var vm: ModeloColeccion
     @Namespace private var animationNamespace
     @State private var showEmptyState = false // Para controlar la animación
+    
+    var scala: CGFloat { ap.constantes.scaleFactor }
 
     var body: some View {
         ZStack {
@@ -16,7 +20,7 @@ struct Libreria: View {
                         VStack(spacing: 0) {
                             Image("estanteria9")
                                 .resizable()
-                                .frame(width: 300, height: 350)
+                                .frame(width: 300 * scala, height: 350 * scala)
 //                                .aspectRatio(contentMode: .fit)
                                 .scaleEffect(showEmptyState ? 1 : 0.8)
                                 .opacity(showEmptyState ? 1 : 0)
@@ -45,7 +49,7 @@ struct Libreria: View {
                         VStack(spacing: 10) {
                             Image("caja-vacia")
                                 .resizable()
-                                .frame(width: 235, height: 235)
+                                .frame(width: 235 * scala, height: 235 * scala)
                                 .aspectRatio(contentMode: .fit)
                                 .scaleEffect(showEmptyState ? 1 : 0.8)
                                 .opacity(showEmptyState ? 1 : 0)

@@ -2,7 +2,7 @@
 import SwiftUI
 
 struct AndreaAppView: View {
-    
+//    
 //    @StateObject private var ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
 //    @StateObject private var ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
 //    @StateObject private var ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
@@ -11,7 +11,7 @@ struct AndreaAppView: View {
 //    @StateObject private var ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
 //    @StateObject private var ap = AppEstado()
     @StateObject private var me = MenuEstado()//Inicalizamos el sistema de archivos
-    @StateObject private var pc = PilaColecciones.preview
+    @StateObject private var pc = PilaColecciones.pilaColecciones
 
     @State private var sideMenuVisible: Bool = false
     
@@ -67,7 +67,6 @@ struct AndreaAppView: View {
 ////        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
 //        let me = MenuEstado() // Reemplaza con inicialización adecuada
 //        let pc = PilaColecciones.preview
-//        
 //
 //        return AndreaAppView()
 //            .environmentObject(ap)
@@ -76,24 +75,31 @@ struct AndreaAppView: View {
 //    }
 //}
 
-extension PilaColecciones {
-    static var preview: PilaColecciones {
-        let pila = PilaColecciones(preview: true)
-        pila.colecciones = [
-            ModeloColeccion.mock("Colección 1"),
-            ModeloColeccion.mock("Colección 2")
-        ]
-        pila.coleccionActualVM = pila.colecciones.first
-        return pila
-    }
-}
-
-extension ModeloColeccion {
-    static func mock(_ nombre: String) -> ModeloColeccion {
-        ModeloColeccion(
-            Coleccion(directoryName: nombre, directoryURL: URL(fileURLWithPath: ""), creationDate: Date(), modificationDate: Date(), favorito: true, protegido: true)
-        )
-    }
-}
+//extension PilaColecciones {
+//    static var preview: PilaColecciones {
+//        let pila = PilaColecciones(preview: true)
+//        let homeURL: URL = SistemaArchivosUtilidades.sau.home
+//
+//        pila.colecciones = [
+//            ModeloColeccion.mock("HOME", url: homeURL),
+//            ModeloColeccion.mock("Coleccion1", url: homeURL.appendingPathComponent("Coleccion1")),
+//            ModeloColeccion.mock("Coleccion2", url: homeURL.appendingPathComponent("Coleccion2")),
+//            ModeloColeccion.mock("Coleccion3", url: homeURL.appendingPathComponent("Coleccion3"))
+//        ]
+//
+//        pila.coleccionActualVM = pila.colecciones.last
+//        return pila
+//    }
+//}
+//
+//
+//
+//extension ModeloColeccion {
+//    static func mock(_ nombre: String, url: URL) -> ModeloColeccion {
+//        ModeloColeccion(
+//            Coleccion(directoryName: nombre, directoryURL: url, creationDate: Date(), modificationDate: Date(), favorito: true, protegido: true)
+//        )
+//    }
+//}
 
 
