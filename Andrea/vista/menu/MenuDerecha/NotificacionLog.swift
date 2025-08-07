@@ -46,8 +46,7 @@ struct NotificacionLogVista: View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(color.gradient.opacity(0.15))
-                .padding(.horizontal, 15)
-                .frame(maxHeight: 60)
+//                .padding(.horizontal, 15)
         
             HStack {
                 ZStack {
@@ -75,7 +74,7 @@ struct NotificacionLogVista: View {
                 }
                 
             }
-            .padding(.horizontal, 25)
+            .padding(.horizontal, 15)
         }
     }
 }
