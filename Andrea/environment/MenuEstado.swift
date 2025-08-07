@@ -64,18 +64,24 @@ class MenuEstado: ObservableObject {
         }
     }
     
-    init() {
-        //TEST para el historial
-        
-        
-    }
+    init() {}
     
     public func seleccionarElemento(url: URL) {
-        withAnimation { self.elementosSeleccionados.insert(url) }
+        withAnimation(.easeInOut(duration: 0.05)) { self.elementosSeleccionados.insert(url) }
+        Task {
+            if await self.elementosSeleccionados.count == PilaColecciones.pilaColecciones.getColeccionActual().elementos.count {
+                self.todosSeleccionados = true
+            }
+        }
     }
     
     public func deseleccionarElemento(url: URL) {
-        withAnimation { self.elementosSeleccionados.remove(url) }
+        withAnimation(.easeInOut(duration: 0.05)) { self.elementosSeleccionados.remove(url) }
+        Task {
+            if await self.elementosSeleccionados.count != PilaColecciones.pilaColecciones.getColeccionActual().elementos.count {
+                self.todosSeleccionados = false
+            }
+        }
     }
     
     public func seleccionarTodos() {

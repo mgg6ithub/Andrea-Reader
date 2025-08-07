@@ -24,7 +24,6 @@ struct CuadriculaArchivo: View {
 
             // --- Imagen ---
             ZStack {
-                
                 if me.seleccionMultiplePresionada {
                     VStack(alignment: .center, spacing: 0) {
                         let seleccionado = me.elementosSeleccionados.contains(archivo.url)
@@ -33,8 +32,7 @@ struct CuadriculaArchivo: View {
                             .fontWeight(.light)
                             .foregroundColor(coleccionVM.color)
                             .transition(.scale.combined(with: .opacity))
-                            .contentTransition(.symbolEffect(.replace))
-                            
+                            .contentTransition(.symbolEffect(.replace, options: .speed(2.25)))
                     }
                     .padding(.top, 60)
                     .zIndex(5)
@@ -68,8 +66,7 @@ struct CuadriculaArchivo: View {
                         viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
                     }
                 }
-                
-                // 🌙 Nueva sombra más suave y oscura en la esquina inferior izquierda
+
                 if mostrarMiniatura {
                     
                     VStack(spacing: 0) {

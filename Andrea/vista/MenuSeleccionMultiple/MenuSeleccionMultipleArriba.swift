@@ -29,6 +29,8 @@ struct MenuSeleccionMultipleArriba: View {
     
     private let constantes = ConstantesPorDefecto()
     
+    @State var isActive: Bool = true
+    
     var body: some View {
         HStack(spacing: 15) {
             
@@ -75,13 +77,22 @@ struct MenuSeleccionMultipleArriba: View {
                 Image(systemName: "xmark.square.fill")
                     .font(.system(size: 25))
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(.white, Color.red)
+                    .foregroundStyle(ap.temaActual.colorContrario, Color.red)
             }
-            .padding(5.9 * ap.constantes.scaleFactor) // Añade relleno dentro del botón
+            .padding(.horizontal, ConstantesPorDefecto().horizontalPadding * 0.8)
+            .padding(.vertical, 5)
             .background(
-                RoundedRectangle(cornerRadius: 12 * ap.constantes.scaleFactor) // Fondo con bordes redondeados
-                    .fill(Color.gray.opacity(0.1)) // Cambia el color del fondo aquí
-                )
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(LinearGradient(
+                        gradient: Gradient(colors: [
+                            .gray.opacity(isActive ? 0.4 : 0.2),
+                            .gray.opacity(isActive ? 0.2 : 0.1)
+                        ]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ))
+                    .shadow(color: .gray.opacity(0.275), radius: isActive ? 4 : 2, x: 0, y: 2)
+            )
 
         }
         .padding(.horizontal, constantes.horizontalPadding)
