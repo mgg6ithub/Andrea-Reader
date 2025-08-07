@@ -6,14 +6,14 @@ import SwiftUI
 class SistemaArchivos: ObservableObject {
     
     // MARK: --- Instancia singleton totalmente segura, lazy, thread-safe ---
-//    static let sa: SistemaArchivos = SistemaArchivos()
-    static var sa: SistemaArchivos = {
-        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            return SistemaArchivos(preview: true)
-        } else {
-            return SistemaArchivos()
-        }
-    }()
+    static let sa: SistemaArchivos = SistemaArchivos()
+//    static var sa: SistemaArchivos = {
+//        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+//            return SistemaArchivos(preview: true)
+//        } else {
+//            return SistemaArchivos()
+//        }
+//    }()
     
     //MARK: - Creamos por primera vez el singleton de ayuda del sistema de archivos y lo usamos para asignar la coleccion actual (Documents) coelccion raiz
     private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
