@@ -9,7 +9,8 @@ struct VistaPrincipal: View {
     @EnvironmentObject var menuEstado: MenuEstado
     @EnvironmentObject var pc: PilaColecciones
     
-    @State private var coleccionMostrada: ModeloColeccion? = PilaColecciones.preview.getColeccionActual()
+    @State private var coleccionMostrada: ModeloColeccion? = nil
+//    @State private var coleccionMostrada: ModeloColeccion? = PilaColecciones.preview.getColeccionActual()
     private let constantes = ConstantesPorDefecto()
     
     var body: some View {

@@ -25,7 +25,7 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
                 isRightSide = newValue.midX > screenWidth / 2
             }
             .contentShape(RoundedRectangle(cornerRadius: 10))
-            .opacity(showFullScreenCover ? 0 : 1)
+//            .opacity(showFullScreenCover ? 0 : 1)
             .onTapGesture {
                 haptics.toggle()
                 toggleFullScreenCover()
@@ -142,7 +142,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
             
         }
 //        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat((totalElements * 60) + alturaBase) : 0)
-        .frame(width: animateView ? 300 : nil)
+        .frame(width: animateView ? 300 : nil, height: animateView ? nil : 0)
         .background(
             ap.temaActual.backgroundColor
                 .mask(
