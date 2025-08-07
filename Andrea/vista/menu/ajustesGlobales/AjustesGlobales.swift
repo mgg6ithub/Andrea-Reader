@@ -1,25 +1,24 @@
 
 import SwiftUI
 
-//struct AndreaAppView_Preview: PreviewProvider {
-//    static var previews: some View {
-//        // Instancias de ejemplo para los objetos de entorno
-////        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
-////        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
-////        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
+struct AndreaAppView_Preview: PreviewProvider {
+    static var previews: some View {
+        // Instancias de ejemplo para los objetos de entorno
+//        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
+//        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad mini 6 gen
 //        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
-////        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
-////        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
-//        let me = MenuEstado() // Reemplaza con inicialización adecuada
-//        let pc = PilaColecciones.preview
-//        
-//
-//        return AndreaAppView()
-//            .environmentObject(ap)
-//            .environmentObject(me)
-//            .environmentObject(pc)
-//    }
-//}
+//        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
+//        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
+        let me = MenuEstado() // Reemplaza con inicialización adecuada
+        let pc = PilaColecciones.preview
+
+        return AndreaAppView()
+            .environmentObject(ap)
+            .environmentObject(me)
+            .environmentObject(pc)
+    }
+}
 
 struct AjustesGlobales: View {
     
@@ -118,7 +117,7 @@ struct AjustesGlobales: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, paddingHorizontal)
                     .padding(.top, 20)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 20)
                 
                 if ap.resolucionLogica == .small {
                     IndicesHorizontal(sections: sections, selectedSection: $selectedSection, scrollProxy: $scrollProxy)
@@ -379,7 +378,6 @@ struct IndicesHorizontal: View {
                 }
                 .padding(.horizontal)
             }
-        
     }
     
 }
@@ -500,7 +498,7 @@ struct Punto: View {
                 Text(menuEstado.sectionTitle(section))
                     .font(.system(size: appEstado.constantes.smallTitleSize))
                     .foregroundColor(selectedSection == section ? appEstado.temaActual.textColor : appEstado.temaActual.secondaryText)
-                    .frame(width: (menuEstado.anchoTexto - 10) * appEstado.constantes.scaleFactor, alignment: .leading)
+                    .frame(width: (menuEstado.anchoTexto * appEstado.constantes.scaleFactor) - 10, alignment: .leading)
                 
                 Circle()
                     .fill(selectedSection == section ? appEstado.constantes.iconColor : .gray)
@@ -526,8 +524,7 @@ struct Punto: View {
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
-        .frame(maxWidth: (menuEstado.anchoIndicePuntos) * appEstado.constantes.scaleFactor)
-        
+        .frame(maxWidth: (menuEstado.anchoIndicePuntos * appEstado.constantes.scaleFactor) - 1.5)
         
     }
     

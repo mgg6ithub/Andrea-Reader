@@ -63,7 +63,7 @@ struct AjustesTema: View {
             Text("Tema principal") //TITULO
                 .font(.headline)
                 .foregroundColor(appEstado.temaActual.colorContrario)
-                .padding(.vertical, paddingVertical + 5) // 25
+                .padding(.bottom, paddingVertical + 5) // 25
                 .padding(.trailing, paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
@@ -233,5 +233,6 @@ struct AjustesTema: View {
             
         } //fin vstack tema
         .padding(.horizontal, appEstado.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
+        .padding(.top, 10)
     }
 }
