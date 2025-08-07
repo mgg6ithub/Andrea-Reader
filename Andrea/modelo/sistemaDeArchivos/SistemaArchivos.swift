@@ -362,6 +362,16 @@ class SistemaArchivos: ObservableObject {
                             vm.coleccion.totalArchivos -= 1
                         }
                     }
+                    
+                    // --- LOG ---
+                    var tipo: String = ""
+                    if let _ = elemento as? Coleccion {
+                        tipo = "Coleccion"
+                    } else {
+                        tipo = "Archivo"
+                    }
+                    NotificacionesEstado.ne.crearLog(mensaje: "\(tipo) \(elemento.nombre) eliminado.", icono: "\(tipo)-eliminado", color: .red)
+                    
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -383,8 +393,9 @@ class SistemaArchivos: ObservableObject {
         
         fileQueue.async {
             
-            // --- Construimos la URL del nuevo archivo
-            
+            print("importando archivo")
+            print(archivoURL.lastPathComponent)
+            print()
             // 1. Obtenenmos el nombre de la url
             let nombreArchivo: String = archivoURL.lastPathComponent
             // 2. Verificamos si se ha pasado un destino concreto. Si no se creara en la colecciona actual.
@@ -409,6 +420,9 @@ class SistemaArchivos: ObservableObject {
                 
                 // --- Agregamos el archivo a la listaElementos para actualizar la UI solo con ese elemento
                 Task { @MainActor in
+                    // --- LOG HISTORIAL ---
+                    NotificacionesEstado.ne.crearLog(mensaje: "Archivo \(nombreArchivo) importado.", icono: "Archivo-creado", color: .green)
+                    
                     self.actualizarUISoloElemento(elementoURL: nuevoArchivoURL)
                 }
                 
@@ -434,6 +448,9 @@ class SistemaArchivos: ObservableObject {
             
             if !self.sau.fileExists(elementURL: nuevaColeccionURL) {
                 try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
+                
+                // --- LOG ---
+                NotificacionesEstado.ne.crearLog(mensaje: "Coleccion \(nombre) creada.", icono: "Coleccion-creado", color: .green)
                 
                 // --- Creamos la instancia de la coleccion ---
                 Task { @MainActor in

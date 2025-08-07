@@ -6,6 +6,7 @@ import SwiftUI
 struct MenuDerecha: View {
     
     @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var hne: NotificacionesEstado
     
     var body: some View {
         
@@ -25,6 +26,7 @@ struct MenuDerecha: View {
                             .contentTransition(.symbolEffect(.replace))
                             .fontWeight(appEstado.constantes.iconWeight)
                             .padding(.trailing, 2.5)
+                            .symbolEffect(.bounce, value: hne.nuevaNotificacion)
                     } content: { isExpandable, cerrarMenu in
                         MenuHistorial()
                     }

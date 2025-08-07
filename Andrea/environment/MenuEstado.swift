@@ -43,7 +43,6 @@ class MenuEstado: ObservableObject {
     @Published var modoVistaColeccion: EnumModoVista = .cuadricula
     
     //MARK: --- MENU DERECHA ---
-    @Published var historialNotiticaciones: [NotificacionLog] = []
     
     //Funcionalidad de la vista de los ajustes globales
     let sections = [
@@ -67,17 +66,7 @@ class MenuEstado: ObservableObject {
     
     init() {
         //TEST para el historial
-        historialNotiticaciones.append(NotificacionLog(mensaje: "Batman nuevo nombre importado", icono: "documento-creado", color: .green))
-
-        historialNotiticaciones.append(NotificacionLog(mensaje: "Batman nuevo nombre eliminado", icono: "documento-eliminado", color: .red))
-
-        historialNotiticaciones.append(NotificacionLog(mensaje: "Coleccion \"Transformers\" creada.", icono: "coleccion-creada", color: .green))
-
-        historialNotiticaciones.append(NotificacionLog(mensaje: "Coleccion \"Transformers\" eliminada.", icono: "coleccion-eliminada", color: .red))
-
-        historialNotiticaciones.append(NotificacionLog(mensaje: "Coleccion \"Transformers mas largo este e sun nnombre\" eliminada.", icono: "coleccion-eliminada", color: .red))
-
-        historialNotiticaciones.append(NotificacionLog(mensaje: "Renombrado de \"Transformers\" -> \"nuevo nombre\".", icono: "cambio-nombre", color: .orange))
+        
         
     }
     

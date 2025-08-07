@@ -26,9 +26,7 @@ class PilaColecciones: ObservableObject {
 //        actualizarColeccionActual()
 //    }
     
-    //MARK: - PREVIEW
-    
-    //MARK: --- Singleton seguro con soporte para previews ---
+    //MARK: - --- PREVIEW ---
     static let pilaColecciones: PilaColecciones = {
         #if DEBUG
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
@@ -55,8 +53,8 @@ class PilaColecciones: ObservableObject {
         self.cargarPila()
         self.actualizarColeccionActual()
     }
-    
-    //MARK: - PREVIEW
+
+    //MARK: - --- PREVIEW ---
 
     /**
       Carga la pila de colecciones desde `UserDefaults`.

@@ -2,24 +2,72 @@
 import SwiftUI
 import Foundation
 
-//struct AndreaAppView_Preview: PreviewProvider {
-//    static var previews: some View {
-//        // Instancias de ejemplo para los objetos de entorno
-////        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
-////        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
-////        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
-//        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
-////        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
-////        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
-//        let me = MenuEstado() // Reemplaza con inicialización adecuada
-//        let pc = PilaColecciones.preview
-//
-//        return AndreaAppView()
-//            .environmentObject(ap)
-//            .environmentObject(me)
-//            .environmentObject(pc)
-//    }
-//}
+// 2) Uso en tu VStack
+struct MenuHistorial: View {
+    @EnvironmentObject var ap: AppEstado
+    @EnvironmentObject var ne: NotificacionesEstado
+    
+    @ObservedObject private var coleccionActualVM: ModeloColeccion
+    
+    init() {
+        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Image("custom-reloj")
+                    .font(.system(size: ap.constantes.iconSize * 0.7))
+                
+                if let tiempo = coleccionActualVM.tiempoCarga {
+                HStack(spacing: 3) {
+                    Text("Coleccion \"\(coleccionActualVM.coleccion.nombre)\" indexada en")
+                        .font(.headline)
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                    
+                        Text(String(format: "%.2f", tiempo) + "s")
+                                .font(.caption2)
+                                .bold()
+                    }
+                }
+                
+            }
+            .padding(.leading, 15)
+            .padding(.top, 15)
+            .padding(.trailing, 15)
+
+            ScrollView {
+                VStack(spacing: 15) {
+                    ForEach(ne.historialNotificacionesEstado.reversed(), id: \.id) { noti in
+                        SwipeToDeleteRow(
+                            isDeleted: Binding(
+                                get: { false },
+                                set: { deleted in
+                                    if deleted {
+                                        ne.historialNotificacionesEstado.removeAll { $0.id == noti.id }
+                                    }
+                                }
+                            ),
+                            onDelete: {}
+                        ) {
+                            NotificacionLogVista(
+                                logMensaje: noti.mensaje,
+                                icono: noti.icono,
+                                color: noti.color
+                            )
+                        }
+                    }
+                }
+                .padding(.vertical, 20)
+            }
+            .frame(maxHeight: 400) // 👈 Ajusta este valor según lo que desees
+
+
+
+        }
+    }
+}
 
 // 1) Wrapper genérico para cada fila swipeable
 struct SwipeToDeleteRow<Content: View>: View {
@@ -99,63 +147,6 @@ struct SwipeToDeleteRow<Content: View>: View {
         // llamamos al closure de borrado del array
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             onDelete()
-        }
-    }
-}
-
-
-// 2) Uso en tu VStack
-struct MenuHistorial: View {
-    @EnvironmentObject var ap: AppEstado
-    @EnvironmentObject var me: MenuEstado
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Image("custom-reloj")
-                    .font(.system(size: ap.constantes.iconSize))
-                
-                HStack(spacing: 3) {
-                    Text("Indexado desde \"mi ipad\" hace")
-                        .font(.headline)
-                        .minimumScaleFactor(0.7)
-                        .lineLimit(1)
-                    
-                    Text("2.13 s")
-                        .font(.footnote)
-                        .bold()
-                }
-                
-            }
-            .padding(.leading, 15)
-            .padding(.top, 15)
-            .padding(.trailing, 15)
-
-            VStack(spacing: 15) {
-                ForEach(me.historialNotiticaciones) { noti in
-                    // Binding temporal para controlar opacidad
-                    let index = me.historialNotiticaciones.firstIndex(where: { $0.id == noti.id })!
-                    SwipeToDeleteRow(
-                        isDeleted: Binding(
-                            get: { false },
-                            set: { deleted in
-                                if deleted {
-                                    // Eliminar elemento del array
-                                    me.historialNotiticaciones.removeAll { $0.id == noti.id }
-                                }
-                            }
-                        ),
-                        onDelete: {
-                            // También puedes manejar aquí la eliminación
-                        }
-                    ) {
-                        NotificacionLogVista(logMensaje: noti.mensaje,
-                                             icono: noti.icono,
-                                             color: noti.color)
-                    }
-                }
-            }
-            .padding(.vertical, 20)
         }
     }
 }

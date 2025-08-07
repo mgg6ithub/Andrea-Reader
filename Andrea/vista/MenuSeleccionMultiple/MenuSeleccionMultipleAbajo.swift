@@ -30,15 +30,16 @@ struct MenuSeleccionMultipleAbajo: View {
     @State private var accionDocumento: EnumAccionDocumento? = nil
     private let constantes = ConstantesPorDefecto()
     
-//    @ObservedObject private var coleccionActualVM: ModeloColeccion
-    private var coleccionActualVM: ModeloColeccion {
-            pc.getColeccionActual()
-        }
+    @ObservedObject private var coleccionActualVM: ModeloColeccion
+    //PREVIEW
+//    private var coleccionActualVM: ModeloColeccion {
+//            pc.getColeccionActual()
+//        }
     private let sa: SistemaArchivos = SistemaArchivos.sa
         
-//    init() {
-//        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
-//    }
+    init() {
+        _coleccionActualVM = ObservedObject(initialValue: PilaColecciones.pilaColecciones.getColeccionActual())
+    }
     
     var body: some View {
         HStack(spacing: 0) {
