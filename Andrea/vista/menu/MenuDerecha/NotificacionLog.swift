@@ -36,6 +36,8 @@ struct NotificacionLogVista: View {
     let icono: String
     let color: Color
     
+//    private var textSize: CGFloat {  }
+    
     var fechaHoraFormateada: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy HH:mm"
@@ -55,7 +57,8 @@ struct NotificacionLogVista: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30, height: 30)
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(color, ap.temaActual.colorContrario)
+//                        .foregroundStyle(color, ap.temaActual.colorContrario)
+                        .foregroundStyle(color, .gray.opacity(0.6))
                 }
                 .frame(width: 30)
                 
@@ -64,7 +67,8 @@ struct NotificacionLogVista: View {
                 VStack(alignment: .trailing, spacing: 3) {
                     
                     Text(logMensaje)
-                        .font(.system(size: ap.constantes.subTitleSize * 0.85))
+//                        .font(.system(size: ap.constantes.subTitleSize * 0.85))
+                        .font(.headline)
                         .lineLimit(logMensaje.count > 40 ? 2 : 1)
                         .minimumScaleFactor(0.7)
                     

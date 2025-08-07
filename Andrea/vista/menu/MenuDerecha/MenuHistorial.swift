@@ -113,16 +113,19 @@ struct MenuHistorial: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Image("custom-reloj")
-                    .font(.system(size: ap.constantes.iconSize * 0.5))
+                    .font(.system(size: ap.constantes.iconSize))
                 
                 HStack(spacing: 3) {
                     Text("Indexado desde \"mi ipad\" hace")
-                        .font(.system(size: ap.constantes.subTitleSize * 0.85))
+                        .font(.headline)
+                        .minimumScaleFactor(0.7)
+                        .lineLimit(1)
                     
                     Text("2.13 s")
-                        .font(.system(size: ap.constantes.subTitleSize * 0.85))
+                        .font(.footnote)
                         .bold()
                 }
+                
             }
             .padding(.leading, 15)
             .padding(.top, 15)

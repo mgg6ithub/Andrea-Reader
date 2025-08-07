@@ -141,7 +141,6 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
             }
             
         }
-//        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat((totalElements * 60) + alturaBase) : 0)
         .frame(width: animateView ? 300 : nil, height: animateView ? nil : 0)
         .background(
             ap.temaActual.backgroundColor
