@@ -38,6 +38,8 @@
 		D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */; };
 		D48B45A42DF250720088F40E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D48B45A32DF250720088F40E /* ZIPFoundation */; };
 		D48C58802E3BA855006D9C07 /* CabeceraMasInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */; };
+		D49961932E44D7A40089488D /* MenuHistorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49961922E44D7A40089488D /* MenuHistorial.swift */; };
+		D49961952E44F9380089488D /* NotificacionLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49961942E44F9380089488D /* NotificacionLog.swift */; };
 		D49BE6D52E17AF2500FEDB99 /* ModeloColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49BE6D42E17AF2500FEDB99 /* ModeloColeccion.swift */; };
 		D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D7D002E26D77500E0A93B /* ListaArchivo.swift */; };
 		D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D7D022E26D77D00E0A93B /* ListaColeccion.swift */; };
@@ -126,6 +128,8 @@
 		D48589752DEBA1C50074DB8E /* Coleccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coleccion.swift; sourceTree = "<group>"; };
 		D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBZArchivo.swift; sourceTree = "<group>"; };
 		D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CabeceraMasInformacion.swift; sourceTree = "<group>"; };
+		D49961922E44D7A40089488D /* MenuHistorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHistorial.swift; sourceTree = "<group>"; };
+		D49961942E44F9380089488D /* NotificacionLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificacionLog.swift; sourceTree = "<group>"; };
 		D49BE6D42E17AF2500FEDB99 /* ModeloColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloColeccion.swift; sourceTree = "<group>"; };
 		D49D2AF02DEC5D7400AC8E36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D49D7D002E26D77500E0A93B /* ListaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListaArchivo.swift; sourceTree = "<group>"; };
@@ -309,6 +313,16 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
+		D49961912E44D78F0089488D /* MenuDerecha */ = {
+			isa = PBXGroup;
+			children = (
+				D4ADDB7D2DE9B9FA0097A010 /* MenuDerecha.swift */,
+				D49961922E44D7A40089488D /* MenuHistorial.swift */,
+				D49961942E44F9380089488D /* NotificacionLog.swift */,
+			);
+			path = MenuDerecha;
+			sourceTree = "<group>";
+		};
 		D49BE6D32E17AF0400FEDB99 /* MVVM */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,7 +420,7 @@
 				D45E700B2DE7A803001F816A /* MenuVista.swift */,
 				D4D8CCF22E377C3D00F7F18D /* menuIzquierda */,
 				D4ADDB7B2DE9B9F10097A010 /* MenuCentro.swift */,
-				D4ADDB7D2DE9B9FA0097A010 /* MenuDerecha.swift */,
+				D49961912E44D78F0089488D /* MenuDerecha */,
 				D4DEBBEA2DE9CCB100F06C30 /* ajustesGlobales */,
 			);
 			path = menu;
@@ -655,6 +669,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D49961932E44D7A40089488D /* MenuHistorial.swift in Sources */,
 				D49DE74B2E0D33F1002FDB7A /* CBRArchivo.swift in Sources */,
 				D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */,
 				D4A65E022E27EBB500729A57 /* ArrastreManual.swift in Sources */,
@@ -667,6 +682,7 @@
 				D485896F2DEB9E4E0074DB8E /* ManipulacionCadenas.swift in Sources */,
 				D49BE6D52E17AF2500FEDB99 /* ModeloColeccion.swift in Sources */,
 				D4DF317B2DEC74F0000D15CC /* CuadriculaVista.swift in Sources */,
+				D49961952E44F9380089488D /* NotificacionLog.swift in Sources */,
 				D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */,
 				D4AA438D2E3A22CC0033EF63 /* VistaMostrarEnArchivos.swift in Sources */,
 				D4ADDB7A2DE9B9E60097A010 /* MenuIzquierda.swift in Sources */,

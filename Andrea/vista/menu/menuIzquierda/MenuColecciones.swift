@@ -141,7 +141,8 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
             }
             
         }
-        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat((totalElements * 60) + alturaBase) : 0)
+//        .frame(width: animateView ? 300 : nil, height: animateView ? CGFloat((totalElements * 60) + alturaBase) : 0)
+        .frame(width: animateView ? 300 : nil)
         .background(
             ap.temaActual.backgroundColor
                 .mask(
@@ -158,7 +159,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
         .offset(x: animateView ? 0 : (isRightSide ? sourceRect.maxX - 300 : sourceRect.minX),
                 y: animateView ? 0 : sourceRect.minY)
         .padding(.top, animateView ? 25 : 0)
-        .padding(.leading, animateView ? 20 : 0)
+        .padding(isRightSide ? .trailing : .leading, animateView ? 20 : 0)
         // ---
         .animation(.easeInOut(duration: 0.3), value: animateView)
         .ignoresSafeArea()
