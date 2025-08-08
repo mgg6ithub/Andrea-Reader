@@ -9,12 +9,14 @@ class MenuEstado: ObservableObject {
     
     //MARK: - ICONOS DEL MENU
     
-    //Mostrar u ocultar iconos del menu
+    //MENU IZQUIERDA
+    
     @Published var menuIzquierdaFlechaLateral: Bool = true
     @Published var menuIzquierdaSideMenuIcono: Bool = true
 
-    // --- SELECCION MULTIPLE ---
+    //MENU CENTRO
     
+    // --- SELECCION MULTIPLE ---
     @Published var seleccionMultiplePresionada: Bool = false {
         didSet {
             if seleccionMultiplePresionada == false {
@@ -22,25 +24,15 @@ class MenuEstado: ObservableObject {
             }
         }
     }
-
     @Published var elementosSeleccionados: Set<URL> = []
     @Published var todosSeleccionados: Bool = false
     
-    
-    // --- AJUSTES GLOBALES DE LA APLICACION ---
-    
-    @Published var ajustesGlobalesPresionado: Bool = false //Para desplegar y cerrar el menu global de ajustes
-    
-    //Variables resizable del menu de indices con puntos lateral
-    @Published var anchoIndicePuntos: CGFloat = 77.5
-    @Published var anchoTexto: CGFloat = 72.5
-
-    
+    // --- AJUSTES DE CADA COLECCION ---
     @Published var modoVistaColeccion: EnumModoVista = .cuadricula
     
-    //MARK: --- MENU DERECHA ---
+    // --- AJUSTES GLOBALES ---
+    @Published var ajustesGlobalesPresionado: Bool = false
     
-    //Funcionalidad de la vista de los ajustes globales
     let sections = [
         "TemaPrincipal", "ColorPrincipal", "SistemaArchivos", "Rendimiento",
         "AjustesMenu", "AjustesHistorial", "AjustesLibreria", "AjustesVisualizacion"
@@ -62,8 +54,10 @@ class MenuEstado: ObservableObject {
     
     init() {}
     
+    //MARK: --- LOGICA PARA LA SELECCION MULTIPLE --- 
+    
     public func seleccionarElemento(url: URL) {
-        withAnimation(.easeInOut(duration: 0.05)) { self.elementosSeleccionados.insert(url) }
+        let _ = withAnimation(.easeInOut(duration: 0.05)) { self.elementosSeleccionados.insert(url) }
         Task {
             if await self.elementosSeleccionados.count == PilaColecciones.pilaColecciones.getColeccionActual().elementos.count {
                 self.todosSeleccionados = true
@@ -72,7 +66,7 @@ class MenuEstado: ObservableObject {
     }
     
     public func deseleccionarElemento(url: URL) {
-        withAnimation(.easeInOut(duration: 0.05)) { self.elementosSeleccionados.remove(url) }
+        let _ = withAnimation(.easeInOut(duration: 0.05)) { self.elementosSeleccionados.remove(url) }
         Task {
             if await self.elementosSeleccionados.count != PilaColecciones.pilaColecciones.getColeccionActual().elementos.count {
                 self.todosSeleccionados = false

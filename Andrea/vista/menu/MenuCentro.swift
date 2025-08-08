@@ -66,16 +66,17 @@ struct MenuCentro: View {
                     .fontWeight(appEstado.constantes.iconWeight)
                     .contentShape(Rectangle())
             }
+//MARK: - --- CONSEJO SELECCION MULTIPLE DE UNA COLECCION ---
 //            .popoverTip(ConsejoSeleccionMultiple())
-//            .task {
-//                await ConsejoSeleccionMultiple.seMuestra.donate()
-//            }
+//MARK: - --- CONSEJO SELECCION MULTIPLE DE UNA COLECCION ---
+
             .offset(y: 0.6)
             
             //MARK: --- IMPORTAR ELEMENTOS A LA APLICACION ---
             
             Button(action: {
                 self.mostrarDocumentPicker.toggle()
+                //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
                 if #available(iOS 17.0, *) { ConsejoImportarElementos().invalidate(reason: .actionPerformed) }
             }) {
                 Image(systemName: "tray.and.arrow.down")
@@ -84,7 +85,9 @@ struct MenuCentro: View {
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
             }
+//MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
             .popoverTip(ConsejoImportarElementos())
+//MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
             .sheet(isPresented: $mostrarDocumentPicker) {
                 DocumentPicker(
                     onPick: { urls in
@@ -116,6 +119,7 @@ struct MenuCentro: View {
             Button(action: {
                 self.esNuevaColeccionPresionado.toggle()
                 if #available(iOS 17.0, *) {
+                    //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
                     ConsejoCrearColeccion().invalidate(reason: .actionPerformed)
                 }
             }) {
@@ -125,7 +129,9 @@ struct MenuCentro: View {
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
             }
+//MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
             .popoverTip(ConsejoCrearColeccion())
+//MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
             .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)
                 Button("Aceptar") {

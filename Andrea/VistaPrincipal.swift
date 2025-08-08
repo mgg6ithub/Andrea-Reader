@@ -61,7 +61,9 @@ struct VistaPrincipal: View {
                 }
                 .animation(.easeInOut(duration: 0.2), value: menuEstado.seleccionMultiplePresionada)
                 
-                TipView(ConsejoSmartSorting())
+                //MARK: - --- CONSEJO SMART SORTING DE UNA COLECCION ---
+//                TipView(ConsejoSmartSorting())
+                //MARK: - --- CONSEJO SMART SORTING DE UNA COLECCION ---
                 
             }
             .onAppear {

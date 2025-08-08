@@ -145,11 +145,17 @@ class PilaColecciones: ObservableObject {
         //MARK: --- CONSEJO PARA CREAR UNA COLECCION ---
         if let coleccionActual: Coleccion = coleccionActualVM?.coleccion {
             if coleccionActual.nombre == "HOME" {
+                //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
                 ConsejoCrearColeccion.estamosHome = true
+                //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
                 if coleccionActual.totalColecciones == 0 { ConsejoCrearColeccion.noTieneColeccion = true }
+                //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
                 ConsejoImportarElementos.mostrarConsejoCrearColeccion = false
+                
             } else {
+                //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA --- 
                 ConsejoImportarElementos.mostrarConsejoCrearColeccion = true
+                
             }
         }
         //MARK: -

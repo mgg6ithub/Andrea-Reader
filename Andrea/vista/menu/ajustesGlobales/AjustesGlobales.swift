@@ -88,15 +88,22 @@ struct DividerPersonalizado: View {
 
 struct Punto: View {
     
-    @EnvironmentObject var appEstado: AppEstado
+    // --- ENTORNO ---
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
+    // --- CONSTANTES ---
+    var anchoIndicePuntos: CGFloat = 77.5
+    var anchoTexto: CGFloat = 72.5
+    
+    // --- PARAMETROS ---
     let index: Int
     let section: String
     @Binding var selectedSection: String?
     @Binding var isPressed: Bool
     let distPoints: CGFloat
     
+    // --- VARIABLES CALCULADAS ---
     var sections: [String] { menuEstado.sections }
     
     var body: some View {
@@ -104,23 +111,23 @@ struct Punto: View {
         VStack(spacing: 0) {
             HStack(spacing: ConstantesPorDefecto().paddingCorto - 2) {
                 Text(menuEstado.sectionTitle(section))
-                    .font(.system(size: appEstado.constantes.smallTitleSize))
-                    .foregroundColor(selectedSection == section ? appEstado.temaActual.textColor : appEstado.temaActual.secondaryText)
-                    .frame(width: (menuEstado.anchoTexto * appEstado.constantes.scaleFactor) - 10, alignment: .leading)
+                    .font(.system(size: ap.constantes.smallTitleSize))
+                    .foregroundColor(selectedSection == section ? ap.temaActual.textColor : ap.temaActual.secondaryText)
+                    .frame(width: (anchoTexto * ap.constantes.scaleFactor) - 10, alignment: .leading)
                 
                 Circle()
-                    .fill(selectedSection == section ? appEstado.constantes.iconColor : .gray)
+                    .fill(selectedSection == section ? ap.constantes.iconColor : .gray)
                     .shadow(
-                        color: selectedSection == section ? appEstado.constantes.iconColor : .gray,
+                        color: selectedSection == section ? ap.constantes.iconColor : .gray,
                         radius: ((selectedSection == section ? 6 : 0))
                     )
                     .frame(width: 15, height: 15)
                     .overlay( //ANIMACION AVANZADA AL HACER CLICK
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke((selectedSection == section && isPressed) ? appEstado.constantes.iconColor : Color.clear, lineWidth: 4)
+                            .stroke((selectedSection == section && isPressed) ? ap.constantes.iconColor : Color.clear, lineWidth: 4)
                                     .animation(.easeInOut(duration: 0.3), value: isPressed)
                             )
-                    .shadow(color: (selectedSection == section && isPressed) ? appEstado.constantes.iconColor.opacity(0.3) : .clear, radius: (selectedSection == section && isPressed) ? 10 : 0, x: 0, y: (selectedSection == section && isPressed) ? 5 : 0)
+                    .shadow(color: (selectedSection == section && isPressed) ? ap.constantes.iconColor.opacity(0.3) : .clear, radius: (selectedSection == section && isPressed) ? 10 : 0, x: 0, y: (selectedSection == section && isPressed) ? 5 : 0)
                     .animation(.spring(response: 0.3, dampingFraction: 0.5, blendDuration: 0), value: isPressed)
                     .frame(alignment: .trailing)
             }
@@ -132,7 +139,7 @@ struct Punto: View {
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
-        .frame(maxWidth: (menuEstado.anchoIndicePuntos * appEstado.constantes.scaleFactor) - 1.5)
+        .frame(maxWidth: (anchoIndicePuntos * ap.constantes.scaleFactor) - 1.5)
         
     }
     

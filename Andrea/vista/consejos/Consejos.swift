@@ -3,7 +3,7 @@
 import TipKit
 import SwiftUI
 
-//Al mostrar el icono 3 veces
+//MARK: - --- CONSEJO SELECCION MULTIPLE DE UNA COLECCION ---
 struct ConsejoSeleccionMultiple: Tip {
 
 
@@ -33,7 +33,7 @@ struct ConsejoSeleccionMultiple: Tip {
     
 }
 
-//Al indexar desde modeloColeccion, al borrar un elemento desde sa
+//MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA --- 
 struct ConsejoImportarElementos: Tip {
     
     @Parameter
@@ -69,7 +69,7 @@ struct ConsejoImportarElementos: Tip {
     
 }
 
-//En pilacoleccion al actualizar la coleccion actual si es home
+//MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
 struct ConsejoCrearColeccion: Tip {
     
     @Parameter
@@ -100,7 +100,7 @@ struct ConsejoCrearColeccion: Tip {
 }
 
 
-//Al mostrar el icono 3 veces
+//MARK: - --- CONSEJO OPCIONES (MENU) DE UNA COLECCION ---
 struct ConsejoOpcionesColeccionActual: Tip {
     
     
@@ -130,7 +130,7 @@ struct ConsejoOpcionesColeccionActual: Tip {
 }
    
 
-
+//MARK: - --- CONSEJO SMART SORTING DE UNA COLECCION ---
 struct ConsejoSmartSorting: Tip {
     
     @Parameter

@@ -68,7 +68,6 @@ struct ContenidoAjustes: View {
                                         scrollInicial = geo.frame(in: .global).minY
                                         haHechoScroll = false
                                         isScrollInitialized = true
-                                        print("🔵 Scroll inicial establecido: \(scrollInicial ?? 0)")
                                     }
                                 }
                                 .onChange(of: geo.frame(in: .global).minY) { oldValue, newValue in
@@ -154,7 +153,6 @@ struct ContenidoAjustes: View {
     private func handleScrollChange(newY: CGFloat) {
         // Solo procesar si la inicialización está completa
         guard isScrollInitialized, let inicial = scrollInicial else {
-            print("⚠️ Scroll no inicializado aún")
             return
         }
         
@@ -167,9 +165,6 @@ struct ContenidoAjustes: View {
         // Solo actualizamos si hay un cambio real de estado
         if hayScrollHaciaAbajo != haHechoScroll {
             haHechoScroll = hayScrollHaciaAbajo
-            
-            print(hayScrollHaciaAbajo ? "🔴 SCROLL HACIA ABAJO - OCULTAR CONTENIDO" : "🟢 ARRIBA DEL TODO - MOSTRAR CONTENIDO")
-            print("   Inicial: \(inicial), Actual: \(newY), Diferencia: \(diferencia)")
         }
     }
     
