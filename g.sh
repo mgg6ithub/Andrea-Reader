@@ -11,5 +11,5 @@ elif git commit -m "$mensaje_commit" | grep -q "nothing to commit, working tree 
 	echo "cambios guardados.";
 fi
 
-git push origin main > /dev/null
+git push origin main > /dev/null 2>&1
 echo "cambios subidos a remoto."

@@ -26,7 +26,7 @@ if git fetch origin > /dev/null; then
 
 		if git reset --hard sec_copy > /dev/null; then
 			echo "local -> remote";
-			git push origin main --force > /dev/null
+			git push origin main --force > /dev/null 2>&1
 		fi
 	fi
 fi
