@@ -2,26 +2,23 @@ import SwiftUI
 
 struct RectangleFormView<T: Equatable>: View {
     
+    // --- ENTORNO ---
     @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
 
-    // Parámetros externos
+    // --- PARAMETROS ---
     @State var titulo: String
     @State var icono: String
     @State var coloresIcono: [Color] // Array de colores
-
     var opcionSeleccionada: T                     // Valor que representa esta opción
     @Binding var opcionActual: T                  // Valor actualmente seleccionado
-
     var isCustomImage: Bool? = nil                // Imagen personalizada o no
 
-    // Estado interno
+    // --- VARIABLES ESTADO ---
     @State private var isBouncing = false         // Estado para controlar el rebote
 
-    // Estado calculado: está seleccionada esta opción
-    var isSelected: Bool { return opcionActual == opcionSeleccionada }
-
     // --- VARIABLES CALCULADAS ---
+    var isSelected: Bool { return opcionActual == opcionSeleccionada }
     var const: Constantes { ap.constantes }
     private var iconSize: CGFloat { ap.constantes.iconSize + 20 }
 

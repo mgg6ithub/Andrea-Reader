@@ -3,11 +3,11 @@ import SwiftUI
 
 struct AjustesGlobales: View {
     
+    // --- ENTORNO ---
     @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
-    
-    private var padding: CGFloat = 20
 
+    // --- VARIABLES ESTADO ---
     @State private var isPressed: Bool = false
     @State private var selectedSection: String? = nil
     @State private var isUserInteracting = false
@@ -15,35 +15,11 @@ struct AjustesGlobales: View {
     @State private var sectionOffsets: [String: CGFloat] = [:]
     @State private var haHechoScroll: Bool = false
     @State private var scrollInicial: CGFloat? = nil
-    
     @State private var showEmptyState = false // Para controlar la animación
     
+    // --- VARIABLES CALCULADAS ---
     var sections: [String] { menuEstado.sections }
-
-    func updateActiveSection() {
-        guard !isUserInteracting else { return }
-
-        let screenCenter = UIScreen.main.bounds.height / 2
-
-        let closest = sectionOffsets.min(by: {
-            abs($0.value - screenCenter) < abs($1.value - screenCenter)
-        })
-
-        if let closestSection = closest?.key, selectedSection != closestSection {
-            selectedSection = closestSection
-        }
-    }
-
-    private let paddingHorizontal: CGFloat = ConstantesPorDefecto().horizontalPadding // 15
-    private var paddingVertical: CGFloat  { ConstantesPorDefecto().verticalPadding  * ap.constantes.scaleFactor}// 20
-    
-    var constanteResizable: CGFloat {
-        if ap.resolucionLogica == .small {
-            return ap.constantes.scaleFactor * 0.9
-        } else {
-            return ap.constantes.scaleFactor
-        }
-    }
+    private let cpd: ConstantesPorDefecto = ConstantesPorDefecto()
     
     var body: some View {
             
@@ -54,7 +30,7 @@ struct AjustesGlobales: View {
                     .foregroundColor(ap.temaActual.colorContrario)
                     .bold()
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, paddingHorizontal)
+                    .padding(.horizontal, cpd.padding15)
                     .padding(.top, 20)
                     .padding(.bottom, 20)
                 
@@ -74,16 +50,16 @@ struct AjustesGlobales: View {
                     if ap.resolucionLogica == .medium || ap.resolucionLogica == .big {
                         HStack(spacing: 0) { //Cambiar por VStack si resolucionLogica es .small y el menu de los indices por el horizontal para ponerlo encima
                             IndicesVertical(isPressed: $isPressed, selectedSection: $selectedSection, isUserInteracting: $isUserInteracting, scrollProxy: $scrollProxy, sections: sections)
-                            ContenidoAjustes(sections: sections, selectedSection: $selectedSection, paddingHorizontal: paddingHorizontal, sectionOffsets: $sectionOffsets, isUserInteracting: $isUserInteracting, scrollProxy: $scrollProxy, haHechoScroll: $haHechoScroll, scrollInicial: $scrollInicial)
+                            ContenidoAjustes(sections: sections, selectedSection: $selectedSection, paddingHorizontal: cpd.padding15, sectionOffsets: $sectionOffsets, isUserInteracting: $isUserInteracting, scrollProxy: $scrollProxy, haHechoScroll: $haHechoScroll, scrollInicial: $scrollInicial)
                         }//gin hstack spacing 0
                         .frame(height: hStackGeo.size.height)
                     } else if ap.resolucionLogica == .small {
-                        ContenidoAjustes(sections: sections, selectedSection: $selectedSection, paddingHorizontal: paddingHorizontal, sectionOffsets: $sectionOffsets, isUserInteracting: $isUserInteracting, scrollProxy: $scrollProxy, haHechoScroll: $haHechoScroll, scrollInicial: $scrollInicial)
+                        ContenidoAjustes(sections: sections, selectedSection: $selectedSection, paddingHorizontal: cpd.padding15, sectionOffsets: $sectionOffsets, isUserInteracting: $isUserInteracting, scrollProxy: $scrollProxy, haHechoScroll: $haHechoScroll, scrollInicial: $scrollInicial)
                     }
                 } //fin geometry hStackGeo
                 
             } //FIN VSTACK GENERAL
-            .padding(.horizontal, paddingHorizontal + 10) // 25
+            .padding(.horizontal, cpd.padding25) // 25
             .frame(
                 maxHeight: .infinity,
                 alignment: .center
@@ -93,300 +69,6 @@ struct AjustesGlobales: View {
     }
     
 }
-
-struct ContenidoAjustes: View {
-    
-    @EnvironmentObject var ap: AppEstado
-    
-    var sections: [String]
-    @Binding var selectedSection: String?
-    let paddingHorizontal: CGFloat
-    
-    @Binding var sectionOffsets: [String: CGFloat]
-    @Binding var isUserInteracting: Bool
-    @Binding var scrollProxy: ScrollViewProxy?
-    @Binding var haHechoScroll: Bool
-    @Binding var scrollInicial: CGFloat?
-
-    
-    var constanteResizable: CGFloat {
-        if ap.resolucionLogica == .small {
-            return ap.constantes.scaleFactor * 0.8
-        } else {
-            return ap.constantes.scaleFactor
-        }
-    }
-    
-    @State private var showEmptyState = false
-    @State private var isScrollInitialized = false
-    private var paddingVertical: CGFloat { ConstantesPorDefecto().verticalPadding * ap.constantes.scaleFactor }
-    
-    var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                VStack(alignment: .center, spacing: 0) {
-                    
-                    HStack(spacing: 0) {
-                        
-                        Image("book4")
-                            .resizable()
-                            .frame(width: 160 * constanteResizable, height: 160 * constanteResizable)
-                            .aspectRatio(contentMode: .fit)
-                            .scaleEffect(showEmptyState ? 1 : 0.9)
-                            .opacity(showEmptyState ? 1 : 0)
-                            .offset(y: showEmptyState ? 0 : 20)
-                            .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
-                        
-                        Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
-                            .font(.system(size: ap.constantes.titleSize))
-                            .multilineTextAlignment(.center)
-                        
-                    }
-                    .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
-                    // 🎨 ANIMACIÓN MODERNA DE SCROLL
-                    .opacity(haHechoScroll ? 0.0 : 1.0)
-                    .scaleEffect(haHechoScroll ? 0.95 : 1.0)
-                    .offset(y: haHechoScroll ? -10 : 0)
-                    .blur(radius: haHechoScroll ? 2 : 0)
-                    .animation(.easeInOut(duration: 0.4), value: haHechoScroll)
-                    .id("top")
-                    .background(
-                        GeometryReader { geo in
-                            Color.clear
-                                .onAppear {
-                                    // Delay mínimo para asegurar que la vista esté completamente cargada
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                        scrollInicial = geo.frame(in: .global).minY
-                                        haHechoScroll = false
-                                        isScrollInitialized = true
-                                        print("🔵 Scroll inicial establecido: \(scrollInicial ?? 0)")
-                                    }
-                                }
-                                .onChange(of: geo.frame(in: .global).minY) { oldValue, newValue in
-                                    handleScrollChange(newY: newValue)
-                                }
-                        }
-                    )
-                    .onAppear {
-                        showEmptyState = true
-                    }
-                    .onDisappear {
-                        showEmptyState = false
-                        isScrollInitialized = false
-                    }
-                    
-                    ForEach(sections, id: \.self) { section in
-                        VStack {
-                            
-                            GeometryReader { geo in
-                                Color.clear
-                                    .preference(key: ViewOffsetKey.self, value: geo.frame(in: .global).minY)
-                            }
-                            .frame(height: 0)
-                            
-                            Group {
-                                switch section {
-                                    case "TemaPrincipal":
-                                        AjustesTema(isSection: selectedSection == section)
-                                    
-                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal)
-                                    
-                                    case "SistemaArchivos":
-                                            AjustesSistemaColecciones(isSection: selectedSection == section)
-                                        
-                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal)
-                                        
-                                    case "Rendimiento":
-                                        Rendimiento(isSection: selectedSection == section)
-                                        
-                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal)
-                                        
-                                    case "AjustesMenu":
-                                        AjustesMenu(isSection: selectedSection == section)
-                                    
-                                    case "AjustesHistorial":
-                                        AjustesHistorial()
-                                    
-                                    default:
-                                        EmptyView()
-                                }
-                            }
-                            .id(section)
-                        }
-                        .background(GeometryReader { geo in
-                            Color.clear
-                                .onChange(of: geo.frame(in: .global).minY) { oldValue, newValue in
-                                    sectionOffsets[section] = newValue
-                                    if !isUserInteracting {
-                                        updateActiveSection()
-                                    }
-                                    
-                                    if !isUserInteracting, newValue > 100 {
-                                        selectedSection = sections.first
-                                    }
-                                }
-                        })
-                    }
-                }
-            }
-            .scrollTargetLayout()
-            .scrollIndicators(.hidden)
-            .frame(maxHeight: .infinity)
-            .onAppear {
-                self.scrollProxy = proxy
-                if selectedSection == nil {
-                    selectedSection = sections.first
-                }
-            }
-        }
-    }
-    
-    // Función privada para manejar los cambios de scroll de forma más eficiente
-    private func handleScrollChange(newY: CGFloat) {
-        // Solo procesar si la inicialización está completa
-        guard isScrollInitialized, let inicial = scrollInicial else {
-            print("⚠️ Scroll no inicializado aún")
-            return
-        }
-        
-        let diferencia = inicial - newY // Cambiamos el abs() para detectar la dirección
-        let tolerancia: CGFloat = 20
-        
-        // Si el valor actual es mayor que el inicial + tolerancia, hay scroll hacia abajo
-        let hayScrollHaciaAbajo = diferencia > tolerancia
-        
-        // Solo actualizamos si hay un cambio real de estado
-        if hayScrollHaciaAbajo != haHechoScroll {
-            haHechoScroll = hayScrollHaciaAbajo
-            
-            print(hayScrollHaciaAbajo ? "🔴 SCROLL HACIA ABAJO - OCULTAR CONTENIDO" : "🟢 ARRIBA DEL TODO - MOSTRAR CONTENIDO")
-            print("   Inicial: \(inicial), Actual: \(newY), Diferencia: \(diferencia)")
-        }
-    }
-    
-    func updateActiveSection() {
-        guard !isUserInteracting else { return }
-
-        let screenCenter = UIScreen.main.bounds.height / 2
-
-        let closest = sectionOffsets.min(by: {
-            abs($0.value - screenCenter) < abs($1.value - screenCenter)
-        })
-
-        if let closestSection = closest?.key, selectedSection != closestSection {
-            selectedSection = closestSection
-        }
-    }
-}
-
-struct IndicesHorizontal: View {
-    
-    @EnvironmentObject var menuEstado: MenuEstado
-    
-    var sections: [String]
-    
-    @Binding var selectedSection: String?
-    @Binding var scrollProxy: ScrollViewProxy?
-    
-    var body: some View {
-        
-        ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(sections, id: \.self) { section in
-                        Button(action: {
-                            selectedSection = section
-                            withAnimation(.interpolatingSpring(stiffness: 70, damping: 12)) {
-                                if section == sections.first {
-                                    scrollProxy?.scrollTo("top", anchor: .top)
-                                } else {
-                                    scrollProxy?.scrollTo(section, anchor: .top)
-                                }
-                            }
-                        }) {
-                            Text(menuEstado.sectionTitle(section))
-                                .font(.system(size: 14))
-                                .foregroundColor(selectedSection == section ? .blue : .gray)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal, 12)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(selectedSection == section ? Color.blue.opacity(0.2) : Color.clear)
-                                )
-                        }
-                    }
-                }
-                .padding(.horizontal)
-            }
-    }
-    
-}
-
-struct IndicesVertical: View {
-    
-    @EnvironmentObject var menuEstado: MenuEstado
-    
-    @Binding var isPressed: Bool
-    @Binding var selectedSection: String?
-    @Binding var isUserInteracting: Bool
-    @Binding var scrollProxy: ScrollViewProxy?
-    
-    var sections: [String]
-    
-    
-    var body: some View {
-        VStack {
-            Spacer()
-            
-            GeometryReader { geo in
-                let totalHeight = geo.size.height
-                let distPoints = totalHeight / CGFloat(sections.count) - 20
-                let totalHeightForLine = (distPoints + 17.5) * CGFloat(sections.count - 1)
-                
-                ZStack(alignment: .trailing) {
-                    VStack(alignment: .center, spacing: 0) {
-                        ForEach(Array(zip(sections.indices, sections)), id: \.1) { index, section in
-                            Button(action: {
-                                isPressed = true
-                                withAnimation(.interpolatingSpring(stiffness: 70, damping: 12)) {
-                                    selectedSection = sections[index]
-                                    isUserInteracting = true
-                                    if section == sections.first {
-                                        print("Primera seccion scroll hasyta arriba")
-                                        scrollProxy?.scrollTo("top", anchor: .top)
-                                    } else {
-                                        print("Aqui")
-                                        scrollProxy?.scrollTo(section, anchor: .top)
-                                    }
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Ajusta el tiempo según la duración de la animación
-                                    isUserInteracting = false
-                                }
-                            }) {//
-                                Punto(index: index, section: section, selectedSection: $selectedSection, isPressed: $isPressed, distPoints: distPoints)
-                            } //FIN BOTON DE DENTRO
-                            .buttonStyle(PlainButtonStyle())
-                        } //FIN FOREACH
-                    }
-                    .zIndex(1)
-                    
-                    Rectangle()
-                       .fill(Color.gray.opacity(0.5))
-                       .frame(width: 1, height: totalHeightForLine, alignment: .trailing)
-                       .zIndex(0)
-                    
-                } //FIN ZSTACK
-                .frame(maxHeight: .infinity)
-                
-                
-            } //gin geometry geo
-            .frame(maxHeight: .infinity)
-        } //fin vstack
-        .frame(maxHeight: .infinity)
-        .frame(maxWidth: 68)
-    }
-    
-}
-
 
 
 struct DividerPersonalizado: View {
@@ -400,19 +82,6 @@ struct DividerPersonalizado: View {
             .frame(height: 1.1)
             .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
             .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
-    }
-}
-
-
-struct AjustesGlobalesWrapper: View {
-    @EnvironmentObject var appEstado: AppEstado
-    @EnvironmentObject var menuEstado: MenuEstado
-
-    var body: some View {
-        AjustesGlobales()
-            // 🚫 QUITA ESTA LÍNEA: .id(appEstado.temaActual.rawValue)
-            .environmentObject(appEstado)
-            .environmentObject(menuEstado)
     }
 }
 

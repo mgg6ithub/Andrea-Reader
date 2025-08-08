@@ -3,28 +3,23 @@ import SwiftUI
 
 struct AjustesTema: View {
     
+    // --- ENTORNO ---
     @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
-    //VARIABLES PARA EL TEMA
-    @State private var isThemeExpanded: Bool = false
-    
+    // --- PARAMETROS ---
     var isSection: Bool
     
-    //FIJAS
+    // --- VARIABLES ESTADO ---
+    @State private var isThemeExpanded: Bool = false
     
     // --- VARIABLES CALCULADAS ---
     var const: Constantes { ap.constantes }
     private let cpd = ConstantesPorDefecto()
-    private var subTitle: CGFloat { const.subTitleSize }
     
     private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * const.scaleFactor}
     private var paddingVertical: CGFloat {cpd.verticalPadding * const.scaleFactor} // 20
-    
     private var paddingCorto: CGFloat { cpd.paddingCorto }
-    
-    //VARIABLES
-    private var iconSize: CGFloat  { const.iconSize }
     
     var body: some View {
         
@@ -110,12 +105,12 @@ struct AjustesTema: View {
                 }) {
                     HStack(spacing: paddingCorto) {
                         Text("Más temas")
-                            .font(.system(size: subTitle))
+                            .font(.system(size: const.subTitleSize))
                             .foregroundColor(ap.temaActual.colorContrario)
                             .bold()
                         
                         Image(systemName: "chevron.forward")
-                            .font(.system(size: iconSize * 0.65))
+                            .font(.system(size: const.iconSize * 0.65))
                             .foregroundColor(ap.temaActual.colorContrario)
                             .bold()
                             .rotationEffect(.degrees(isThemeExpanded ? 90 : 0))

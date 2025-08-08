@@ -9,11 +9,16 @@ import SwiftUI
 
 struct ConstantesPorDefecto {
     
-    /**
-            VALORES POR DEFECTO DE LAS VARIABLES MAS USADAS
-     */
-    
     //MARK: - PADDING GENERAL
+    var padding5: CGFloat = 5
+    var padding10: CGFloat = 10
+    var padding15: CGFloat = 15
+    var padding20: CGFloat = 20
+    var padding25: CGFloat = 25
+    var padding30: CGFloat = 30
+    var padding35: CGFloat = 35
+    var padding40: CGFloat = 40
+    
     var horizontalPadding: CGFloat = 15
     var verticalPadding: CGFloat = 20
     
@@ -36,14 +41,7 @@ struct ConstantesPorDefecto {
     var subTitleSize: CGFloat = 16
     var smallTitleSize: CGFloat = 10
     
-    /**
-            PERSISTENCIA
-     */
-    
-    //MARK: - Nombres clave para los archivos de la persistencia
-    //MARK: - USERDEFAULTS
-    
-    //almacena las url de las colecciones de la pila en el mismo orden.
+    //MARK: - --- PERSISTENCIA ---
     var pilaColeccionesClave: String = "pilaGuardada"
     
     //MARK: - COLORES
@@ -59,14 +57,16 @@ struct ConstantesPorDefecto {
         .mint,
         .indigo
     ]
+    //MARK: - --- PERSISTENCIA ---
     
-    //MARK: - IMAGENES
+    //MARK: - --- IMAGENES ---
     public let dComicSize: CGSize = CGSize(width: 190, height: 260)
         
     public let dNotFoundUIImage: UIImage = UIImage(systemName: "exclamationmark.triangle.fill")! //Fallo al cargar la UIImage
     public let dNotFoundImage: Image = Image(systemName: "exclamationmark.triangle.fill") //Fallo al cargar la Image
     public let dFolderIcon: Image = Image("folder-icon") //ICONO CARPETA
     
+    //MARK: - --- IMAGENES ---
 }
 
 
@@ -77,11 +77,21 @@ struct ClavesPersistenciaAjustesGenerales {
     
 }
 
-
+//MARK: - --- TODAS LAS COSNTANTES MULTIPLICADAS POR LA ESCALA ---
 struct Constantes {
     
     var scaleFactor: CGFloat
     var resLog: EnumResolucionesLogicas
+    
+    //MARK: - PADDINGS
+    var padding5: CGFloat    
+    var padding10: CGFloat
+    var padding15: CGFloat
+    var padding20: CGFloat
+    var padding25: CGFloat
+    var padding30: CGFloat
+    var padding35: CGFloat
+    var padding40: CGFloat
     
     //MARK: - RECTANGULO FONDO
     var altoRectanguloFondo: CGFloat
@@ -110,19 +120,31 @@ struct Constantes {
         
         let cpd = ConstantesPorDefecto()
         
+        //PADDINGS
+        self.padding5 = cpd.padding5 * scaleFactor
+        self.padding10 = cpd.padding10 * scaleFactor
+        self.padding15 = cpd.padding15 * scaleFactor
+        self.padding20 = cpd.padding20 * scaleFactor
+        self.padding25 = cpd.padding25 * scaleFactor
+        self.padding30 = cpd.padding30 * scaleFactor
+        self.padding35 = cpd.padding35 * scaleFactor
+        self.padding40 = cpd.padding40 * scaleFactor
+        
+        //RECTANGULO
         self.altoRectanguloFondo = cpd.altoRectanguloFondo * scaleFactor
         self.anchoRectangulo = cpd.altoRectanguloPeke * scaleFactor
         self.altoRectanguloPeke = altoRectanguloFondo * 0.9
         
+        //ICONOS
         if resLog == .small {
             self.iconSize = cpd.iconSize * scaleFactor + 5
         } else {
             self.iconSize = cpd.iconSize * scaleFactor + 2.5
         }
-        
         self.iconWeight = cpd.iconWeight
         self.iconColor = cpd.iconColor
         
+        //TEXTO
         self.titleSize = cpd.titleSize * scaleFactor
         self.subTitleSize = cpd.subTitleSize * scaleFactor
         self.smallTitleSize = cpd.smallTitleSize * scaleFactor

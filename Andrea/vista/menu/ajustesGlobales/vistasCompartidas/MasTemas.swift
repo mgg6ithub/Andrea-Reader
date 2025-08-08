@@ -20,6 +20,9 @@ struct MasTemas<T: Equatable>: View {
     var opcionSeleccionada: T
     @Binding var opcionActual: T
     
+    // --- VARIABLES ESTADO ---
+    @State private var isBouncing = false         // Estado para controlar el rebote
+    
     // --- VARIABLES CALCULADAS ---
     var const: Constantes { ap.constantes }
     var isSelected: Bool { return opcionActual == opcionSeleccionada }
@@ -33,6 +36,7 @@ struct MasTemas<T: Equatable>: View {
                 .foregroundColor(.secondary)
             
             Button(action: {
+                isBouncing.toggle()
                 ap.temaActual = tema
             }) {
                 ZStack {
@@ -57,7 +61,7 @@ struct MasTemas<T: Equatable>: View {
                         )
                     
                     Image(systemName: "rectangle.fill")
-                        .font(.system(size: ap.constantes.anchoRectangulo * 0.35))
+                        .font(.system(size: const.iconSize + 15))
                         .foregroundStyle(
                             LinearGradient(
                                 gradient: Gradient(colors: [color1.opacity(0.4), color2.opacity(0.9)]),
@@ -66,6 +70,7 @@ struct MasTemas<T: Equatable>: View {
                             )
                         )
                         .shadow(color: .black.opacity(0.2), radius: ap.shadows ? 5 : 0 , x: 0, y: ap.shadows ? 5 : 0)
+                        .symbolEffect(.bounce, value: isBouncing)
                 }
             }
         }

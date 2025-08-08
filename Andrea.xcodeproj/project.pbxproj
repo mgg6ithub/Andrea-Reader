@@ -69,6 +69,8 @@
 		D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB812DE9C0530097A010 /* MenuEstado.swift */; };
 		D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB882DE9C2E30097A010 /* AppEstado.swift */; };
 		D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AECEBA2DEE33620032917F /* PilaColecciones.swift */; };
+		D4B23FA02E45F4F200425DB8 /* ContenidoAjustesGloables.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */; };
+		D4B23FA22E45F54F00425DB8 /* IndicesAjustes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */; };
 		D4B3C3BB2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */; };
 		D4B3C3BD2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */; };
 		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
@@ -161,6 +163,8 @@
 		D4ADDB812DE9C0530097A010 /* MenuEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEstado.swift; sourceTree = "<group>"; };
 		D4ADDB882DE9C2E30097A010 /* AppEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado.swift; sourceTree = "<group>"; };
 		D4AECEBA2DEE33620032917F /* PilaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilaColecciones.swift; sourceTree = "<group>"; };
+		D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContenidoAjustesGloables.swift; sourceTree = "<group>"; };
+		D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicesAjustes.swift; sourceTree = "<group>"; };
 		D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSeleccionMultipleArriba.swift; sourceTree = "<group>"; };
 		D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSeleccionMultipleAbajo.swift; sourceTree = "<group>"; };
 		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
@@ -564,6 +568,8 @@
 			isa = PBXGroup;
 			children = (
 				D4DEBBEB2DE9CCD500F06C30 /* AjustesGlobales.swift */,
+				D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */,
+				D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */,
 				D46E94332DEA284A00ABD9EE /* vistasCompartidas */,
 				D4DEBBED2DE9CD6000F06C30 /* ajustesSeccion */,
 			);
@@ -691,6 +697,7 @@
 				D4ADDB7A2DE9B9E60097A010 /* MenuIzquierda.swift in Sources */,
 				D45E70062DE7A7C4001F816A /* AndreaAppView.swift in Sources */,
 				D4ADDB7C2DE9B9F10097A010 /* MenuCentro.swift in Sources */,
+				D4B23FA02E45F4F200425DB8 /* ContenidoAjustesGloables.swift in Sources */,
 				D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */,
 				D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */,
 				D48C58802E3BA855006D9C07 /* CabeceraMasInformacion.swift in Sources */,
@@ -730,6 +737,7 @@
 				D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */,
 				D49961972E4514C00089488D /* NotificacionesEstado.swift in Sources */,
 				D4A6C7272DEA216400E7451F /* RectangleFormView.swift in Sources */,
+				D4B23FA22E45F54F00425DB8 /* IndicesAjustes.swift in Sources */,
 				D47139C72E0AE76500B5FA35 /* CuadriculaArchivo.swift in Sources */,
 				D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */,
 				D4BF0B212DEF494000152333 /* FabricaColeccion.swift in Sources */,
