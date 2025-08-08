@@ -26,7 +26,7 @@ struct Rendimiento: View {
     private let cpd = ConstantesPorDefecto()
     private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * appEstado.constantes.scaleFactor}
     private var paddingVertical: CGFloat {cpd.verticalPadding * appEstado.constantes.scaleFactor} // 20
-    private var altoRectanguloFondo: CGFloat {menuEstado.altoRectanguloFondo * appEstado.constantes.scaleFactor}
+    private var altoRectanguloFondo: CGFloat { appEstado.constantes.altoRectanguloFondo }
     
     private var paddingCorto: CGFloat { cpd.paddingCorto }
     

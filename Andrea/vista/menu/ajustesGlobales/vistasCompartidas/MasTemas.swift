@@ -7,19 +7,22 @@
 
 import SwiftUI
 
-struct MasTemas: View {
+struct MasTemas<T: Equatable>: View {
     
-    @EnvironmentObject var appEstado: AppEstado
+    // --- ENTORNO ---
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
-    private var escala: CGFloat { appEstado.constantes.scaleFactor }
-    
-    //NOMBRE TEMA
+    // --- PARAMETROS ---
     let tema: EnumTemas
-    
-    //COLORES
     let color1: Color
     let color2: Color
+    var opcionSeleccionada: T
+    @Binding var opcionActual: T
+    
+    // --- VARIABLES CALCULADAS ---
+    var const: Constantes { ap.constantes }
+    var isSelected: Bool { return opcionActual == opcionSeleccionada }
     
     var body: some View {
         
@@ -30,7 +33,7 @@ struct MasTemas: View {
                 .foregroundColor(.secondary)
             
             Button(action: {
-                appEstado.temaActual = tema
+                ap.temaActual = tema
             }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
@@ -41,20 +44,20 @@ struct MasTemas: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: (menuEstado.anchoRectanguloSmall * escala) * 0.8, height: (menuEstado.altoRectanguloSmall * escala) * 0.8)
-                        .shadow(color: appEstado.temaActual == .dark ? .black.opacity(0.6) : .black.opacity(0.225), radius: appEstado.shadows ? 5 : 0, x: 0, y: appEstado.shadows ? 2 : 0)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 15)
-//                                .stroke(
-//                                    appEstado.temaActual == appEstado.temaActual
-//                                    ? (appEstado.temaActual == .dark ? Color.white : Color.black)
-//                                        : Color.clear,
-//                                    lineWidth: 1.5
-//                                )
-//                        )
+                        .frame(width: const.cAnchoRect * 0.75, height: const.cAlturaRect * 0.75)
+                        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.6) : .black.opacity(0.225), radius: ap.shadows ? 5 : 0, x: 0, y: ap.shadows ? 2 : 0)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(
+                                    isSelected
+                                        ? (ap.temaActual == .dark ? Color.white : Color.black)
+                                        : Color.clear,
+                                    lineWidth: 1.5
+                                )
+                        )
                     
                     Image(systemName: "rectangle.fill")
-                        .font(.system(size: menuEstado.anchoRectanguloSmall * 0.35))
+                        .font(.system(size: ap.constantes.anchoRectangulo * 0.35))
                         .foregroundStyle(
                             LinearGradient(
                                 gradient: Gradient(colors: [color1.opacity(0.4), color2.opacity(0.9)]),
@@ -62,12 +65,9 @@ struct MasTemas: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .shadow(color: .black.opacity(0.2), radius: appEstado.shadows ? 5 : 0 , x: 0, y: appEstado.shadows ? 5 : 0)
+                        .shadow(color: .black.opacity(0.2), radius: ap.shadows ? 5 : 0 , x: 0, y: ap.shadows ? 5 : 0)
                 }
             }
-//                                    .if(!appEstado.animaciones) { view in
-//                                        view.buttonStyle(PlainButtonStyle())
-//                                    }
         }
         .padding(.bottom, 10)
     }

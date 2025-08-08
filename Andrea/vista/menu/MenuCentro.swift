@@ -269,7 +269,7 @@ struct MenuCentro: View {
             }
             
             Button(action: {
-                self.menuEstado.isGlobalSettingsPressed.toggle()
+                self.menuEstado.ajustesGlobalesPresionado.toggle()
             }) {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: appEstado.constantes.iconSize * 1.125))
@@ -277,7 +277,7 @@ struct MenuCentro: View {
                     .foregroundStyle(appEstado.constantes.iconColor.gradient)
                     .fontWeight(appEstado.constantes.iconWeight)
             }
-            .sheet(isPresented: $menuEstado.isGlobalSettingsPressed) {
+            .sheet(isPresented: $menuEstado.ajustesGlobalesPresionado) {
                 AjustesGlobales()
             }
         }

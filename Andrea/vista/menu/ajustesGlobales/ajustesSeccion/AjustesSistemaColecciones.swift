@@ -5,16 +5,15 @@ import SwiftUI
 
 struct AjustesSistemaColecciones: View {
     
-    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     var isSection: Bool
     
     private let cpd = ConstantesPorDefecto()
     
-    private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * appEstado.constantes.scaleFactor}
-    private var paddingVertical: CGFloat {cpd.verticalPadding * appEstado.constantes.scaleFactor} // 20
-    private var altoRectanguloFondo: CGFloat {menuEstado.altoRectanguloFondo * appEstado.constantes.scaleFactor}
+    private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * ap.constantes.scaleFactor}
+    private var paddingVertical: CGFloat {cpd.verticalPadding * ap.constantes.scaleFactor} // 20
     private var paddingCorto: CGFloat { cpd.paddingCorto }
     
     var body: some View {
@@ -22,14 +21,14 @@ struct AjustesSistemaColecciones: View {
         VStack(alignment: .center, spacing: 0) {
             
             Text("Sistema de archivos") //TITULO
-                .foregroundColor(appEstado.temaActual.colorContrario)
+                .foregroundColor(ap.temaActual.colorContrario)
                 .font(.headline)
                 .padding(.vertical, paddingVertical + 5) // 25
                 .padding(.trailing, paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
                 .font(.subheadline)
-                .foregroundColor(appEstado.temaActual.secondaryText)
+                .foregroundColor(ap.temaActual.secondaryText)
                 .frame(width: .infinity, alignment: .leading)
                 .padding(.bottom, paddingVertical) // 20
             
@@ -39,7 +38,7 @@ struct AjustesSistemaColecciones: View {
                 
                 Text("Selecciona un tipo de sa.")
                     .font(.caption2)
-                    .foregroundColor(appEstado.temaActual.secondaryText)
+                    .foregroundColor(ap.temaActual.secondaryText)
                     .frame(alignment: .leading)
                 
                 Spacer()
@@ -51,9 +50,9 @@ struct AjustesSistemaColecciones: View {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(Color.gray.opacity(0.2))
                     .frame(
-                        height: altoRectanguloFondo
+                        height: ap.constantes.altoRectanguloFondo
                     )
-                    .shadow(color: appEstado.temaActual == .dark ? .black.opacity(0.6) : .black.opacity(0.225), radius: appEstado.shadows ? 10 : 0, x: 0, y: appEstado.shadows ? 5 : 0)
+                    .shadow(color: ap.temaActual == .dark ? .black.opacity(0.6) : .black.opacity(0.225), radius: ap.shadows ? 10 : 0, x: 0, y: ap.shadows ? 5 : 0)
                 
                 HStack(spacing: 0) {
                     
@@ -62,7 +61,7 @@ struct AjustesSistemaColecciones: View {
                         icono: "folder.fill",
                         coloresIcono: [Color.black],
                         opcionSeleccionada: .tradicional,
-                        opcionActual: $appEstado.sistemaArchivos
+                        opcionActual: $ap.sistemaArchivos
                     )
                     
                     RectangleFormView<EnumTipoSistemaArchivos>(
@@ -70,7 +69,7 @@ struct AjustesSistemaColecciones: View {
                         icono: "tree.fill",
                         coloresIcono: [Color.black],
                         opcionSeleccionada: .arbol,
-                        opcionActual: $appEstado.sistemaArchivos
+                        opcionActual: $ap.sistemaArchivos
                     )
                     
                 }
@@ -78,7 +77,7 @@ struct AjustesSistemaColecciones: View {
             .padding(.bottom, paddingVertical)
             
         }
-        .padding(.horizontal, appEstado.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
+        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
     }
     
 }

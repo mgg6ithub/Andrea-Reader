@@ -6,34 +6,32 @@ class AppEstado: ObservableObject {
     private let cpag = ClavesPersistenciaAjustesGenerales()
     private let uds = UserDefaults.standard
     
-    //MARK: --- marcas de cargado dinamico ---
+    // --- VARIABLES AL INICIAR LA APLICACION ---
+    @Published var screenWidth: CGFloat
+    @Published var screenHeigth: CGFloat
+    
+    @Published var constantes: Constantes
+    
+    // --- VARIABLES PARA MANEJAR LA CARGA DINAMICA AL INICIAR LA APLICACION ---
     @Published var menuCargado = false
     @Published var historialCargado = false
     
     @Published var isFirstTimeLaunch: Bool = false
     @Published var resolucionLogica: EnumResolucionesLogicas
     
-    //Persistencia
+    // --- AJUSTES TEMAS ---
     @Published var temaActual: EnumTemas { didSet { uds.setEnum(temaActual, forKey: cpag.temaActual ) } }
     @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { uds.setEnum(sistemaArchivos, forKey: cpag.sistemaArchivos) } }
     
+    // --- RENDIMIENTO
     @Published var shadows: Bool = true
-    @Published var test: Bool = false
     @Published var animaciones: Bool = true
     
-    @Published var screenWidth: CGFloat
-    @Published var screenHeigth: CGFloat
-    
-    @Published var constantes: Constantes
-    
-    @Published var isScrolling: Bool = false
-    
-    //MARK: --- mas informacion ---
+    // --- MAS INFORMACION DE UN ELEMENTO ---
     @Published var masInformacion: Bool = false
     @Published var elementoSeleccionado: (any ElementoSistemaArchivosProtocolo)? = nil
     @Published var pantallaCompleta: Bool = false
-    
-    //MARK: --- vista previa seleccionada ---
+
     @Published var vistaPrevia: Bool = false
     
     init(screenWidth: CGFloat? = nil, screenHeight: CGFloat? = nil) {
@@ -43,7 +41,6 @@ class AppEstado: ObservableObject {
         let actualScreenHeight = screenHeight ?? UIScreen.main.bounds.height
                 
         var scaleFactor = max(0.49, min(actualScreenWidth / 820, actualScreenHeight / 1180))
-//        var scaleFactor = min(actualScreenWidth / 820, actualScreenHeight / 1180)
         var resLog: EnumResolucionesLogicas = .small
         
         switch scaleFactor {
@@ -53,9 +50,8 @@ class AppEstado: ObservableObject {
             case 0.5...1.0:
                 resLog = .medium
                 break // No hacer nada
-            case let x where x > 1.0: // Valores mayores a 1.0
+            case let x where x > 1.0:
                 resLog = .big
-//            scaleFactor *= 1.1
             default:
                 resLog = .medium
                 break

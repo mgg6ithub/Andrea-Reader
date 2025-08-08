@@ -13,8 +13,7 @@ class MenuEstado: ObservableObject {
     @Published var menuIzquierdaFlechaLateral: Bool = true
     @Published var menuIzquierdaSideMenuIcono: Bool = true
 
-    
-    //MARK: - AJUSTES GLOBALES
+    // --- SELECCION MULTIPLE ---
     
     @Published var seleccionMultiplePresionada: Bool = false {
         didSet {
@@ -27,18 +26,15 @@ class MenuEstado: ObservableObject {
     @Published var elementosSeleccionados: Set<URL> = []
     @Published var todosSeleccionados: Bool = false
     
-    @Published var isGlobalSettingsPressed: Bool = false //Para desplegar y cerrar el menu global de ajustes
+    
+    // --- AJUSTES GLOBALES DE LA APLICACION ---
+    
+    @Published var ajustesGlobalesPresionado: Bool = false //Para desplegar y cerrar el menu global de ajustes
     
     //Variables resizable del menu de indices con puntos lateral
     @Published var anchoIndicePuntos: CGFloat = 77.5
-    @Published var separacionBarra: CGFloat = 69
-    @Published var alturaBarra: CGFloat = 72.5
     @Published var anchoTexto: CGFloat = 72.5
-    
-    //Variables secciones de cada ajustes
-    @Published var altoRectanguloFondo: CGFloat = 230 //Alto del rectangulo de fondo para los ajustes general
-    @Published var anchoRectanguloSmall: CGFloat = 100 //Ancho del rectangulo peke que contiene una opcion (por ejemplo el de un tema)
-    @Published var altoRectanguloSmall: CGFloat = 140 //Ancho del rectangulo peke que contiene una opcion (por ejemñplo el de un tema)
+
     
     @Published var modoVistaColeccion: EnumModoVista = .cuadricula
     

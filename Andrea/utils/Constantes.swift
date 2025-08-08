@@ -19,6 +19,13 @@ struct ConstantesPorDefecto {
     
     var paddingCorto: CGFloat = 14.5
     
+    // --- RECNTAGULO ZSTACK FONDO ---
+    
+    var altoRectanguloFondo: CGFloat = 230 //Alto del rectangulo de fondo para los ajustes general
+    var altoRectanguloPeke: CGFloat = 140 //Ancho del rectangulo peke que contiene una opcion (por ejemñplo el de un tema)
+    var anchoRectangulo: CGFloat = 100 //Ancho del rectangulo peke que contiene una opcion (por ejemplo el de un tema)
+    
+    
     //MARK: - ICONO
     var iconSize: CGFloat = 25
     var iconWeight: Font.Weight = .thin
@@ -76,6 +83,14 @@ struct Constantes {
     var scaleFactor: CGFloat
     var resLog: EnumResolucionesLogicas
     
+    //MARK: - RECTANGULO FONDO
+    var altoRectanguloFondo: CGFloat
+    var anchoRectangulo: CGFloat
+    var altoRectanguloPeke: CGFloat
+    
+    var cAnchoRect: CGFloat { resLog == .big ? anchoRectangulo : anchoRectangulo * 0.8 }
+    var cAlturaRect: CGFloat { resLog == .big ? altoRectanguloPeke : altoRectanguloPeke * 0.8 }
+    
     //MARK: - ICONOS
     
     var iconSize: CGFloat
@@ -94,6 +109,10 @@ struct Constantes {
         self.resLog = resLog
         
         let cpd = ConstantesPorDefecto()
+        
+        self.altoRectanguloFondo = cpd.altoRectanguloFondo * scaleFactor
+        self.anchoRectangulo = cpd.altoRectanguloPeke * scaleFactor
+        self.altoRectanguloPeke = altoRectanguloFondo * 0.9
         
         if resLog == .small {
             self.iconSize = cpd.iconSize * scaleFactor + 5

@@ -1,25 +1,6 @@
 
 import SwiftUI
 
-//struct AndreaAppView_Preview: PreviewProvider {
-//    static var previews: some View {
-//        // Instancias de ejemplo para los objetos de entorno
-////        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
-////        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
-//        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad mini 6 gen
-////        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
-////        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
-////        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
-//        let me = MenuEstado() // Reemplaza con inicialización adecuada
-//        let pc = PilaColecciones.preview
-//
-//        return AndreaAppView()
-//            .environmentObject(ap)
-//            .environmentObject(me)
-//            .environmentObject(pc)
-//    }
-//}
-
 struct AjustesGlobales: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -67,48 +48,6 @@ struct AjustesGlobales: View {
     var body: some View {
             
             VStack(alignment: .center, spacing: 0) {
-//                    ZStack(alignment: .leading) {
-//                        // Imagen alineada a la izquierda
-//                        Image("book4")
-//                            .resizable()
-//                            .frame(width: 160 * constanteResizable, height: 160 * constanteResizable)
-//                            .aspectRatio(contentMode: .fit)
-//                            .scaleEffect(showEmptyState ? 1 : 0.9)
-//                            .opacity(showEmptyState ? 1 : 0)
-//                            .offset(y: showEmptyState ? 0 : 20)
-//                            .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
-//                            .padding(.leading, 0)
-//                        
-//                        // Texto centrado en pantalla, por encima de la imagen
-//                        HStack {
-//                            Spacer()
-//                            
-//                            VStack(alignment: .center, spacing: 10) {
-//                                // Título centrado
-//                                Text("Ajustes generales")
-//                                    .font(.system(size: appEstado.constantes.titleSize * 1.7, weight: .bold))
-//                                    .bold()
-//                                    .multilineTextAlignment(.center)
-//                                    .padding(.horizontal, paddingHorizontal)
-//                                    .offset(x: 30)
-//                                
-//                                Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
-//                                    .font(.system(size: appEstado.constantes.subTitleSize))
-//                                    .bold()
-//                                    .multilineTextAlignment(.center)
-//                                    .frame(width: 380 * appEstado.constantes.scaleFactor)
-//                                    .padding(.horizontal, paddingHorizontal)
-//                                    .padding(.bottom, 10)
-//                                    .offset(x: 30)
-//                            }
-//                            
-//                            Spacer()
-//                        }
-//                    }
-//                    .padding(.top, paddingVertical)
-//                    .frame(maxWidth: .infinity, minHeight: 140) // Altura mínima para que imagen y texto se alineen bien
-//                    .onAppear { showEmptyState = true }
-//                    .onDisappear { showEmptyState = false }
                 
                 Text("Ajustes generales")
                     .font(.system(size: ap.constantes.titleSize * 1.7, weight: .bold))
