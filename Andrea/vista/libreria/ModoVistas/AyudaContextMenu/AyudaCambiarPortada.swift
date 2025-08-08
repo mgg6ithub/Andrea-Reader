@@ -10,6 +10,7 @@ struct CambiarMiniaturaMenu: View {
     let elemento: any ElementoSistemaArchivosProtocolo
     let cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)?
     let cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)?
+    let cambiarDireccionAbanico: ((EnumDireccionAbanico) -> Void)?
     
     var body: some View {
         
@@ -45,7 +46,7 @@ struct CambiarMiniaturaMenu: View {
                     Label("Carpeta", systemImage: "folder")
                 }
                 Button {
-                    cambiarMiniaturaColeccion?(.tray)
+                    cambiarMiniaturaColeccion?(.abanico)
                 } label: {
                     Label("Bandeja", systemImage: "tray")
                 }
@@ -59,16 +60,17 @@ struct CambiarMiniaturaMenu: View {
                     }
                     
                     Button {
-                        
+                        cambiarDireccionAbanico?(.izquierda)
                     } label: {
-                        Label("Hacia la izquierda", systemImage: "photo.artframe")
+                        Label("Hacia la izquierda", systemImage: "arrow.left")
                     }
-                    
+
                     Button {
-                        
+                        cambiarDireccionAbanico?(.derecha)
                     } label: {
-                        Label("Hacia la derecha", systemImage: "photo.artframe")
+                        Label("Hacia la derecha", systemImage: "arrow.right")
                     }
+
                     
                 } label: {
                     Label("Miniaturas", systemImage: "photo.on.rectangle.angled.fill")

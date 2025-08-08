@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CuadriculaColeccion: View {
     
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var me: MenuEstado
     
     @ObservedObject var coleccion: Coleccion
@@ -9,15 +10,17 @@ struct CuadriculaColeccion: View {
     var height: CGFloat
     
     private let constantes = ConstantesPorDefecto()
+    private var escala: CGFloat { ap.constantes.scaleFactor }
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Button(action: {
                 coleccion.meterColeccion()
             }) {
+                
                 VStack(spacing: 0) {
+                    Spacer()
                     ZStack {
-                        
                         if me.seleccionMultiplePresionada {
                             VStack(alignment: .center, spacing: 0) {
                                 let seleccionado = me.elementosSeleccionados.contains(coleccion.url)
@@ -35,52 +38,62 @@ struct CuadriculaColeccion: View {
                         if coleccion.tipoMiniatura == .carpeta {
                             Image("CARPETA-ATRAS")
                                 .resizable()
-                                .frame(width: 150, height: 145)
+                                .frame(width: 190, height: 210)
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(coleccion.color, coleccion.color.darken(by: 0.2))
                                 .zIndex(1)
-                        } else if coleccion.tipoMiniatura == .tray {
-                            // Miniaturas apiladas en vertical, parcialmente visibles
+                        } else if coleccion.tipoMiniatura == .abanico {
+                            let direccionAbanico: EnumDireccionAbanico = coleccion.direccionAbanico
+
+                            // Configuración base
+                            let baseXStep: CGFloat = 8
+                            let yStep: CGFloat = 6
+                            let baseAngleStep: Double = 4
+                            let scaleStep: CGFloat = 0.02
+
+                            // Ajuste según dirección
+                            let xStep = direccionAbanico == .izquierda ? -baseXStep : baseXStep
+                            let angleStep = direccionAbanico == .izquierda ? -baseAngleStep : baseAngleStep
+                            let rotationAnchor: UnitPoint = direccionAbanico == .izquierda ? .topLeading : .topTrailing
+
                             ForEach(Array(coleccion.miniaturasBandeja.enumerated()), id: \.offset) { index, img in
                                 Image(uiImage: img)
                                     .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 110, height: 120)
-                                    .clipped()
-                                    .cornerRadius(5)
-                                    .shadow(radius: 2)
-                                    .offset(x: 0, y: CGFloat(10 - index * 22)) // apiladas de atrás hacia delante
-                                    .scaleEffect(1.0 - CGFloat(index) * 0.03)
-                                    .zIndex(Double(index))
+                                    .frame(width: 150, height: 210)
+                                    .cornerRadius(4)
+                                    .shadow(radius: 1.5)
+                                    .scaleEffect(index == 0 ? 1.0 : 1.0 - CGFloat(index) * scaleStep)
+                                    .rotationEffect(
+                                        .degrees(index == 0 ? 0 : Double(index) * angleStep),
+                                        anchor: rotationAnchor
+                                    )
+                                    .offset(
+                                        x: index == 0 ? 0 : CGFloat(index) * xStep,
+                                        y: index == 0 ? 0 : -CGFloat(index) * yStep
+                                    )
+                                    .zIndex(index == 0 ? Double(coleccion.miniaturasBandeja.count + 1) : Double(coleccion.miniaturasBandeja.count - index))
                             }
-                            
-                            // Imagen de bandeja en primer plano
-                            Image("bandeja")
-                                .resizable()
-                                .frame(width: 150, height: 100)
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(coleccion.color, coleccion.color.darken(by: 0.2))
-                                .fontWeight(.thin)
-                                .offset(y: 15) // baja la bandeja un poco para "cubrir" las miniaturas
-                                .zIndex(Double(coleccion.miniaturasBandeja.count) + 1)
                         }
+
+                        
+
                     }
-                    .frame(height: 150)
+                    .frame(height: 210)
                     .onAppear {
-                        if coleccion.tipoMiniatura == .tray && coleccion.miniaturasBandeja.isEmpty {
+                        if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {
                             coleccion.precargarMiniaturas()
                         }
                     }
                     .onChange(of: coleccion.tipoMiniatura) {
-                        if coleccion.tipoMiniatura == .tray && coleccion.miniaturasBandeja.isEmpty {
+                        if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {
                             coleccion.precargarMiniaturas()
                         }
                     }
-
+                    
                     Text(coleccion.nombre)
                         .font(.title)
                         .bold()
-                        .frame(alignment: .center)
+                        .padding(.top, 20)
                 }
             }
             .disabled(me.seleccionMultiplePresionada)

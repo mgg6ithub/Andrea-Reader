@@ -182,6 +182,13 @@ enum EnumTipoMiniatura: String {
 enum EnumTipoMiniaturaColeccion: String {
     
     case carpeta
-    case tray
+    case abanico
+    
+}
+
+enum EnumDireccionAbanico: String {
+    
+    case izquierda
+    case derecha
     
 }

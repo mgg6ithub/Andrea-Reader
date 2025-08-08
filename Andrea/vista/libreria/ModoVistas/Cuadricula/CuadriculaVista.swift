@@ -73,6 +73,12 @@ struct CuadriculaVista: View {
                                             coleccion.tipoMiniatura = nuevoTipo
                                             PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "tipoMiniatura", valor: nuevoTipo)
                                         }
+                                    },
+                                    cambiarDireccionAbanico: { nuevaDireccion in
+                                        if let coleccion = elemento as? Coleccion {
+                                            coleccion.direccionAbanico = nuevaDireccion
+                                            PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "direccionAbanico", valor: nuevaDireccion)
+                                        }
                                     }
                                 ) {
                                     if let placeholder = elemento as? ElementoPlaceholder {

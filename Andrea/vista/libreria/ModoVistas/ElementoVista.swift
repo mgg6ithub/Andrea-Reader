@@ -15,6 +15,7 @@ struct ElementoVista<Content: View>: View {
     var cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)? = nil
     // Cambiar miniatura para colección
     var cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)? = nil
+    var cambiarDireccionAbanico: ((EnumDireccionAbanico) -> Void)? = nil
     
     @ViewBuilder let content: () -> Content
 
@@ -50,6 +51,7 @@ struct ElementoVista<Content: View>: View {
                     elemento: elemento,
                     cambiarMiniaturaArchivo: cambiarMiniaturaArchivo,
                     cambiarMiniaturaColeccion: cambiarMiniaturaColeccion,
+                    cambiarDireccionAbanico: cambiarDireccionAbanico,
                     borrarPresionado: $borrarPresionado,
                     renombrarPresionado: $renombrarPresionado,
                     accionDocumento: $accionDocumento
@@ -137,6 +139,8 @@ struct ContextMenuContenido: View {
     var elementoURL: URL { elemento.url }
     let cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)?
     let cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)?
+    let cambiarDireccionAbanico: ((EnumDireccionAbanico) -> Void)?
+
     @Binding var borrarPresionado: Bool
     @Binding var renombrarPresionado: Bool
     @Binding var accionDocumento: EnumAccionDocumento?
@@ -207,7 +211,7 @@ struct ContextMenuContenido: View {
 
             }
             
-            CambiarMiniaturaMenu(elemento: elemento, cambiarMiniaturaArchivo: cambiarMiniaturaArchivo, cambiarMiniaturaColeccion: cambiarMiniaturaColeccion)
+            CambiarMiniaturaMenu(elemento: elemento, cambiarMiniaturaArchivo: cambiarMiniaturaArchivo, cambiarMiniaturaColeccion: cambiarMiniaturaColeccion, cambiarDireccionAbanico: cambiarDireccionAbanico)
             
         }
         

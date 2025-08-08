@@ -25,7 +25,7 @@ struct ListaColeccion: View {
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(coleccion.color, coleccion.color.darken(by: 0.2))
                         .zIndex(1)
-                } else if coleccion.tipoMiniatura == .tray {
+                } else if coleccion.tipoMiniatura == .abanico {
                     // Miniaturas apiladas en vertical, parcialmente visibles
                     ForEach(Array(coleccion.miniaturasBandeja.enumerated()), id: \.offset) { index, img in
                         Image(uiImage: img)

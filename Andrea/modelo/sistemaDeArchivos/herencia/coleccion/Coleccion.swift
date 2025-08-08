@@ -17,6 +17,7 @@ class Coleccion: ElementoSistemaArchivos {
     
     @Published var miniaturasBandeja: [UIImage] = []
     @Published var tipoMiniatura: EnumTipoMiniaturaColeccion = .carpeta
+    @Published var direccionAbanico: EnumDireccionAbanico = .izquierda
     
     //ATRIBUTOS
     var isDirectory = true
@@ -54,6 +55,11 @@ class Coleccion: ElementoSistemaArchivos {
             self.tipoMiniatura = tipo
         }
         
+        if let dirRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "direccionAbanico") as? String,
+           let dir = EnumDireccionAbanico(rawValue: dirRaw) {
+            self.direccionAbanico = dir
+        }
+        
     }
     
     public func meterColeccion() {
@@ -71,7 +77,7 @@ class Coleccion: ElementoSistemaArchivos {
     }
     
     public func precargarMiniaturas() {
-        print("precargando miniaturas")
+        
         let allURLs = SistemaArchivos.sa.obtenerURLSDirectorio(coleccionURL: self.url)
         let filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {

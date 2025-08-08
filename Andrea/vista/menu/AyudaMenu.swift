@@ -110,7 +110,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
                 if isRightSide {
                     Spacer()
                     if animateView {
-                        Text("Historial de acciones")
+                        Text("Notificaciones")
                             .font(.system(size: 20))
                             .bold()
                             .frame(alignment: .bottom)
