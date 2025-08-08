@@ -87,7 +87,7 @@ class MenuEstado: ObservableObject {
     }
     
     public func deseleccionarTodos() {
-        withAnimation { self.elementosSeleccionados.removeAll() }
+        let _ = withAnimation { self.elementosSeleccionados.removeAll() }
         self.todosSeleccionados = false
     }
     

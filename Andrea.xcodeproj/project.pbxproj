@@ -279,7 +279,6 @@
 			children = (
 				D4DF317A2DEC74F0000D15CC /* CuadriculaVista.swift */,
 				D4BA32EF2E0BDCD600CF3219 /* CuadriculaArchivo */,
-				D47139C82E0AE77000B5FA35 /* CuadriculaColeccion.swift */,
 			);
 			path = Cuadricula;
 			sourceTree = "<group>";
@@ -487,6 +486,7 @@
 		D4BA32EF2E0BDCD600CF3219 /* CuadriculaArchivo */ = {
 			isa = PBXGroup;
 			children = (
+				D47139C82E0AE77000B5FA35 /* CuadriculaColeccion.swift */,
 				D47139C62E0AE76500B5FA35 /* CuadriculaArchivo.swift */,
 				D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */,
 				D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */,

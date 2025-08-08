@@ -30,7 +30,7 @@ struct CuadriculaArchivo: View {
                         Image(systemName: seleccionado ? "checkmark.circle.fill" : "circle")
                             .font(.system(size: constantes.iconSize * 1.5))
                             .fontWeight(.light)
-                            .foregroundColor(coleccionVM.color)
+                            .foregroundColor(.gray)
                             .transition(.scale.combined(with: .opacity))
                             .contentTransition(.symbolEffect(.replace, options: .speed(2.25)))
                     }
