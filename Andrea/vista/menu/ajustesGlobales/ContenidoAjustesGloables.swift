@@ -37,7 +37,7 @@ struct ContenidoAjustes: View {
                     
                     HStack(spacing: 0) {
                         
-                        Image("book4")
+                        Image("libro-ajustes1")
                             .resizable()
                             .frame(width: 160 * constanteResizable, height: 160 * constanteResizable)
                             .aspectRatio(contentMode: .fit)

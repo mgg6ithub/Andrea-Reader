@@ -1,51 +1,17 @@
 import SwiftUI
 
 struct Libreria: View {
-
-    @EnvironmentObject var ap: AppEstado
     
     @ObservedObject var vm: ModeloColeccion
     @Namespace private var animationNamespace
-    @State private var show = false // Para controlar la animación
-    
-    var scala: CGFloat { ap.constantes.scaleFactor }
 
     var body: some View {
         ZStack {
             if vm.elementos.isEmpty {
                 if vm.coleccion.nombre == "HOME" {
-                    VStack(alignment: .center) {
-                        Spacer()
-                        VStack(spacing: 0) {
-                            Image("estanteria9")
-                                .resizable()
-                                .frame(width: 300 * scala, height: 350 * scala)
-                            
-                            Text("Biblioteca \"Andrea\" vacía.")
-                                .font(.headline)
-                                .padding(.top, 20)
-                            
-                        }
-                        Spacer()
-                    }
-                    .aparicionStiffness(show: $show)
+                    ImagenLibreriaVacia(imagen: "estanteria-vacia", texto: "Biblioteca \"Andrea\" vacía.", anchura: 300, altura: 350)
                 } else {
-                    VStack(alignment: .center) {
-                        Spacer()
-
-                        VStack(spacing: 10) {
-                            Image("caja-vacia")
-                                .resizable()
-                                .frame(width: 235 * scala, height: 235 * scala)
-                                .aspectRatio(contentMode: .fit)
-
-                            Text("Colección vacia, sin elementos.")
-                                .font(.headline)
-                        }
-
-                        Spacer()
-                    }
-                    .aparicionStiffness(show: $show)
+                    ImagenLibreriaVacia(imagen: "caja-vacia", texto: "Colección vacia, sin elementos.", anchura: 235, altura: 235)
                 }
             } else {
                 switch vm.modoVista {
@@ -63,6 +29,37 @@ struct Libreria: View {
             }
         }
         .animation(.easeInOut(duration: 0.3), value: vm.modoVista)
+    }
+}
+
+struct ImagenLibreriaVacia: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
+    let imagen: String
+    let texto: String
+    let anchura: CGFloat
+    let altura: CGFloat
+    
+    var scala: CGFloat { ap.constantes.scaleFactor }
+    
+    @State private var show = false // Para controlar la animación
+    
+    var body: some View {
+        VStack(alignment: .center) {
+            Spacer()
+            VStack(spacing: 0) {
+                Image(imagen)
+                    .resizable()
+                    .frame(width: anchura * scala, height: altura * scala)
+                
+                Text(texto)
+                    .font(.headline)
+                
+            }
+            Spacer()
+        }
+        .aparicionStiffness(show: $show)
     }
 }
 
