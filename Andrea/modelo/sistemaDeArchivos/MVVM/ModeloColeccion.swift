@@ -164,7 +164,6 @@ class ModeloColeccion: ObservableObject {
                 
                 let endTime = CFAbsoluteTimeGetCurrent()
                 let tiempoTotal = endTime - startTime
-                print("\(tiempoTotal)s en indexar la coleccion \(self.coleccion.nombre)")
                 self.tiempoCarga = tiempoTotal
 
             }

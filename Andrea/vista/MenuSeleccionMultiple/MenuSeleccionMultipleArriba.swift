@@ -2,33 +2,17 @@
 
 import SwiftUI
 
-//struct AndreaAppView_Preview: PreviewProvider {
-//    static var previews: some View {
-//        // Instancias de ejemplo para los objetos de entorno
-////        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
-////        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
-////        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
-//        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
-////        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
-////        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
-//        let me = MenuEstado() // Reemplaza con inicialización adecuada
-//        let pc = PilaColecciones.preview
-//
-//        return AndreaAppView()
-//            .environmentObject(ap)
-//            .environmentObject(me)
-//            .environmentObject(pc)
-//    }
-//}
-
 struct MenuSeleccionMultipleArriba: View {
     
+    // --- ENTORNO ---
     @EnvironmentObject var me: MenuEstado
     @EnvironmentObject var ap: AppEstado
     @ObservedObject var vm: ModeloColeccion
     
+    // --- VARIABLES CALCULADAS ---
     private let constantes = ConstantesPorDefecto()
     
+    // --- ESTADO ---
     @State var isActive: Bool = true
     
     var body: some View {
@@ -48,9 +32,7 @@ struct MenuSeleccionMultipleArriba: View {
             let totalSeleccioandos = me.elementosSeleccionados.count
             if !me.elementosSeleccionados.isEmpty {
                 HStack(spacing: 3.5) {
-//                    withAnimation(.easeOut(duration: 0.3)) {
-                        Text("\(totalSeleccioandos)")
-//                    }
+                    Text("\(totalSeleccioandos)")
                     Text("\(totalSeleccioandos == 1 ? "seleccionado" : "seleccionados")")
                 }
             }
@@ -79,20 +61,7 @@ struct MenuSeleccionMultipleArriba: View {
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(ap.temaActual.colorContrario, Color.red)
             }
-            .padding(.horizontal, ConstantesPorDefecto().horizontalPadding * 0.8)
-            .padding(.vertical, 5)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(LinearGradient(
-                        gradient: Gradient(colors: [
-                            .gray.opacity(isActive ? 0.4 : 0.2),
-                            .gray.opacity(isActive ? 0.2 : 0.1)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ))
-                    .shadow(color: .gray.opacity(0.275), radius: isActive ? 4 : 2, x: 0, y: 2)
-            )
+            .fondoBoton(pH: ConstantesPorDefecto().horizontalPadding * 0.8, pV: 5, isActive: true, color: .gray, borde: false)
 
         }
         .padding(.horizontal, constantes.horizontalPadding)

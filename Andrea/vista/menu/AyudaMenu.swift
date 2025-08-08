@@ -1,18 +1,16 @@
-
 import SwiftUI
 
 struct PopOutCollectionsView<Header: View, Content: View>: View {
     
-//    var totalElements: Int
-    
+    // --- PARAMETROS ---
     @ViewBuilder var header: (Bool) -> Header
     @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
 
+    // --- ESTADO ---
     @State private var sourceRect: CGRect = .zero
     @State private var showFullScreenCover: Bool = false
     @State private var animatedView: Bool = false
     @State private var haptics: Bool = false
-    
     @State private var isRightSide: Bool = false
     
     var body: some View {
@@ -25,7 +23,6 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
                 isRightSide = newValue.midX > screenWidth / 2
             }
             .contentShape(RoundedRectangle(cornerRadius: 10))
-//            .opacity(showFullScreenCover ? 0 : 1)
             .onTapGesture {
                 haptics.toggle()
                 toggleFullScreenCover()
@@ -84,21 +81,26 @@ extension View {
 
 fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     
+    // --- ENTORNO ---
     @EnvironmentObject var ap: AppEstado
     
+    // --- CONSTANTES ---
+    private let alturaBase: Int = 109
+    
+    // --- VARIABLES CALCULADAS ---
     var totalElements: Int {
         SistemaArchivos.sa.cacheColecciones.count - 1
     }
-    private let alturaBase: Int = 109
     
+    // --- PARAMETROS ---
     @Binding var sourceRect: CGRect
     @Binding var animateView: Bool
     @ViewBuilder var header: (Bool) -> Header
     @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
     var isRightSide: Bool
-
     var dismissView: () -> ()
     
+    // --- ESTADO ---
     @State private var edgeInsets: EdgeInsets = .init()
     @State private var scale: CGFloat = 1
     

@@ -18,7 +18,7 @@ struct ContenidoAjustes: View {
     @Binding var scrollInicial: CGFloat?
 
     // --- VARIABLES ESTADO ---
-    @State private var showEmptyState = false
+    @State private var show = false
     @State private var isScrollInitialized = false
     
     // --- VARIABLES CALCULADAS ---
@@ -41,10 +41,7 @@ struct ContenidoAjustes: View {
                             .resizable()
                             .frame(width: 160 * constanteResizable, height: 160 * constanteResizable)
                             .aspectRatio(contentMode: .fit)
-                            .scaleEffect(showEmptyState ? 1 : 0.9)
-                            .opacity(showEmptyState ? 1 : 0)
-                            .offset(y: showEmptyState ? 0 : 20)
-                            .animation(.interpolatingSpring(stiffness: 100, damping: 10).delay(0.1), value: showEmptyState)
+                            .aparicionStiffness(show: $show)
                         
                         Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
                             .font(.system(size: ap.constantes.titleSize))
@@ -75,11 +72,7 @@ struct ContenidoAjustes: View {
                                 }
                         }
                     )
-                    .onAppear {
-                        showEmptyState = true
-                    }
                     .onDisappear {
-                        showEmptyState = false
                         isScrollInitialized = false
                     }
                     

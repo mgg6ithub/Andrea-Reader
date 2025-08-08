@@ -11,6 +11,8 @@ struct MasInformacion: View {
     
     let elemento: any ElementoSistemaArchivosProtocolo
     
+    @State private var show: Bool = true
+    
     var body: some View {
         
         ZStack {
@@ -35,6 +37,7 @@ struct MasInformacion: View {
                 VStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .center, spacing: 0) {
                         CabeceraMasInformacion(pantallaCompleta: $pantallaCompleta)
+                            .aparicionBlur(show: $show)
                         
                         Spacer()
                     }

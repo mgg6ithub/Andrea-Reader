@@ -17,11 +17,8 @@ struct CabeceraMasInformacion: View {
     var body: some View {
         HStack(spacing: 0) {
             Button(action: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    isPressed = true
-                    withAnimation(.easeInOut(duration: 0.25)) { ap.masInformacion = false }
-                }
-                
+                isPressed = true
+                withAnimation(.easeInOut(duration: 0.25)) { ap.masInformacion = false }
             }) {
                 Image(systemName: "xmark.square.fill")
                     .font(.system(size: constantes.iconSize * 1.5))

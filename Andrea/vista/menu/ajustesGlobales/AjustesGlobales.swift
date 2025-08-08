@@ -15,7 +15,6 @@ struct AjustesGlobales: View {
     @State private var sectionOffsets: [String: CGFloat] = [:]
     @State private var haHechoScroll: Bool = false
     @State private var scrollInicial: CGFloat? = nil
-    @State private var showEmptyState = false // Para controlar la animación
     
     // --- VARIABLES CALCULADAS ---
     var sections: [String] { menuEstado.sections }

@@ -71,3 +71,82 @@ struct ProgressTextModifier1: AnimatableModifier {
     }
 }
 
+//MARK: - BOTON FONDO
+extension View {
+    func fondoBoton(pH: CGFloat, pV: CGFloat, isActive: Bool, color: Color, borde: Bool) -> some View {
+        self.padding(.horizontal, pH)
+            .padding(.vertical, pV)
+            .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(LinearGradient(
+                    gradient: Gradient(colors: [
+                        color.opacity(isActive ? 0.4 : 0.2),
+                        color.opacity(isActive ? 0.2 : 0.1)
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                ))
+                .if(borde) { view in
+                    view.overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(color.opacity(isActive ? 0.7 : 0.4).gradient, lineWidth: isActive ? 2 : 1)
+                    )
+                }
+                .shadow(color: color.opacity(0.275), radius: isActive ? 4 : 2, x: 0, y: 2)
+        )
+    }
+}
+
+//MARK: - EXTENSION ANIMACION APARICION STIFFNESS
+extension View {
+    func aparicionStiffness(show: Binding<Bool>, delay: Double = 0.1) -> some View {
+        self
+            .scaleEffect(show.wrappedValue ? 1 : 0.8)
+            .opacity(show.wrappedValue ? 1 : 0)
+            .animation(
+                .interpolatingSpring(stiffness: 100, damping: 10)
+                    .delay(delay),
+                value: show.wrappedValue
+            )
+            .onAppear {
+                show.wrappedValue = true
+            }
+            .onDisappear {
+                show.wrappedValue = false
+            }
+    }
+}
+
+//MARK: - EXTENSION ANIMACION APARICION BLUR
+extension View {
+    func aparicionBlur(show: Binding<Bool>) -> some View {
+        self.opacity(show.wrappedValue ? 0.0 : 1.0)
+        .scaleEffect(show.wrappedValue ? 0.95 : 1.0)
+//        .offset(y: show.wrappedValue ? -10 : 0)
+        .blur(radius: show.wrappedValue ? 2 : 0)
+        .animation(.easeInOut(duration: 0.4), value: show.wrappedValue)
+        .onAppear {
+            show.wrappedValue = false
+        }
+        .onDisappear {
+            show.wrappedValue = true
+        }
+    }
+}
+
+
+
+//PARA PODER PONER IF EN UNA VISTA
+//ejemplo: vista.if(coindicion) { view in (hacer cosas)}
+
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}
+
