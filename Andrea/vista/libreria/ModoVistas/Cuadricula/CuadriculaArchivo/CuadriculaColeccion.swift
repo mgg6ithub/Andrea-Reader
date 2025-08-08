@@ -17,8 +17,7 @@ struct CuadriculaColeccion: View {
             Button(action: {
                 coleccion.meterColeccion()
             }) {
-                
-                VStack(spacing: 0) {
+                VStack(alignment: .center, spacing: 0) {
                     Spacer()
                     ZStack {
                         if me.seleccionMultiplePresionada {
@@ -90,15 +89,46 @@ struct CuadriculaColeccion: View {
                         }
                     }
                     
-                    Text(coleccion.nombre)
-                        .font(.title)
-                        .bold()
-                        .padding(.top, 20)
+                                
+                    VStack(alignment: .leading, spacing: 5) {
+                        // ---- Información básica ----
+                        HStack(spacing: 6) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(coleccion.color.gradient.opacity(0.3))
+                                    .frame(width: 30, height: 30)
+                                    .shadow(color: coleccion.color.opacity(0.25), radius: 4, x: 0, y: 2)
+                                
+                                Image(systemName: "folder.fill")
+                                    .foregroundColor(coleccion.color)
+                                    .frame(width: 25, height: 25)
+                            }
+                            
+                            Text(coleccion.nombre)
+                                .font(.system(size: 25))
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        
+                        HStack(spacing: 20) {
+                            Text("3.25 GB")
+                            Text("\(coleccion.totalArchivos) elementos")
+                        }
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                    }
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 5)
+                                
+                    
                 }
             }
             .disabled(me.seleccionMultiplePresionada)
         }
         .frame(width: width, height: height)
+        .border(.red)
     }
 }
 
