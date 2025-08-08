@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct HistorialColecciones: View {
@@ -59,6 +58,7 @@ struct HistorialColecciones: View {
                         Image(systemName: "house").opacity(0.75)
                     }
                 }
+            }
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
@@ -89,11 +89,10 @@ struct HistorialColecciones: View {
                                     pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
                                 }) {
                                     HStack(spacing: spacioP) {
-                                        Image(systemName: "chevron.forward")
-                                            .font(.system(size: 10))
-                                            .foregroundColor(.gray.opacity(0.8))
-                                            .transition(.opacity.combined(with: .scale)) // animación al aparecer/desaparecer
-                                            .animation(.easeInOut(duration: 1.5), value: pc.getColeccionActual().coleccion)
+                                        ChevronAnimado(
+                                            isActive: false,
+                                            delay: delay(Double(index))
+                                        )
                                         
                                         ColeccionRectanguloAvanzado(
                                             textoSize: peke,
@@ -115,8 +114,7 @@ struct HistorialColecciones: View {
                 }
             }
             .padding(.leading, 3.5)
-        }
-
+            
             Spacer()
 
             if pc.getColeccionActual().coleccion.nombre != "HOME" {
@@ -158,8 +156,8 @@ struct HistorialColecciones: View {
         }
         .onAppear {
             // Desactivamos primeraCarga luego de un breve delay para evitar lag inicial
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation(.linear(duration: 0.15)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation(.linear(duration: 0.1)) {
                     primeraCarga = false
                 }
             }
@@ -169,6 +167,6 @@ struct HistorialColecciones: View {
     private func delay(_ index: Double) -> Double {
         if primeraCarga { return 0 }
         let hayMasDeUna = pc.colecciones.count > 1
-        return appEstado.animaciones && hayMasDeUna ? index * 0.1 : 0
+        return appEstado.animaciones && hayMasDeUna ? index * 0.25 : 0
     }
 }
