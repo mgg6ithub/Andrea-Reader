@@ -3,43 +3,26 @@ import TipKit
 
 struct VistaPrincipal: View {
     
-    @State private var animacionesInicialesActivadas = false
-    
-    @EnvironmentObject var appEstado: AppEstado
-    @EnvironmentObject var menuEstado: MenuEstado
+    // --- ENTORNO ---
+    @EnvironmentObject var ap: AppEstado
+    @EnvironmentObject var me: MenuEstado
     @EnvironmentObject var pc: PilaColecciones
     
+    // --- ESTADO ---
     @State private var coleccionMostrada: ModeloColeccion? = nil
-    private let constantes = ConstantesPorDefecto()
+    @State private var animacionesInicialesActivadas = false
+    
+    // --- VARIABLES CALCULADAS ---
+    private let cpd = ConstantesPorDefecto()
+    private var escala: CGFloat { ap.constantes.scaleFactor }
     
     var body: some View {
         ZStack {
-            appEstado.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
+            ap.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
-                VStack(spacing: 0) {
-                    if menuEstado.seleccionMultiplePresionada {
-                        if let coleccion = coleccionMostrada {
-                            MenuSeleccionMultipleArriba(vm: coleccion)
-                                .frame(width: .infinity, height: 50)
-                                .background(.gray.opacity(0.2))
-                        }
-                    } else {
-                        VStack(spacing: 0) {
-                            MenuVista()
-                                .padding(.vertical, 8 * appEstado.constantes.scaleFactor)
-                                .padding(.bottom, 12.5 * appEstado.constantes.scaleFactor)
-                            
-                            HistorialColecciones()
-                                .frame(height: 50)
-                            //MARK: - --- CONSEJO OPCIONES (MENU) DE UNA COLECCION ---
-//                            TipView(ConsejoOpcionesColeccionActual())
-//                                .padding(.top, 15)
-                            //MARK: - --- CONSEJO OPCIONES (MENU) DE UNA COLECCION ---
-                        }
-                        .padding(.horizontal, constantes.horizontalPadding)
-                    }
-                }
-                .animation(.easeInOut(duration: 0.2), value: menuEstado.seleccionMultiplePresionada)
+                
+                barraSuperior()
+                    .animation(.easeInOut(duration: 0.2), value: me.seleccionMultiplePresionada)
                 
                 Spacer()
                 
@@ -50,16 +33,8 @@ struct VistaPrincipal: View {
                         .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 }
                 
-                VStack(spacing: 0) {
-                    if menuEstado.seleccionMultiplePresionada {
-                        MenuSeleccionMultipleAbajo()
-                            .frame(width: .infinity, height: 50)
-                            .background(.gray.opacity(0.2))
-                    } else {
-                        EmptyView()
-                    }
-                }
-                .animation(.easeInOut(duration: 0.2), value: menuEstado.seleccionMultiplePresionada)
+                barraInferior()
+                    .animation(.easeInOut(duration: 0.2), value: me.seleccionMultiplePresionada)
                 
                 //MARK: - --- CONSEJO SMART SORTING DE UNA COLECCION ---
 //                TipView(ConsejoSmartSorting())
@@ -85,20 +60,65 @@ struct VistaPrincipal: View {
             }
             
             // --- MAS INFORMACION ---
-            if appEstado.masInformacion, let elementoSelecionado = appEstado.elementoSeleccionado {
-                MasInformacion(vm: pc.getColeccionActual(), pantallaCompleta: $appEstado.pantallaCompleta, elemento: elementoSelecionado)
-                    .edgesIgnoringSafeArea(.all)
-                    .zIndex(10)
+            if ap.masInformacion, let elementoSelecionado = ap.elementoSeleccionado {
+                MasInformacion(vm: pc.getColeccionActual(), pantallaCompleta: $ap.pantallaCompleta, elemento: elementoSelecionado)
+                    .capaSuperior()
             }
             // --- VISTA PREVIA DE UN ELEMENTO ---
-            if appEstado.vistaPrevia, let elementoSelecionado = appEstado.elementoSeleccionado {
+            if ap.vistaPrevia, let elementoSelecionado = ap.elementoSeleccionado {
                 CartaHolografica3D(vm: pc.getColeccionActual(), elemento: elementoSelecionado)
-                    .edgesIgnoringSafeArea(.all)
-                    .zIndex(10)
+                    .capaSuperior()
             }
             
         }
-        .foregroundColor(appEstado.temaActual.textColor)
-        .animation(.easeInOut, value: appEstado.temaActual)
+        .foregroundColor(ap.temaActual.textColor)
+        .animation(.easeInOut, value: ap.temaActual)
+    }
+    
+    // --- FUNCIONES ---
+    private func barraSuperior() -> some View {
+        Group {
+            if me.seleccionMultiplePresionada, let coleccion = coleccionMostrada {
+                MenuSeleccionMultipleArriba(vm: coleccion)
+                    .capaSeleccionMultiple()
+            } else {
+                VStack(spacing: 0) {
+                    MenuVista()
+                        .padding(.vertical, 8 * escala)
+                        .padding(.bottom, 12.5 * escala)
+
+                    HistorialColecciones()
+                        .frame(height: 50)
+                }
+                .padding(.horizontal, cpd.padding15)
+            }
+        }
+    }
+
+    private func barraInferior() -> some View {
+        Group {
+            if me.seleccionMultiplePresionada {
+                MenuSeleccionMultipleAbajo()
+                    .capaSeleccionMultiple()
+            } else {
+                EmptyView()
+            }
+        }
+    }
+
+}
+
+extension View {
+    func capaSeleccionMultiple() -> some View {
+        self.frame(width: .infinity, height: 50)
+        .background(.gray.opacity(0.2))
     }
 }
+
+extension View {
+    func capaSuperior() -> some View {
+        self.edgesIgnoringSafeArea(.all)
+            .zIndex(10)
+    }
+}
+

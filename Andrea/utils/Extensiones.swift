@@ -71,3 +71,44 @@ struct ProgressTextModifier1: AnimatableModifier {
     }
 }
 
+//MARK: - BOTON FONDO
+extension View {
+    func fondoBoton(pH: CGFloat, pV: CGFloat, isActive: Bool, color: Color, borde: Bool) -> some View {
+        self.padding(.horizontal, pH)
+            .padding(.vertical, pV)
+            .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(LinearGradient(
+                    gradient: Gradient(colors: [
+                        color.opacity(isActive ? 0.4 : 0.2),
+                        color.opacity(isActive ? 0.2 : 0.1)
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                ))
+                .if(borde) { view in
+                    view.overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(color.opacity(isActive ? 0.7 : 0.4).gradient, lineWidth: isActive ? 2 : 1)
+                    )
+                }
+                .shadow(color: color.opacity(0.275), radius: isActive ? 4 : 2, x: 0, y: 2)
+        )
+    }
+}
+
+
+//PARA PODER PONER IF EN UNA VISTA
+//ejemplo: vista.if(coindicion) { view in (hacer cosas)}
+
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}
+

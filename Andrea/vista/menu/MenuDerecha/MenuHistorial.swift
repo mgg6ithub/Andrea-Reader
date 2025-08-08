@@ -1,12 +1,11 @@
 
 import SwiftUI
-import Foundation
 
-// 2) Uso en tu VStack
 struct MenuHistorial: View {
+    
+    // --- ENTORNO ---
     @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var ne: NotificacionesEstado
-    
     @ObservedObject private var coleccionActualVM: ModeloColeccion
     
     init() {
@@ -62,28 +61,27 @@ struct MenuHistorial: View {
                 .padding(.vertical, 20)
             }
             .frame(maxHeight: 400) // 👈 Ajusta este valor según lo que desees
-
-
-
         }
     }
 }
 
-// 1) Wrapper genérico para cada fila swipeable
+
 struct SwipeToDeleteRow<Content: View>: View {
     
+    // --- ENTORNO ---
     @EnvironmentObject var ap: AppEstado
     
+    // --- CONSTANTES ---
+    private let deleteThreshold: CGFloat = 100
+    
+    // --- PARAMETROS ---
     @Binding var isDeleted: Bool
     let onDelete: () -> Void
     let content: () -> Content
 
-    // Estado de desplazamiento
+    // --- ESTADO ---
     @State private var offsetX: CGFloat = 0
     @GestureState private var isDragging = false
-
-    // Umbral tras el cual se activa la eliminación
-    private let deleteThreshold: CGFloat = 100
 
     var body: some View {
         ZStack(alignment: .trailing) {
