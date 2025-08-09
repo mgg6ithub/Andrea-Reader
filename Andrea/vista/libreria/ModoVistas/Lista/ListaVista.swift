@@ -26,7 +26,6 @@ struct ListaVista: View {
                         vm.isPerformingAutoScroll = false
                     }
                 }
-
             
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 20) {

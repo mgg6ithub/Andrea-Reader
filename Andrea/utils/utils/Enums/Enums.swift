@@ -174,7 +174,15 @@ enum EnumTemas: String, CaseIterable {
     }
 }
 
-//MARK: - COLOR PRINCIPAL
+//MARK: - IDIOMAS
+
+enum EnumIdiomas: String {
+    
+    case castellano
+    case latino
+    case ingles
+    
+}
 
 
 

@@ -1,6 +1,14 @@
 
 import SwiftUI
 
+//#Preview {
+//    MasInformacionArchivo()
+////        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+////        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180)) // Mock o real
+//}
+
+
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     @Published var tipoMiniatura: EnumTipoMiniatura = .primeraPagina
@@ -11,7 +19,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     var dirColor: UIColor = .gray
     
     //ATRIBUTOS
-    var isDirectory = false
+    var esColeccion = false
     var fileType: EnumTipoArchivos
     var fileExtension: String
     var mimeType: String
@@ -19,16 +27,20 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     var isReadable: Bool
     var isWritable: Bool
     var isExecutable: Bool
-    var isProtected: Bool = false
     
     //ATRIBUTOS EXTRAIDOS DEL ARCHIVO
-    var fileOriginalName: String?
-    var scanFormat: String?
-    var fileOirinalScannedSource: String?
-    var fileOriginalDate: Date?
-    var colectionCurrentIssue: Int?
-    var colectionTotalIssues: Int?
+    var nombreOriginal: String?
+    var perteneceAcoleccion: String?
+    var numeroDeLaColeccion: Int?
     
+    var formatoEscaneo: String?
+    var fuenteEscaneo: String?
+    var fechaPublicacion: Date?
+    
+    var idioma: EnumIdiomas = .castellano
+    var genero: String = ""
+    
+    //MARK: - --- VARIABLES CALCULADAS ---
     //PROGRESO
     @Published var totalPaginas: Int? {
         didSet {
@@ -38,23 +50,37 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     @Published var progreso: Int = 0
     @Published var progresoEntero: Double = 0
     @Published var paginaActual: Int = 0
-    var finisheReadingDate: Date?
+
+    //TIEMPOS
+    var tiempoTotal: TimeInterval?
+    var tiempoPorPagina: TimeInterval?
+    var tiempoRestante: TimeInterval?           // Si quieres la fecha/hora estimada de finalización
+    
+    //Paginas
+    var paginaVisitadaMasTiempo: TimeInterval?           // Si quieres la fecha/hora estimada de finalizació
+    var paginasRestantes: Int?          // Número de páginas
+    var paginaMasVisitada: Int?         // Número de página, no String
+    
+    //DIAS
+    var avanceDiario: Double?
+    var diasTotalesLectura: Int?
+    var diasConsecutivosLecutra: Int?
+    var horaFrecuente: Date?
+    
+    //velocidad
+    var velocidadLectura: Double?
+    var velocidadMax: Double?
+    var velocidadMin: Double?
     
     //MODELOS NECESARIOS
     private let sau = SistemaArchivosUtilidades.sau
-    
-//    var hasThumbnail: Bool {
-//        let thumbURL = ThumbnailService.shared.cacheDir
-//            .appendingPathComponent("\(url.lastPathComponent).jpg")
-//        return FileManager.default.fileExists(atPath: thumbURL.path)
-//    }
     
     override init() {
         self.dirURL = URL(fileURLWithPath: "")
         self.dirName = ""
         self.dirColor = .gray
         
-        self.isDirectory = false
+        self.esColeccion = false
         self.fileType = .unknown
         self.fileExtension = ""
         self.mimeType = "application/octet-stream"
@@ -62,16 +88,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.isReadable = false
         self.isWritable = false
         self.isExecutable = false
-        self.isProtected = false
 
         self.progreso = 0
         self.paginaActual = 0
-        self.finisheReadingDate = nil
 
         super.init()
     }
     
-    init(fileName: String, fileURL: URL, creationDate: Date, modificationDate: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int, favorito: Bool, protegido: Bool) {
+    init(fileName: String, fileURL: URL, fechaImportacion: Date, fechaModificacion: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int, favorito: Bool, protegido: Bool) {
             
         self.fileType = fileType
         self.fileExtension = fileExtension
@@ -84,7 +108,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.isWritable = permissions.writable
         self.isExecutable = permissions.executable
         
-        super.init(nombre: fileName, url: fileURL, creationDate: creationDate, modificationDate: modificationDate, favortio: favorito, protegido: protegido)
+        super.init(nombre: fileName, url: fileURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
         self.cargarPaginasAsync()
         
@@ -102,6 +126,30 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         }
         
     }
+    
+    func inicializarValoresEstadisticos() {
+        // TIEMPOS
+        tiempoTotal = 0
+        tiempoPorPagina = 0
+        tiempoRestante = 0
+        
+        // PÁGINAS
+        paginaVisitadaMasTiempo = 0
+        paginasRestantes = 0
+        paginaMasVisitada = 0
+        
+        // DÍAS
+        avanceDiario = 0
+        diasTotalesLectura = 0
+        diasConsecutivosLecutra = 0
+        horaFrecuente = nil // Mejor nil si no hay hora registrada aún
+        
+        // VELOCIDAD
+        velocidadLectura = 0
+        velocidadMax = 0
+        velocidadMin = 0
+    }
+
     
     func viewContent() -> AnyView {
         return AnyView(ZStack{})

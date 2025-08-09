@@ -1,9 +1,4 @@
-//
-//  ListaColeccion.swift
-//  Andrea
-//
-//  Created by mgg on 15/7/25.
-//
+
 
 import SwiftUI
 

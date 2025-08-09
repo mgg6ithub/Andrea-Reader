@@ -22,6 +22,8 @@ struct ListaColeccionMenu: View {
         }
     }
     
+    @State private var show: Bool = false
+    
     var body: some View {
         
         VStack(alignment: .center, spacing: 0) {
@@ -36,7 +38,7 @@ struct ListaColeccionMenu: View {
                                 textoSize: 14,
                                 colorPrimario: ap.temaActual.textColor,
                                 color: Color.gray,
-                                isActive: false,
+                                isActive: pc.getColeccionActual().coleccion == coleccionPrincipal,
                                 pH: 7,
                                 animationDelay: 0
                             ) {
@@ -73,7 +75,7 @@ struct ListaColeccionMenu: View {
                             Spacer()
                             
                             if pc.getColeccionActual().coleccion == coleccionPrincipal {
-                                Text("*")
+                                IndicadorColeccionActual(color: coleccionPrincipal.color)
                             }
                             
                         }
@@ -98,6 +100,9 @@ struct ListaColeccionMenu: View {
             ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.key) { index, colValor in
                 let isLast = index == coleccionesFiltradas.count - 1
                 let col = colValor.value.coleccion
+                
+                let esActual: Bool = pc.getColeccionActual().coleccion == col
+                
                 VStack(spacing: 0) {
                     Button(action: {
                         col.meterColeccion()
@@ -114,6 +119,9 @@ struct ListaColeccionMenu: View {
                                 Image(systemName: "folder.fill")
                                     .foregroundColor(col.color)
                                     .frame(width: 25, height: 25)
+                            }
+                            .if(esActual) { view in
+                                view.aparicionStiffness(show: $show)
                             }
                             
                             VStack(alignment: .leading, spacing: 5) {
@@ -145,8 +153,8 @@ struct ListaColeccionMenu: View {
                             
                             Spacer()
                             
-                            if pc.getColeccionActual().coleccion == col {
-                                Text("*")
+                            if esActual {
+                                IndicadorColeccionActual(color: col.color)
                             }
                             
                         }
@@ -173,5 +181,21 @@ struct ListaColeccionMenu: View {
 }
 
 
-
-
+struct IndicadorColeccionActual: View {
+    
+    let color: Color
+    
+    @State private var show: Bool = false
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(color.opacity(0.3)) // círculo exterior más tenue
+                .frame(width: 8, height: 8)
+            Circle()
+                .fill(color.opacity(0.8)) // círculo interior más fuerte
+                .frame(width: 4, height: 4)
+        }
+        .aparicionStiffness(show: $show)
+    }
+}

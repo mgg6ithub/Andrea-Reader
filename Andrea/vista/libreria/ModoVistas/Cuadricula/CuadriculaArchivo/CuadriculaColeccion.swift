@@ -37,7 +37,7 @@ struct CuadriculaColeccion: View {
                         if coleccion.tipoMiniatura == .carpeta {
                             Image("CARPETA-ATRAS")
                                 .resizable()
-                                .frame(width: 190, height: 210)
+                                .frame(width: 180, height: 200)
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(coleccion.color, coleccion.color.darken(by: 0.2))
                                 .zIndex(1)
@@ -74,8 +74,6 @@ struct CuadriculaColeccion: View {
                             }
                         }
 
-                        
-
                     }
                     .frame(height: 210)
                     .onAppear {
@@ -108,6 +106,7 @@ struct CuadriculaColeccion: View {
                                 .font(.system(size: 25))
                                 .fontWeight(.bold)
                                 .multilineTextAlignment(.center)
+                                .minimumScaleFactor(0.6)
                                 .lineLimit(2)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
@@ -121,14 +120,12 @@ struct CuadriculaColeccion: View {
                     }
                     .padding(.horizontal, 15)
                     .padding(.vertical, 5)
-                                
                     
                 }
             }
             .disabled(me.seleccionMultiplePresionada)
         }
         .frame(width: width, height: height)
-        .border(.red)
     }
 }
 

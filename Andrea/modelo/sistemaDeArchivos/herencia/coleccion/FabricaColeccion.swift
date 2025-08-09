@@ -8,15 +8,15 @@ struct FabricaColeccion {
     
     func crearColeccion(coleccionNombre: String, coleccionURL: URL) -> Coleccion {
         
-        let creationDate = sau.getElementCreationDate(elementURL: coleccionURL)
-        let modificationDate = sau.getElementModificationDate(elementURL: coleccionURL)
+        let fechaImportacion = sau.getElementCreationDate(elementURL: coleccionURL)
+        let fechaModificacion = sau.getElementModificationDate(elementURL: coleccionURL)
         
         var color: Color
         
         if let colorString = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "color") as? String {
            color = Color(hex: colorString)
         } else {
-            color = .blue
+            color = .gray
         }
         
         let archivosYcolecciones = SistemaArchivosUtilidades.sau.contarArchivosYSubdirectorios(url: coleccionURL)
@@ -26,7 +26,7 @@ struct FabricaColeccion {
         let favorito = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "favorito") as? Bool ?? false
         let protegido = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "protegido") as? Bool ?? false
         
-        let coleccion = Coleccion(directoryName: coleccionNombre, directoryURL: coleccionURL, creationDate: creationDate, modificationDate: modificationDate, color: color, totalArchivos: totalArchivos, totalColecciones: totalColecciones, favorito: favorito, protegido: protegido)
+        let coleccion = Coleccion(directoryName: coleccionNombre, directoryURL: coleccionURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, color: color, totalArchivos: totalArchivos, totalColecciones: totalColecciones, favorito: favorito, protegido: protegido)
         
         return coleccion
     

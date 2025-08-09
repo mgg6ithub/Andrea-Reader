@@ -31,24 +31,24 @@ class Coleccion: ElementoSistemaArchivos {
     @State private var showIconAlert = false
     
     //--- CONSTRUCTOR DUMMY ---
-    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, favorito: Bool, protegido: Bool) {
+    init(directoryName: String, directoryURL: URL, fechaImportacion: Date, fechaModificacion: Date, favorito: Bool, protegido: Bool) {
         
-        self.color = .blue
+        self.color = .gray
         self.totalArchivos = 0
         self.totalColecciones = 0
         
-        super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate, favortio: favorito, protegido: protegido)
+        super.init(nombre: directoryName, url: directoryURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
     }
     
     //--- CONSTRUCTOR ---
-    init(directoryName: String, directoryURL: URL, creationDate: Date, modificationDate: Date, color: Color, totalArchivos: Int, totalColecciones: Int, favorito: Bool, protegido: Bool) {
+    init(directoryName: String, directoryURL: URL, fechaImportacion: Date, fechaModificacion: Date, color: Color, totalArchivos: Int, totalColecciones: Int, favorito: Bool, protegido: Bool) {
         
         self.color = color
         self.totalArchivos = totalArchivos
         self.totalColecciones = totalColecciones
         
-        super.init(nombre: directoryName, url: directoryURL, creationDate: creationDate, modificationDate: modificationDate, favortio: favorito, protegido: protegido)
+        super.init(nombre: directoryName, url: directoryURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
         if let tipoRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "tipoMiniatura") as? String,
            let tipo = EnumTipoMiniaturaColeccion(rawValue: tipoRaw) {

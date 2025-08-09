@@ -5,8 +5,6 @@ import SwiftUI
 struct MasInformacion: View {
     
     @EnvironmentObject var ap: AppEstado
-    
-    @ObservedObject var vm: ModeloColeccion
     @Binding var pantallaCompleta: Bool
     
     let elemento: any ElementoSistemaArchivosProtocolo
@@ -38,6 +36,10 @@ struct MasInformacion: View {
                     VStack(alignment: .center, spacing: 0) {
                         CabeceraMasInformacion(pantallaCompleta: $pantallaCompleta)
                             .aparicionBlur(show: $show)
+                        
+                        if let archivo = elemento as? Archivo {
+                            MasInformacionArchivo(archivo: archivo)
+                        }
                         
                         Spacer()
                     }

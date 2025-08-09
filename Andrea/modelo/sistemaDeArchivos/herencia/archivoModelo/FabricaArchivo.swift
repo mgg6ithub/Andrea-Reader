@@ -9,8 +9,8 @@ struct FactoryArchivo {
         
         let fileType = sau.getFileType(fileURL: fileURL)
         let fileSize = sau.getFileSize(fileURL: fileURL)
-        let creationDate = sau.getElementCreationDate(elementURL: fileURL)
-        let modificationDate = sau.getElementModificationDate(elementURL: fileURL)
+        let fechaImportacion = sau.getElementCreationDate(elementURL: fileURL)
+        let fechaModificacion = sau.getElementModificationDate(elementURL: fileURL)
         
         var archivo: Archivo
         
@@ -23,8 +23,8 @@ struct FactoryArchivo {
             archivo = TXTArchivo(
                 fileName: fileName,
                 fileURL: fileURL,
-                creationDate: creationDate,
-                modificationDate: modificationDate,
+                fechaImportacion: fechaImportacion,
+                fechaModificacion: fechaModificacion,
                 fileType: fileType,
                 fileExtension: fileURL.pathExtension,
                 fileSize: fileSize,
@@ -36,8 +36,8 @@ struct FactoryArchivo {
             archivo = CBRArchivo(
                 fileName: fileName,
                 fileURL: fileURL,
-                creationDate: creationDate,
-                modificationDate: modificationDate,
+                fechaImportacion: fechaImportacion,
+                fechaModificacion: fechaModificacion,
                 fileType: fileType,
                 fileExtension: fileURL.pathExtension,
                 fileSize: fileSize,
@@ -49,8 +49,8 @@ struct FactoryArchivo {
             archivo = CBZArchivo(
                 fileName: fileName,
                 fileURL: fileURL,
-                creationDate: creationDate,
-                modificationDate: modificationDate,
+                fechaImportacion: fechaImportacion,
+                fechaModificacion: fechaModificacion,
                 fileType: fileType,
                 fileExtension: fileURL.pathExtension,
                 fileSize: fileSize,
@@ -59,7 +59,7 @@ struct FactoryArchivo {
             )
             
 //        case .epub:
-//            archivo = EPUBArchivo(fileName: fileName, fileURL: fileURL, creationDate: creationDate, modificationDate: modificationDate, fileType: fileType.rawValue, fileExtension: fileURL.pathExtension, fileSize: fileSize)
+//            archivo = EPUBArchivo(fileName: fileName, fileURL: fileURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, fileType: fileType.rawValue, fileExtension: fileURL.pathExtension, fileSize: fileSize)
         
         default:
             return Archivo()

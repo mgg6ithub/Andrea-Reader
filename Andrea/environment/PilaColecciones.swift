@@ -203,8 +203,8 @@ class PilaColecciones: ObservableObject {
             ?? Coleccion(
                 directoryName: "Inicio",
                 directoryURL: homeURL,
-                creationDate: .now,
-                modificationDate: .now,
+                fechaImportacion: .now,
+                fechaModificacion: .now,
                 favorito: false,
                 protegido: false
             )

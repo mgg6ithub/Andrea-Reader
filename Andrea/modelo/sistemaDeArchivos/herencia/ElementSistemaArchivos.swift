@@ -9,10 +9,12 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
     var descripcion: String?
     var url: URL
     var relativeURL: String = "something"
-    var creationDate: Date
-    var modificationDate: Date
-    var firstTimeAccessedDate: Date?
-    var lastAccessDate: Date?
+    
+    var fechaImportacion: Date
+    var fechaModificacion: Date
+    var fechaPrimeraVez: Date?
+    var fechaUltimaVez: Date?
+    var vecesEntrado: Int = 0
     
     //Atributos avanzados
     @Published var favorito: Bool
@@ -24,22 +26,22 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
         self.descripcion = nil
         self.url = URL(fileURLWithPath: "/default/path")
         self.relativeURL = "something"
-        self.creationDate = Date()
-        self.modificationDate = Date()
-        self.firstTimeAccessedDate = nil
-        self.lastAccessDate = nil
+        self.fechaImportacion = Date()
+        self.fechaModificacion = Date()
+        self.fechaPrimeraVez = nil
+        self.fechaUltimaVez = nil
         self.favorito = false
         self.protegido = false
     }
     
-    init(nombre: String, url: URL, creationDate: Date, modificationDate: Date, favortio: Bool, protegido: Bool) {
+    init(nombre: String, url: URL, fechaImportacion: Date, fechaModificacion: Date, favortio: Bool, protegido: Bool) {
         
         self.id = UUID()
         self.nombre = nombre
         self.url = url
         self.relativeURL = ManipulacionCadenas().relativizeURL(elementURL: url)
-        self.creationDate = creationDate
-        self.modificationDate = modificationDate
+        self.fechaImportacion = fechaImportacion
+        self.fechaModificacion = fechaModificacion
         self.favorito = favortio
         self.protegido = protegido
         

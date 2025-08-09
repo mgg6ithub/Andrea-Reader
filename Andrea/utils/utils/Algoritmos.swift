@@ -65,11 +65,11 @@ struct Algoritmos {
 //            }
         case .fechaImportacion:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-                (a.creationDate ) < (b.creationDate )
+                (a.fechaImportacion ) < (b.fechaImportacion )
             }
         case .fechaModificacion:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-                (a.modificationDate ) < (b.modificationDate )
+                (a.fechaModificacion ) < (b.fechaModificacion )
             }
         case .personalizado:
             tempElementos = elementos

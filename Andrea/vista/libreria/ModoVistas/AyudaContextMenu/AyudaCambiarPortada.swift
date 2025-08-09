@@ -48,7 +48,7 @@ struct CambiarMiniaturaMenu: View {
                 Button {
                     cambiarMiniaturaColeccion?(.abanico)
                 } label: {
-                    Label("Bandeja", systemImage: "tray")
+                    Label("Abanico", systemImage: "rectangle.on.rectangle.angled")
                 }
                 
                 Menu {
