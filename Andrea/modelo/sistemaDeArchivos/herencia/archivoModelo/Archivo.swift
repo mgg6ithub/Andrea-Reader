@@ -30,6 +30,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     @Published var entidadEscaneo: String?
     @Published var fechaPublicacion: String?
     
+    var puntuacion: Int = 0
     var idioma: EnumIdiomas = .castellano
     var genero: String = ""
     

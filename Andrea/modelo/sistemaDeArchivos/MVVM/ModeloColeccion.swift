@@ -24,6 +24,10 @@ class ModeloColeccion: ObservableObject {
   @Published var elementosCargados: Bool = false
     
   @Published var isPerformingAutoScroll = false
+    
+    
+    //MARK: - CONSTRUCTOR VACIO
+    //crear un constrcutor por defecto con valores nulos para crear una instancia de ModeloColeccion vacia para tests
 
     init(_ coleccion: Coleccion) {
         self.coleccion = coleccion

@@ -73,7 +73,7 @@ struct MasInformacionArchivo: View {
                             
                             EstadisticasAvanzadas(opacidad: opacidad, isSmall: isSmall)
                             
-                            InfoAvanzadaArchivoView(archivo: archivo, dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
+                            InfoAvanzadaArchivoView(archivo: archivo, vm: vm, dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
                             
                         }
                         .padding(.top, 15)
@@ -97,7 +97,7 @@ struct MasInformacionArchivo: View {
                         EstadisticasAvanzadas(opacidad: opacidad, isSmall: isSmall)
                             .padding(.top, 25)
                         
-                        InfoAvanzadaArchivoView(archivo: archivo, dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
+                        InfoAvanzadaArchivoView(archivo: archivo, vm: vm, dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
                             .padding(.top, 25)
                         
                     }
@@ -424,6 +424,7 @@ struct InfoAvanzadaArchivoView: View {
     
     // --- PARAMETROS ---
     @ObservedObject var archivo: Archivo
+    @ObservedObject var vm: ModeloColeccion
     var dimensiones: String
     var resolucion: String
     var peso: String
@@ -433,8 +434,6 @@ struct InfoAvanzadaArchivoView: View {
     var idUnico: String
     
     let opacidad: CGFloat
-    
-//    @State private var show: Bool = true
     
     var body: some View {
         
@@ -453,13 +452,13 @@ struct InfoAvanzadaArchivoView: View {
                     .font(.headline)
                     .padding(.bottom, 5)
                 
-                GrupoDatoAvanzado(nombre: "Pertenece a la colección", valor: "test")
+                GrupoDatoAvanzado(nombre: "Pertenece a la colección", valor: vm.coleccion.nombre)
                 GrupoDatoAvanzado(nombre: "Numero de la colección", valor: "\(archivo.numeroDeLaColeccion ?? 0)")
                 GrupoDatoAvanzado(nombre: "Nombre original", valor:  archivo.nombreOriginal ?? "desconocido")
                 GrupoDatoAvanzado(nombre: "Extensión", valor: "cbr")
-                GrupoDatoAvanzado(nombre: "Formato", valor: "Commic book rar")
-                GrupoDatoAvanzado(nombre: "Ruta absoluta", valor: "var/app/data/nombre")
-                GrupoDatoAvanzado(nombre: "Ruta relativa", valor: "data/nombre")
+                GrupoDatoAvanzado(nombre: "Formato", valor: EnumDescripcionArchivo.descripcion(for: archivo.fileType))
+                GrupoDatoAvanzado(nombre: "Ruta absoluta", valor: "\(archivo.url)")
+                GrupoDatoAvanzado(nombre: "Ruta relativa", valor: "\(archivo.relativeURL)")
                 GrupoDatoAvanzado(nombre: "Editorial", valor: "Marvel")
                 GrupoDatoAvanzado(nombre: "Formato de escaneo", valor: archivo.formatoEscaneo ?? "desconocido")
                 GrupoDatoAvanzado(nombre: "Entidad del escaneador", valor: archivo.entidadEscaneo ?? "desconocido")
@@ -479,24 +478,45 @@ struct InfoAvanzadaArchivoView: View {
             }
             .padding()
         }
-//        .aparicionBlur(show: $show)
     }
 }
 
+
 struct GrupoDatoAvanzado: View {
     let nombre: String
-    let valor: String
-    
+    @State var valor: String
+    @State private var editando = false
+
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             Text(nombre)
                 .foregroundColor(.secondary)
+
             Spacer()
-            Text(valor)
-                .bold()
+
+            if editando {
+                TextField("", text: $valor, onCommit: {
+                    print("Nuevo valor: \(valor)")
+                    editando = false
+                })
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: 200, alignment: .trailing)
+            } else {
+                Text(valor)
+                    .multilineTextAlignment(.trailing)
+                    .minimumScaleFactor(0.5)
+                    .lineLimit(5)
+                    .onTapGesture {
+                        editando = true
+                    }
+            }
         }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 6)
     }
 }
+
 
 
 struct AccionesRapidasView: View {
@@ -560,6 +580,8 @@ struct BotonAccion: View {
     let c2: Color
     let action: () -> Void
     
+    @State private var show: Bool = false
+    
     init(
         icono: String,
         titulo: String,
@@ -597,6 +619,7 @@ struct BotonAccion: View {
                                     .foregroundColor(color)
                             }
                         }
+                        .aparicionStiffness(show: $show)
                     )
                 Text(titulo)
                     .font(.subheadline)
@@ -618,8 +641,6 @@ struct ProgresoLecturaView: View {
     
     let opacidad: CGFloat
     let isSmall: Bool
-    
-//    @State private var show: Bool = true
     
     var body: some View {
         ZStack {
@@ -661,16 +682,16 @@ struct ProgresoLecturaView: View {
             }
             .padding()
         }
-//        .aparicionBlur(show: $show)
         .frame(height: 160)
     }
 }
 
 struct ProgresoCircular: View {
+    
     var valor: Double // 0.0 a 1.0
     var color: Color
     
-    @State private var show: Bool = true
+    @State private var show: Bool = false
     
     var body: some View {
         ZStack {
@@ -689,9 +710,10 @@ struct ProgresoCircular: View {
             Text("\(Int(valor * 100))%")
                 .font(.headline)
         }
-        .aparicionBlur(show: $show)
+        .aparicionStiffness(show: $show)
         .frame(width: 60, height: 60)
     }
+    
 }
 
 
