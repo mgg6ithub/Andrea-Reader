@@ -73,7 +73,7 @@ struct MasInformacionArchivo: View {
                             
                             EstadisticasAvanzadas(opacidad: opacidad, isSmall: isSmall)
                             
-                            InfoAvanzadaArchivoView(dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
+                            InfoAvanzadaArchivoView(archivo: archivo, dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
                             
                         }
                         .padding(.top, 15)
@@ -97,7 +97,7 @@ struct MasInformacionArchivo: View {
                         EstadisticasAvanzadas(opacidad: opacidad, isSmall: isSmall)
                             .padding(.top, 25)
                         
-                        InfoAvanzadaArchivoView(dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
+                        InfoAvanzadaArchivoView(archivo: archivo, dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
                             .padding(.top, 25)
                         
                     }
@@ -166,24 +166,24 @@ struct MiniaturaEinformacion: View {
                     if isSmall {
                         VStack(alignment: .center) {
                             HStack(spacing: isSmall ? 25 : 50) {
-                                RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.totalPaginas))", icono: "book.pages", color: .blue)
-                                RectanguloDato(nombre: "Tamaño", dato: "\(String(describing: archivo.fileSize)) MB", icono: "externaldrive", color: .red)
+                                RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.totalPaginas ?? 0))", icono: "book.pages", color: .blue)
+                                RectanguloDato(nombre: "Tamaño", dato: ManipulacionSizes().formatearSize(archivo.fileSize), icono: "externaldrive", color: .red)
                             }
                             
                             HStack(spacing: isSmall ? 25 : 50) {
-                                RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileSize)) MB", icono: "books.vertical", color: .purple)
+                                RectanguloDato(nombre: "Extensión", dato: ManipulacionSizes().formatearSize(archivo.fileSize), icono: "books.vertical", color: .purple)
                                 RectanguloDato(nombre: "Género", dato: "Fantasía", icono: "theatermasks", color: .green)
                             }
                             
                             HStack(spacing: isSmall ? 25 : 50) {
                                 RectanguloDato(nombre: "Idioma", dato: "Español", icono: "globe", color: .orange)
-                                RectanguloDato(nombre: "Publicado", dato: "2024", icono: "calendar", color: .pink)
+                                RectanguloDato(nombre: "Publicado", dato: archivo.fechaPublicacion ?? "desconocido", icono: "calendar", color: .pink)
                             }
                         }
                     } else {
                         HStack(spacing: 50) {
-                            RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.totalPaginas))", icono: "book.pages", color: .blue)
-                            RectanguloDato(nombre: "Tamaño", dato: "\(String(describing: archivo.fileSize)) MB", icono: "externaldrive", color: .red)
+                            RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.totalPaginas ?? 0))", icono: "book.pages", color: .blue)
+                            RectanguloDato(nombre: "Tamaño", dato: ManipulacionSizes().formatearSize(archivo.fileSize), icono: "externaldrive", color: .red)
                             RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileExtension))", icono: "books.vertical", color: .purple)
                         }
                         .padding(.bottom, 15)
@@ -191,7 +191,7 @@ struct MiniaturaEinformacion: View {
                         HStack(spacing: 50) {
                             RectanguloDato(nombre: "Género", dato: "Fantasía", icono: "theatermasks", color: .green)
                             RectanguloDato(nombre: "Idioma", dato: "Español", icono: "globe", color: .orange)
-                            RectanguloDato(nombre: "Publicado", dato: "2024", icono: "calendar", color: .pink)
+                            RectanguloDato(nombre: "Publicado", dato: archivo.fechaPublicacion ?? "desconocido", icono: "calendar", color: .pink)
                         }
                     }
                     
@@ -418,6 +418,9 @@ struct RectanguloEstadisticaAvanzada: View {
 
 
 struct InfoAvanzadaArchivoView: View {
+    
+    // --- PARAMETROS ---
+    @ObservedObject var archivo: Archivo
     var dimensiones: String
     var resolucion: String
     var peso: String
@@ -448,15 +451,15 @@ struct InfoAvanzadaArchivoView: View {
                     .padding(.bottom, 5)
                 
                 GrupoDatoAvanzado(nombre: "Pertenece a la colección", valor: "test")
-                GrupoDatoAvanzado(nombre: "Numero de la colección", valor: "13")
-                GrupoDatoAvanzado(nombre: "Nombre original", valor: "nombre")
+                GrupoDatoAvanzado(nombre: "Numero de la colección", valor: "\(archivo.numeroDeLaColeccion ?? 0)")
+                GrupoDatoAvanzado(nombre: "Nombre original", valor:  archivo.nombreOriginal ?? "desconocido")
                 GrupoDatoAvanzado(nombre: "Extensión", valor: "cbr")
                 GrupoDatoAvanzado(nombre: "Formato", valor: "Commic book rar")
                 GrupoDatoAvanzado(nombre: "Ruta absoluta", valor: "var/app/data/nombre")
                 GrupoDatoAvanzado(nombre: "Ruta relativa", valor: "data/nombre")
                 GrupoDatoAvanzado(nombre: "Editorial", valor: "Marvel")
-                GrupoDatoAvanzado(nombre: "Formato de escaneo", valor: "random")
-                GrupoDatoAvanzado(nombre: "Entidad del escaneador", valor: "random Random")
+                GrupoDatoAvanzado(nombre: "Formato de escaneo", valor: archivo.formatoEscaneo ?? "desconocido")
+                GrupoDatoAvanzado(nombre: "Entidad del escaneador", valor: archivo.entidadEscaneo ?? "desconocido")
                 GrupoDatoAvanzado(nombre: "Dimensiones portada", valor: dimensiones)
                 GrupoDatoAvanzado(nombre: "Resolución", valor: resolucion)
                 GrupoDatoAvanzado(nombre: "Peso", valor: peso)
@@ -631,6 +634,8 @@ struct ProgresoCircular: View {
     var valor: Double // 0.0 a 1.0
     var color: Color
     
+    @State private var show: Bool = true
+    
     var body: some View {
         ZStack {
             Circle()
@@ -648,6 +653,7 @@ struct ProgresoCircular: View {
             Text("\(Int(valor * 100))%")
                 .font(.headline)
         }
+        .aparicionBlur(show: $show)
         .frame(width: 60, height: 60)
     }
 }

@@ -33,7 +33,7 @@ struct ManipulacionCadenas {
         return name + "." + ext
     }
     
-    public func removeExtensionFromString(name: String) -> String {
+    public func eliminarExtension(name: String) -> String {
         
         if let lastDotIndex = name.lastIndex(of: ".") {
             return String(name[..<lastDotIndex]) // Devuelve la parte antes del punto
@@ -51,7 +51,7 @@ struct ManipulacionCadenas {
     public func handleDuplicateElement(elementURL: URL, directoryURL: URL) -> String {
         
         let elementExtension = elementURL.pathExtension
-        var newName = ManipulacionCadenas().removeExtensionFromString(name: elementURL.lastPathComponent)
+        var newName = ManipulacionCadenas().eliminarExtension(name: elementURL.lastPathComponent)
         
         if self.extractNumberFromString(newName) != nil {
             newName = self.deleteDuplicateNumberFromString(newName)
@@ -190,7 +190,6 @@ struct ManipulacionCadenas {
     public func borrarURLLOCAL(url: URL) -> String {
         
         let homeURL = sau.home.deletingLastPathComponent().path
-        
         return self.normalizarURL(url).path.replacingOccurrences(of: homeURL, with: "").trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         
     }
@@ -202,18 +201,18 @@ struct ManipulacionCadenas {
     }
     
     /// Extrae si el archivo tiene una etiqueta de formato (ej: "digital")
-    func extractFormat(from text: String) -> String? {
+    func extraerFormatoEscaneo(from text: String) -> String? {
         let pattern = #"\((digital|Digital|scan|HD|4K|remastered|Webrip)\)"#  // Ajustable para más formatos
         return extractFirstMatch(from: text, pattern: pattern)
     }
     
     /// Extrae la entidad (último elemento entre paréntesis)
-    func extractEntity(from text: String) -> String? {
-        let pattern = #"\(([^()]+)\)$"#  // Último paréntesis con contenido
+    func extraerEntidad(from text: String) -> String? {
+        let pattern = #"\(([^()]+)\)(?:\.[^.]+)?$"#  // Último paréntesis con contenido
         return extractFirstMatch(from: text, pattern: pattern)
     }
     
-    func extractIssueNumber(from text: String) -> Int? {
+    func extraerNumeroDeLaColeccion(from text: String) -> Int? {
         // Expresión regular para capturar un número al final del nombre antes de los paréntesis (con ceros a la izquierda permitidos) o solo el número al final
         let pattern = #"\s*(\d{1,3})(?=\s?\(|\s*$)"#  // Captura un número seguido de un paréntesis o el final de la cadena
 

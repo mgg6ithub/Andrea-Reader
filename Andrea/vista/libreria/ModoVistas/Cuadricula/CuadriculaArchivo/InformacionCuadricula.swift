@@ -8,7 +8,7 @@ struct InformacionCuadricula: View, Equatable {
     
     let nombre: String
     let tipo: String
-    let tamanioMB: Int
+    let tamanioMB: String
     let totalPaginas: Int?
     let progreso: Int
     let coleccionColor: Color
@@ -51,7 +51,7 @@ struct InformacionCuadricula: View, Equatable {
 
                 Spacer()
 
-                Text("\(tamanioMB) MB")
+                Text("\(tamanioMB)")
                     .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.80))
                     .foregroundColor(.gray)
                     .lineLimit(1)

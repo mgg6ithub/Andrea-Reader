@@ -170,7 +170,7 @@ struct CuadriculaArchivo: View {
             InformacionCuadricula(
                 nombre: archivo.nombre,
                 tipo: archivo.fileType.rawValue,
-                tamanioMB: archivo.fileSize / (1024*1024),
+                tamanioMB: ManipulacionSizes().formatearSize(archivo.fileSize),
                 totalPaginas: archivo.totalPaginas,
                 progreso: archivo.progreso,
                 coleccionColor: coleccionVM.color,

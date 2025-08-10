@@ -1,9 +1,4 @@
-//
-//  PersistenciaDatos.swift
-//  Andrea
-//
-//  Created by mgg on 2/7/25.
-//
+
 
 import SwiftUI
 
@@ -44,7 +39,11 @@ struct PersistenciaDatos {
     
     //MARK: --- ARCHIVO ---
     public func guardarDatoElemento(url: URL, atributo: String, valor: Any) {
+        
         let key = obtenerKey(url)
+        
+        print("Guardando con la key -> \(key)")
+        
         var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
 
         if let valor = valor as? Int {
@@ -63,7 +62,7 @@ struct PersistenciaDatos {
             print("⚠️ Tipo no soportado para persistencia en elemento: \(type(of: valor))")
             return
         }
-
+        
         UserDefaults.standard.set(dict, forKey: key)
     }
 
@@ -84,7 +83,9 @@ struct PersistenciaDatos {
 
     // MARK: - Obtener un atributo específico
     public func obtenerAtributoConcreto(url: URL, atributo: String) -> Any? {
+        
         let key = obtenerKey(url)
+        
         guard let dict = UserDefaults.standard.dictionary(forKey: key) else { return nil }
         return dict[atributo]
     }

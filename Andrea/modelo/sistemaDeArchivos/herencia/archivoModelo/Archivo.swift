@@ -22,13 +22,13 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     var isExecutable: Bool
     
     //ATRIBUTOS EXTRAIDOS DEL ARCHIVO
-    var nombreOriginal: String?
+    @Published var nombreOriginal: String?
     var perteneceAcoleccion: String?
     var numeroDeLaColeccion: Int?
     
-    var formatoEscaneo: String?
-    var fuenteEscaneo: String?
-    var fechaPublicacion: Date?
+    @Published var formatoEscaneo: String?
+    @Published var entidadEscaneo: String?
+    @Published var fechaPublicacion: String?
     
     var idioma: EnumIdiomas = .castellano
     var genero: String = ""
@@ -90,6 +90,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         super.init()
     }
     
+    
     init(fileName: String, fileURL: URL, fechaImportacion: Date, fechaModificacion: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int, favorito: Bool, protegido: Bool) {
             
         self.fileType = fileType
@@ -122,7 +123,33 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
     }
     
+    
+    private func cargarOAveriguar<T>(
+        atributo: String,
+        tipo: T.Type,
+        desde url: URL,
+        extractor: () -> T?
+    ) -> T? {
+        if let valor = PersistenciaDatos().obtenerAtributoConcreto(url: url, atributo: atributo) as? T {
+            return valor
+        }
+        return extractor()
+    }
+
+    
     func inicializarValoresEstadisticos() {
+        
+        print("Inicializando datos para la prueba")
+        print()
+        
+        //CADENAS
+        print("Inicializando datos para la prueba\n")
+        self.nombreOriginal = cargarOAveriguar(atributo: "nombreOriginal", tipo: String.self, desde: self.url) { nil }
+        self.fechaPublicacion = cargarOAveriguar(atributo: "fechaPublicacion", tipo: String.self, desde: self.url) { self.nombreOriginal.flatMap { Fechas().extraerAno(from: $0) } }
+        self.formatoEscaneo = cargarOAveriguar(atributo: "formatoEscaneo", tipo: String.self, desde: self.url) { self.nombreOriginal.flatMap { ManipulacionCadenas().extraerFormatoEscaneo(from: $0) } }
+        self.entidadEscaneo = cargarOAveriguar(atributo: "entidadEscaneo", tipo: String.self, desde: self.url) { self.nombreOriginal.flatMap { ManipulacionCadenas().extraerEntidad(from: $0) } }
+        self.numeroDeLaColeccion = cargarOAveriguar(atributo: "numeroDeLaColeccion", tipo: Int.self, desde: self.url) { self.nombreOriginal.flatMap { ManipulacionCadenas().extraerNumeroDeLaColeccion(from: $0) } }
+        
         // TIEMPOS
         tiempoTotal = 0
         tiempoPorPagina = 0

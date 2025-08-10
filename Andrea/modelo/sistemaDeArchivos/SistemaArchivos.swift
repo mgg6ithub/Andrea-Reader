@@ -393,15 +393,16 @@ class SistemaArchivos: ObservableObject {
         
         fileQueue.async {
             
-            print("importando archivo")
-            print(archivoURL.lastPathComponent)
-            print()
             // 1. Obtenenmos el nombre de la url
             let nombreArchivo: String = archivoURL.lastPathComponent
             // 2. Verificamos si se ha pasado un destino concreto. Si no se creara en la colecciona actual.
             let coleccionDestinoURL = coleccionDestino ?? self.homeURL
             // 3. Construimos la nueva URL
             let nuevoArchivoURL = coleccionDestinoURL.appendingPathComponent(nombreArchivo)
+            
+            // --- AL IMPORTAR UN ARCHIVO SE CREAR ---
+            // guardamos su nombre original al importar
+            PersistenciaDatos().guardarDatoElemento(url: nuevoArchivoURL, atributo: "nombreOriginal", valor: nombreArchivo)
             
             // --- Agregamos el archivo a la carpeta Andrea para la persistencia ---
             if !self.sau.fileExists(elementURL: nuevoArchivoURL) {

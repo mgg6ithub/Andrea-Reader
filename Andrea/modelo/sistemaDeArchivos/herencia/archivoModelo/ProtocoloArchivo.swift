@@ -23,11 +23,6 @@ protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     var idioma: EnumIdiomas { get set }
     var genero: String { get set }
     
-    var formatoEscaneo: String? { get set }
-    var fuenteEscaneo: String? { get set}
-    
-    var fechaPublicacion: Date? { get set }
-    
     func viewContent() -> AnyView
     
     func getTotalPages() -> Int
