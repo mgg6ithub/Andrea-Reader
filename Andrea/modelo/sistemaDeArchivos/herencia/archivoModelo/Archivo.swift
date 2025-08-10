@@ -1,13 +1,6 @@
 
 import SwiftUI
 
-//#Preview {
-//    MasInformacionArchivo()
-////        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-////        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180)) // Mock o real
-//}
-
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     

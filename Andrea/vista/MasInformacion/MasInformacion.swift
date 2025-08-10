@@ -2,6 +2,30 @@
 
 import SwiftUI
 
+#Preview {
+    PreviewMasInformacion()
+}
+
+private struct PreviewMasInformacion: View {
+    @State private var pantallaCompleta = false
+    
+    private let archivo = Archivo()
+    
+    var body: some View {
+        MasInformacion(
+            pantallaCompleta: $pantallaCompleta,
+            elemento: archivo
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // iphone s3
+//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // iphone 15
+//                .environmentObject(AppEstado(screenWidth: 744, screenHeight: 1133)) //ipad mini    
+//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180)) //ipad 10 gen
+                .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)) //ipad 11 Pro
+//                .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366)) //ipad 12 12.92
+        
+    }
+}
+
 struct MasInformacion: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -32,13 +56,19 @@ struct MasInformacion: View {
                 let cWSmall: CGFloat = cW * 0.8
                 let cHSmall: CGFloat = cH * 0.8
                 
+                let escala: CGFloat = pantallaCompleta ? 1.0 : 0.8
+                
                 VStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .center, spacing: 0) {
                         CabeceraMasInformacion(pantallaCompleta: $pantallaCompleta)
                             .aparicionBlur(show: $show)
+//                            .border(.green)
                         
                         if let archivo = elemento as? Archivo {
-                            MasInformacionArchivo(archivo: archivo)
+                            MasInformacionArchivo(archivo: archivo, pantallaCompleta: $pantallaCompleta)
+                                .scaleEffect(escala)
+                                .padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
+//                                .border(.red)
                         }
                         
                         Spacer()

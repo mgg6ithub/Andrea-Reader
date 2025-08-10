@@ -2,6 +2,26 @@
 
 import SwiftUI
 
+//#Preview {
+//    PreviewMasInformacion()
+//}
+//
+//private struct PreviewMasInformacion: View {
+//    @State private var pantallaCompleta = false
+//
+//    private let archivo = Archivo()
+//
+//    var body: some View {
+//        MasInformacion(
+//            pantallaCompleta: $pantallaCompleta,
+//            elemento: archivo
+//        )
+////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+////        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//    }
+//}
+
 struct CabeceraMasInformacion: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -21,7 +41,7 @@ struct CabeceraMasInformacion: View {
                 withAnimation(.easeInOut(duration: 0.25)) { ap.masInformacion = false }
             }) {
                 Image(systemName: "xmark.square.fill")
-                    .font(.system(size: constantes.iconSize * 1.5))
+                    .font(.system(size: ap.constantes.iconSize * 1.5))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(cDinamico, Color.red)
                     .padding(padding)
@@ -31,8 +51,9 @@ struct CabeceraMasInformacion: View {
             Spacer()
                                     
             Text("Información y ajustes")
-                .font(.system(size: 30))
+                .font(.system(size: ap.constantes.titleSize))
                 .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .padding()
             
@@ -45,6 +66,7 @@ struct CabeceraMasInformacion: View {
                 HStack {
                                                         
                     Text(pantallaCompleta ? "Salir de Fullscreen" : "Fullscreen")
+                        .font(.system(size: ap.constantes.subTitleSize * 0.9))
                         .foregroundColor(cDinamico)
                     
                     Divider()
@@ -53,7 +75,7 @@ struct CabeceraMasInformacion: View {
                        .clipShape(RoundedRectangle(cornerRadius: 40))
                     
                     Image(systemName: pantallaCompleta ? "square.resize.down" : "square.resize.up")
-                        .font(.system(size: constantes.iconSize * 0.9))
+                        .font(.system(size: ap.constantes.iconSize * 0.9))
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(cDinamico)
                         .animation(nil, value: pantallaCompleta)
@@ -65,6 +87,7 @@ struct CabeceraMasInformacion: View {
                 
             }
         }
-        .padding(padding)
+        .padding(.horizontal, padding)
+        .padding(.top, padding)
     }
 }

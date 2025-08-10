@@ -1,41 +1,82 @@
 
 import SwiftUI
 
-//#Preview {
-//    MasInformacionArchivo()
-////        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-////        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180)) // Mock o real
-//}
+#Preview {
+    PreviewMasInformacion()
+}
+
+private struct PreviewMasInformacion: View {
+    @State private var pantallaCompleta = false
+    
+    private let archivo = Archivo()
+    
+    var body: some View {
+        MasInformacion(
+            pantallaCompleta: $pantallaCompleta,
+            elemento: archivo
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+    }
+}
 
 struct MasInformacionArchivo: View {
+    
+    @EnvironmentObject var ap: AppEstado
     
     // --- PARAMETROS ---
     @ObservedObject var archivo: Archivo
     
     // --- ESTADO ---
-    @State private var pantallaCompleta: Bool = false
-    @State private var small: Bool = false
+    @Binding var pantallaCompleta: Bool
     
     private let opacidad: CGFloat = 0.15
+    
+    private var isSmall: Bool { ap.resolucionLogica == .small }
     
     var body: some View {
         
         VStack(alignment: .center, spacing: 0) {
             ScrollView(.vertical) {
                 VStack(alignment: .center, spacing: 0) {
-                    if !small {
+                    if !isSmall {
                         HStack(spacing: 15) {
-                            MiniaturaEinformacion(opacidad: opacidad)
+                            MiniaturaEinformacion(opacidad: opacidad, isSmall: isSmall)
                         }
                     } else {
                         VStack(alignment: .center, spacing: 20) {
-                            MiniaturaEinformacion(opacidad: opacidad)
+                            MiniaturaEinformacion(opacidad: opacidad, isSmall: isSmall)
                         }
                     }
                     
-                    HStack(spacing: 15) {
-                        //PROGRESO DE LECTURA AQUI
+                    if !isSmall {
+                        HStack(spacing: 15) {
+                            ProgresoLecturaView(
+                                   completado: 0.70,
+                                   tiempo: 0.36,
+                                   paginasLeidas: 89,
+                                   paginasTotales: 128,
+                                   horasLeidas: 3,
+                                   minutosLeidos: 0,
+                                   opacidad: opacidad,
+                                   isSmall: isSmall
+                               )
+                        
+                        AccionesRapidasView(opacidad: opacidad, isSmall: isSmall)
+                        }
+                        .padding(.top, 15)
+                        
+                        HStack(spacing: 15) {
+                            
+                            EstadisticasAvanzadas(opacidad: opacidad, isSmall: isSmall)
+                            
+                            InfoAvanzadaArchivoView(dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
+                            
+                        }
+                        .padding(.top, 15)
+                        
+                    } else {
                         ProgresoLecturaView(
                                completado: 0.70,
                                tiempo: 0.36,
@@ -43,20 +84,21 @@ struct MasInformacionArchivo: View {
                                paginasTotales: 128,
                                horasLeidas: 3,
                                minutosLeidos: 0,
-                               opacidad: opacidad
+                               opacidad: opacidad,
+                               isSmall: isSmall
                            )
-                        
-                        AccionesRapidasView(opacidad: opacidad)
-                    }
-                    .padding(.top, 15)
+                        .padding(.top, 25)
                     
-                    HStack(spacing: 15) {
-                        
-                        EstadisticasAvanzadas(opacidad: opacidad)
+                        AccionesRapidasView(opacidad: opacidad, isSmall: isSmall)
+                            .padding(.top, 25)
+                            
+                        EstadisticasAvanzadas(opacidad: opacidad, isSmall: isSmall)
+                            .padding(.top, 25)
                         
                         InfoAvanzadaArchivoView(dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
+                            .padding(.top, 25)
+                        
                     }
-                    .padding(.top, 15)
                 }
                 .padding(.leading, 15)
                 .padding(.trailing, 15)
@@ -68,9 +110,166 @@ struct MasInformacionArchivo: View {
     }
 }
 
+struct MiniaturaEinformacion: View {
+    var puntuacion: Double = 5.0 // puedes cambiar este valor
+    
+    let opacidad: CGFloat
+    let isSmall: Bool
+
+    var body: some View {
+            Image("ojo")
+                .resizable()
+                .frame(width: 230, height: 330)
+                .cornerRadius(18)
+            
+            ZStack(alignment: .top) {
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(Color.gray.opacity(opacidad))
+                    .frame(height: isSmall ? 330 * 1.5 : 330)
+                    .overlay(
+                            RoundedRectangle(cornerRadius: 25)
+                                .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
+                        )
+                    .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
+                    .zIndex(0)
+                
+                VStack(alignment: .center, spacing: 8) { // ahora leading
+                    if !isSmall {
+                        HStack(alignment: .top, spacing: 30) { // alinear por arriba
+                            TituloDescripcion(isSmall: isSmall)
+                        }
+                    }
+                    else {
+                        VStack(alignment: .center, spacing: 15) {
+                            TituloDescripcion(isSmall: isSmall)
+                        }
+                    }
+                    
+                    Divider()
+                        .padding(.vertical, 10)
+                    
+                    if isSmall {
+                        VStack(alignment: .center) {
+                            HStack(spacing: isSmall ? 25 : 50) {
+                                RectanguloDato(nombre: "Páginas", dato: "32", icono: "book.pages", color: .blue)
+                                RectanguloDato(nombre: "Tamaño", dato: "2.65 MB", icono: "externaldrive", color: .red)
+                            }
+                            
+                            HStack(spacing: isSmall ? 25 : 50) {
+                                RectanguloDato(nombre: "Extensión", dato: "cbz", icono: "books.vertical", color: .purple)
+                                RectanguloDato(nombre: "Género", dato: "Fantasía", icono: "theatermasks", color: .green)
+                            }
+                            
+                            HStack(spacing: isSmall ? 25 : 50) {
+                                RectanguloDato(nombre: "Idioma", dato: "Español", icono: "globe", color: .orange)
+                                RectanguloDato(nombre: "Publicado", dato: "2024", icono: "calendar", color: .pink)
+                            }
+                        }
+                    } else {
+                        HStack(spacing: 50) {
+                            RectanguloDato(nombre: "Páginas", dato: "32", icono: "book.pages", color: .blue)
+                            RectanguloDato(nombre: "Tamaño", dato: "2.65 MB", icono: "externaldrive", color: .red)
+                            RectanguloDato(nombre: "Extensión", dato: "cbz", icono: "books.vertical", color: .purple)
+                        }
+                        .padding(.bottom, 15)
+
+                        HStack(spacing: 50) {
+                            RectanguloDato(nombre: "Género", dato: "Fantasía", icono: "theatermasks", color: .green)
+                            RectanguloDato(nombre: "Idioma", dato: "Español", icono: "globe", color: .orange)
+                            RectanguloDato(nombre: "Publicado", dato: "2024", icono: "calendar", color: .pink)
+                        }
+                    }
+                    
+                }
+                .padding(15)
+            }
+    }
+}
+
+struct TituloDescripcion: View {
+    
+    var puntuacion: Double = 5.0 // puedes cambiar este valor
+    let isSmall: Bool
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: 8) { // ahora leading
+            Text("HELLBOY")
+                .font(.headline)
+                .bold()
+            Text("por autor")
+                .font(.subheadline)
+            
+            // Sistema de puntuación
+            HStack(spacing: 4) {
+                ForEach(0..<5, id: \.self) { index in
+                    Image(systemName: index < Int(puntuacion) ? "star.fill" : "star")
+                        .foregroundColor(.yellow)
+                }
+                Text(String(format: "%.1f", puntuacion))
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal, 10)
+        }
+        
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Descripción")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            Text("He creado una librería completamente modernizada He creado una librería completamente modernizada. He creado una librería completamente modernizada. He creado una librería completamente modernizada. He creado una librería completamente modernizada.")
+                .font(.caption)
+                .minimumScaleFactor(0.6)
+                .lineLimit(3)
+        }
+    }
+}
+
+struct RectanguloDato: View {
+    
+    let nombre: String
+    let dato: String
+    let icono: String
+    let color: Color
+    
+    var ancho: CGFloat { 120 }
+    var alto: CGFloat { 80 }
+     
+    let opacidad: CGFloat = 0.1
+    
+    var body: some View {
+        ZStack(alignment: .center) {
+            
+            RoundedRectangle(cornerRadius: 10)
+                .fill(color.opacity(opacidad))
+                .frame(width: ancho, height: alto)
+                .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
+                .zIndex(0)
+            
+            VStack(alignment: .center, spacing: 10) {
+                HStack(spacing: 10) {
+                    Image(systemName: icono)
+                        .foregroundColor(color)
+                    
+                    Text(nombre)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                .zIndex(1)
+                
+                Text(dato)
+                    .font(.subheadline)
+                    .bold()
+            }
+            
+        }
+    }
+}
+
 struct EstadisticasAvanzadas: View {
     
     let opacidad: CGFloat
+    let isSmall: Bool
     
     var body: some View {
         
@@ -137,7 +336,7 @@ struct EstadisticasAvanzadas: View {
             .padding(15)
             .padding(.horizontal, 15)
         }
-        .frame(width: 330)
+        .frame(width: isSmall ? nil : 330)
         
     }
 }
@@ -267,12 +466,13 @@ struct GrupoDatoAvanzado: View {
 struct AccionesRapidasView: View {
     
     let opacidad: CGFloat
+    let isSmall: Bool
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.gray.opacity(opacidad))
-                .frame(height: 170)
+                .frame(height: isSmall ? nil : 170)
                 .overlay(
                         RoundedRectangle(cornerRadius: 25)
                             .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
@@ -285,12 +485,27 @@ struct AccionesRapidasView: View {
                     .font(.headline)
                     .padding(.bottom, 5)
                 
-                HStack(spacing: 15) {
-                    BotonAccion(icono: "arrow.right.arrow.left", titulo: "Mover", color: .blue)
-                    BotonAccion(icono: "doc.on.doc", titulo: "Copiar", color: .green)
-                    BotonAccion(icono: "trash", titulo: "Eliminar", color: .red)
-                    BotonAccion(icono: "square.and.arrow.up", titulo: "Compartir", color: .orange)
+                if isSmall {
+                    VStack(alignment: .center, spacing: 30) {
+                        HStack(spacing: 40) {
+                            BotonAccion(icono: "arrow.right.arrow.left", titulo: "Mover", color: .blue)
+                            BotonAccion(icono: "doc.on.doc", titulo: "Copiar", color: .green)
+                        }
+                        
+                        HStack(spacing: 40) {
+                            BotonAccion(icono: "trash", titulo: "Eliminar", color: .red)
+                            BotonAccion(icono: "square.and.arrow.up", titulo: "Compartir", color: .orange)
+                        }
+                    }
+                } else {
+                    HStack(spacing: 15) {
+                        BotonAccion(icono: "arrow.right.arrow.left", titulo: "Mover", color: .blue)
+                        BotonAccion(icono: "doc.on.doc", titulo: "Copiar", color: .green)
+                        BotonAccion(icono: "trash", titulo: "Eliminar", color: .red)
+                        BotonAccion(icono: "square.and.arrow.up", titulo: "Compartir", color: .orange)
+                    }
                 }
+                
             }
             .padding()
         }
@@ -330,12 +545,13 @@ struct ProgresoLecturaView: View {
     var minutosLeidos: Int
     
     let opacidad: CGFloat
+    let isSmall: Bool
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.gray.opacity(opacidad))
-                .frame(width: 330)
+                .frame(width: isSmall ? nil : 330)
                 .overlay(
                         RoundedRectangle(cornerRadius: 25)
                             .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
@@ -397,129 +613,6 @@ struct ProgresoCircular: View {
                 .font(.headline)
         }
         .frame(width: 60, height: 60)
-    }
-}
-
-
-
-struct MiniaturaEinformacion: View {
-    var puntuacion: Double = 5.0 // puedes cambiar este valor
-    
-    let opacidad: CGFloat
-
-    var body: some View {
-            Image("ojo")
-                .resizable()
-                .frame(width: 230, height: 330)
-                .cornerRadius(18)
-            
-            ZStack(alignment: .top) {
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.gray.opacity(opacidad))
-                    .frame(height: 330)
-                    .overlay(
-                            RoundedRectangle(cornerRadius: 25)
-                                .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
-                        )
-                    .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
-                    .zIndex(0)
-                
-                VStack(alignment: .center, spacing: 8) { // ahora leading
-                    HStack(alignment: .top, spacing: 30) { // alinear por arriba
-                        VStack(alignment: .center, spacing: 8) { // ahora leading
-                            Text("HELLBOY")
-                                .font(.headline)
-                                .bold()
-                            Text("por autor")
-                                .font(.subheadline)
-                            
-                            // Sistema de puntuación
-                            HStack(spacing: 4) {
-                                ForEach(0..<5, id: \.self) { index in
-                                    Image(systemName: index < Int(puntuacion) ? "star.fill" : "star")
-                                        .foregroundColor(.yellow)
-                                }
-                                Text(String(format: "%.1f", puntuacion))
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                            .padding(.horizontal, 10)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Descripción")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                            
-                            Text("He creado una librería completamente modernizada He creado una librería completamente modernizada. He creado una librería completamente modernizada....")
-                                .font(.caption)
-                                .minimumScaleFactor(0.6)
-                                .lineLimit(3)
-                        }
-                    }
-                    
-                    
-                    Divider()
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 20)
-                    
-                    HStack(spacing: 50) {
-                        RectanguloDato(nombre: "Páginas", dato: "32", icono: "book.pages", color: .blue)
-                        RectanguloDato(nombre: "Tamaño", dato: "2.65 MB", icono: "externaldrive", color: .red)
-                        RectanguloDato(nombre: "Extensión", dato: "cbz", icono: "books.vertical", color: .purple)
-                    }
-                    .padding(.bottom, 15)
-
-                    HStack(spacing: 50) {
-                        RectanguloDato(nombre: "Género", dato: "Fantasía", icono: "theatermasks", color: .green)
-                        RectanguloDato(nombre: "Idioma", dato: "Español", icono: "globe", color: .orange)
-                        RectanguloDato(nombre: "Publicado", dato: "2024", icono: "calendar", color: .pink)
-                    }
-                    
-                }
-                .padding(15)
-            }
-    }
-}
-
-struct RectanguloDato: View {
-    
-    let nombre: String
-    let dato: String
-    let icono: String
-    let color: Color
-    
-    let ancho: CGFloat = 120
-    let alto: CGFloat = 80
-    
-    let opacidad: CGFloat = 0.1
-    
-    var body: some View {
-        ZStack(alignment: .center) {
-            
-            RoundedRectangle(cornerRadius: 10)
-                .fill(color.opacity(opacidad))
-                .frame(width: ancho, height: alto)
-                .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
-                .zIndex(0)
-            
-            VStack(alignment: .center, spacing: 10) {
-                HStack(spacing: 10) {
-                    Image(systemName: icono)
-                        .foregroundColor(color)
-                    
-                    Text(nombre)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                .zIndex(1)
-                
-                Text(dato)
-                    .font(.subheadline)
-                    .bold()
-            }
-            
-        }
     }
 }
 
