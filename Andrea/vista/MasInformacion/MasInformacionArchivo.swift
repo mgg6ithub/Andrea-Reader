@@ -55,10 +55,10 @@ struct MasInformacionArchivo: View {
                     if !isSmall {
                         HStack(spacing: 15) {
                             ProgresoLecturaView(
-                                   completado: 0.70,
+                                   completado: archivo.progresoEntero,
                                    tiempo: 0.36,
-                                   paginasLeidas: 89,
-                                   paginasTotales: 128,
+                                   paginasLeidas: archivo.paginaActual,
+                                   paginasTotales: archivo.totalPaginas!,
                                    horasLeidas: 3,
                                    minutosLeidos: 0,
                                    opacidad: opacidad,
@@ -80,10 +80,10 @@ struct MasInformacionArchivo: View {
                         
                     } else {
                         ProgresoLecturaView(
-                               completado: 0.70,
+                                completado: archivo.progresoEntero,
                                tiempo: 0.36,
-                               paginasLeidas: 89,
-                               paginasTotales: 128,
+                                paginasLeidas: archivo.paginaActual,
+                                paginasTotales: archivo.totalPaginas!,
                                horasLeidas: 3,
                                minutosLeidos: 0,
                                opacidad: opacidad,
@@ -151,12 +151,12 @@ struct MiniaturaEinformacion: View {
                 VStack(alignment: .center, spacing: 8) { // ahora leading
                     if !isSmall {
                         HStack(alignment: .top, spacing: 30) { // alinear por arriba
-                            TituloDescripcion(isSmall: isSmall)
+                            TituloDescripcion(archivo: archivo, isSmall: isSmall)
                         }
                     }
                     else {
                         VStack(alignment: .center, spacing: 15) {
-                            TituloDescripcion(isSmall: isSmall)
+                            TituloDescripcion(archivo: archivo, isSmall: isSmall)
                         }
                     }
                     
@@ -166,12 +166,12 @@ struct MiniaturaEinformacion: View {
                     if isSmall {
                         VStack(alignment: .center) {
                             HStack(spacing: isSmall ? 25 : 50) {
-                                RectanguloDato(nombre: "Páginas", dato: "32", icono: "book.pages", color: .blue)
-                                RectanguloDato(nombre: "Tamaño", dato: "2.65 MB", icono: "externaldrive", color: .red)
+                                RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.totalPaginas))", icono: "book.pages", color: .blue)
+                                RectanguloDato(nombre: "Tamaño", dato: "\(String(describing: archivo.fileSize)) MB", icono: "externaldrive", color: .red)
                             }
                             
                             HStack(spacing: isSmall ? 25 : 50) {
-                                RectanguloDato(nombre: "Extensión", dato: "cbz", icono: "books.vertical", color: .purple)
+                                RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileSize)) MB", icono: "books.vertical", color: .purple)
                                 RectanguloDato(nombre: "Género", dato: "Fantasía", icono: "theatermasks", color: .green)
                             }
                             
@@ -182,9 +182,9 @@ struct MiniaturaEinformacion: View {
                         }
                     } else {
                         HStack(spacing: 50) {
-                            RectanguloDato(nombre: "Páginas", dato: "32", icono: "book.pages", color: .blue)
-                            RectanguloDato(nombre: "Tamaño", dato: "2.65 MB", icono: "externaldrive", color: .red)
-                            RectanguloDato(nombre: "Extensión", dato: "cbz", icono: "books.vertical", color: .purple)
+                            RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.totalPaginas))", icono: "book.pages", color: .blue)
+                            RectanguloDato(nombre: "Tamaño", dato: "\(String(describing: archivo.fileSize)) MB", icono: "externaldrive", color: .red)
+                            RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileExtension))", icono: "books.vertical", color: .purple)
                         }
                         .padding(.bottom, 15)
 
@@ -210,12 +210,14 @@ struct MiniaturaEinformacion: View {
 
 struct TituloDescripcion: View {
     
+    @ObservedObject var archivo: Archivo
+    
     var puntuacion: Double = 5.0 // puedes cambiar este valor
     let isSmall: Bool
     
     var body: some View {
         VStack(alignment: .center, spacing: 8) { // ahora leading
-            Text("HELLBOY")
+            Text(archivo.nombre)
                 .font(.headline)
                 .bold()
             Text("por autor")
