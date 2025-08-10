@@ -24,7 +24,6 @@ struct HistorialColecciones: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            
             if pc.getColeccionActual().coleccion.nombre == "HOME" {
                 ColeccionRectanguloAvanzado(
                     textoSize: grande,

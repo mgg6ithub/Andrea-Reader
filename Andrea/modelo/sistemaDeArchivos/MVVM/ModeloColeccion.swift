@@ -50,7 +50,7 @@ class ModeloColeccion: ObservableObject {
         if let hexColor = datos?["color"] as? String {
             self.color = Color(hex: hexColor)
         } else {
-            self.color = .blue // default color
+            self.color = .gray // default color
         }
 
         if let tipoVistaRaw = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "tipoVista") as? String,

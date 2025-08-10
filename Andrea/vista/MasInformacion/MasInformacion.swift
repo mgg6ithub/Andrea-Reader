@@ -18,9 +18,9 @@ private struct PreviewMasInformacion: View {
         )
 //                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // iphone s3
 //                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // iphone 15
-//                .environmentObject(AppEstado(screenWidth: 744, screenHeight: 1133)) //ipad mini    
+                .environmentObject(AppEstado(screenWidth: 744, screenHeight: 1133)) //ipad mini    
 //                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180)) //ipad 10 gen
-                .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)) //ipad 11 Pro
+//                .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)) //ipad 11 Pro
 //                .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366)) //ipad 12 12.92
         
     }
