@@ -28,10 +28,24 @@ struct Fechas {
     
     func formatDate1(_ date: Date) -> String {
         let formatter = DateFormatter()
+        //MARK: - --- CAMBIAR SEGUN EL PAIS ---
+        formatter.locale = Locale(identifier: "es_ES")
+        //MARK: - --- CAMBIAR SEGUN EL PAIS ---
         formatter.dateStyle = .medium  // Ejemplo: "25 ene 2025"
         formatter.timeStyle = .short   // Ejemplo: "10:30 AM"
         return formatter.string(from: date)
     }
+    
+    func parseDate1(_ string: String) -> Date? {
+        let formatter = DateFormatter()
+        //MARK: - --- CAMBIAR SEGUN EL PAIS ---
+        formatter.locale = Locale(identifier: "es_ES") //CAMBIAR SEGUN EL PAIS
+        //MARK: - --- CAMBIAR SEGUN EL PAIS ---
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.date(from: string)
+    }
+
     
     /**
      Metodo para formatear la fecha y hora. Ejemplo: "25/01/2025 at 10:30"

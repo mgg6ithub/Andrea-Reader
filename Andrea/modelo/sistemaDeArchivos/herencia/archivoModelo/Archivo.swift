@@ -139,16 +139,18 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     func inicializarValoresEstadisticos() {
         
-        print("Inicializando datos para la prueba")
-        print()
-        
-        //CADENAS
-        print("Inicializando datos para la prueba\n")
         self.nombreOriginal = cargarOAveriguar(atributo: "nombreOriginal", tipo: String.self, desde: self.url) { nil }
         self.fechaPublicacion = cargarOAveriguar(atributo: "fechaPublicacion", tipo: String.self, desde: self.url) { self.nombreOriginal.flatMap { Fechas().extraerAno(from: $0) } }
         self.formatoEscaneo = cargarOAveriguar(atributo: "formatoEscaneo", tipo: String.self, desde: self.url) { self.nombreOriginal.flatMap { ManipulacionCadenas().extraerFormatoEscaneo(from: $0) } }
         self.entidadEscaneo = cargarOAveriguar(atributo: "entidadEscaneo", tipo: String.self, desde: self.url) { self.nombreOriginal.flatMap { ManipulacionCadenas().extraerEntidad(from: $0) } }
         self.numeroDeLaColeccion = cargarOAveriguar(atributo: "numeroDeLaColeccion", tipo: Int.self, desde: self.url) { self.nombreOriginal.flatMap { ManipulacionCadenas().extraerNumeroDeLaColeccion(from: $0) } }
+        
+        if let fechaString = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "fechaImportacion") as? String,
+           let fecha = Fechas().parseDate1(fechaString) {
+            self.fechaImportacion = fecha
+        }
+        
+        //OBTENER LAS DIMENDIONES DE LAS PORTADAS
         
         // TIEMPOS
         tiempoTotal = 0

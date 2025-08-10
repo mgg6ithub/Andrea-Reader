@@ -463,7 +463,7 @@ struct InfoAvanzadaArchivoView: View {
                 GrupoDatoAvanzado(nombre: "Dimensiones portada", valor: dimensiones)
                 GrupoDatoAvanzado(nombre: "Resolución", valor: resolucion)
                 GrupoDatoAvanzado(nombre: "Peso", valor: peso)
-                GrupoDatoAvanzado(nombre: "Fecha de creación", valor: fechaCreacion)
+                GrupoDatoAvanzado(nombre: "Fecha de creación", valor: "\(archivo.fechaImportacion)")
                 GrupoDatoAvanzado(nombre: "Numero de aperturas", valor: fechaCreacion)
                 GrupoDatoAvanzado(nombre: "Primera lectura", valor: fechaCreacion)
                 GrupoDatoAvanzado(nombre: "Última lectura", valor: ultimaLectura)

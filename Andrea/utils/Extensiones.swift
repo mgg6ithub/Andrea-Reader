@@ -150,3 +150,26 @@ extension View {
     }
 }
 
+
+//MARK: - --- EXTENSION PARA ADAPTAR EL TEXTO A LA VISTA ---
+// t = tamaño
+// a = tamaño adaptativo
+// l = lineas maximas
+// b = bold o no (bool)
+//
+extension View {
+    func textoAdaptativo(t: CGFloat, a: Double, l: Int, b: Bool = false, c: Color = .primary, alig: TextAlignment, s: Bool = false, mW: CGFloat? = nil, mH: CGFloat? = nil, fAlig: Alignment = .center) -> some View {
+        self.font(.system(size: t))
+            .minimumScaleFactor(a)
+            .lineLimit(l)
+            .if(b) { v in
+                v.bold()
+            }
+            .foregroundColor(c)
+            .multilineTextAlignment(alig)
+            .if(s) { v in
+                v.shadow(color: .black.opacity(0.2), radius: 1, x: 0, y: 1)
+            }
+            .frame(maxWidth: mW, maxHeight: mH, alignment: fAlig)
+    }
+}

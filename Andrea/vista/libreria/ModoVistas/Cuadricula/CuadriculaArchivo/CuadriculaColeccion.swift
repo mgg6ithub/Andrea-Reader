@@ -11,6 +11,7 @@ struct CuadriculaColeccion: View {
     
     private let constantes = ConstantesPorDefecto()
     private var escala: CGFloat { ap.constantes.scaleFactor }
+    private var isSmall: Bool { ap.constantes.resLog == .small }
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -37,7 +38,7 @@ struct CuadriculaColeccion: View {
                         if coleccion.tipoMiniatura == .carpeta {
                             Image("CARPETA-ATRAS")
                                 .resizable()
-                                .frame(width: 180, height: 200)
+                                .frame(width: 180 * ap.constantes.scaleFactor, height: 200 * ap.constantes.scaleFactor)
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(coleccion.color, coleccion.color.darken(by: 0.2))
                                 .zIndex(1)
@@ -75,7 +76,7 @@ struct CuadriculaColeccion: View {
                         }
 
                     }
-                    .frame(height: 210)
+                    .frame(height: 210 * ap.constantes.scaleFactor)
                     .onAppear {
                         if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {
                             coleccion.precargarMiniaturas()
@@ -86,7 +87,6 @@ struct CuadriculaColeccion: View {
                             coleccion.precargarMiniaturas()
                         }
                     }
-                    
                                 
                     VStack(alignment: .leading, spacing: 5) {
                         // ---- Información básica ----
@@ -103,23 +103,18 @@ struct CuadriculaColeccion: View {
                             }
                             
                             Text(coleccion.nombre)
-                                .font(.system(size: 25))
-                                .fontWeight(.bold)
-                                .multilineTextAlignment(.center)
-                                .minimumScaleFactor(0.6)
-                                .lineLimit(2)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .textoAdaptativo(t: ap.constantes.titleSize, a: 0.6, l: 2, b: true, alig: .leading, mW: .infinity, fAlig: .leading)
                         }
                         
                         HStack(spacing: 20) {
                             Text("3.25 GB")
+                                .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.6, l: 1, b: false, c: .secondary, alig: .leading, s: true)
                             Text("\(coleccion.totalArchivos) elementos")
+                                .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.6, l: 1, b: false, c: .secondary, alig: .leading, s: true)
                         }
                         .font(.footnote)
                         .foregroundColor(.secondary)
                     }
-                    .padding(.horizontal, 15)
-                    .padding(.vertical, 5)
                     
                 }
             }

@@ -403,6 +403,8 @@ class SistemaArchivos: ObservableObject {
             // --- AL IMPORTAR UN ARCHIVO SE CREAR ---
             // guardamos su nombre original al importar
             PersistenciaDatos().guardarDatoElemento(url: nuevoArchivoURL, atributo: "nombreOriginal", valor: nombreArchivo)
+            //guardamos la fecha en la que se importo
+            PersistenciaDatos().guardarDatoElemento(url: nuevoArchivoURL, atributo: "fechaImportacion", valor: Fechas().formatDate1(Date()))
             
             // --- Agregamos el archivo a la carpeta Andrea para la persistencia ---
             if !self.sau.fileExists(elementURL: nuevoArchivoURL) {

@@ -36,7 +36,7 @@ struct CuadriculaVista: View {
                let totalSpacing = spacing * CGFloat(columnsCount - 1)
                
                // calculamos el width de cada celda sobre el contentWidth
-               let itemWidth = (contentWidth - totalSpacing) / CGFloat(columnsCount)
+                let itemWidth = (contentWidth - totalSpacing) / CGFloat(columnsCount)
                let aspectRatio: CGFloat = 310/180
                let itemHeight = itemWidth * aspectRatio
 
