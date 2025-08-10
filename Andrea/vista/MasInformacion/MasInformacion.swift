@@ -2,35 +2,35 @@
 
 import SwiftUI
 
-#Preview {
-    PreviewMasInformacion()
-}
-
-private struct PreviewMasInformacion: View {
-    @State private var pantallaCompleta = false
-    
-    private let archivo = Archivo()
-    
-    var body: some View {
-        MasInformacion(
-            pantallaCompleta: $pantallaCompleta,
-            elemento: archivo
-        )
-//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // iphone s3
-//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // iphone 15
-                .environmentObject(AppEstado(screenWidth: 744, screenHeight: 1133)) //ipad mini    
-//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180)) //ipad 10 gen
-//                .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)) //ipad 11 Pro
-//                .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366)) //ipad 12 12.92
-        
-    }
-}
+//#Preview {
+//    PreviewMasInformacion()
+//}
+//
+//private struct PreviewMasInformacion: View {
+//    @State private var pantallaCompleta = false
+//    
+//    private let archivo = Archivo()
+//    
+//    var body: some View {
+//        MasInformacion(
+//            pantallaCompleta: $pantallaCompleta,
+//            elemento: archivo
+//        )
+////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // iphone s3
+////                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // iphone 15
+//                .environmentObject(AppEstado(screenWidth: 744, screenHeight: 1133)) //ipad mini    
+////                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180)) //ipad 10 gen
+////                .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)) //ipad 11 Pro
+////                .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366)) //ipad 12 12.92
+//        
+//    }
+//}
 
 struct MasInformacion: View {
     
     @EnvironmentObject var ap: AppEstado
     @Binding var pantallaCompleta: Bool
-    
+    @ObservedObject var vm: ModeloColeccion
     let elemento: any ElementoSistemaArchivosProtocolo
     
     @State private var show: Bool = true
@@ -38,7 +38,6 @@ struct MasInformacion: View {
     var body: some View {
         
         ZStack {
-            
             Color.black.opacity(pantallaCompleta ? 0.9 : 0.65)
                 .edgesIgnoringSafeArea(.all)
                 .animation(.easeInOut(duration: 0.3), value: pantallaCompleta)
@@ -62,13 +61,16 @@ struct MasInformacion: View {
                     VStack(alignment: .center, spacing: 0) {
                         CabeceraMasInformacion(pantallaCompleta: $pantallaCompleta)
                             .aparicionBlur(show: $show)
-//                            .border(.green)
                         
                         if let archivo = elemento as? Archivo {
-                            MasInformacionArchivo(archivo: archivo, pantallaCompleta: $pantallaCompleta)
+                            MasInformacionArchivo(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta)
                                 .scaleEffect(escala)
                                 .padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
-//                                .border(.red)
+                                .onAppear {
+                                    if !archivo.masInformacion {
+                                        archivo.inicializarValoresEstadisticos()
+                                    }
+                                }
                         }
                         
                         Spacer()

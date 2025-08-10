@@ -1,29 +1,31 @@
 
 import SwiftUI
 
-#Preview {
-    PreviewMasInformacion()
-}
-
-private struct PreviewMasInformacion: View {
-    @State private var pantallaCompleta = false
-    
-    private let archivo = Archivo()
-    
-    var body: some View {
-        MasInformacion(
-            pantallaCompleta: $pantallaCompleta,
-            elemento: archivo
-        )
-//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-    }
-}
+//#Preview {
+//    PreviewMasInformacion()
+//}
+//
+//private struct PreviewMasInformacion: View {
+//    @State private var pantallaCompleta = false
+//    
+//    private let archivo = Archivo()
+//    
+//    var body: some View {
+//        MasInformacion(
+//            pantallaCompleta: $pantallaCompleta,
+//            elemento: archivo
+//        )
+////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+////        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//    }
+//}
 
 struct MasInformacionArchivo: View {
     
     @EnvironmentObject var ap: AppEstado
+    
+    @ObservedObject var vm: ModeloColeccion
     
     // --- PARAMETROS ---
     @ObservedObject var archivo: Archivo
@@ -42,11 +44,11 @@ struct MasInformacionArchivo: View {
                 VStack(alignment: .center, spacing: 0) {
                     if !isSmall {
                         HStack(spacing: 15) {
-                            MiniaturaEinformacion(opacidad: opacidad, isSmall: isSmall)
+                            MiniaturaEinformacion(vm: vm, archivo: archivo, opacidad: opacidad, isSmall: isSmall)
                         }
                     } else {
                         VStack(alignment: .center, spacing: 20) {
-                            MiniaturaEinformacion(opacidad: opacidad, isSmall: isSmall)
+                            MiniaturaEinformacion(vm: vm, archivo: archivo, opacidad: opacidad, isSmall: isSmall)
                         }
                     }
                     
@@ -113,14 +115,27 @@ struct MasInformacionArchivo: View {
 struct MiniaturaEinformacion: View {
     var puntuacion: Double = 5.0 // puedes cambiar este valor
     
+    @ObservedObject var vm: ModeloColeccion
+    @ObservedObject var archivo: Archivo
     let opacidad: CGFloat
     let isSmall: Bool
+    
+    @StateObject private var viewModel = ModeloMiniaturaArchivo()
+    
+//    @State private var show: Bool = true
+    @State private var show1: Bool = false
 
     var body: some View {
-            Image("ojo")
-                .resizable()
-                .frame(width: 230, height: 330)
-                .cornerRadius(18)
+        
+            if let img = viewModel.miniatura {
+                Image(uiImage: img)
+                    .resizable()
+                    .frame(width: 230, height: 330)
+                    .cornerRadius(18)
+                    .aparicionStiffness(show: $show1)
+            } else {
+                ProgressView()
+            }
             
             ZStack(alignment: .top) {
                 RoundedRectangle(cornerRadius: 25)
@@ -182,7 +197,14 @@ struct MiniaturaEinformacion: View {
                     
                 }
                 .padding(15)
+                .onAppear {
+                    viewModel.loadThumbnail(color: vm.color, for: archivo)
+                }
+                .onDisappear {
+                    viewModel.unloadThumbnail(for: archivo)
+                }
             }
+//            .aparicionBlur(show: $show)
     }
 }
 
@@ -271,6 +293,8 @@ struct EstadisticasAvanzadas: View {
     let opacidad: CGFloat
     let isSmall: Bool
     
+//    @State private var show: Bool = true
+    
     var body: some View {
         
         ZStack {
@@ -336,6 +360,7 @@ struct EstadisticasAvanzadas: View {
             .padding(15)
             .padding(.horizontal, 15)
         }
+//        .aparicionBlur(show: $show)
         .frame(width: isSmall ? nil : 330)
         
     }
@@ -401,6 +426,8 @@ struct InfoAvanzadaArchivoView: View {
     
     let opacidad: CGFloat
     
+//    @State private var show: Bool = true
+    
     var body: some View {
         
         ZStack {
@@ -444,6 +471,7 @@ struct InfoAvanzadaArchivoView: View {
             }
             .padding()
         }
+//        .aparicionBlur(show: $show)
     }
 }
 
@@ -467,6 +495,8 @@ struct AccionesRapidasView: View {
     
     let opacidad: CGFloat
     let isSmall: Bool
+    
+//    @State private var show: Bool = true
     
     var body: some View {
         ZStack {
@@ -509,6 +539,7 @@ struct AccionesRapidasView: View {
             }
             .padding()
         }
+//        .aparicionBlur(show: $show)
     }
 }
 
@@ -546,6 +577,8 @@ struct ProgresoLecturaView: View {
     
     let opacidad: CGFloat
     let isSmall: Bool
+    
+//    @State private var show: Bool = true
     
     var body: some View {
         ZStack {
@@ -587,6 +620,7 @@ struct ProgresoLecturaView: View {
             }
             .padding()
         }
+//        .aparicionBlur(show: $show)
         .frame(height: 160)
     }
 }

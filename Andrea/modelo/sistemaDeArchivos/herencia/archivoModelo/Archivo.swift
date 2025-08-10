@@ -65,6 +65,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     var velocidadMax: Double?
     var velocidadMin: Double?
     
+    var masInformacion: Bool = false
+    
     //MODELOS NECESARIOS
     private let sau = SistemaArchivosUtilidades.sau
     
@@ -141,6 +143,9 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         velocidadLectura = 0
         velocidadMax = 0
         velocidadMin = 0
+        
+        masInformacion = true
+        
     }
 
     
