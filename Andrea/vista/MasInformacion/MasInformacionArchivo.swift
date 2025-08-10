@@ -113,6 +113,9 @@ struct MasInformacionArchivo: View {
 }
 
 struct MiniaturaEinformacion: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
     var puntuacion: Double = 5.0 // puedes cambiar este valor
     
     @ObservedObject var vm: ModeloColeccion
@@ -130,7 +133,7 @@ struct MiniaturaEinformacion: View {
             if let img = viewModel.miniatura {
                 Image(uiImage: img)
                     .resizable()
-                    .frame(width: 230, height: 330)
+                    .frame(width: 240 * ap.constantes.scaleFactor, height: 360 * ap.constantes.scaleFactor)
                     .cornerRadius(18)
                     .aparicionStiffness(show: $show1)
             } else {
@@ -140,7 +143,7 @@ struct MiniaturaEinformacion: View {
             ZStack(alignment: .top) {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(Color.gray.opacity(opacidad))
-                    .frame(height: isSmall ? 330 * 1.5 : 330)
+                    .frame(height: isSmall ? 360 * 1.5 : 360)
                     .overlay(
                             RoundedRectangle(cornerRadius: 25)
                                 .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
@@ -210,6 +213,8 @@ struct MiniaturaEinformacion: View {
 
 struct TituloDescripcion: View {
     
+    @EnvironmentObject var ap: AppEstado
+    
     @ObservedObject var archivo: Archivo
     
     var puntuacion: Double = 5.0 // puedes cambiar este valor
@@ -218,10 +223,10 @@ struct TituloDescripcion: View {
     var body: some View {
         VStack(alignment: .center, spacing: 8) { // ahora leading
             Text(archivo.nombre)
-                .font(.headline)
-                .bold()
+                .textoAdaptativo(t: ap.constantes.titleSize, a: 0.7, l: 3, alig: .center)
+            
             Text("por autor")
-                .font(.subheadline)
+                .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.7, l: 1, alig: .center)
             
             // Sistema de puntuación
             HStack(spacing: 4) {
@@ -242,9 +247,7 @@ struct TituloDescripcion: View {
                 .foregroundColor(.secondary)
             
             Text("He creado una librería completamente modernizada He creado una librería completamente modernizada. He creado una librería completamente modernizada. He creado una librería completamente modernizada. He creado una librería completamente modernizada.")
-                .font(.caption)
-                .minimumScaleFactor(0.6)
-                .lineLimit(3)
+                .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.6, l: 4, alig: .leading)
         }
     }
 }
@@ -523,21 +526,21 @@ struct AccionesRapidasView: View {
                 if isSmall {
                     VStack(alignment: .center, spacing: 30) {
                         HStack(spacing: 40) {
-                            BotonAccion(icono: "arrow.right.arrow.left", titulo: "Mover", color: .blue)
-                            BotonAccion(icono: "doc.on.doc", titulo: "Copiar", color: .green)
+                            BotonAccion(icono: "star.fill", titulo: "Favorito", color: .yellow)
+                            BotonAccion(icono: "lock.shield", titulo: "Proteger", color: .black)
                         }
                         
                         HStack(spacing: 40) {
-                            BotonAccion(icono: "trash", titulo: "Eliminar", color: .red)
                             BotonAccion(icono: "square.and.arrow.up", titulo: "Compartir", color: .orange)
+                            BotonAccion(icono: "trash", titulo: "Eliminar", color: .red)
                         }
                     }
                 } else {
                     HStack(spacing: 15) {
-                        BotonAccion(icono: "arrow.right.arrow.left", titulo: "Mover", color: .blue)
-                        BotonAccion(icono: "doc.on.doc", titulo: "Copiar", color: .green)
-                        BotonAccion(icono: "trash", titulo: "Eliminar", color: .red)
+                        BotonAccion(icono: "star.fill", titulo: "Favorito", color: .yellow) { print("FAVORITO") }
+                        BotonAccion(icono: "lock.shield", titulo: "Proteger", color: .black, dosColores: true)
                         BotonAccion(icono: "square.and.arrow.up", titulo: "Compartir", color: .orange)
+                        BotonAccion(icono: "trash", titulo: "Eliminar", color: .red)
                     }
                 }
                 
@@ -552,24 +555,57 @@ struct BotonAccion: View {
     let icono: String
     let titulo: String
     let color: Color
+    let dosColores: Bool
+    let c1: Color
+    let c2: Color
+    let action: () -> Void
+    
+    init(
+        icono: String,
+        titulo: String,
+        color: Color,
+        dosColores: Bool = false,
+        c1: Color = .red,
+        c2: Color = .gray,
+        action: @escaping () -> Void = {}
+    ) {
+        self.icono = icono
+        self.titulo = titulo
+        self.color = color
+        self.dosColores = dosColores
+        self.c1 = c1
+        self.c2 = c2
+        self.action = action
+    }
     
     var body: some View {
-        VStack(spacing: 8) {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(color.opacity(0.15))
-                .frame(width: 85, height: 85)
-                .overlay(
-                    Image(systemName: icono)
-                        .font(.title2)
-                        .foregroundColor(color)
-                )
-            Text(titulo)
-                .font(.subheadline)
-                .foregroundColor(.primary)
+        Button(action: action) {
+            VStack(spacing: 8) {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(color.opacity(0.15))
+                    .frame(width: 85, height: 85)
+                    .overlay(
+                        Group {
+                            if dosColores {
+                                Image(systemName: icono)
+                                    .font(.title2)
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(c2, c1)
+                            } else {
+                                Image(systemName: icono)
+                                    .font(.title2)
+                                    .foregroundColor(color)
+                            }
+                        }
+                    )
+                Text(titulo)
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+            }
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
-
 
 
 struct ProgresoLecturaView: View {
