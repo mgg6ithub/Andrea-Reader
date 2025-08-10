@@ -60,11 +60,14 @@ struct ListaVista: View {
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.vertical, 20/2)
+//                .padding(.vertical, 10)
                 .animation(.easeInOut(duration: 0.3), value: vm.altura)
                 .background(
                     GeometryReader { _ in Color.clear }
                 )
+            }
+            .safeAreaInset(edge: .top) {
+                Color.clear.frame(height: 5)
             }
             .coordinateSpace(name: "scroll")
             .onPreferenceChange(ScrollIndexPreferenceKey.self) { newValue in
