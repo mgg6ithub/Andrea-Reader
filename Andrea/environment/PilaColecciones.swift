@@ -251,11 +251,13 @@ class PilaColecciones: ObservableObject {
      */
     public func conservarSoloHome() {
         guard !colecciones.isEmpty else { return }
-
-        let home = colecciones.first!
-        colecciones = [home]
-        actualizarColeccionActual()
-        guardarPila()
+        guard let home = colecciones.first else { return }
+        
+        withAnimation(.easeInOut(duration: 0.15)) {
+            colecciones = [home]
+            actualizarColeccionActual()
+            guardarPila()
+        }
 
         // Opcional: limpiar caché de miniaturas
         // ThumbnailService.shared.clearCache()

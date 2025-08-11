@@ -1,38 +1,25 @@
 import SwiftUI
 
 // MARK: - Extensión de animación simplificada
+// MARK: - EXTENSIÓN ANIMACIÓN APARICIÓN SIMPLE
 extension View {
-    func aparicionSuave(
-        animaciones: Bool,
-        delay: Double = 0,
-        isVisible: Binding<Bool>,
-        scale: Binding<CGFloat>
-    ) -> some View {
+    func aparicionSuave(show: Binding<Bool>, delay: Double = 0.0) -> some View {
         self
+            .scaleEffect(show.wrappedValue ? 1.0 : 0.98) // cambio muy sutil
+            .opacity(show.wrappedValue ? 1.0 : 0.0)      // fundido
+            .animation(
+                .easeInOut(duration: 0.15).delay(delay), // animación rápida y suave
+                value: show.wrappedValue
+            )
             .onAppear {
-                if animaciones {
-                    withAnimation(.easeOut(duration: 0.8).delay(delay)) {
-                        isVisible.wrappedValue = true
-                        scale.wrappedValue = 1.0
-                    }
-                } else {
-                    isVisible.wrappedValue = true
-                    scale.wrappedValue = 1.0
-                }
+                show.wrappedValue = true
             }
             .onDisappear {
-                if animaciones {
-                    withAnimation(.easeIn(duration: 0.2)) {
-                        isVisible.wrappedValue = false
-                        scale.wrappedValue = 0.92
-                    }
-                } else {
-                    isVisible.wrappedValue = false
-                    scale.wrappedValue = 0.92
-                }
+                show.wrappedValue = false
             }
     }
 }
+
 
 struct ChevronAnimado: View {
     var isActive: Bool
@@ -40,13 +27,13 @@ struct ChevronAnimado: View {
 
     @EnvironmentObject var appEstado: AppEstado
     @State private var show: Bool = false
-    @State private var scale: CGFloat = 0.85
 
     var body: some View {
         Image(systemName: "chevron.forward")
             .font(.system(size: isActive ? 16 : 10))
             .foregroundColor(.gray.opacity(isActive ? 1.0 : 0.8))
-            .aparicionStiffness(show: $show)
+//            .aparicionStiffness(show: $show)
+//            .aparicionSuave(show: $show)
     }
 }
 
@@ -91,9 +78,10 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .fixedSize()
             .layoutPriority(1)
             .fondoBoton(pH: pH, pV: 7, isActive: isActive, color: color, borde: true)
-            .if(isActive) { view in
-                view.aparicionStiffness(show: $show)
-            }
+//            .aparicionSuave(show: $show)
+//            .if(isActive) { view in
+//                view.aparicionStiffness(show: $show)
+//            }
     }
 }
 

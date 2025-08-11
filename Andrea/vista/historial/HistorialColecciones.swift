@@ -44,7 +44,7 @@ struct HistorialColecciones: View {
                 
             } else {
                 Button(action: {
-                    pc.conservarSoloHome()
+                   pc.conservarSoloHome()
                 }) {
                     ColeccionRectanguloAvanzado(
                         textoSize: peke,
@@ -61,8 +61,8 @@ struct HistorialColecciones: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
-                    
                     let coleccionesFiltradas = pc.colecciones.filter { $0.coleccion.nombre != "HOME" }
+                    
                     ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
                         Group {
                             if pc.esColeccionActual(coleccion: vm.coleccion) {
@@ -109,8 +109,13 @@ struct HistorialColecciones: View {
                                 .buttonStyle(ColeccionButtonStyle())
                             }
                         }
+                        .transition(.asymmetric(
+                            insertion: .opacity.combined(with: .scale(scale: 0.95)),
+                            removal: .opacity.combined(with: .scale(scale: 1.05))
+                        ))
                     }
                 }
+                .animation(.easeInOut(duration: 0.15), value: pc.colecciones.map(\.coleccion.id))
             }
             .padding(.leading, 3.5)
             

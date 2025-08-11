@@ -235,9 +235,8 @@ struct MenuCentro: View {
                 AjustesGlobales()
             }
         }
-        .id(coleccionActualVM.coleccion.id)
+//        .id(coleccionActualVM.coleccion.id)
         .alignmentGuide(.firstTextBaseline) { d in d[.bottom] }
-
     }
 }
 

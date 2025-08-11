@@ -61,7 +61,6 @@ struct VistaPrincipal: View {
             
             // --- MAS INFORMACION ---
             if ap.masInformacion, let elementoSelecionado = ap.elementoSeleccionado {
-//                MasInformacion(vm: pc.getColeccionActual(), pantallaCompleta: $ap.pantallaCompleta, elemento: elementoSelecionado)
                 MasInformacion(pantallaCompleta: $ap.pantallaCompleta, vm: pc.getColeccionActual(), elemento: elementoSelecionado)
                     .capaSuperior()
             }
