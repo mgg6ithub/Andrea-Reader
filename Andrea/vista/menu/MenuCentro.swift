@@ -19,7 +19,7 @@ struct MenuCentro: View {
     @EnvironmentObject var pc: PilaColecciones
     
     // --- ESTADO ---
-    @State private var menuRefreshTrigger = UUID()
+
     @State private var mostrarDocumentPicker: Bool = false
     @State private var esNuevaColeccionPresionado: Bool = false
     @State private var nuevaColeccionNombre: String = ""
@@ -28,9 +28,10 @@ struct MenuCentro: View {
     private let sa: SistemaArchivos = SistemaArchivos.sa
     private var const: Constantes { appEstado.constantes }
     private var iconColor: Color { const.iconColor }
-    private var coleccionActualVM: ModeloColeccion {
-        pc.getColeccionActual()
-    }
+    
+    @ObservedObject var coleccionActualVM: ModeloColeccion
+    
+    private var menuRefreshTrigger: UUID { coleccionActualVM.menuRefreshTrigger }
 
     var body: some View {
         
@@ -107,22 +108,20 @@ struct MenuCentro: View {
                         nombre: "Cuadrícula",
                         icono: "square.grid.2x2",
                         valor: .cuadricula,
-                        color: coleccionActualVM.color,
+                        coleccionActualVM: coleccionActualVM,
                         valorActual: coleccionActualVM.modoVista
                     ) {
                         coleccionActualVM.cambiarModoVista(modoVista: .cuadricula)
-                        menuRefreshTrigger = UUID()
                     }
 
                     BotonMenu(
                         nombre: "Lista",
                         icono: "list.bullet",
                         valor: .lista,
-                        color: coleccionActualVM.color,
+                        coleccionActualVM: coleccionActualVM,
                         valorActual: coleccionActualVM.modoVista
                     ) {
                         coleccionActualVM.cambiarModoVista(modoVista: .lista)
-                        menuRefreshTrigger = UUID()
                     }
                 }
                 
@@ -131,75 +130,87 @@ struct MenuCentro: View {
                         nombre: "Aleatorio",
                         icono: "shuffle",
                         valor: .aleatorio,
-                        color: coleccionActualVM.color,
+                        coleccionActualVM: coleccionActualVM,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .aleatorio)
-                        menuRefreshTrigger = UUID()
                     }
                     
                     BotonMenu(
                         nombre: "Personalizada",
                         icono: "hand.draw.fill",
                         valor: .personalizado,
-                        color: coleccionActualVM.color,
+                        coleccionActualVM: coleccionActualVM,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
-                        
+
                     }
                     
                     BotonMenu(
                         nombre: "Nombre",
-                        icono: "textformat.characters.arrow.left.and.right",
+                        icono: "textformat.abc",
                         valor: .nombre,
-                        color: coleccionActualVM.color,
+                        coleccionActualVM: coleccionActualVM,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .nombre)
-                        menuRefreshTrigger = UUID()
                     }
                     
                     BotonMenu(
                         nombre: "Tamaño",
                         icono: "arrow.left.and.right.text.vertical",
                         valor: .tamano,
-                        color: coleccionActualVM.color,
+                        coleccionActualVM: coleccionActualVM,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
                         coleccionActualVM.ordenarElementos(modoOrdenacion: .tamano)
-                        menuRefreshTrigger = UUID()
                     }
                     
                     BotonMenu(
                         nombre: "Paginas",
                         icono: "book.pages",
                         valor: .paginas,
-                        color: coleccionActualVM.color,
+                        coleccionActualVM: coleccionActualVM,
                         valorActual: coleccionActualVM.ordenacion
                     ) {
-                        
+                        coleccionActualVM.ordenarElementos(modoOrdenacion: .paginas)
                     }
+                    
+                    BotonMenu(
+                        nombre: "Progreso",
+                        icono: "progress.indicator",
+                        valor: .progreso,
+                        coleccionActualVM: coleccionActualVM,
+                        valorActual: coleccionActualVM.ordenacion
+                    ) {
+                        coleccionActualVM.ordenarElementos(modoOrdenacion: .progreso)
+                    }
+                    
+                    BotonMenu(
+                        nombre: "Fecha importación",
+                        icono: "custom-calendar",
+                        valor: .fechaImportacion,
+                        coleccionActualVM: coleccionActualVM,
+                        valorActual: coleccionActualVM.ordenacion
+                    ) {
+                        coleccionActualVM.ordenarElementos(modoOrdenacion: .fechaImportacion)
+                    }
+                    
+                    BotonMenu(
+                        nombre: "Fecha modificación",
+                        icono: "custom-calendar-clock",
+                        valor: .fechaModificacion,
+                        coleccionActualVM: coleccionActualVM,
+                        valorActual: coleccionActualVM.ordenacion
+                    ) {
+                        coleccionActualVM.ordenarElementos(modoOrdenacion: .fechaModificacion)
+                    }
+                    
                 }
                 
                 Section(header: Text("Invertir Ordenacion")) {
-                    Button(action: {
+                    BotonMenu(nombre: "Invertir", icono: "arrow.triangle.swap", valor: true, coleccionActualVM: coleccionActualVM, valorActual: coleccionActualVM.esInvertido) {
                         coleccionActualVM.invertir()
-                        menuRefreshTrigger = UUID()
-                    }) {
-                        HStack {
-                            if coleccionActualVM.esInvertido {
-                                Text("Menor a mayor")
-                                Image(systemName: "text.insert")
-                                    .foregroundColor(appEstado.temaActual.textColor)
-                                    .padding()
-                            }
-                            else {
-                                Text("Mayor a menor")
-                                Image(systemName: "text.append")
-                                    .foregroundColor(appEstado.temaActual.textColor)
-                                    .padding()
-                            }
-                        }
                     }
                 }
                 
@@ -218,10 +229,9 @@ struct MenuCentro: View {
                 Image(systemName: "square.grid.3x3.square")
                     .capaIconos(iconSize: const.iconSize, c1: iconColor, c2: iconColor, fontW: const.iconWeight, ajuste: 1.2)
             }
-            .id(menuRefreshTrigger)
+            .id(coleccionActualVM.menuRefreshTrigger)
             .colorScheme(appEstado.temaActual == .dark ? .dark : .light)
             .onTapGesture {
-                print("Abriendo menu")
                 ConsejoSmartSorting.menuAbierto = true
             }
             
@@ -241,31 +251,51 @@ struct MenuCentro: View {
 
 struct BotonMenu<T: Equatable>: View {
     
-    // --- ENTORNO ---
     @EnvironmentObject var ap: AppEstado
     
-    // --- PARAMETROS ---
     let nombre: String
     let icono: String
     let valor: T
-    let color: Color
+    @ObservedObject var coleccionActualVM: ModeloColeccion
     let valorActual: T
     let accion: () -> Void
-
-    // ---V ARIABLES CALCULADAS ---
+    
     var isActive: Bool {
         valor == valorActual
     }
-
+    
+    private var dC: Color { ap.temaActual.textColor }
+    
     var body: some View {
-        Button(action: accion) {
-            Label(nombre, systemImage: icono)
-                .foregroundStyle(
-                    isActive ? color : ap.temaActual.textColor,
-                    isActive ? color : ap.temaActual.textColor,
-                    ap.temaActual.textColor
-                )
+        Button {
+            accion()  // ejecuta la acción pasada
+            coleccionActualVM.menuRefreshTrigger = UUID() // refresca después
+        } label: {
+            if UIImage(systemName: icono) != nil {
+                // SF Symbol
+                Label(nombre, systemImage: icono)
+                    .foregroundStyle(
+                        isActive ? dC : dC.opacity(0.3),
+                        isActive ? dC : dC.opacity(0.3),
+                        dC
+                    )
+            } else {
+                // Icono personalizado
+                Label {
+                    Text(nombre)
+                } icon: {
+                    Image(icono)
+                        .renderingMode(.template)
+                        .foregroundStyle(
+                            isActive ? dC : dC.opacity(0.3),
+                            isActive ? dC : dC.opacity(0.3),
+                            dC
+                        )
+                }
+            }
         }
     }
 }
+
+
 

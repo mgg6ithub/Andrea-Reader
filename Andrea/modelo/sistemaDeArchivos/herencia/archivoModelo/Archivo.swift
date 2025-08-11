@@ -84,6 +84,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
             recalcularProgreso()
         }
     }
+    
     @Published var progreso: Int = 0
     @Published var progresoEntero: Double = 0
     @Published var paginaActual: Int = 0

@@ -25,6 +25,7 @@ class ModeloColeccion: ObservableObject {
     
   @Published var isPerformingAutoScroll = false
     
+    @Published var menuRefreshTrigger: UUID = UUID()
     
     //MARK: - CONSTRUCTOR VACIO
     //crear un constrcutor por defecto con valores nulos para crear una instancia de ModeloColeccion vacia para tests
@@ -174,7 +175,7 @@ class ModeloColeccion: ObservableObject {
             }
 
             // Ordenar todos los elementos (sin importar el orden de entrada)
-            let elementosOrdenados = await Algoritmos().ordenarElementos(todosLosElementos.map { $0.1 }, por: ordenacion, esInvertido: self.esInvertido)
+            let elementosOrdenados = await Algoritmos().ordenarElementos(todosLosElementos.map { $0.1 }, por: ordenacion, esInvertido: self.esInvertido, coleccionURL: self.coleccion.url)
 
             await MainActor.run {
                 
@@ -248,6 +249,20 @@ class ModeloColeccion: ObservableObject {
         }
         
     }
+    
+    //MARK: - ORDENAMIENTO PERSONALIZADO
+    func guardarOrdenPersonalizado(modoOrdenacion: EnumOrdenaciones) {
+        var ordenDict: [String: Int] = [:]
+        for (i, elemento) in self.elementos.enumerated() {
+            ordenDict[elemento.url.absoluteString] = i
+        }
+        
+        //guardamos la ordenacion
+        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenacion", valor: modoOrdenacion)
+        // Guarda el diccionario completo como atributo "ordenPersonalizado"
+        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenPersonalizado", valor: ordenDict)
+    }
+
     
 }
 

@@ -36,11 +36,28 @@ struct Algoritmos {
     
     //MARK: --- ALGORITMO DE ORDENACION ---
     
-    func ordenarElementos(_ elementos: [ElementoSistemaArchivos], por tipoOrden: EnumOrdenaciones, esInvertido: Bool) -> [ElementoSistemaArchivos] {
+    func ordenarElementos(_ elementos: [ElementoSistemaArchivos], por tipoOrden: EnumOrdenaciones, esInvertido: Bool, coleccionURL: URL? = nil) -> [ElementoSistemaArchivos] {
         
         var tempElementos: [ElementoSistemaArchivos] = []
         
         switch tipoOrden {
+        case .personalizado:
+            
+            print("Ordenaiento personalizado")
+            
+            guard let coleccionURL = coleccionURL else { return [] }
+            
+            guard let ordenDict = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "ordenPersonalizado") as? [String: Int] else {
+                    return []
+                }
+                
+            tempElementos = elementos.sorted { (a, b) -> Bool in
+                let posA = ordenDict[a.url.absoluteString] ?? Int.max
+                let posB = ordenDict[b.url.absoluteString] ?? Int.max
+                return posA < posB
+            }
+
+            
         case .nombre:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
                 a.nombre.localizedStandardCompare(b.nombre) == .orderedAscending
@@ -55,24 +72,37 @@ struct Algoritmos {
                 return a.fileSize > b.fileSize
             }
 
-//        case .paginas:
-//            tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-//                (a.totalPaginas ?? 0) < (b.totalPaginas ?? 0)
-//            }
-//        case .porcentaje:
-//            tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
-//                (a.porcentajeLeido ?? 0) < (b.porcentajeLeido ?? 0)
-//            }
+        case .paginas:
+            tempElementos = elementos.sorted {
+                guard let a = $0 as? Archivo, let b = $1 as? Archivo else {
+                    return false
+                }
+                let pagA = a.totalPaginas ?? -1
+                let pagB = b.totalPaginas ?? -1
+                return pagA > pagB
+            }
+
+        case .porcentaje:
+            tempElementos = elementos.sorted {
+                guard let a = $0 as? Archivo, let b = $1 as? Archivo else {
+                    return false
+                }
+                return a.progreso > b.progreso
+            }
+            
         case .fechaImportacion:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
                 (a.fechaImportacion ) < (b.fechaImportacion )
             }
+            
         case .fechaModificacion:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
                 (a.fechaModificacion ) < (b.fechaModificacion )
             }
+            
         case .personalizado:
             tempElementos = elementos
+            
         default:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
                 a.nombre.localizedStandardCompare(b.nombre) == .orderedAscending

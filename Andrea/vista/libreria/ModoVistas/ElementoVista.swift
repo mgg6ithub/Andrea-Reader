@@ -62,7 +62,6 @@ struct ElementoVista<Content: View>: View {
                     contextMenuAbierto: $contextMenuAbierto
                 )
                 .onAppear {
-                    print("Abriendo context menu")
                     contextMenuAbierto = true
                 }
             }

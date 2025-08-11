@@ -17,7 +17,7 @@ struct MenuVista: View {
                 .padding(0)
                 
                 GeometryReader { geo in
-                    MenuCentro()
+                    MenuCentro(coleccionActualVM: PilaColecciones.pilaColecciones.getColeccionActual())
                         .frame(maxWidth: .infinity)
                         .onAppear {
                             menuCentroWidth = geo.size.width

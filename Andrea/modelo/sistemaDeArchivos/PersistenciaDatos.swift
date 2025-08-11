@@ -154,6 +154,8 @@ struct PersistenciaDatos {
             dict[atributo] = valor
         } else if let valor = valor as? Bool {
             dict[atributo] = valor
+        } else if let valorDict = valor as? [String: Int] {
+            dict[atributo] = valorDict
         } else {
             print("⚠️ Tipo no soportado para persistencia: \(type(of: valor))")
             return

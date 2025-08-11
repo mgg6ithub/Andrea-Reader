@@ -101,9 +101,6 @@ struct AndreaAppView: View {
                     }
                 }
         )
-        .onTapGesture {
-            print("FUNCIONA EL TAP")
-        }
         
     }
 }

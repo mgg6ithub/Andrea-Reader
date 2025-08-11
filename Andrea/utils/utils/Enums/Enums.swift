@@ -53,6 +53,7 @@ enum EnumOrdenaciones: String, Codable {
     case porcentaje
     case tamano
     case paginas
+    case progreso
     case fechaImportacion
     case fechaModificacion
 }

@@ -25,10 +25,12 @@ struct ArrastreManual: ViewModifier {
                       fromIndex != index else {
                     return false
                 }
-
+                
                 withAnimation(.easeInOut) {
                     let item = viewModel.elementos.remove(at: fromIndex)
                     viewModel.elementos.insert(item, at: index)
+                    viewModel.ordenacion = .personalizado
+                    viewModel.guardarOrdenPersonalizado(modoOrdenacion: .personalizado)
                 }
 
                 elementoArrastrando = nil

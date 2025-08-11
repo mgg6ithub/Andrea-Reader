@@ -71,9 +71,6 @@ struct VistaPrincipal: View {
             }
             
         }
-        .onTapGesture {
-            print("FUNCIONA EL TAP")
-        }
     
         .foregroundColor(ap.temaActual.textColor)
         .animation(.easeInOut, value: ap.temaActual)
