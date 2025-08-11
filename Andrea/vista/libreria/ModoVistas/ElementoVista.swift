@@ -27,7 +27,8 @@ struct ElementoVista<Content: View>: View {
     @State private var nuevoNombre = ""
     
     @State private var accionDocumento: EnumAccionDocumento? = nil //MOVER,COPIAR
-
+    
+    @State private var contextMenuAbierto = false
 
     private let sa: SistemaArchivos = SistemaArchivos.sa
 
@@ -37,6 +38,9 @@ struct ElementoVista<Content: View>: View {
             .background(
                 GeometryReader { geo in
                     Color.clear
+                        .if(contextMenuAbierto) { v in
+                            v.preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
+                        }
                         .preference(
                             key: ScrollIndexPreferenceKey.self,
                             value: scrollIndex.map { idx in
@@ -54,8 +58,13 @@ struct ElementoVista<Content: View>: View {
                     cambiarDireccionAbanico: cambiarDireccionAbanico,
                     borrarPresionado: $borrarPresionado,
                     renombrarPresionado: $renombrarPresionado,
-                    accionDocumento: $accionDocumento
+                    accionDocumento: $accionDocumento,
+                    contextMenuAbierto: $contextMenuAbierto
                 )
+                .onAppear {
+                    print("Abriendo context menu")
+                    contextMenuAbierto = true
+                }
             }
             .confirmationDialog(
                 "¿Estás seguro de que quieres borrar \(elemento.nombre)?",
@@ -144,6 +153,7 @@ struct ContextMenuContenido: View {
     @Binding var borrarPresionado: Bool
     @Binding var renombrarPresionado: Bool
     @Binding var accionDocumento: EnumAccionDocumento?
+    @Binding var contextMenuAbierto: Bool
     
     private let sa: SistemaArchivos = SistemaArchivos.sa
     @State private var masInformacionPresionado: Bool = false
@@ -191,9 +201,7 @@ struct ContextMenuContenido: View {
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(cDinamico, cGris)
             }
-//            .sheet(isPresented: $masInformacionPresionado){ //Puedo sacarlo de aqui con una .sheet o desde la vista principal
-//                MasInformacionArchivo(vm: vm, elemento: elemento)
-//            }
+
             
             Button(action: {
                 //vista previa de mi programa personalizada. se motrara la miniatura y 3 datos basicos.
@@ -312,7 +320,6 @@ struct ContextMenuContenido: View {
                 Label("Eliminar archivo", systemImage: "trash")
             }
         }
-
         
     }
 }

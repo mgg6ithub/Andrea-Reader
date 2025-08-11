@@ -77,6 +77,7 @@ struct CuadriculaVista: View {
                                     cambiarDireccionAbanico: { nuevaDireccion in
                                         if let coleccion = elemento as? Coleccion {
                                             coleccion.direccionAbanico = nuevaDireccion
+                                      
                                             PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "direccionAbanico", valor: nuevaDireccion)
                                         }
                                     }
@@ -90,7 +91,6 @@ struct CuadriculaVista: View {
                                         CuadriculaColeccion(coleccion: coleccion, width: itemWidth, height: itemHeight)
                                     }
                                 }
-//                                .preferredColorScheme(appEstado.temaActual == .dark ? .dark : .light)
                                 .matchedGeometryEffect(id: elemento.id, in: namespace)
                                 .id(index)  // importante para scrollTo
                                 .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))

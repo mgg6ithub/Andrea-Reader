@@ -77,6 +77,7 @@ struct AndreaAppView: View {
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         self.sideMenuVisible = false
+//                        print("FUNCIONA EL TAP")
                     }
                 
                 HStack {
@@ -100,8 +101,10 @@ struct AndreaAppView: View {
                     }
                 }
         )
+        .onTapGesture {
+            print("FUNCIONA EL TAP")
+        }
         
     }
-    
 }
 

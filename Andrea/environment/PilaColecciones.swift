@@ -55,6 +55,7 @@ class PilaColecciones: ObservableObject {
     }
 
     //MARK: - --- PREVIEW ---
+    @Published var contextMenuAbierto: Bool = false
 
     /**
       Carga la pila de colecciones desde `UserDefaults`.
