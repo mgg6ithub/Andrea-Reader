@@ -176,14 +176,23 @@ class PilaColecciones: ObservableObject {
      - Parameter coleccion: La colección a agregar.
      */
     public func meterColeccion(coleccion: Coleccion) {
-        let vm = ModeloColeccion(coleccion)
-        if colecciones.last?.coleccion == coleccion {
-            return
+        
+        //SI la coleccion que se quiere meter es la actual no se hace nada.
+        if colecciones.last?.coleccion == coleccion { return }
+        
+        //Si la coleccion que se quiere meter ya etaba en las coelcciones se va hasta ella sacando todo lo anterior.
+        if colecciones.contains(where: { $0.coleccion == coleccion }) {
+            self.sacarHastaEncontrarColeccion(coleccion: coleccion)
+            return // IMPORTANTE: después de "retroceder" no agregamos nada más
         }
+        
+        let vm = ModeloColeccion(coleccion)
+        
         colecciones.append(vm)
         actualizarColeccionActual()
         guardarPila()
     }
+
 
     /**
      Elimina la última colección de la pila.
