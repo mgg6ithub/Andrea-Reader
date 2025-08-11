@@ -554,7 +554,7 @@ struct EstadisticasAvanzadas: View {
 // Vista Lista (original)
 struct VistaLista: View {
     var body: some View {
-        VStack(spacing: 15) {
+        VStack(spacing: 0) {
             RectanguloEstadisticaAvanzada(
                 nombre: "TIEMPO RESTANTE",
                 dato: "1h 55m",
@@ -573,7 +573,7 @@ struct VistaLista: View {
                 color: .orange,
                 ancho: 60,
                 alto: 60
-            )
+            )            .padding(.top, 15)
             
             RectanguloEstadisticaAvanzada(
                 nombre: "PÁGINAS RESTANTES",
@@ -583,7 +583,7 @@ struct VistaLista: View {
                 color: .purple,
                 ancho: 60,
                 alto: 60
-            )
+            )            .padding(.top, 15)
             
             RectanguloEstadisticaAvanzada(
                 nombre: "PÁGINA MÁS VISITADA",
@@ -593,8 +593,9 @@ struct VistaLista: View {
                 color: .green,
                 ancho: 60,
                 alto: 60
-            )
+            )            .padding(.top, 15)
         }
+        .padding(.top, 10)
     }
 }
 
