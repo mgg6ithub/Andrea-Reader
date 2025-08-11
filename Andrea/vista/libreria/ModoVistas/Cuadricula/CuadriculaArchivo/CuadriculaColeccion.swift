@@ -2,16 +2,21 @@ import SwiftUI
 
 struct CuadriculaColeccion: View {
     
+    // --- ENTORNO ---
     @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var me: MenuEstado
     
+    // --- PARAMETROS ---
     @ObservedObject var coleccion: Coleccion
     var width: CGFloat
     var height: CGFloat
     
+    // --- VAIRABLES CALCULADAS ---
     private let constantes = ConstantesPorDefecto()
     private var escala: CGFloat { ap.constantes.scaleFactor }
     private var isSmall: Bool { ap.constantes.resLog == .small }
+    private var cDinamico: Color { ap.temaActual.colorContrario }
+    private var cSec: Color { ap.temaActual.secondaryText }
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -103,14 +108,14 @@ struct CuadriculaColeccion: View {
                             }
                             
                             Text(coleccion.nombre)
-                                .textoAdaptativo(t: ap.constantes.titleSize, a: 0.6, l: 2, b: true, alig: .leading, mW: .infinity, fAlig: .leading)
+                                .textoAdaptativo(t: ap.constantes.titleSize, a: 0.6, l: 2, b: true, c: cDinamico, alig: .leading, mW: .infinity, mH: 40, fAlig: .leading)
                         }
                         
                         HStack(spacing: 20) {
                             Text("3.25 GB")
-                                .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.6, l: 1, b: false, c: .secondary, alig: .leading, s: true)
+                                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.6, l: 1, b: false, c: cSec, alig: .leading, s: true)
                             Text("\(coleccion.totalArchivos) elementos")
-                                .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.6, l: 1, b: false, c: .secondary, alig: .leading, s: true)
+                                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.6, l: 1, b: false, c: cSec, alig: .leading, s: true)
                         }
                         .font(.footnote)
                         .foregroundColor(.secondary)
