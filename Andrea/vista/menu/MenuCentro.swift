@@ -262,7 +262,7 @@ struct BotonMenu<T: Equatable>: View {
             Label(nombre, systemImage: icono)
                 .foregroundStyle(
                     isActive ? color : ap.temaActual.textColor,
-                    isActive ? ap.temaActual.textColor : ap.temaActual.textColor,
+                    isActive ? color : ap.temaActual.textColor,
                     ap.temaActual.textColor
                 )
         }
