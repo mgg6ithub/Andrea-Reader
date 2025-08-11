@@ -1,6 +1,48 @@
 
 import SwiftUI
 
+extension Archivo {
+    static var preview: Archivo {
+        let a = Archivo()
+        
+        // Datos de archivo
+        a.nombre = "Archivo Demo"
+        a.totalPaginas = 120
+        a.paginaActual = 45
+        a.fileSize = 1024 * 1024 * 5 // 5 MB
+        a.fileExtension = "cbr"
+        a.url = URL(fileURLWithPath: "/preview/path/archivo.cbr")
+        a.relativeURL = "archivo.cbr"
+        
+        // Metadatos
+        a.fechaPublicacion = "2024-01-01"
+        a.numeroDeLaColeccion = 1
+        a.nombreOriginal = "ArchivoOriginal.cbr"
+        a.formatoEscaneo = "HD"
+        a.entidadEscaneo = "Escaneador Demo"
+        a.fechaImportacion = Date()
+        
+        // Valores calculados inicializados a 0 o nil seguros
+        a.tiempoTotal = 0
+        a.tiempoPorPagina = 0
+        a.tiempoRestante = 0
+        a.paginaVisitadaMasTiempo = 0
+        a.paginasRestantes = 75
+        a.paginaMasVisitada = 10
+        a.avanceDiario = 0
+        a.diasTotalesLectura = 0
+        a.diasConsecutivosLecutra = 0
+        a.horaFrecuente = nil
+        a.velocidadLectura = 0
+        a.velocidadMax = 0
+        a.velocidadMin = 0
+        a.masInformacion = true
+        
+        return a
+    }
+}
+
+
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     

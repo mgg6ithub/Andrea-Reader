@@ -28,7 +28,26 @@ class ModeloColeccion: ObservableObject {
     
     //MARK: - CONSTRUCTOR VACIO
     //crear un constrcutor por defecto con valores nulos para crear una instancia de ModeloColeccion vacia para tests
-
+    init() {
+            // Colección mínima para poder inicializar
+            self.coleccion = Coleccion(directoryName: "TEST", directoryURL: URL(fileURLWithPath: ""), fechaImportacion: Date(), fechaModificacion: Date(), favorito: true, protegido: true)
+            
+            self.tipoSA = nil
+            self.elementos = []
+            self.isLoading = false
+            self.color = .gray
+            self.scrollPosition = 0
+            self.modoVista = EnumModoVista.cuadricula
+            self.ordenacion = EnumOrdenaciones.nombre
+            self.esInvertido = false
+            self.columnas = 4
+            self.altura = 180
+            self.tiempoCarga = nil
+            self.elementosCargados = false
+            self.isPerformingAutoScroll = false
+        }
+    
+    
     init(_ coleccion: Coleccion) {
         self.coleccion = coleccion
         

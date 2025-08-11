@@ -1,25 +1,24 @@
 
 import SwiftUI
 
-//#Preview {
-//    PreviewMasInformacion()
-//}
-//
-//private struct PreviewMasInformacion: View {
-//    @State private var pantallaCompleta = false
-//    
-//    private let archivo = Archivo()
-//    
-//    var body: some View {
-//        MasInformacion(
-//            pantallaCompleta: $pantallaCompleta,
-//            elemento: archivo
-//        )
-////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+#Preview {
+    PreviewMasInformacion()
+}
+
+private struct PreviewMasInformacion: View {
+    @State private var pantallaCompleta = false
+    
+    var body: some View {
+        MasInformacion(
+            pantallaCompleta: $pantallaCompleta,
+            vm: ModeloColeccion(),
+            elemento: Archivo.preview
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
 //                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-////        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-//    }
-//}
+                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+    }
+}
 
 struct MasInformacionArchivo: View {
     
@@ -73,10 +72,22 @@ struct MasInformacionArchivo: View {
                             
                             EstadisticasAvanzadas(opacidad: opacidad, isSmall: isSmall)
                             
-                            InfoAvanzadaArchivoView(archivo: archivo, vm: vm, dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
+                            VStack(alignment: .center, spacing: 0) {
+                                InfoAvanzadaArchivoView(archivo: archivo, vm: vm, opacidad: opacidad)
+                                
+                                NotasArchivo(opacidad: opacidad)
+                                    .padding(.top, 15)
+                                
+                                Spacer()
+                            }
                             
                         }
+                        .frame(height: 580)
                         .padding(.top, 15)
+                        
+                        InfoAvanzadaArchivoView1(archivo: archivo, vm: vm, opacidad: opacidad)
+                            .padding(.top, 15)
+                        
                         
                     } else {
                         ProgresoLecturaView(
@@ -97,8 +108,14 @@ struct MasInformacionArchivo: View {
                         EstadisticasAvanzadas(opacidad: opacidad, isSmall: isSmall)
                             .padding(.top, 25)
                         
-                        InfoAvanzadaArchivoView(archivo: archivo, vm: vm, dimensiones: "1840 x 2360 px", resolucion: "350 pp", peso: "1.2 MB", fechaCreacion: " 7 ene 2024", ultimaLectura: "23 abr 2024", formato: "cbr", idUnico: "23123124", opacidad: opacidad)
+                        InfoAvanzadaArchivoView(archivo: archivo, vm: vm, opacidad: opacidad)
                             .padding(.top, 25)
+                        
+                        NotasArchivo(opacidad: 0.05)
+                            .padding(.top, 25)
+                        
+                        InfoAvanzadaArchivoView1(archivo: archivo, vm: vm, opacidad: opacidad)
+                            .padding(.top, 15)
                         
                     }
                 }
@@ -109,6 +126,95 @@ struct MasInformacionArchivo: View {
             
         }
 
+    }
+}
+
+struct NotasArchivo: View {
+    
+    let opacidad: CGFloat
+    
+    var body: some View {
+        ZStack(alignment: .top) {
+            RoundedRectangle(cornerRadius: 25)
+                .fill(Color.gray.opacity(0.1))
+                .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
+                .zIndex(0)
+            
+            VStack(alignment: .leading, spacing: 10) {
+                
+                Text("NOTAS")
+                    .font(.headline)
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+                
+                ScrollView {
+                    VStack(spacing: 12) {
+                        ForEach(0..<5) { index in
+                            NotaCard(
+                                titulo: "Nota \(index+1)",
+                                descripcion: "Descripción breve de la nota para el archivo, indicando su contexto y relevancia.",
+                                pagina: Int.random(in: 1...120),
+                                color: [.yellow, .green, .blue, .pink, .orange][index % 5],
+                                icono: ["star.fill", "pencil", "bookmark.fill", "flag.fill", "bolt.fill"][index % 5]
+                            )
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 15)
+                }
+            }
+        }
+    }
+}
+
+struct NotaCard: View {
+    let titulo: String
+    let descripcion: String
+    let pagina: Int
+    let color: Color
+    let icono: String
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(color.opacity(0.2))
+                    .frame(width: 44, height: 44)
+                Image(systemName: icono)
+                    .foregroundColor(color)
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(titulo)
+                    .font(.headline)
+                Text(descripcion)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .lineLimit(3)
+                
+                HStack {
+                    Text("Página \(pagina)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Button {
+                        // acción ir a página
+                    } label: {
+                        Text("Ir")
+                            .font(.caption)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(color.opacity(0.2))
+                            .cornerRadius(8)
+                    }
+                }
+                .padding(.top, 4)
+            }
+        }
+        .padding()
+        .background(Color.white.opacity(0.8))
+        .cornerRadius(15)
+        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
     }
 }
 
@@ -124,8 +230,6 @@ struct MiniaturaEinformacion: View {
     let isSmall: Bool
     
     @StateObject private var viewModel = ModeloMiniaturaArchivo()
-    
-//    @State private var show: Bool = true
     @State private var show1: Bool = false
 
     var body: some View {
@@ -318,6 +422,7 @@ struct EstadisticasAvanzadas: View {
                 Text("Estadísticas de lectura")
                     .font(.headline)
                     .padding(.bottom, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 
                 RectanguloEstadisticaAvanzada(
                                     nombre: "TIEMPO RESTANTE",
@@ -363,9 +468,7 @@ struct EstadisticasAvanzadas: View {
                 
             }
             .padding(15)
-            .padding(.horizontal, 15)
         }
-//        .aparicionBlur(show: $show)
         .frame(width: isSmall ? nil : 330)
         
     }
@@ -415,7 +518,8 @@ struct RectanguloEstadisticaAvanzada: View {
             }
             
         }
-        .frame(height: 120)
+        .padding(.horizontal, 5)
+        .frame(height: 110)
     }
 }
 
@@ -425,21 +529,15 @@ struct InfoAvanzadaArchivoView: View {
     // --- PARAMETROS ---
     @ObservedObject var archivo: Archivo
     @ObservedObject var vm: ModeloColeccion
-    var dimensiones: String
-    var resolucion: String
-    var peso: String
-    var fechaCreacion: String
-    var ultimaLectura: String
-    var formato: String
-    var idUnico: String
     
     let opacidad: CGFloat
     
     var body: some View {
         
-        ZStack {
+        ZStack(alignment: .top) {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.gray.opacity(opacidad))
+                .frame(height: 225)
                 .overlay(
                         RoundedRectangle(cornerRadius: 25)
                             .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
@@ -452,29 +550,81 @@ struct InfoAvanzadaArchivoView: View {
                     .font(.headline)
                     .padding(.bottom, 5)
                 
-                GrupoDatoAvanzado(nombre: "Pertenece a la colección", valor: vm.coleccion.nombre)
-                GrupoDatoAvanzado(nombre: "Numero de la colección", valor: "\(archivo.numeroDeLaColeccion ?? 0)")
-                GrupoDatoAvanzado(nombre: "Nombre original", valor:  archivo.nombreOriginal ?? "desconocido")
+                GrupoDatoAvanzado(nombre: "Dimensiones portada", valor: "1234 x 1234")
                 GrupoDatoAvanzado(nombre: "Extensión", valor: "cbr")
                 GrupoDatoAvanzado(nombre: "Formato", valor: EnumDescripcionArchivo.descripcion(for: archivo.fileType))
                 GrupoDatoAvanzado(nombre: "Ruta absoluta", valor: "\(archivo.url)")
-                GrupoDatoAvanzado(nombre: "Ruta relativa", valor: "\(archivo.relativeURL)")
-                GrupoDatoAvanzado(nombre: "Editorial", valor: "Marvel")
-                GrupoDatoAvanzado(nombre: "Formato de escaneo", valor: archivo.formatoEscaneo ?? "desconocido")
-                GrupoDatoAvanzado(nombre: "Entidad del escaneador", valor: archivo.entidadEscaneo ?? "desconocido")
-                GrupoDatoAvanzado(nombre: "Dimensiones portada", valor: dimensiones)
-                GrupoDatoAvanzado(nombre: "Resolución", valor: resolucion)
-                GrupoDatoAvanzado(nombre: "Peso", valor: peso)
-                GrupoDatoAvanzado(nombre: "Fecha de creación", valor: "\(archivo.fechaImportacion)")
-                GrupoDatoAvanzado(nombre: "Numero de aperturas", valor: fechaCreacion)
-                GrupoDatoAvanzado(nombre: "Primera lectura", valor: fechaCreacion)
-                GrupoDatoAvanzado(nombre: "Última lectura", valor: ultimaLectura)
-                GrupoDatoAvanzado(nombre: "Última modificación", valor: ultimaLectura)
-                GrupoDatoAvanzado(nombre: "Formato", valor: formato)
-                GrupoDatoAvanzado(nombre: "ID único", valor: idUnico)
-                GrupoDatoAvanzado(nombre: "ISBN", valor: "123123123")
+
+            }
+            .padding()
+        }
+    }
+}
+
+struct InfoAvanzadaArchivoView1: View {
+    
+    // --- PARAMETROS ---
+    @ObservedObject var archivo: Archivo
+    @ObservedObject var vm: ModeloColeccion
+    
+    let opacidad: CGFloat
+    
+    @State private var masInfoAvanzada: Bool = false
+    
+    var body: some View {
+        
+        ZStack(alignment: .top) {
+            RoundedRectangle(cornerRadius: 25)
+                .fill(Color.gray.opacity(opacidad))
+                .overlay(
+                        RoundedRectangle(cornerRadius: 25)
+                            .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
+                    )
+                .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
+                .zIndex(0)
+            
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Información avanzada")
+                    .font(.headline)
+                    .padding(.bottom, 5)
                 
-                Spacer()
+                GrupoDatoAvanzado(nombre: "Pertenece a la colección", valor: vm.coleccion.nombre)
+                GrupoDatoAvanzado(nombre: "Numero de la colección", valor: "\(archivo.numeroDeLaColeccion ?? 0)")
+                GrupoDatoAvanzado(nombre: "Nombre original", valor:  archivo.nombreOriginal ?? "desconocido")
+                GrupoDatoAvanzado(nombre: "Ruta absoluta", valor: "\(archivo.url)")
+                GrupoDatoAvanzado(nombre: "Ruta relativa", valor: "\(archivo.relativeURL)")
+                
+                Button(action: {
+                    masInfoAvanzada.toggle()
+                }) {
+                    HStack(spacing: 5) {
+                        Text("Más informacion")
+                            .font(.subheadline)
+                            .padding(.bottom, 5)
+                        
+                        Image(systemName: "chevron.forward")
+                            .rotationEffect(.degrees(masInfoAvanzada ? 90 : 0))
+                    }
+                }
+                .buttonStyle(.plain)
+                
+                if masInfoAvanzada {
+                    VStack(alignment: .leading, spacing: 10) {
+                        GrupoDatoAvanzado(nombre: "Editorial", valor: "Marvel")
+                        GrupoDatoAvanzado(nombre: "Formato de escaneo", valor: archivo.formatoEscaneo ?? "desconocido")
+                        GrupoDatoAvanzado(nombre: "Entidad del escaneador", valor: archivo.entidadEscaneo ?? "desconocido")
+                        GrupoDatoAvanzado(nombre: "Resolución", valor: "333 pp")
+                        GrupoDatoAvanzado(nombre: "Peso", valor: "2.13")
+                        GrupoDatoAvanzado(nombre: "Fecha de creación", valor: "\(archivo.fechaImportacion)")
+                        GrupoDatoAvanzado(nombre: "Numero de aperturas", valor: "fechaCreacion")
+                        GrupoDatoAvanzado(nombre: "Primera lectura", valor: "fechaCreacion")
+                        GrupoDatoAvanzado(nombre: "Última lectura", valor: "ultimaLectura")
+                        GrupoDatoAvanzado(nombre: "Última modificación", valor: "ultimaLectura")
+                        GrupoDatoAvanzado(nombre: "Formato", valor: "formato")
+                        GrupoDatoAvanzado(nombre: "ID único", valor: "idUnico")
+                        GrupoDatoAvanzado(nombre: "ISBN", valor: "123123123")
+                    }
+                }
             }
             .padding()
         }
