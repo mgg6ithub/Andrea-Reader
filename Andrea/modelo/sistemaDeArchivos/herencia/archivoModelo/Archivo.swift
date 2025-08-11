@@ -72,7 +72,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     @Published var entidadEscaneo: String?
     @Published var fechaPublicacion: String?
     
-    var puntuacion: Int = 0
+    @Published var puntuacion: Double = 0
+    var autor: String = ""
     var idioma: EnumIdiomas = .castellano
     var genero: String = ""
     
@@ -191,6 +192,11 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         if let fechaString = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "fechaImportacion") as? String,
            let fecha = Fechas().parseDate1(fechaString) {
             self.fechaImportacion = fecha
+        }
+        
+        //Obtenemos la puntuacion
+        if let puntuacion = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "puntuacion") as? Double {
+            self.puntuacion = puntuacion
         }
         
         //OBTENER LAS DIMENDIONES DE LAS PORTADAS

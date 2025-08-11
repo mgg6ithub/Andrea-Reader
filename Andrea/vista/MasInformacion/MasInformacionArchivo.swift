@@ -1,5 +1,6 @@
 
 import SwiftUI
+import Charts
 
 #Preview {
     PreviewMasInformacion()
@@ -142,10 +143,11 @@ struct NotasArchivo: View {
             
             VStack(alignment: .leading, spacing: 10) {
                 
-                Text("NOTAS")
+                Text("Notas")
                     .font(.headline)
                     .padding(.horizontal)
                     .padding(.top, 10)
+                    .offset(x: 5)
                 
                 ScrollView {
                     VStack(spacing: 12) {
@@ -168,6 +170,9 @@ struct NotasArchivo: View {
 }
 
 struct NotaCard: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
     let titulo: String
     let descripcion: String
     let pagina: Int
@@ -212,7 +217,7 @@ struct NotaCard: View {
             }
         }
         .padding()
-        .background(Color.white.opacity(0.8))
+        .background(ap.temaActual.backgroundColor.opacity(0.5))
         .cornerRadius(15)
         .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
     }
@@ -257,7 +262,7 @@ struct MiniaturaEinformacion: View {
                 
                 VStack(alignment: .center, spacing: 8) { // ahora leading
                     if !isSmall {
-                        HStack(alignment: .top, spacing: 30) { // alinear por arriba
+                        HStack(alignment: .top, spacing: 15) { // alinear por arriba
                             TituloDescripcion(archivo: archivo, isSmall: isSmall)
                         }
                     }
@@ -311,50 +316,99 @@ struct MiniaturaEinformacion: View {
                     viewModel.unloadThumbnail(for: archivo)
                 }
             }
-//            .aparicionBlur(show: $show)
     }
 }
+
+struct EditableStarRating: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
+    let url: URL
+    @Binding var puntuacion: Double // permite valores como 3.5
+    let maxRating: Int = 5
+    private var iz: CGFloat { ap.constantes.iconSize }
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(1...maxRating, id: \.self) { index in
+                let starType = starImageType(for: index)
+                
+                Image(systemName: starType)
+                    .font(.system(size: iz))
+                    .foregroundColor(.yellow)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            // Si ya está en media estrella, pasa a estrella completa; si está completa, baja a media
+                            if puntuacion == Double(index) {
+                                puntuacion = Double(index) - 0.5
+                            } else {
+                                puntuacion = Double(index)
+                            }
+                        }
+                        PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
+                    }
+            }
+            Text(String(format: "%.1f", puntuacion))
+                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.9, a: 0.6, l: 1, alig: .center, mW: 25)
+        }
+        .gesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { value in
+                    let totalWidth = CGFloat(maxRating) * (iz + 4) - 4
+                    let clampedX = min(max(value.location.x, 0), totalWidth)
+                    let rawStars = Double(clampedX / (totalWidth / CGFloat(maxRating)))
+                    
+                    // Redondear a media estrella
+                    let halfStep = (rawStars * 2).rounded() / 2
+                    puntuacion = min(Double(maxRating), max(0.5, halfStep))
+                }
+                .onEnded { _ in
+                    PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
+                }
+        )
+    }
+    
+    private func starImageType(for index: Int) -> String {
+        if puntuacion >= Double(index) {
+            return "star.fill"
+        } else if puntuacion >= Double(index) - 0.5 {
+            return "star.lefthalf.fill"
+        } else {
+            return "star"
+        }
+    }
+}
+
+
 
 struct TituloDescripcion: View {
     
     @EnvironmentObject var ap: AppEstado
-    
     @ObservedObject var archivo: Archivo
-    
-    var puntuacion: Double = 5.0 // puedes cambiar este valor
     let isSmall: Bool
     
     var body: some View {
-        VStack(alignment: .center, spacing: 8) { // ahora leading
+        VStack(alignment: .leading, spacing: 8) { // ahora leading
             Text(archivo.nombre)
-                .textoAdaptativo(t: ap.constantes.titleSize, a: 0.7, l: 3, alig: .center)
+                .textoAdaptativo(t: ap.constantes.titleSize, a: 0.7, l: 3, alig: .center, mH: 80)
             
-            Text("por autor")
-                .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.7, l: 1, alig: .center)
+            Text("por \(archivo.autor)")
+                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.7, l: 1, c: .secondary, alig: .center)
             
             // Sistema de puntuación
-            HStack(spacing: 4) {
-                ForEach(0..<5, id: \.self) { index in
-                    Image(systemName: index < Int(puntuacion) ? "star.fill" : "star")
-                        .foregroundColor(.yellow)
-                }
-                Text(String(format: "%.1f", puntuacion))
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.horizontal, 10)
+            EditableStarRating(url: archivo.url, puntuacion: $archivo.puntuacion)
         }
         
         VStack(alignment: .leading, spacing: 8) {
             Text("Descripción")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.8, a: 0.6, l: 1, c: .secondary, alig: .leading)
             
             Text("He creado una librería completamente modernizada He creado una librería completamente modernizada. He creado una librería completamente modernizada. He creado una librería completamente modernizada. He creado una librería completamente modernizada.")
-                .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.6, l: 4, alig: .leading)
+                .textoAdaptativo(t: ap.constantes.subTitleSize * 1.4, a: 0.6, l: 5, alig: .leading)
         }
     }
 }
+
 
 struct RectanguloDato: View {
     
@@ -397,12 +451,34 @@ struct RectanguloDato: View {
     }
 }
 
+
 struct EstadisticasAvanzadas: View {
+    
+    @EnvironmentObject var ap: AppEstado
     
     let opacidad: CGFloat
     let isSmall: Bool
     
-//    @State private var show: Bool = true
+    @State private var modoVista: ModoVisualizacion = .lista
+    
+    enum ModoVisualizacion: CaseIterable {
+        case lista
+        case graficos
+        
+        var icono: String {
+            switch self {
+            case .lista: return "list.bullet.rectangle"
+            case .graficos: return "chart.bar.fill"
+            }
+        }
+        
+        var titulo: String {
+            switch self {
+            case .lista: return "Lista"
+            case .graficos: return "Gráficos"
+            }
+        }
+    }
     
     var body: some View {
         
@@ -412,69 +488,371 @@ struct EstadisticasAvanzadas: View {
                 .fill(Color.gray.opacity(opacidad))
                 .overlay(
                         RoundedRectangle(cornerRadius: 25)
-                            .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
+                            .stroke(.black.opacity(0.6), lineWidth: 2)
                     )
                 .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
                 .zIndex(0)
             
             VStack(alignment: .center, spacing: 15) {
                 
-                Text("Estadísticas de lectura")
-                    .font(.headline)
-                    .padding(.bottom, 10)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                // Header con título y botones de modo
+                HStack {
+                    Text("Estadísticas de lectura")
+                        .textoAdaptativo(t: ap.constantes.titleSize * 0.85, a: 0.75, l: 1, b: true, alig: .leading)
+                    
+                    Spacer()
+                    
+                    // Selector de modo con estilo banner
+                    HStack(spacing: 0) {
+                        ForEach(ModoVisualizacion.allCases, id: \.self) { modo in
+                            Button(action: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    modoVista = modo
+                                }
+                            }) {
+                                HStack(spacing: 4) {
+                                    Text(modo.titulo)
+                                        .font(.caption)
+                                        .fontWeight(.medium)
+                                }
+                                .foregroundColor(modoVista == modo ? .white : .secondary)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(modoVista == modo ? Color.gray : Color.clear)
+                                )
+                            }
+                        }
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.ultraThinMaterial)
+                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                    )
+                }
+                .padding(.horizontal, 10)
                 
-                RectanguloEstadisticaAvanzada(
-                                    nombre: "TIEMPO RESTANTE",
-                                    dato: "1h 55m",
-                                    descripcion: "Estimación basada en tu ritmo actual de lectura",
-                                    icono: "hourglass.bottomhalf.fill",
-                                    color: .blue,
-                                    ancho: 60,
-                                    alto: 60
-                                )
-                                
-                                RectanguloEstadisticaAvanzada(
-                                    nombre: "VELOCIDAD DE LECTURA",
-                                    dato: "2 pág/m",
-                                    descripcion: "Tu ritmo promedio de lectura",
-                                    icono: "speedometer",
-                                    color: .orange,
-                                    ancho: 60,
-                                    alto: 60
-                                )
-                                
-                                RectanguloEstadisticaAvanzada(
-                                    nombre: "PÁGINAS RESTANTES",
-                                    dato: "39 páginas",
-                                    descripcion: "Te falta el 30% por completar",
-                                    icono: "book.pages.fill",
-                                    color: .purple,
-                                    ancho: 60,
-                                    alto: 60
-                                )
-                                
-                                RectanguloEstadisticaAvanzada(
-                                    nombre: "PÁGINA MÁS VISITADA",
-                                    dato: "Página 34",
-                                    descripcion: "Tu página favorita para releer",
-                                    icono: "bookmark.fill",
-                                    color: .green,
-                                    ancho: 60,
-                                    alto: 60
-                                )
+                // Contenido según el modo seleccionado
+                Group {
+                    if modoVista == .lista {
+                        VistaLista()
+                    } else {
+                        VistaGraficos()
+                    }
+                }
+                .animation(.spring(response: 0.4, dampingFraction: 0.8), value: modoVista)
                 
                 Spacer()
-                
             }
             .padding(15)
         }
         .frame(width: isSmall ? nil : 330)
-        
     }
 }
 
+// Vista Lista (original)
+struct VistaLista: View {
+    var body: some View {
+        VStack(spacing: 15) {
+            RectanguloEstadisticaAvanzada(
+                nombre: "TIEMPO RESTANTE",
+                dato: "1h 55m",
+                descripcion: "Estimación basada en tu ritmo actual de lectura",
+                icono: "hourglass.bottomhalf.fill",
+                color: .blue,
+                ancho: 60,
+                alto: 60
+            )
+            
+            RectanguloEstadisticaAvanzada(
+                nombre: "VELOCIDAD DE LECTURA",
+                dato: "2 pág/m",
+                descripcion: "Tu ritmo promedio de lectura",
+                icono: "speedometer",
+                color: .orange,
+                ancho: 60,
+                alto: 60
+            )
+            
+            RectanguloEstadisticaAvanzada(
+                nombre: "PÁGINAS RESTANTES",
+                dato: "39 páginas",
+                descripcion: "Te falta el 30% por completar",
+                icono: "book.pages.fill",
+                color: .purple,
+                ancho: 60,
+                alto: 60
+            )
+            
+            RectanguloEstadisticaAvanzada(
+                nombre: "PÁGINA MÁS VISITADA",
+                dato: "Página 34",
+                descripcion: "Tu página favorita para releer",
+                icono: "bookmark.fill",
+                color: .green,
+                ancho: 60,
+                alto: 60
+            )
+        }
+    }
+}
 
+// Vista Gráficos moderna
+struct VistaGraficos: View {
+    
+    let datosProgreso = [
+        ProgresoData(categoria: "Leído", valor: 70, color: .green),
+        ProgresoData(categoria: "Restante", valor: 30, color: .gray)
+    ]
+    
+    let datosVelocidad = [
+        VelocidadData(dia: "L", velocidad: 1.8),
+        VelocidadData(dia: "M", velocidad: 2.1),
+        VelocidadData(dia: "M", velocidad: 2.3),
+        VelocidadData(dia: "J", velocidad: 1.9),
+        VelocidadData(dia: "V", velocidad: 2.5),
+        VelocidadData(dia: "S", velocidad: 2.0),
+        VelocidadData(dia: "D", velocidad: 1.7)
+    ]
+    
+    let datosPaginasVisitadas = [
+        PaginaVisitadaData(pagina: 12, visitas: 3),
+        PaginaVisitadaData(pagina: 18, visitas: 5),
+        PaginaVisitadaData(pagina: 25, visitas: 2),
+        PaginaVisitadaData(pagina: 34, visitas: 8),
+        PaginaVisitadaData(pagina: 42, visitas: 4),
+        PaginaVisitadaData(pagina: 51, visitas: 6),
+        PaginaVisitadaData(pagina: 67, visitas: 3)
+    ]
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                
+                // Diagrama de progreso del libro
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Image(systemName: "chart.bar.horizontal.fill")
+                            .foregroundColor(.blue)
+                        Text("Progreso del libro")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                    }
+                    
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(height: 120)
+                        .overlay(
+                            Chart(datosProgreso) { item in
+                                BarMark(
+                                    x: .value("Valor", item.valor),
+                                    y: .value("Categoría", item.categoria)
+                                )
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: item.categoria == "Leído" ?
+                                            [.blue, .purple] : [.gray.opacity(0.6), .gray.opacity(0.3)],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .cornerRadius(6)
+                                .annotation(position: .trailing, alignment: .leading) {
+                                    Text("\(Int(item.valor))%")
+                                        .font(.caption)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.primary)
+                                }
+                            }
+                            .chartYAxis {
+                                AxisMarks(position: .leading) { _ in
+                                    AxisValueLabel()
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            .chartXAxis(.hidden)
+                            .padding()
+                        )
+                }
+                
+                // Gráfico de barras de velocidad
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Image(systemName: "chart.bar.fill")
+                            .foregroundColor(.orange)
+                        Text("Velocidad semanal")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                    }
+                    
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(height: 120)
+                        .overlay(
+                            Chart(datosVelocidad) { item in
+                                BarMark(
+                                    x: .value("Día", item.dia),
+                                    y: .value("Velocidad", item.velocidad)
+                                )
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.orange, .red],
+                                        startPoint: .bottom,
+                                        endPoint: .top
+                                    )
+                                )
+                                .cornerRadius(4)
+                            }
+                            .padding()
+                        )
+                }
+                
+                // Gráfico de páginas más visitadas
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Image(systemName: "chart.line.uptrend.xyaxis")
+                            .foregroundColor(.green)
+                        Text("Páginas más visitadas")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                    }
+                    
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(height: 100)
+                        .overlay(
+                            Chart(datosPaginasVisitadas) { item in
+                                LineMark(
+                                    x: .value("Página", item.pagina),
+                                    y: .value("Visitas", item.visitas)
+                                )
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.cyan, .green],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                                .interpolationMethod(.catmullRom)
+                                
+                                AreaMark(
+                                    x: .value("Página", item.pagina),
+                                    y: .value("Visitas", item.visitas)
+                                )
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.cyan.opacity(0.3), .green.opacity(0.1)],
+                                        startPoint: .top,
+                                        endPoint: .bottom
+                                    )
+                                )
+                                .interpolationMethod(.catmullRom)
+                                
+                                // Punto destacado para la página más visitada
+                                if item.visitas == datosPaginasVisitadas.map(\.visitas).max() {
+                                    PointMark(
+                                        x: .value("Página", item.pagina),
+                                        y: .value("Visitas", item.visitas)
+                                    )
+                                    .foregroundStyle(.white)
+                                    .symbolSize(50)
+                                    
+                                    PointMark(
+                                        x: .value("Página", item.pagina),
+                                        y: .value("Visitas", item.visitas)
+                                    )
+                                    .foregroundStyle(.green)
+                                    .symbolSize(30)
+                                }
+                            }
+                            .chartYAxis(.hidden)
+                            .chartXAxis {
+                                AxisMarks(position: .bottom, values: .stride(by: 5)) { value in
+                                    AxisValueLabel() {
+                                        if let intValue = value.as(Int.self) {
+                                            Text("\(intValue)")
+                                                .font(.caption2)
+                                                .foregroundStyle(.secondary)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 15)
+                            .padding(.vertical, 10)
+                        )
+                }
+                
+                // Métrica rápida de tiempo restante
+                MetricaRapida(
+                    titulo: "Tiempo restante",
+                    valor: "1h 55m",
+                    icono: "clock.fill",
+                    color: .blue
+                )
+            }
+        }
+    }
+}
+
+// Componente para métricas rápidas
+struct MetricaRapida: View {
+    let titulo: String
+    let valor: String
+    let icono: String
+    let color: Color
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 12)
+            .fill(.ultraThinMaterial)
+            .frame(height: 70)
+            .overlay(
+                VStack(spacing: 4) {
+                    HStack {
+                        Image(systemName: icono)
+                            .foregroundColor(color)
+                            .font(.caption)
+                        Spacer()
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(valor)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                        Text(titulo)
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(8)
+            )
+    }
+}
+
+// Modelos de datos para gráficos
+struct ProgresoData: Identifiable {
+    let id = UUID()
+    let categoria: String
+    let valor: Double
+    let color: Color
+}
+
+struct VelocidadData: Identifiable {
+    let id = UUID()
+    let dia: String
+    let velocidad: Double
+}
+
+struct PaginaVisitadaData: Identifiable {
+    let id = UUID()
+    let pagina: Int
+    let visitas: Int
+}
+
+// Tu componente original RectanguloEstadisticaAvanzada permanece igual
 struct RectanguloEstadisticaAvanzada: View {
     
     let nombre: String
@@ -485,7 +863,6 @@ struct RectanguloEstadisticaAvanzada: View {
     
     let ancho: CGFloat
     let alto: CGFloat
-    
     
     var body: some View {
         ZStack(alignment: .center) {
@@ -523,7 +900,6 @@ struct RectanguloEstadisticaAvanzada: View {
     }
 }
 
-
 struct InfoAvanzadaArchivoView: View {
     
     // --- PARAMETROS ---
@@ -537,11 +913,11 @@ struct InfoAvanzadaArchivoView: View {
         ZStack(alignment: .top) {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.gray.opacity(opacidad))
-                .frame(height: 225)
-                .overlay(
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
-                    )
+                .frame(height: 180)
+//                .overlay(
+//                        RoundedRectangle(cornerRadius: 25)
+//                            .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
+//                    )
                 .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
                 .zIndex(0)
             
@@ -553,7 +929,6 @@ struct InfoAvanzadaArchivoView: View {
                 GrupoDatoAvanzado(nombre: "Dimensiones portada", valor: "1234 x 1234")
                 GrupoDatoAvanzado(nombre: "Extensión", valor: "cbr")
                 GrupoDatoAvanzado(nombre: "Formato", valor: EnumDescripcionArchivo.descripcion(for: archivo.fileType))
-                GrupoDatoAvanzado(nombre: "Ruta absoluta", valor: "\(archivo.url)")
 
             }
             .padding()
@@ -576,10 +951,10 @@ struct InfoAvanzadaArchivoView1: View {
         ZStack(alignment: .top) {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.gray.opacity(opacidad))
-                .overlay(
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
-                    )
+//                .overlay(
+//                        RoundedRectangle(cornerRadius: 25)
+//                            .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
+//                    )
                 .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
                 .zIndex(0)
             
@@ -680,7 +1055,7 @@ struct AccionesRapidasView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.gray.opacity(opacidad))
-                .frame(height: isSmall ? nil : 170)
+                .frame(height: isSmall ? nil : 200)
                 .overlay(
                         RoundedRectangle(cornerRadius: 25)
                             .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
@@ -707,8 +1082,8 @@ struct AccionesRapidasView: View {
                     }
                 } else {
                     HStack(spacing: 15) {
-                        BotonAccion(icono: "star.fill", titulo: "Favorito", color: .yellow) { print("FAVORITO") }
-                        BotonAccion(icono: "lock.shield", titulo: "Proteger", color: .black, dosColores: true)
+//                        BotonAccion(icono: "star.fill", titulo: "Favorito", color: .yellow) { print("FAVORITO") }
+//                        BotonAccion(icono: "lock.shield", titulo: "Proteger", color: .black, dosColores: true)
                         BotonAccion(icono: "square.and.arrow.up", titulo: "Compartir", color: .orange)
                         BotonAccion(icono: "trash", titulo: "Eliminar", color: .red)
                     }
@@ -796,7 +1171,7 @@ struct ProgresoLecturaView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.gray.opacity(opacidad))
-                .frame(width: isSmall ? nil : 330)
+                .frame(width: isSmall ? nil : 550)
                 .overlay(
                         RoundedRectangle(cornerRadius: 25)
                             .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
@@ -804,9 +1179,17 @@ struct ProgresoLecturaView: View {
                 .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
                 .zIndex(0)
             
-            VStack(spacing: 20) {
-                Text("Progreso de Lectura")
-                    .font(.headline)
+            VStack(alignment: .leading, spacing: 20) {
+                HStack(spacing: 100) {
+                    Text("Progreso de Lectura")
+                        .font(.headline)
+                        .offset(x: 40)
+                    
+                    Text("Almacenamiento")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .offset(x: -55)
+                }
                 
                 HStack(spacing: 80) {
                     // Progreso completado
@@ -828,11 +1211,21 @@ struct ProgresoLecturaView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
+                    
+                    VStack {
+                        ProgresoCircular(valor: tiempo, color: .purple)
+                        Text("Tamaño en la colección")
+                            .font(.subheadline)
+                            .lineLimit(1)
+                        Text("Ocupa \(13) MB de 2 GB")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
             .padding()
         }
-        .frame(height: 160)
+        .frame(height: 200)
     }
 }
 

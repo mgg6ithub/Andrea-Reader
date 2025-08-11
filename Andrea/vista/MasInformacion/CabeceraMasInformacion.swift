@@ -51,7 +51,7 @@ struct CabeceraMasInformacion: View {
             Spacer()
                                     
             Text("Información y ajustes")
-                .font(.system(size: ap.constantes.titleSize))
+                .font(.system(size: ap.constantes.titleSize * 1.35))
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)

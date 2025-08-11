@@ -48,6 +48,8 @@ struct PersistenciaDatos {
 
         if let valor = valor as? Int {
             dict[atributo] = valor
+        } else if let valor = valor as? Double {
+            dict[atributo] = valor
         } else if let valor = valor as? Bool {
             dict[atributo] = valor
         } else if let valor = valor as? String {
