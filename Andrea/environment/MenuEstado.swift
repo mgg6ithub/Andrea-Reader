@@ -8,6 +8,8 @@ class MenuEstado: ObservableObject {
     
     //MARK: - ICONOS DEL MENU
     
+    @Published var iconosSize: CGFloat = ConstantesPorDefecto().iconSize
+    
     //MENU IZQUIERDA
     
     @Published var menuIzquierdaFlechaLateral: Bool = true

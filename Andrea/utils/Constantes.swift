@@ -26,7 +26,7 @@ struct ConstantesPorDefecto {
     
     
     //MARK: - ICONO
-    var iconSize: CGFloat = 25
+    var iconSize: CGFloat = 22
     var iconWeight: Font.Weight = .thin
     var iconColor: Color = .gray
     

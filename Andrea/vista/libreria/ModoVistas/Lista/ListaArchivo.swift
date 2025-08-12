@@ -63,7 +63,7 @@ struct ListaArchivo: View {
         .frame(height: coleccionVM.altura * escala)
         .background(ap.temaActual.cardColor)
         .cornerRadius(8, corners: [.topLeft, .bottomLeft])
-        .shadow(color: ap.temaActual == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.5) : .black.opacity(0.1), radius: 2.5, x: 0, y: 3)
         .onAppear {
             
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)

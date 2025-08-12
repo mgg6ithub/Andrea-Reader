@@ -15,10 +15,11 @@ struct HistorialColecciones: View {
     @State private var show: Bool = false
 
     // --- VARIABLES CALCULADAS ---
+    private var variable: CGFloat = 18
     private var escala: CGFloat { appEstado.constantes.scaleFactor }
-    private var grande: CGFloat { 21 * escala }
-    private var peke: CGFloat { 14 * escala }
-    private var paddingScalado: CGFloat { 11 * escala }
+    private var grande: CGFloat { variable * escala }
+    private var peke: CGFloat { (variable - 7) * escala }
+    private var paddingScalado: CGFloat { (variable - 10) * escala }
     private var spacioG: CGFloat { 5 * escala }
     private var spacioP: CGFloat { 4 * escala }
 
