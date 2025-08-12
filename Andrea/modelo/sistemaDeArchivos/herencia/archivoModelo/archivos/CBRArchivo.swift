@@ -1,4 +1,3 @@
-
 import SwiftUI
 import Unrar
 
@@ -14,47 +13,51 @@ class CBRArchivo: Archivo {
 //        self.imagenArchivo = self.crearImagenArchivo(tipoArchivo: self.fileType, miniaturaPortada: self.crearMiniaturaPortada(), miniaturaContraPortada: self.crearMiniaturaContraPortada())
     }
     
-//    func cargarPaginas() -> [String] {
-//        do {
-//            let archive = try Archive(path: self.url.path)
-//            let entries = try archive.entries()
-//            // Filtra solo las imágenes dentro del archivo CBZ
-//            let comicImages = entries.compactMap { entry in
-//                
-//                if entry.fileName.lowercased().hasSuffix(".jpg") || entry.fileName.lowercased().hasSuffix(".png") {
-//                    return entry.fileName
-//                }
-//                
-//                return nil
-//            }
-//            
-//            let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
-//            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
-//            
-//        } catch {
-////            print("Error al abrir el archivo CBZ: \(error)")
-//            return []
-//        }
-//    }
-//    
-    
     override func obtenerPrimeraPagina() -> String? {
         do {
             let archive = try Archive(path: self.url.path)
             let entries = try archive.entries()
             
-            for entry in entries {
-                let lowercasedName = entry.fileName.lowercased()
-                if lowercasedName.hasSuffix(".jpg") || lowercasedName.hasSuffix(".jpeg") || lowercasedName.hasSuffix(".png") {
-                    return entry.fileName
+            // Filtrar solo imágenes y ordenarlas por nombre
+            let imageEntries = entries
+                .filter { entry in
+                    let name = entry.fileName.lowercased()
+                    return name.hasSuffix(".jpg") || name.hasSuffix(".jpeg") || name.hasSuffix(".png")
                 }
-            }
-            return nil
+                .sorted { $0.fileName.localizedStandardCompare($1.fileName) == .orderedAscending }
+            
+            // Devolver la primera si existe
+            return imageEntries.first?.fileName
         } catch {
             print("Error abriendo archivo CBR: \(error)")
             return nil
         }
     }
+
+    
+    //    func cargarPaginas() -> [String] {
+    //        do {
+    //            let archive = try Archive(path: self.url.path)
+    //            let entries = try archive.entries()
+    //            // Filtra solo las imágenes dentro del archivo CBZ
+    //            let comicImages = entries.compactMap { entry in
+    //
+    //                if entry.fileName.lowercased().hasSuffix(".jpg") || entry.fileName.lowercased().hasSuffix(".png") {
+    //                    return entry.fileName
+    //                }
+    //
+    //                return nil
+    //            }
+    //
+    //            let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
+    //            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+    //
+    //        } catch {
+    ////            print("Error al abrir el archivo CBZ: \(error)")
+    //            return []
+    //        }
+    //    }
+    //
 
     
     override func cargarPaginasAsync() {

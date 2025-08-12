@@ -13,27 +13,6 @@ class CBZArchivo: Archivo {
 //        self.imagenArchivo = self.crearImagenArchivo(tipoArchivo: self.fileType, miniaturaPortada: self.crearMiniaturaPortada(), miniaturaContraPortada: self.crearMiniaturaContraPortada())
     }
     
-//    func cargarPaginas() -> [String] {
-//        do {
-//            let archive = try Archive(url: self.url, accessMode: .read)
-//            
-//            // Filtra solo las imágenes dentro del archivo CBZ
-//            let comicImages = archive.compactMap { entry in
-//                if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
-//                    return entry.path
-//                }
-//                return nil
-//            }
-//            
-//            let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
-//            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
-//            
-//        } catch {
-////            print("Error al abrir el archivo CBZ: \(error)")
-//            return []
-//        }
-//    }
-    
     override func obtenerPrimeraPagina() -> String? {
         do {
             let archive = try Archive(url: self.url, accessMode: .read)
@@ -52,6 +31,27 @@ class CBZArchivo: Archivo {
             return nil
         }
     }
+    
+//    func cargarPaginas() -> [String] {
+//        do {
+//            let archive = try Archive(url: self.url, accessMode: .read)
+//
+//            // Filtra solo las imágenes dentro del archivo CBZ
+//            let comicImages = archive.compactMap { entry in
+//                if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
+//                    return entry.path
+//                }
+//                return nil
+//            }
+//
+//            let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
+//            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+//
+//        } catch {
+////            print("Error al abrir el archivo CBZ: \(error)")
+//            return []
+//        }
+//    }
 
     
    override func cargarPaginasAsync() {
