@@ -60,7 +60,6 @@ struct ListaVista: View {
                     }
                 }
                 .padding(.horizontal, 20)
-//                .padding(.vertical, 10)
                 .animation(.easeInOut(duration: 0.3), value: vm.altura)
                 .background(
                     GeometryReader { _ in Color.clear }

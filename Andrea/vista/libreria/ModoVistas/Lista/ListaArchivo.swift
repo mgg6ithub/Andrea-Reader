@@ -13,22 +13,46 @@ struct ListaArchivo: View {
     
     private var escala: CGFloat { ap.constantes.scaleFactor }
     
+    private var ratio: CGFloat {
+        if let img = viewModel.miniatura {
+            return img.size.width / img.size.height
+        }
+        return 1 // fallback si no hay imagen
+    }
+    
     var body: some View {
         HStack(spacing: 0) {
+            let anchoMiniatura = coleccionVM.altura * escala
             ZStack {
                 if let img = viewModel.miniatura {
                     Image(uiImage: img)
                         .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(
+                            width: anchoMiniatura * ratio * 0.9,
+                            height: coleccionVM.altura * escala * 0.9
+                        )
+                        .cornerRadius(8, corners: .allCorners)
+                        .onAppear {
+                            print(ratio)
+                        }
                 } else {
-                    ProgressView()
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
                 }
             }
-            .frame(width: (coleccionVM.altura * escala) - coleccionVM.ajusteHorizontal)
-            .onChange(of: coleccionVM.color) { //Si se cambia de color volvemos a genera la imagen base
+            .frame(width: anchoMiniatura * ratio, height: coleccionVM.altura * escala)
+            .onChange(of: coleccionVM.color) {
                 if archivo.tipoMiniatura == .imagenBase {
                     viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
                 }
             }
+            
+            Divider()
+                .padding(.horizontal)
             
             HStack(spacing: 40) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -57,9 +81,10 @@ struct ListaArchivo: View {
                     InformacionLista(archivo: archivo, coleccionVM: coleccionVM)
                 }
             }
-            .padding()
             
         } //HStack principal
+        .padding(.vertical, 10 * escala)
+        .padding(.horizontal, 5 * escala)
         .frame(height: coleccionVM.altura * escala)
         .background(ap.temaActual.cardColor)
         .cornerRadius(8, corners: [.topLeft, .bottomLeft])

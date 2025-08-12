@@ -43,7 +43,7 @@ struct CuadriculaColeccion: View {
                         if coleccion.tipoMiniatura == .carpeta {
                             Image("CARPETA-ATRAS")
                                 .resizable()
-                                .frame(width: 180 * ap.constantes.scaleFactor, height: 200 * ap.constantes.scaleFactor)
+                                .frame(width: width * ap.constantes.scaleFactor, height: (height - 70) * ap.constantes.scaleFactor)
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(coleccion.color, coleccion.color.darken(by: 0.2))
                                 .zIndex(1)

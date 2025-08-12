@@ -1,5 +1,4 @@
 
-
 import SwiftUI
 
 struct ListaColeccion: View {
@@ -13,7 +12,8 @@ struct ListaColeccion: View {
     private var escala: CGFloat { const.scaleFactor }
     
     var body: some View {
-            HStack(alignment: .top, spacing: 0) {
+            HStack(spacing: 0) {
+                let anchoMiniatura = coleccionVM.altura * escala
                 Button(action: {
                     coleccion.meterColeccion()
                 }) {
@@ -21,11 +21,12 @@ struct ListaColeccion: View {
                         if coleccion.tipoMiniatura == .carpeta {
                             Image("CARPETA-ATRAS")
                                 .resizable()
-                                .frame(width: 120 * escala, height: 120 * escala)
+                                .frame(width: coleccionVM.altura * 0.599 * escala,
+                                       height: coleccionVM.altura * 0.599 * escala)
+                                .aspectRatio(contentMode: .fit)
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(coleccion.color.gradient, coleccion.color.darken(by: 0.2).gradient)
                                 .zIndex(1)
-                                .scaleEffect(escala)
                         } else if coleccion.tipoMiniatura == .abanico {
                             let direccionAbanico: EnumDireccionAbanico = coleccion.direccionAbanico
 
@@ -43,7 +44,9 @@ struct ListaColeccion: View {
                             ForEach(Array(coleccion.miniaturasBandeja.enumerated()), id: \.offset) { index, img in
                                 Image(uiImage: img)
                                     .resizable()
-                                    .frame(width: 150, height: 210)
+                                    .frame(width: coleccionVM.altura * 0.525 * escala,
+                                           height: coleccionVM.altura * 0.725 * escala)
+                                    .aspectRatio(contentMode: .fit)
                                     .cornerRadius(4)
                                     .shadow(radius: 1.5)
                                     .scaleEffect(index == 0 ? 1.0 : 1.0 - CGFloat(index) * scaleStep)
@@ -60,7 +63,7 @@ struct ListaColeccion: View {
                         }
                     }
                 }
-                .frame(maxHeight: .infinity, alignment: .center)
+                .frame(width: anchoMiniatura * 0.651 , height: coleccionVM.altura * escala)
                 
                 Divider()
                     .padding(.horizontal)
@@ -105,8 +108,9 @@ struct ListaColeccion: View {
                 .fondoBoton(pH: ConstantesPorDefecto().horizontalPadding, pV: 7, isActive: false, color: coleccion.color, borde: false)
                 
             }
-            .padding(20 * escala)
-            .frame(height: coleccionVM.altura * escala)
+            .padding(.vertical, 20 * escala)
+            .padding(.horizontal, 5 * escala)
+            .frame(height: coleccionVM.altura * escala * 0.8)
             .background(ap.temaActual.cardColor)
             .cornerRadius(8, corners: [.topLeft, .bottomLeft])
             .shadow(color: ap.temaActual == .dark ? .black.opacity(0.5) : .black.opacity(0.1), radius: 2.5, x: 0, y: 3)
