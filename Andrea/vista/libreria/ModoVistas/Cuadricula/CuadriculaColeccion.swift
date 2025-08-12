@@ -43,16 +43,17 @@ struct CuadriculaColeccion: View {
                         if coleccion.tipoMiniatura == .carpeta {
                             Image("CARPETA-ATRAS")
                                 .resizable()
-                                .frame(width: width * ap.constantes.scaleFactor, height: (height - 70) * ap.constantes.scaleFactor)
+//                                .frame(width: width * ap.constantes.scaleFactor, height: (height - 70) * ap.constantes.scaleFactor)
+                                .frame(width: width * 0.95, height: height * 0.6)
                                 .symbolRenderingMode(.palette)
-                                .foregroundStyle(coleccion.color, coleccion.color.darken(by: 0.2))
+                                .foregroundStyle(coleccion.color.gradient, coleccion.color.darken(by: 0.2).gradient)
                                 .zIndex(1)
                         } else if coleccion.tipoMiniatura == .abanico {
                             let direccionAbanico: EnumDireccionAbanico = coleccion.direccionAbanico
 
                             // Configuración base
-                            let baseXStep: CGFloat = 8
-                            let yStep: CGFloat = 6
+                            let baseXStep = width * 0.053   // proporcional a width
+                            let yStep     = height * 0.028
                             let baseAngleStep: Double = 4
                             let scaleStep: CGFloat = 0.02
 
@@ -64,7 +65,7 @@ struct CuadriculaColeccion: View {
                             ForEach(Array(coleccion.miniaturasBandeja.enumerated()), id: \.offset) { index, img in
                                 Image(uiImage: img)
                                     .resizable()
-                                    .frame(width: 150, height: 210)
+                                    .frame(width: width * 0.8, height: height * 0.65)
                                     .cornerRadius(4)
                                     .shadow(radius: 1.5)
                                     .scaleEffect(index == 0 ? 1.0 : 1.0 - CGFloat(index) * scaleStep)
@@ -81,7 +82,6 @@ struct CuadriculaColeccion: View {
                         }
 
                     }
-                    .frame(height: 210 * ap.constantes.scaleFactor)
                     .onAppear {
                         if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {
                             coleccion.precargarMiniaturas()
