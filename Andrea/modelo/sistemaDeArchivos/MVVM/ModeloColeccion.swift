@@ -247,8 +247,10 @@ class ModeloColeccion: ObservableObject {
             }
         }
         
+        if self.esInvertido {
+            self.invertir()
+        }
         self.ordenarElementos(modoOrdenacion: .nombre)
-        
     }
     
     //MARK: - ORDENAMIENTO PERSONALIZADO
