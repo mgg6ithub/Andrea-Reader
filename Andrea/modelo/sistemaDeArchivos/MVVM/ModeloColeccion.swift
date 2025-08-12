@@ -255,7 +255,9 @@ class ModeloColeccion: ObservableObject {
         }
         
         self.quitarInvertido()
-        self.ordenarElementos(modoOrdenacion: .nombre)
+        DispatchQueue.main.async {
+            self.ordenarElementos(modoOrdenacion: .nombre)
+        }
     }
     
     //MARK: - ORDENAMIENTO PERSONALIZADO
