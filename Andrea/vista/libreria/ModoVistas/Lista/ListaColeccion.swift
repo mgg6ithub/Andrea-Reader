@@ -106,6 +106,8 @@ struct ListaColeccion: View {
                         .fontWeight(.bold)
                 }
                 .fondoBoton(pH: ConstantesPorDefecto().horizontalPadding, pV: 7, isActive: false, color: coleccion.color, borde: false)
+                .frame(maxHeight: .infinity, alignment: .top)
+                .padding(.trailing, 10 * escala)
                 
             }
             .padding(.vertical, 20 * escala)

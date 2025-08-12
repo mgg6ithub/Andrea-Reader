@@ -74,7 +74,6 @@ struct ListaArchivo: View {
                     Spacer()
                    
                     ProgresoLista(archivo: archivo, coleccionVM: coleccionVM)
-                    
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 8) {
