@@ -72,21 +72,21 @@ struct CuadriculaArchivo: View {
                         Spacer()
                         HStack(spacing: 3.5) {
                             
-                            if archivo.progreso > 0 {
-                                HStack(spacing: 0) {
-                                    Text("%")
-                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.65))
-                                        .bold()
-                                        .foregroundColor(coleccionVM.color)
-                                        .zIndex(3)
-                                    
-                                    Text("\(archivo.progreso)")
-                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.95))
-                                        .bold()
-                                        .foregroundColor(coleccionVM.color)
-                                        .zIndex(3)
-                                }
-                            }
+//                            if archivo.progreso > 0 {
+//                                HStack(spacing: 0) {
+//                                    Text("%")
+//                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.65))
+//                                        .bold()
+//                                        .foregroundColor(coleccionVM.color)
+//                                        .zIndex(3)
+//                                    
+//                                    Text("\(archivo.progreso)")
+//                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.95))
+//                                        .bold()
+//                                        .foregroundColor(coleccionVM.color)
+//                                        .zIndex(3)
+//                                }
+//                            }
                             
                             // --- ICONOS DE LOS ESTADOS DE UN ARCHIVO ---
                             if archivo.protegido {
@@ -120,13 +120,13 @@ struct CuadriculaArchivo: View {
                         .padding(.horizontal, archivo.tipoMiniatura == .imagenBase ? 13 : 10)
                         .padding(.bottom, -6)
                         
-                        ProgresoCuadricula(
-                            progreso: archivo.progreso,
-                            coleccionColor: coleccionVM.color,
-                            totalWidth: width - 20,
-                            padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
-                        )
-                        .frame(maxHeight: 24)
+//                        ProgresoCuadricula(
+//                            progreso: archivo.progreso,
+//                            coleccionColor: coleccionVM.color,
+//                            totalWidth: width - 20,
+//                            padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
+//                        )
+//                        .frame(maxHeight: 24)
                         
                     }
                     .padding(.bottom, 2)
@@ -160,7 +160,6 @@ struct CuadriculaArchivo: View {
                 
             }
             .frame(width: width)
-            .clipped()
             
             Spacer()
             
@@ -175,8 +174,8 @@ struct CuadriculaArchivo: View {
                 maxWidth: width
             )
             .equatable()
-            .frame(height: 55)
-            .padding(.top, -10)
+            .frame(height: 58)
+//            .padding(.top, -10)
             
         }
         .frame(width: width, height: height)

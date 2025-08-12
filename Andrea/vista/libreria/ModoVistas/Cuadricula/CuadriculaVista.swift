@@ -12,12 +12,14 @@ struct CuadriculaVista: View {
     @State private var debounceWorkItem: DispatchWorkItem?
     @State private var elementoArrastrando: ElementoSistemaArchivos? = nil
     @State private var scrollEnabled: Bool = true
+    
+    @State private var hasScrolled: Bool = true
 
     var body: some View {
         GeometryReader { geo in
             
 //            VStack(spacing: 0) {
-                
+//                
 //                if hasScrolled {
 //                    Rectangle()
 //                        .fill(Color.gray)
@@ -99,6 +101,7 @@ struct CuadriculaVista: View {
                         .padding(.horizontal, outerPadding)
                         .padding(.vertical, spacing/2)
                         .animation(.easeInOut(duration: 0.3), value: vm.columnas)
+                        
                         .background(
                             GeometryReader { _ in Color.clear }
                         )

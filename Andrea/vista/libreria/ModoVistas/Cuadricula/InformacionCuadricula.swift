@@ -26,45 +26,71 @@ struct InformacionCuadricula: View, Equatable {
 
     var body: some View {
         VStack(spacing: 4) {
-            HStack(spacing: 0) {
+//            HStack(spacing: 0) {
                 Text(nombre)
                     .bold()
                     .id(nombre) // fuerza la transición
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .transition(.opacity.combined(with: .scale)) // o .slide, .move(edge:), etc.
                     .animation(.easeInOut(duration: 0.3), value: nombre)
-                    .font(.system(size: ConstantesPorDefecto().titleSize * 0.80))
+                    .font(.system(size: ConstantesPorDefecto().titleSize))
                     .foregroundColor(appEstado.temaActual.textColor)
                     .multilineTextAlignment(.center)
-                    .minimumScaleFactor(0.6)
-                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+                    .lineLimit(2)
 
+//                Spacer()
+//            }
+
+            HStack(spacing: 0) {
+                if progreso > 0 {
+                    HStack(spacing: 0) {
+                        Text("%")
+                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.55))
+                            .bold()
+                            .foregroundColor(.blue)
+                            .zIndex(3)
+                        
+                        Text("\(progreso)")
+                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.85))
+                            .bold()
+                            .foregroundColor(.blue)
+                            .zIndex(3)
+                    }
+                }
+                
                 Spacer()
+                
+                HStack(spacing: 10) {
+                    Text(tipo)
+                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
+                        .foregroundColor(.gray)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+
+                    Text("\(tamanioMB)")
+                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
+                        .foregroundColor(.gray)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+
+                    Text("\(totalPaginas.map { "\($0) pages" } ?? "—")")
+                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
+                        .foregroundColor(.gray)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                }
             }
-
-            HStack {
-                Text(tipo)
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.80))
-                    .foregroundColor(.gray)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-
-                Spacer()
-
-                Text("\(tamanioMB)")
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.80))
-                    .foregroundColor(.gray)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-
-                Spacer()
-
-                Text("\(totalPaginas.map { "\($0) pages" } ?? "—")")
-                    .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.80))
-                    .foregroundColor(.gray)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-            }
+            
+            ProgresoCuadricula(
+                progreso: progreso,
+                coleccionColor: .blue,
+                totalWidth: .infinity,
+                padding: 0
+            )
+            .frame(maxHeight: 24)
+            .padding(.bottom, 10)
+            
         }
         .padding(8)
     }
