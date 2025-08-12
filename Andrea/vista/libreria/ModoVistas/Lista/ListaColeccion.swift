@@ -28,44 +28,58 @@ struct ListaColeccion: View {
                                 .foregroundStyle(coleccion.color.gradient, coleccion.color.darken(by: 0.2).gradient)
                                 .zIndex(1)
                         } else if coleccion.tipoMiniatura == .abanico {
-                            let direccionAbanico: EnumDireccionAbanico = coleccion.direccionAbanico
+                            ZStack {
+                                let direccionAbanico: EnumDireccionAbanico = coleccion.direccionAbanico
 
-                            // Configuración base
-                            let baseXStep: CGFloat = 8
-                            let yStep: CGFloat = 6
-                            let baseAngleStep: Double = 4
-                            let scaleStep: CGFloat = 0.02
+                                // Configuración base
+                                let baseXStep: CGFloat = 8
+                                let yStep: CGFloat = 6
+                                let baseAngleStep: Double = 4
+                                let scaleStep: CGFloat = 0.02
 
-                            // Ajuste según dirección
-                            let xStep = direccionAbanico == .izquierda ? -baseXStep : baseXStep
-                            let angleStep = direccionAbanico == .izquierda ? -baseAngleStep : baseAngleStep
-                            let rotationAnchor: UnitPoint = direccionAbanico == .izquierda ? .topLeading : .topTrailing
+                                // Ajuste según dirección
+                                let xStep = direccionAbanico == .izquierda ? -baseXStep : baseXStep
+                                let angleStep = direccionAbanico == .izquierda ? -baseAngleStep : baseAngleStep
+                                let rotationAnchor: UnitPoint = direccionAbanico == .izquierda ? .topLeading : .topTrailing
 
-                            ForEach(Array(coleccion.miniaturasBandeja.enumerated()), id: \.offset) { index, img in
-                                Image(uiImage: img)
-                                    .resizable()
-                                    .frame(width: coleccionVM.altura * 0.525 * escala,
-                                           height: coleccionVM.altura * 0.725 * escala)
-                                    .aspectRatio(contentMode: .fit)
-                                    .cornerRadius(4)
-                                    .shadow(radius: 1.5)
-                                    .scaleEffect(index == 0 ? 1.0 : 1.0 - CGFloat(index) * scaleStep)
-                                    .rotationEffect(
-                                        .degrees(index == 0 ? 0 : Double(index) * angleStep),
-                                        anchor: rotationAnchor
-                                    )
-                                    .offset(
-                                        x: index == 0 ? 0 : CGFloat(index) * xStep,
-                                        y: index == 0 ? 0 : -CGFloat(index) * yStep
-                                    )
-                                    .zIndex(index == 0 ? Double(coleccion.miniaturasBandeja.count + 1) : Double(coleccion.miniaturasBandeja.count - index))
+                                ForEach(Array(coleccion.miniaturasBandeja.enumerated()), id: \.offset) { index, img in
+                                    Image(uiImage: img)
+                                        .resizable()
+                                        .frame(width: coleccionVM.altura * 0.45 * escala,
+                                               height: coleccionVM.altura * 0.65 * escala)
+                                        .aspectRatio(contentMode: .fit)
+                                        .cornerRadius(4)
+                                        .shadow(radius: 1.5)
+                                        .scaleEffect(index == 0 ? 1.0 : 1.0 - CGFloat(index) * scaleStep)
+                                        .rotationEffect(
+                                            .degrees(index == 0 ? 0 : Double(index) * angleStep),
+                                            anchor: rotationAnchor
+                                        )
+                                        .offset(
+                                            x: index == 0 ? 0 : CGFloat(index) * xStep,
+                                            y: index == 0 ? 0 : -CGFloat(index) * yStep
+                                        )
+                                        .zIndex(index == 0 ? Double(coleccion.miniaturasBandeja.count + 1) : Double(coleccion.miniaturasBandeja.count - index))
+                                }
                             }
+                            .offset(y: 15)
                         }
                     }
                 }
                 .frame(width: anchoMiniatura * 0.651 , height: coleccionVM.altura * escala)
+                .onAppear {
+                    if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {
+                        coleccion.precargarMiniaturas()
+                    }
+                }
+                .onChange(of: coleccion.tipoMiniatura) {
+                    if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {
+                        coleccion.precargarMiniaturas()
+                    }
+                }
                 
                 Divider()
+                    .background(Color.gray)
                     .padding(.horizontal)
                 
                 VStack(alignment: .leading, spacing: 5) {
@@ -83,11 +97,11 @@ struct ListaColeccion: View {
                         }
                         
                         Text(coleccion.nombre)
-                            .textoAdaptativo(t: const.titleSize, a: 0.6, l: 2, b: true, alig: .leading, mW: .infinity, fAlig: .leading)
+                            .textoAdaptativo(t: const.titleSize, a: 0.6, l: 2, b: true, c: ap.temaActual.colorContrario, alig: .leading, mW: .infinity, fAlig: .leading)
                     }
                     
                     Text("3.25 GB")
-                        .textoAdaptativo(t: const.subTitleSize, a: 0.6, l: 1, b: false, c: .secondary, alig: .leading, s: true)
+                        .textoAdaptativo(t: const.subTitleSize, a: 0.6, l: 1, b: false, c: .gray, alig: .leading, s: true)
                     
                     Spacer()
                     
@@ -115,7 +129,6 @@ struct ListaColeccion: View {
             .frame(height: coleccionVM.altura * escala * 0.8)
             .background(ap.temaActual.cardColor)
             .cornerRadius(8, corners: [.topLeft, .bottomLeft])
-            .shadow(color: ap.temaActual == .dark ? .black.opacity(0.5) : .black.opacity(0.1), radius: 2.5, x: 0, y: 3)
     }
 }
 
@@ -128,6 +141,7 @@ struct TotalElementosColeccion: View {
     
     private var const: Constantes { ap.constantes }
     private var totalElementos: Int { coleccion.totalArchivos + coleccion.totalColecciones }
+    private var dColor: Color { ap.temaActual.colorContrario }
     
     var body: some View {
         if totalElementos == 0 {
@@ -138,12 +152,12 @@ struct TotalElementosColeccion: View {
                     .foregroundStyle(Color.gray)
                 
                 Text("El directorio está vacio.")
-                    .textoAdaptativo(t: const.subTitleSize, a: 0.8, l: 1, alig: .leading)
+                    .textoAdaptativo(t: const.subTitleSize, a: 0.8, l: 1, c: .gray, alig: .leading)
             }
         } else {
             HStack {
                 Text("\(totalElementos)")
-                    .textoAdaptativo(t: const.subTitleSize, a: 0.8, l: 1, alig: .leading)
+                    .textoAdaptativo(t: const.subTitleSize, a: 0.8, l: 1, c: dColor, alig: .leading)
             
             Image(systemName: "shippingbox.fill")
                 .font(.system(size: const.iconSize * 0.6))
@@ -151,7 +165,7 @@ struct TotalElementosColeccion: View {
                 .foregroundStyle(Color.gray)
             
             Text("Elementos")
-                    .textoAdaptativo(t: const.subTitleSize, a: 0.8, l: 1, alig: .leading)
+                    .textoAdaptativo(t: const.subTitleSize, a: 0.8, l: 1, c: dColor, alig: .leading)
             }
         }
     }

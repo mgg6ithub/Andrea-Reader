@@ -68,7 +68,6 @@ struct CuadriculaArchivo: View {
                 }
 
                 if mostrarMiniatura {
-                    
                     VStack(spacing: 0) {
                         Spacer()
                         HStack(spacing: 3.5) {
@@ -164,7 +163,6 @@ struct CuadriculaArchivo: View {
             .clipped()
             
             Spacer()
-
             
             // --- Titulo e informacion ---
             InformacionCuadricula(

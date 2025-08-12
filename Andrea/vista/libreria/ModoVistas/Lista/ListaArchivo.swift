@@ -37,11 +37,7 @@ struct ListaArchivo: View {
                             print(ratio)
                         }
                 } else {
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                        Spacer()
-                    }
+                    ProgressView()
                 }
             }
             .frame(width: anchoMiniatura * ratio, height: coleccionVM.altura * escala)
@@ -52,6 +48,7 @@ struct ListaArchivo: View {
             }
             
             Divider()
+                .background(Color.gray)
                 .padding(.horizontal)
             
             HStack(spacing: 40) {
@@ -79,6 +76,7 @@ struct ListaArchivo: View {
                 VStack(alignment: .trailing, spacing: 8) {
                     InformacionLista(archivo: archivo, coleccionVM: coleccionVM)
                 }
+                .padding(.trailing, 10 * escala)
             }
             
         } //HStack principal
@@ -87,14 +85,10 @@ struct ListaArchivo: View {
         .frame(height: coleccionVM.altura * escala)
         .background(ap.temaActual.cardColor)
         .cornerRadius(8, corners: [.topLeft, .bottomLeft])
-        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.5) : .black.opacity(0.1), radius: 2.5, x: 0, y: 3)
         .onAppear {
             
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
-
-//            withAnimation(.easeOut(duration: 0.4).delay(Double.random(in: 0.2...0.4))) {
-                isVisible = true
-//            }
+            isVisible = true
         }
         .onDisappear {
             viewModel.unloadThumbnail(for: archivo)

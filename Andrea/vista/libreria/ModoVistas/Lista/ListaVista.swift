@@ -42,6 +42,13 @@ struct ListaVista: View {
                                     coleccion.tipoMiniatura = nuevoTipo
                                     PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "tipoMiniatura", valor: nuevoTipo)
                                 }
+                            },
+                            cambiarDireccionAbanico: { nuevaDireccion in
+                                if let coleccion = elemento as? Coleccion {
+                                    coleccion.direccionAbanico = nuevaDireccion
+                              
+                                    PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "direccionAbanico", valor: nuevaDireccion)
+                                }
                             }
                         ) {
                             if let placeholder = elemento as? ElementoPlaceholder {
@@ -53,7 +60,7 @@ struct ListaVista: View {
                                 ListaColeccion(coleccion: coleccion, coleccionVM: vm)
                             }
                         }
-                        .colorScheme(ap.temaActual == .dark ? .dark : .light)
+                        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.5) : .black.opacity(0.1), radius: 2.5, x: 0, y: 2)
                         .matchedGeometryEffect(id: elemento.id, in: namespace)
                         .id(index)
                         .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
