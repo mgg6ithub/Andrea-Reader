@@ -51,7 +51,7 @@ class SistemaArchivosUtilidades {
     
     
     /**
-     Metodo que comprueba si la URL pasado como parametro es o no un directorio devolviendo un booleano. True -> Directorio False -> No directorio.
+     Metodo que comprueba si la URL pasado como parametro es o no un directorio devolviendo un booleano. True -> Directorio, False -> No directorio.
      */
     
     public func isDirectory(elementURL: URL) -> Bool {

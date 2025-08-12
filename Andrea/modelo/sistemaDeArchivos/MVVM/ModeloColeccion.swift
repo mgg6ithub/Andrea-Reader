@@ -244,9 +244,10 @@ class ModeloColeccion: ObservableObject {
         for archivo in archivos {
             if let nuevoNombre = ManipulacionCadenas().renameExpresion(originalName: archivo.nombre) {
                 SistemaArchivos.sa.renombrarElemento(elemento: archivo, nuevoNombre: nuevoNombre)
-                withAnimation { archivo.nombre = nuevoNombre }
             }
         }
+        
+        self.ordenarElementos(modoOrdenacion: .nombre)
         
     }
     

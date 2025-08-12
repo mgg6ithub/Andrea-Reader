@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct MenuVista: View {
+    
+    @EnvironmentObject var pc: PilaColecciones
 
     @State private var menuCentroWidth: CGFloat = 0
     
@@ -17,7 +19,7 @@ struct MenuVista: View {
                 .padding(0)
                 
                 GeometryReader { geo in
-                    MenuCentro(coleccionActualVM: PilaColecciones.pilaColecciones.getColeccionActual())
+                    MenuCentro(coleccionActualVM: pc.getColeccionActual())
                         .frame(maxWidth: .infinity)
                         .onAppear {
                             menuCentroWidth = geo.size.width

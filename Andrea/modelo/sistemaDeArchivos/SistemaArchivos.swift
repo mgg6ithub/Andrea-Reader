@@ -128,19 +128,7 @@ class SistemaArchivos: ObservableObject {
     
     
     //MARK: - METODOS DEL SISTEMA DE ARCHIVOS
-    
-    /**
-     Borra la coleccion pasada del cache de colecciones.
-     
-     - Parameter claveURL: URL de la coleccion para borrarla del diccinario.
-     */
-    private func borrarColeccionDeCache(claveURL: URL) {
-        if self.cacheColecciones[claveURL] != nil {
-            self.cacheColecciones.removeValue(forKey: claveURL) //borramos del cache de coleccion en sa
-            print("✅ Colección eliminada del cache")
-        }
-    }
-    
+
     /**
      Escanea el directorio dado para obtener las URLs de los elementos contenidos en él.
      
@@ -168,11 +156,6 @@ class SistemaArchivos: ObservableObject {
     public func renombrarElemento(elemento: any ElementoSistemaArchivosProtocolo, nuevoNombre: String) {
         fileQueue.async {
             
-            guard elemento.nombre != nuevoNombre else {
-                print("🟡 El nuevo nombre es igual al actual. No se realiza cambio.")
-                return
-            }
-            
             let origenURL = elemento.url
             let extensionOriginal = origenURL.pathExtension
             
@@ -189,11 +172,9 @@ class SistemaArchivos: ObservableObject {
                 
                 //--- Actualizamos vista --- 
                 if let archivo = elemento as? Archivo {
-                    print("Renombrando archivo a ", nuevoNombre)
                     withAnimation { archivo.nombre = nuevoNombre }
                     archivo.url = destinoURL
                 } else if let coleccion = elemento as? Coleccion {
-                    print("Renombrando coleccion a ", nuevoNombre)
                     withAnimation { coleccion.nombre = nuevoNombre }
                     coleccion.url = destinoURL
                     //--- si es una coleccion actualizamos el cache de colecciones del sa ---
@@ -203,6 +184,11 @@ class SistemaArchivos: ObservableObject {
                 
                 // --- actualizar persistencia ---
                 PersistenciaDatos().actualizarClaveURL(origen: origenURL, destino: destinoURL)
+                
+                // --- LOG ---
+                DispatchQueue.main.async {
+                    NotificacionesEstado.ne.crearLog(mensaje: "Renombrado de \(origenURL.lastPathComponent) -> \(nuevoNombre).", icono: "cambio-nombre", color: .orange)
+                }
                 
             } catch {
                 DispatchQueue.main.async {
@@ -333,12 +319,27 @@ class SistemaArchivos: ObservableObject {
     }
     
     
+    /**
+     Borra la coleccion pasada del cache de colecciones.
+     
+     - Parameter claveURL: URL de la coleccion para borrarla del diccinario.
+     */
+    private func borrarColeccionDeCache(claveURL: URL) {
+        if self.cacheColecciones[claveURL] != nil {
+            self.cacheColecciones.removeValue(forKey: claveURL) //borramos del cache de coleccion en sa
+            print("✅ Colección eliminada del cache")
+        }
+    }
+    
+    
     // MARK: – Ejemplo de método para borrar un elemento (protegido por fileQueue)
     public func borrarElemento(elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion) {
         fileQueue.async {
             
             // --- obtenemos la url del elemento a borrar
             let url: URL = elemento.url
+            let esDirectorio = self.sau.isDirectory(elementURL: url)
+            
             do {
                 try self.fm.removeItem(at: url) //borramos del dispositivo con fm
                 
@@ -353,15 +354,16 @@ class SistemaArchivos: ObservableObject {
                             vm.elementos.removeAll(where: { $0.id == elemento.id }) //borramos de la vista del vm
                         }
                         
-                        // --- BUEN LUGAR PARA MOSTRAR CONSEJOS AL BORRAR EL ELEMENTOS ---
-                        
-                        if self.sau.isDirectory(elementURL: url) {
+                        if esDirectorio {
                             vm.coleccion.totalColecciones -= 1
                             self.borrarColeccionDeCache(claveURL: url)
                         } else {
                             vm.coleccion.totalArchivos -= 1
                         }
                     }
+                    
+                    // --- ELIMINAR PERSISTENCIA ---
+                    PersistenciaDatos().eliminarDatos(url: url)
                     
                     // --- LOG ---
                     var tipo: String = ""

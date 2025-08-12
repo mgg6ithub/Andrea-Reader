@@ -6,6 +6,14 @@ struct PersistenciaDatos {
     
     let mc = ManipulacionCadenas()
     
+    //MARK: --- ELIMINAR CLAVE Y VALOR DE PERSISTENCIA ---
+    public func eliminarDatos(url: URL) {
+        let key = obtenerKey(url)
+        UserDefaults.standard.removeObject(forKey: key)
+        print("🗑️ Eliminados datos de persistencia para la clave: \(key)")
+    }
+
+    
     //MARK: --- ACTUALIZAR PERSISTENCIA ---
     public func actualizarClaveURL(origen: URL, destino: URL) {
         let keyAntigua = obtenerKey(origen)
@@ -41,9 +49,6 @@ struct PersistenciaDatos {
     public func guardarDatoElemento(url: URL, atributo: String, valor: Any) {
         
         let key = obtenerKey(url)
-        
-        print("Guardando con la key -> \(key)")
-        
         var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
 
         if let valor = valor as? Int {
