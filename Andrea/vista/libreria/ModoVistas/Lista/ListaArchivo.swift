@@ -21,7 +21,7 @@ struct ListaArchivo: View {
     }
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 15) {
             let anchoMiniatura = coleccionVM.altura * escala
             ZStack {
                 if let img = viewModel.miniatura {

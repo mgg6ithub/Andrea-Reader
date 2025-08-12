@@ -12,7 +12,7 @@ struct ListaColeccion: View {
     private var escala: CGFloat { const.scaleFactor }
     
     var body: some View {
-            HStack(spacing: 0) {
+            HStack(spacing: 15) {
                 let anchoMiniatura = coleccionVM.altura * escala
                 Button(action: {
                     coleccion.meterColeccion()

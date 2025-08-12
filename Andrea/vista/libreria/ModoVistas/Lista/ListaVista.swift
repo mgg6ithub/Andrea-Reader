@@ -65,10 +65,12 @@ struct ListaVista: View {
                         .id(index)
                         .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
                         
-                        Divider()
-                            .background(.gray)
-                            .padding(0)
-                            .padding(.horizontal, 30)
+                        if index < vm.elementos.count - 1 {
+                            Divider()
+                                .background(.gray)
+                                .padding(0)
+                                .padding(.horizontal, 30)
+                        }
                     }
                 }
                 .padding(.horizontal, 20)
