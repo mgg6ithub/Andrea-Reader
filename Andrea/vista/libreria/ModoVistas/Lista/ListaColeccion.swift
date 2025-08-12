@@ -78,9 +78,9 @@ struct ListaColeccion: View {
                     }
                 }
                 
-                Divider()
-                    .background(Color.gray)
-                    .padding(.horizontal)
+//                Divider()
+//                    .background(Color.gray)
+//                    .padding(.horizontal)
                 
                 VStack(alignment: .leading, spacing: 5) {
                     // ---- Información básica ----

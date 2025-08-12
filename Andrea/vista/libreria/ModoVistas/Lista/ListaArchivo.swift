@@ -47,9 +47,9 @@ struct ListaArchivo: View {
                 }
             }
             
-            Divider()
-                .background(Color.gray)
-                .padding(.horizontal)
+//            Divider()
+//                .background(Color.gray)
+//                .padding(.horizontal)
             
             HStack(spacing: 40) {
                 VStack(alignment: .leading, spacing: 8) {

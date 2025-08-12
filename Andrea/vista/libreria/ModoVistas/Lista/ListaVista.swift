@@ -28,7 +28,7 @@ struct ListaVista: View {
                 }
             
             ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(spacing: 20) {
+                LazyVStack(spacing: 10) {
                     ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
                         ElementoVista(vm: vm, elemento: elemento, scrollIndex: index,
                             cambiarMiniaturaArchivo: { nuevoTipo in
@@ -60,10 +60,15 @@ struct ListaVista: View {
                                 ListaColeccion(coleccion: coleccion, coleccionVM: vm)
                             }
                         }
-                        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.5) : .black.opacity(0.1), radius: 2.5, x: 0, y: 2)
+//                        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.5) : .black.opacity(0.1), radius: 2.5, x: 0, y: 2)
                         .matchedGeometryEffect(id: elemento.id, in: namespace)
                         .id(index)
                         .modifier(ArrastreManual(elementoArrastrando: $elementoArrastrando,viewModel: vm,elemento: elemento,index: index))
+                        
+                        Divider()
+                            .background(.gray)
+                            .padding(0)
+                            .padding(.horizontal, 30)
                     }
                 }
                 .padding(.horizontal, 20)
