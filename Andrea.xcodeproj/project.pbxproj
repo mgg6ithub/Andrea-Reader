@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */; };
 		D40E28AE2E1C24050024DF2E /* AjustesSistemaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */; };
+		D424A40B2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D424A40A2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift */; };
 		D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440162D2DF1CB490025832B /* DocumentPicker.swift */; };
 		D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF72DE7A772001F816A /* AndreaApp.swift */; };
 		D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */; };
@@ -107,6 +108,7 @@
 /* Begin PBXFileReference section */
 		D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorialColecciones.swift; sourceTree = "<group>"; };
 		D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesSistemaColecciones.swift; sourceTree = "<group>"; };
+		D424A40A2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedScrollViewTest.swift; sourceTree = "<group>"; };
 		D440162D2DF1CB490025832B /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		D45E6FF42DE7A772001F816A /* Andrea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Andrea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D45E6FF72DE7A772001F816A /* AndreaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AndreaApp.swift; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 			children = (
 				D4BA32F42E0BE3EF00CF3219 /* animaciones */,
 				D4DA1BD82E3BE0B300529C47 /* CartaHolografica3D.swift */,
+				D424A40A2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift */,
 			);
 			path = vistaAyudas;
 			sourceTree = "<group>";
@@ -739,6 +742,7 @@
 				D4ACA2692E48D51800A367D9 /* ManipulacionFechas.swift in Sources */,
 				D4CF28E72E323E29003B3ABC /* ModeloMiniaturaArchivo.swift in Sources */,
 				D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */,
+				D424A40B2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift in Sources */,
 				D49DE74E2E0D3481002FDB7A /* ImagenArchivo.swift in Sources */,
 				D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */,
 				D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */,
