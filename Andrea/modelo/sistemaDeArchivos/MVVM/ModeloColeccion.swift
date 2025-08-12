@@ -236,6 +236,13 @@ class ModeloColeccion: ObservableObject {
         PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "esInvertido", valor: esInvertido)
     }
     
+    //Si esta invertido lo quitamos
+    private func quitarInvertido() {
+        if self.esInvertido {
+            self.invertir()
+        }
+    }
+    
     //MARK: --- renombrear los elementos con regex y ordenarlos de golpe ---
     func smartSorting() {
         
@@ -247,18 +254,21 @@ class ModeloColeccion: ObservableObject {
             }
         }
         
-        if self.esInvertido {
-            self.invertir()
-        }
+        self.quitarInvertido()
         self.ordenarElementos(modoOrdenacion: .nombre)
     }
     
     //MARK: - ORDENAMIENTO PERSONALIZADO
     func guardarOrdenPersonalizado(modoOrdenacion: EnumOrdenaciones) {
+        
+        self.ordenacion = .personalizado
+        
         var ordenDict: [String: Int] = [:]
         for (i, elemento) in self.elementos.enumerated() {
-            ordenDict[elemento.url.absoluteString] = i
+            ordenDict[PersistenciaDatos().obtenerKey(elemento.url)] = i
         }
+        
+        self.quitarInvertido()
         
         //guardamos la ordenacion
         PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenacion", valor: modoOrdenacion)

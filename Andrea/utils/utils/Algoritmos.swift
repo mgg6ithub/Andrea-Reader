@@ -42,9 +42,6 @@ struct Algoritmos {
         
         switch tipoOrden {
         case .personalizado:
-            
-            print("Ordenaiento personalizado")
-            
             guard let coleccionURL = coleccionURL else { return [] }
             
             guard let ordenDict = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "ordenPersonalizado") as? [String: Int] else {
@@ -52,11 +49,10 @@ struct Algoritmos {
                 }
                 
             tempElementos = elementos.sorted { (a, b) -> Bool in
-                let posA = ordenDict[a.url.absoluteString] ?? Int.max
-                let posB = ordenDict[b.url.absoluteString] ?? Int.max
+                let posA = ordenDict[PersistenciaDatos().obtenerKey(a.url)] ?? Int.max
+                let posB = ordenDict[PersistenciaDatos().obtenerKey(b.url)] ?? Int.max
                 return posA < posB
             }
-
             
         case .nombre:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
@@ -100,16 +96,13 @@ struct Algoritmos {
                 (a.fechaModificacion ) < (b.fechaModificacion )
             }
             
-        case .personalizado:
-            tempElementos = elementos
-            
         default:
             tempElementos = elementos.sorted { (a: ElementoSistemaArchivos, b: ElementoSistemaArchivos) in
                 a.nombre.localizedStandardCompare(b.nombre) == .orderedAscending
             }
         }
         
-        if esInvertido {
+        if esInvertido, tipoOrden != .personalizado {
             return tempElementos.reversed()
         } else {
             return tempElementos

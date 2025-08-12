@@ -77,7 +77,7 @@ struct PersistenciaDatos {
     //MARK:  --- COLECCION ---
     
     // MARK: - Keys
-    private func obtenerKey(_ url: URL) -> String {
+    public func obtenerKey(_ url: URL) -> String {
         mc.borrarURLLOCAL(url: url)
     }
 

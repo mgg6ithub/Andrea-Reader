@@ -29,7 +29,6 @@ struct ArrastreManual: ViewModifier {
                 withAnimation(.easeInOut) {
                     let item = viewModel.elementos.remove(at: fromIndex)
                     viewModel.elementos.insert(item, at: index)
-                    viewModel.ordenacion = .personalizado
                     viewModel.guardarOrdenPersonalizado(modoOrdenacion: .personalizado)
                 }
 
