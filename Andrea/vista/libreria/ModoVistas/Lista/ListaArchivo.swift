@@ -4,16 +4,17 @@ import SwiftUI
 
 struct ListaArchivo: View {
     
-    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var ap: AppEstado
     
     @ObservedObject var archivo: Archivo
     @StateObject private var viewModel = ModeloMiniaturaArchivo()
     @ObservedObject var coleccionVM: ModeloColeccion
     @State private var isVisible = false
     
+    private var escala: CGFloat { ap.constantes.scaleFactor }
+    
     var body: some View {
         HStack(spacing: 0) {
-            
             ZStack {
                 if let img = viewModel.miniatura {
                     Image(uiImage: img)
@@ -22,7 +23,7 @@ struct ListaArchivo: View {
                     ProgressView()
                 }
             }
-            .frame(width: coleccionVM.altura - 47.5)
+            .frame(width: (coleccionVM.altura * escala) - coleccionVM.ajusteHorizontal)
             .onChange(of: coleccionVM.color) { //Si se cambia de color volvemos a genera la imagen base
                 if archivo.tipoMiniatura == .imagenBase {
                     viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
@@ -34,7 +35,7 @@ struct ListaArchivo: View {
                     
                     Text(archivo.nombre)
                         .font(.headline)
-                        .foregroundColor(appEstado.temaActual.textColor)
+                        .foregroundColor(ap.temaActual.textColor)
                         .id(archivo.nombre) // fuerza la transición
                             .transition(.opacity.combined(with: .scale)) // o .slide, .move(edge:), etc.
                             .animation(.easeInOut(duration: 0.3), value: archivo.nombre)
@@ -43,8 +44,7 @@ struct ListaArchivo: View {
                     
                     Text("Andrea la mas guapa del mundo pero que guapa es con esos pedazo de papos la madre que me pario. Hay diso mios que guapa es la pocala blablanskanks askdaskd algo mas no se que mas.")
                         .font(.subheadline)
-                        .foregroundColor(appEstado.temaActual.secondaryText)
-//                        .lineLimit(scaleSize > 0.7 ? nil : 2)
+                        .foregroundColor(ap.temaActual.secondaryText)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Spacer()
@@ -60,10 +60,10 @@ struct ListaArchivo: View {
             .padding()
             
         } //HStack principal
-        .frame(height: coleccionVM.altura)
-        .background(appEstado.temaActual.cardColor)
+        .frame(height: coleccionVM.altura * escala)
+        .background(ap.temaActual.cardColor)
         .cornerRadius(8, corners: [.topLeft, .bottomLeft])
-        .shadow(color: appEstado.temaActual == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+        .shadow(color: ap.temaActual == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
         .onAppear {
             
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)

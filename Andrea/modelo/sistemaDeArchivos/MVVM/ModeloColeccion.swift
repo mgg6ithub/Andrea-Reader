@@ -18,7 +18,13 @@ class ModeloColeccion: ObservableObject {
   @Published var esInvertido: Bool = false
 
   @Published var columnas: Int = 4
-  @Published var altura: CGFloat = 180
+    @Published var altura: CGFloat = 145 {
+        didSet {
+            ajusteHorizontal = actualizarAjusteHorizontal(altura: altura)
+        }
+    }
+
+    @Published var ajusteHorizontal: CGFloat = 40
   @Published var tiempoCarga: Double? = nil
 
   @Published var elementosCargados: Bool = false
@@ -26,6 +32,21 @@ class ModeloColeccion: ObservableObject {
   @Published var isPerformingAutoScroll = false
     
     @Published var menuRefreshTrigger: UUID = UUID()
+    
+    func actualizarAjusteHorizontal(altura: CGFloat) -> CGFloat {
+        // Punto base: 140 -> 55 ajuste
+        // Cada 10 puntos de altura extra, sumar 5 al ajuste
+        let baseAltura: CGFloat = 145
+        let baseAjuste: CGFloat = 40
+        
+        let diferencia = altura - baseAltura
+        let ajusteExtra = (diferencia / 10) * 5
+        let nuevoAjuste = baseAjuste + ajusteExtra
+        
+        // Limitar para que no sea negativo ni muy grande
+        return max(20, min(nuevoAjuste, 120))
+    }
+
     
     //MARK: - CONSTRUCTOR VACIO
     //crear un constrcutor por defecto con valores nulos para crear una instancia de ModeloColeccion vacia para tests

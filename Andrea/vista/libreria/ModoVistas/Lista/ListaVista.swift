@@ -104,12 +104,11 @@ struct ListaVista: View {
                     proxy.scrollTo(vm.scrollPosition, anchor: .top)
                 }
             }
-
             .modificarSizeExtension(
                 value: $vm.altura,
                 minValue: 100,
                 maxValue: 350,
-                step: 35,
+                step: 40,
                 scrollEnabled: $scrollEnabled,
                 coleccion: vm.coleccion,
                 modoVista: vm.modoVista,
