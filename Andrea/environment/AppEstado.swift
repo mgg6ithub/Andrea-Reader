@@ -44,6 +44,16 @@ class AppEstado: ObservableObject {
     @Published var shadows: Bool = true
     @Published var animaciones: Bool = true
     
+    // --- BARRA DE ESTADO ---
+    @Published var modoBarraEstado: ModoBarraEstado = .auto
+    
+    
+    // --- MENU ---
+    
+    // --- HISTORIAL DE COLECCIONES ---
+    
+    // --- LIBRERIA ---
+    
     // --- MAS INFORMACION DE UN ELEMENTO ---
     @Published var masInformacion: Bool = false
     @Published var elementoSeleccionado: (any ElementoSistemaArchivosProtocolo)? = nil

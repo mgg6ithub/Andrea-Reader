@@ -39,15 +39,15 @@ struct ConstantesPorDefecto {
     var pilaColeccionesClave: String = "pilaGuardada"
     
     //MARK: - COLORES
-    let lista: [Color] = [
-        .blue,
-        .green,
-        .orange,
-        .pink,
-        .purple,
+    let listaColores: [Color] = [
         .red,
-        .teal,
+        .green,
+        .blue,
         .yellow,
+        .orange,
+        .purple,
+        .pink,
+        .teal,
         .mint,
         .indigo
     ]

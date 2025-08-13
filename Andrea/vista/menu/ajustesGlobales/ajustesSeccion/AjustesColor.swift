@@ -3,8 +3,8 @@ import SwiftUI
 
 #Preview {
     AjustesGlobales()
-//        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
-        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
+        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
+//        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
 //        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
 //        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
 //        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
@@ -25,9 +25,9 @@ struct AjustesColor: View {
     //VARIABLES PARA EL TEMA
     @State private var isColorExpanded: Bool = false
     
-    let colors: [Color] = [
-        .red, .green, .blue, .yellow, .orange, .purple, .pink
-    ]
+//    let colors: [Color] = [
+//        .red, .green, .blue, .yellow, .orange, .purple, .pink
+//    ]
   
     var const: Constantes { ap.constantes }
     private let cpd = ConstantesPorDefecto()
@@ -71,24 +71,37 @@ struct AjustesColor: View {
                         .foregroundColor(ap.temaActual.secondaryText)
                     
                     // Recorrer los colores principales y crear botones circulares
-                    HStack(spacing: 15) {
-                        ForEach(colors, id: \.self) { color in
-                            Button(action: {
-                                // Cambiar el color seleccionado
+                    let circleSize = const.iconSize * 2
+                    let spacing: CGFloat = 10
+
+                    LazyVGrid(
+                        columns: [GridItem(.adaptive(minimum: circleSize, maximum: circleSize), spacing: spacing)],
+                        alignment: .leading,
+                        spacing: spacing
+                    ) {
+                        ForEach(ConstantesPorDefecto().listaColores, id: \.self) { color in
+                            let current = ap.currentColor == color
+                            Button {
                                 ap.currentColor = color
-                            }) {
+                            } label: {
                                 Circle()
                                     .fill(color.gradient)
-                                    .frame(width: const.iconSize * 2, height: const.iconSize * 2)
-                                    .overlay(
-                                        Circle()
-                                            .stroke(ap.temaActual == .dark ? (ap.currentColor == color ? Color.white : Color.clear) : (ap.currentColor == color ? Color.black : Color.clear), lineWidth: 1.5)
-                                    )
+                                    .opacity(current ? 1 : 0.3)
+                                    .frame(width: circleSize, height: circleSize)
+//                                    .overlay(
+//                                        Circle().stroke(
+//                                            ap.temaActual == .dark
+//                                                ? (current ? Color.white : .clear)
+//                                                : (current ? Color.black : .clear),
+//                                            lineWidth: 1.5
+//                                        )
+//                                    )
                             }
-                            .buttonStyle(PlainButtonStyle())
+                            .buttonStyle(.plain)
                         }
                     }
-                    
+                    .frame(maxWidth: .infinity)
+//                    .padding(.horizontal, 10)
                 } // FIN VSTACK COLORES MAS USADOS
             
             }

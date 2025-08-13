@@ -11,6 +11,7 @@
 		D40E28AE2E1C24050024DF2E /* AjustesSistemaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */; };
 		D424A40B2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D424A40A2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift */; };
 		D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440162D2DF1CB490025832B /* DocumentPicker.swift */; };
+		D45A82272E4CFC7800B92262 /* AjustesBarraEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A82262E4CFC7800B92262 /* AjustesBarraEstado.swift */; };
 		D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF72DE7A772001F816A /* AndreaApp.swift */; };
 		D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */; };
 		D45E6FFC2DE7A773001F816A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D45E6FFB2DE7A773001F816A /* Assets.xcassets */; };
@@ -116,6 +117,7 @@
 		D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesSistemaColecciones.swift; sourceTree = "<group>"; };
 		D424A40A2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedScrollViewTest.swift; sourceTree = "<group>"; };
 		D440162D2DF1CB490025832B /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
+		D45A82262E4CFC7800B92262 /* AjustesBarraEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesBarraEstado.swift; sourceTree = "<group>"; };
 		D45E6FF42DE7A772001F816A /* Andrea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Andrea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D45E6FF72DE7A772001F816A /* AndreaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AndreaApp.swift; sourceTree = "<group>"; };
 		D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VistaPrincipal.swift; sourceTree = "<group>"; };
@@ -626,6 +628,7 @@
 				D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */,
 				D480E76B2E42216300C8BBCC /* Rendimiento.swift */,
 				D47035DA2E4288D0008906C9 /* AjustesHistorial.swift */,
+				D45A82262E4CFC7800B92262 /* AjustesBarraEstado.swift */,
 			);
 			path = ajustesSeccion;
 			sourceTree = "<group>";
@@ -731,6 +734,7 @@
 				D4A270482E4C93EE00ECEF2F /* CheckerEncimaDelElemento.swift in Sources */,
 				D4CF28E92E323F15003B3ABC /* Libreria.swift in Sources */,
 				D45E700A2DE7A7F3001F816A /* SistemaArchivos.swift in Sources */,
+				D45A82272E4CFC7800B92262 /* AjustesBarraEstado.swift in Sources */,
 				D485896F2DEB9E4E0074DB8E /* ManipulacionCadenas.swift in Sources */,
 				D49BE6D52E17AF2500FEDB99 /* ModeloColeccion.swift in Sources */,
 				D4DF317B2DEC74F0000D15CC /* CuadriculaVista.swift in Sources */,

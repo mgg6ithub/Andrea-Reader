@@ -91,7 +91,6 @@ struct ContenidoAjustes: View {
             ScrollView {
                 VStack(alignment: .center, spacing: 0) {
                     HStack(spacing: 0) {
-                        
                         if ap.resolucionLogica != .small {
                             Image("libro-ajustes")
     //                        Image("libro-ajustes1")
@@ -166,6 +165,11 @@ struct ContenidoAjustes: View {
                                         
                                     DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                         
+                                case "AjustesBarraEstado":
+                                    AjustesBarraEstado(isSection: selectedSection == section)
+                                    
+                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
+                                    
                                     case "AjustesMenu":
                                         AjustesMenu(isSection: selectedSection == section)
                                     
