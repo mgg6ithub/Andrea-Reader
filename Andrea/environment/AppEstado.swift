@@ -6,6 +6,8 @@ class AppEstado: ObservableObject {
     private let cpag = ClavesPersistenciaAjustesGenerales()
     private let uds = UserDefaults.standard
     
+    @Published var archivoEnLectura: Archivo? = nil
+    
     // --- VARIABLES AL INICIAR LA APLICACION ---
     @Published var screenWidth: CGFloat
     @Published var screenHeigth: CGFloat

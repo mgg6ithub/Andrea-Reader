@@ -73,6 +73,10 @@
 		D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB812DE9C0530097A010 /* MenuEstado.swift */; };
 		D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB882DE9C2E30097A010 /* AppEstado.swift */; };
 		D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AECEBA2DEE33620032917F /* PilaColecciones.swift */; };
+		D4B0BBA12E4C6A150073380E /* LectorComic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA02E4C6A150073380E /* LectorComic.swift */; };
+		D4B0BBA32E4C6ADD0073380E /* ComicCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA22E4C6ADD0073380E /* ComicCache.swift */; };
+		D4B0BBA62E4C6B5B0073380E /* ProtocoloComic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA52E4C6B5B0073380E /* ProtocoloComic.swift */; };
+		D4B0BBA82E4C6D880073380E /* ComicPaginado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */; };
 		D4B23FA02E45F4F200425DB8 /* ContenidoAjustesGloables.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */; };
 		D4B23FA22E45F54F00425DB8 /* IndicesAjustes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */; };
 		D4B23FA42E46056800425DB8 /* AyudaMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23FA32E46056800425DB8 /* AyudaMenu.swift */; };
@@ -172,6 +176,10 @@
 		D4ADDB812DE9C0530097A010 /* MenuEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEstado.swift; sourceTree = "<group>"; };
 		D4ADDB882DE9C2E30097A010 /* AppEstado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEstado.swift; sourceTree = "<group>"; };
 		D4AECEBA2DEE33620032917F /* PilaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PilaColecciones.swift; sourceTree = "<group>"; };
+		D4B0BBA02E4C6A150073380E /* LectorComic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectorComic.swift; sourceTree = "<group>"; };
+		D4B0BBA22E4C6ADD0073380E /* ComicCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicCache.swift; sourceTree = "<group>"; };
+		D4B0BBA52E4C6B5B0073380E /* ProtocoloComic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocoloComic.swift; sourceTree = "<group>"; };
+		D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicPaginado.swift; sourceTree = "<group>"; };
 		D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContenidoAjustesGloables.swift; sourceTree = "<group>"; };
 		D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicesAjustes.swift; sourceTree = "<group>"; };
 		D4B23FA32E46056800425DB8 /* AyudaMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AyudaMenu.swift; sourceTree = "<group>"; };
@@ -489,6 +497,27 @@
 			path = sistemaDeArchivos;
 			sourceTree = "<group>";
 		};
+		D4B0BB9F2E4C69EC0073380E /* VistaComic */ = {
+			isa = PBXGroup;
+			children = (
+				D4B0BBA02E4C6A150073380E /* LectorComic.swift */,
+				D4B0BBA22E4C6ADD0073380E /* ComicCache.swift */,
+				D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */,
+			);
+			path = VistaComic;
+			sourceTree = "<group>";
+		};
+		D4B0BBA42E4C6B470073380E /* COMIC */ = {
+			isa = PBXGroup;
+			children = (
+				D4B0BB9F2E4C69EC0073380E /* VistaComic */,
+				D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */,
+				D49DE74A2E0D33F1002FDB7A /* CBRArchivo.swift */,
+				D4B0BBA52E4C6B5B0073380E /* ProtocoloComic.swift */,
+			);
+			path = COMIC;
+			sourceTree = "<group>";
+		};
 		D4B3C3B92E3A8E0B00CA6064 /* MenuSeleccionMultiple */ = {
 			isa = PBXGroup;
 			children = (
@@ -537,9 +566,8 @@
 		D4BF0B272DEF4F7500152333 /* archivos */ = {
 			isa = PBXGroup;
 			children = (
+				D4B0BBA42E4C6B470073380E /* COMIC */,
 				D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */,
-				D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */,
-				D49DE74A2E0D33F1002FDB7A /* CBRArchivo.swift */,
 			);
 			path = archivos;
 			sourceTree = "<group>";
@@ -700,6 +728,7 @@
 				D49BE6D52E17AF2500FEDB99 /* ModeloColeccion.swift in Sources */,
 				D4DF317B2DEC74F0000D15CC /* CuadriculaVista.swift in Sources */,
 				D49961952E44F9380089488D /* NotificacionLog.swift in Sources */,
+				D4B0BBA32E4C6ADD0073380E /* ComicCache.swift in Sources */,
 				D4ADDB892DE9C2E30097A010 /* AppEstado.swift in Sources */,
 				D4B23FA42E46056800425DB8 /* AyudaMenu.swift in Sources */,
 				D4AA438D2E3A22CC0033EF63 /* VistaMostrarEnArchivos.swift in Sources */,
@@ -722,6 +751,7 @@
 				D47139C12E0AE44200B5FA35 /* ListaVista.swift in Sources */,
 				D4DF317E2DEC77D1000D15CC /* PlaceholderCuadricula.swift in Sources */,
 				D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */,
+				D4B0BBA12E4C6A150073380E /* LectorComic.swift in Sources */,
 				D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */,
 				D4CF28E32E323CF3003B3ABC /* ModificarTamano.swift in Sources */,
 				D480E76E2E42236900C8BBCC /* TogglePersonalizado.swift in Sources */,
@@ -730,6 +760,7 @@
 				D480E76C2E42216300C8BBCC /* Rendimiento.swift in Sources */,
 				D4DA1BD72E3BC9DE00529C47 /* Consejos.swift in Sources */,
 				D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */,
+				D4B0BBA62E4C6B5B0073380E /* ProtocoloComic.swift in Sources */,
 				D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */,
 				D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */,
 				D4B23FA62E4606CA00425DB8 /* ayudaHistorial.swift in Sources */,
@@ -763,6 +794,7 @@
 				D40E28AE2E1C24050024DF2E /* AjustesSistemaColecciones.swift in Sources */,
 				D4DF31792DEC7362000D15CC /* ElementoPlaceholder.swift in Sources */,
 				D46E94352DEA287000ABD9EE /* Toggle.swift in Sources */,
+				D4B0BBA82E4C6D880073380E /* ComicPaginado.swift in Sources */,
 				D485896A2DEB9DC30074DB8E /* Extensiones.swift in Sources */,
 				D4ACA26B2E48EB8D00A367D9 /* ManipulacionSizes.swift in Sources */,
 				D4DA1BD92E3BE0B300529C47 /* CartaHolografica3D.swift in Sources */,
