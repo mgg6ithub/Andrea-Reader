@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/mgg6ithub/Andrea-Reader/assets/andrea-reader-logo-dark.png" alt="Logo Andrea Reader" width="180"/>
+  <img src="assets/andrea-reader-logo-dark.png" alt="Logo Andrea Reader" width="180"/>
 </p>
 
 <h1 align="center">¡Hola! 👋 Soy mgg6ithub</h1>
@@ -11,7 +11,7 @@
 
 ## 📚 Andrea Reader
 
-<img align="right" src="https://github.com/mgg6ithub/Andrea-Reader/assets/andrea-reader-logo-light.png" alt="Andrea Reader Logo" width="120"/>
+<img align="right" src="assets/andrea-reader-logo-light.png" alt="Andrea Reader Logo" width="120"/>
 
 **Andrea Reader** es un programa hecho en SwiftUI para leer libros y cómics, pensado para quienes disfrutan organizar y personalizar su colección digital:
 
