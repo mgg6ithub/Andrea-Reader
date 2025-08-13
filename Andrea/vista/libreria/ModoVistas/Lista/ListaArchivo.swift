@@ -5,6 +5,7 @@ import SwiftUI
 struct ListaArchivo: View {
     
     @EnvironmentObject var ap: AppEstado
+    @EnvironmentObject var me: MenuEstado
     
     @ObservedObject var archivo: Archivo
     @StateObject private var viewModel = ModeloMiniaturaArchivo()
@@ -23,29 +24,36 @@ struct ListaArchivo: View {
     var body: some View {
         HStack(spacing: 15) {
             let anchoMiniatura = coleccionVM.altura * escala
-            ZStack {
-                if let img = viewModel.miniatura {
-                    Image(uiImage: img)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(
-                            width: anchoMiniatura * ratio * 0.9,
-                            height: coleccionVM.altura * escala * 0.9
-                        )
-                        .cornerRadius(8, corners: .allCorners)
-                        .onAppear {
-                            print(ratio)
-                        }
-                } else {
-                    ProgressView()
+            Button(action: {
+                ap.archivoEnLectura = archivo
+            }) {
+                ZStack {
+                    CheckerEncimaDelElemento(elementoURL: archivo.url, topPadding: false)
+                    
+                    if let img = viewModel.miniatura {
+                        Image(uiImage: img)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(
+                                width: anchoMiniatura * ratio * 0.9,
+                                height: coleccionVM.altura * escala * 0.9
+                            )
+                            .cornerRadius(8, corners: .allCorners)
+                            .onAppear {
+                                print(ratio)
+                            }
+                    } else {
+                        ProgressView()
+                    }
+                }
+                .frame(width: anchoMiniatura * ratio, height: coleccionVM.altura * escala)
+                .onChange(of: coleccionVM.color) {
+                    if archivo.tipoMiniatura == .imagenBase {
+                        viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
+                    }
                 }
             }
-            .frame(width: anchoMiniatura * ratio, height: coleccionVM.altura * escala)
-            .onChange(of: coleccionVM.color) {
-                if archivo.tipoMiniatura == .imagenBase {
-                    viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
-                }
-            }
+            .disabled(me.seleccionMultiplePresionada)
             
 //            Divider()
 //                .background(Color.gray)

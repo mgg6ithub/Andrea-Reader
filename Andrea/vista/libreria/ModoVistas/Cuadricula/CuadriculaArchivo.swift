@@ -29,19 +29,7 @@ struct CuadriculaArchivo: View {
                 }
             }) {
                 ZStack {
-                    if me.seleccionMultiplePresionada {
-                        VStack(alignment: .center, spacing: 0) {
-                            let seleccionado = me.elementosSeleccionados.contains(archivo.url)
-                            Image(systemName: seleccionado ? "checkmark.circle.fill" : "circle")
-                                .font(.system(size: constantes.iconSize * 1.5))
-                                .fontWeight(.light)
-                                .foregroundColor(.gray)
-                                .transition(.scale.combined(with: .opacity))
-                                .contentTransition(.symbolEffect(.replace, options: .speed(2.25)))
-                        }
-                        .padding(.top, 60)
-                        .zIndex(5)
-                    }
+                    CheckerEncimaDelElemento(elementoURL: archivo.url, topPadding: true)
                     
                     ZStack {
                         if let img = viewModel.miniatura {

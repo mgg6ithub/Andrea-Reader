@@ -4,6 +4,7 @@ import SwiftUI
 struct ListaColeccion: View {
     
     @EnvironmentObject var ap: AppEstado
+    @EnvironmentObject var me: MenuEstado
     
     @ObservedObject var coleccion: Coleccion
     @ObservedObject var coleccionVM: ModeloColeccion
@@ -18,6 +19,9 @@ struct ListaColeccion: View {
                     coleccion.meterColeccion()
                 }) {
                     ZStack {
+
+                        CheckerEncimaDelElemento(elementoURL: coleccion.url, topPadding: false)
+                        
                         if coleccion.tipoMiniatura == .carpeta {
                             Image("CARPETA-ATRAS")
                                 .resizable()
@@ -66,6 +70,7 @@ struct ListaColeccion: View {
                         }
                     }
                 }
+                .disabled(me.seleccionMultiplePresionada)
                 .frame(width: anchoMiniatura * 0.651 , height: coleccionVM.altura * escala)
                 .onAppear {
                     if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {

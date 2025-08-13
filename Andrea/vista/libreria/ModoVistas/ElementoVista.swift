@@ -166,14 +166,19 @@ struct ContextMenuContenido: View {
         Section(header: Label(elemento.nombre, systemImage: "document")) {
             
             // --- LEER O ENTRAR: SEGUN ARCHIVO O DIRECTORIO---
-            Button(action: {
-                
-            }) {
-                if let _ = elemento as? Archivo {
+            
+            if let archivo = elemento as? Archivo {
+                Button(action: {
+                    ap.archivoEnLectura = archivo
+                }) {
                     Label("Leer", systemImage: "text.document")
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(cDinamico, cGris)
-                } else {
+                }
+            } else if let coleccion = elemento as? Coleccion {
+                Button(action: {
+                    coleccion.meterColeccion()
+                }) {
                     Label("Entrar", systemImage: "folder")
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(cDinamico, cGris)
