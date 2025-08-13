@@ -78,157 +78,6 @@ struct VistaPrincipal: View {
     var body: some View {
         ZStack {
             
-//            // 1. MOVE FROM BOTTOM
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.spring(response: 0.6, dampingFraction: 0.8), value: ap.archivoEnLectura)
-//                .transition(.move(edge: .bottom))
-//                .zIndex(1)
-//            }
-//
-//            // 2. SCALE & FADE
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.easeInOut(duration: 0.4), value: ap.archivoEnLectura)
-//                .transition(.scale.combined(with: .opacity))
-//                .zIndex(1)
-//            }
-//
-//            // 3. BOOK FLIP
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.spring(response: 0.5, dampingFraction: 0.7), value: ap.archivoEnLectura)
-//                .transition(.asymmetric(
-//                    insertion: .scale(scale: 0.1).combined(with: .modifier(
-//                        active: Rotate3DModifier(angle: -90),
-//                        identity: Rotate3DModifier(angle: 0)
-//                    )),
-//                    removal: .opacity
-//                ))
-//                .zIndex(1)
-//            }
-//
-//            // 4. SLIDE FROM RIGHT
-            if let archivo = ap.archivoEnLectura {
-                ZStack {
-                    Color.black.edgesIgnoringSafeArea(.all)
-                    ContenedorLector(archivo: archivo)
-                }
-                .animation(.interpolatingSpring(stiffness: 100, damping: 15), value: ap.archivoEnLectura)
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing).combined(with: .opacity),
-                    removal: .move(edge: .leading).combined(with: .opacity)
-                ))
-                .zIndex(1)
-            }
-
-            // 5. BOUNCE SCALE
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.interpolatingSpring(stiffness: 200, damping: 10), value: ap.archivoEnLectura)
-//                .transition(.scale(scale: 0.3).combined(with: .opacity))
-//                .zIndex(1)
-//            }
-
-//            // 6. UNFOLD FROM CENTER
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.easeInOut(duration: 0.5), value: ap.archivoEnLectura)
-//                .transition(.scale(scale: 0.01, anchor: .center).combined(with: .opacity))
-//                .zIndex(1)
-//            }
-//
-//            // 7. SLIDE FROM TOP
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.spring(response: 0.7, dampingFraction: 0.6), value: ap.archivoEnLectura)
-//                .transition(.move(edge: .top).combined(with: .opacity))
-//                .zIndex(1)
-//            }
-//
-//            // 8. ROTATE & SCALE
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.spring(response: 0.6, dampingFraction: 0.8), value: ap.archivoEnLectura)
-//                .transition(.modifier(
-//                    active: Rotate180Modifier(isActive: true),
-//                    identity: Rotate180Modifier(isActive: false)
-//                ))
-//                .zIndex(1)
-//            }
-//
-//            // 9. BLUR TO FOCUS
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.easeInOut(duration: 0.6), value: ap.archivoEnLectura)
-//                .transition(.modifier(
-//                    active: BlurTransition(isActive: true),
-//                    identity: BlurTransition(isActive: false)
-//                ))
-//
-//                .zIndex(1)
-//            }
-//
-//            // 10. FLIP CARD
-//            if let archivo = ap.archivoEnLectura {
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .animation(.easeInOut(duration: 0.5), value: ap.archivoEnLectura)
-//                .transition(.flip)
-//                .zIndex(1)
-//            }
-            
-//            if let archivo = ap.archivoEnLectura {
-//                
-//                ZStack {
-//                    Color.black.edgesIgnoringSafeArea(.all)
-//                    ContenedorLector(archivo: archivo)
-//                }
-//                .scaleEffect(isPresented ? 1.0 : 0.1)
-//                .rotationEffect(.degrees(isPresented ? 0 : -180))
-//                .opacity(isPresented ? 1 : 0)
-//                .animation(.spring(
-//                    response: 0.8,
-//                    dampingFraction: 0.6,
-//                    blendDuration: 0.3
-//                ), value: isPresented)
-//                .onAppear {
-//                    isPresented = true
-//                }
-//                .onDisappear {
-//                    isPresented = false
-//                }
-//                .zIndex(1)
-//            }
-
-
-            
             ap.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
                 
@@ -283,11 +132,12 @@ struct VistaPrincipal: View {
             
         }
 //        .animation(.easeInOut, value: ap.archivoEnLectura)
-//        .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
-//            ContenedorLector(archivo: archivo)
-//        }
-
-    
+        .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
+            ContenedorLector(archivo: archivo)
+                .background(ap.temaActual.backgroundColor) // tu color
+                .ignoresSafeArea()
+                .presentationBackground(.clear)            // <- quita el blanco del presentador
+        }
         .foregroundColor(ap.temaActual.textColor)
         .animation(.easeInOut, value: ap.temaActual)
     }
@@ -340,6 +190,9 @@ extension View {
 }
 
 
+
+
+
 struct ContenedorLector: View {
     var archivo: Archivo
     @State private var mostrarMenu = false
@@ -347,10 +200,14 @@ struct ContenedorLector: View {
 
     var body: some View {
         ZStack {
+            ap.temaActual.backgroundColor.ignoresSafeArea()
             switch archivo.fileType {
             case .cbr, .cbz:
-                let comic = archivo as! any ProtocoloComic
-                LectorComic(comic: comic)
+                if let comic = archivo as? any ProtocoloComic {
+                    LectorComic(comic: comic)
+                } else {
+                    ArchivoIncompatibleView(archivo: archivo)
+                }
             default:
                 Text("Tipo no soportado")
             }
@@ -359,9 +216,9 @@ struct ContenedorLector: View {
                 MenuLectura(
                     archivo: archivo,
                     cerrar: {
+                        mostrarMenu = false
                         withAnimation {
                             ap.archivoEnLectura = nil
-                            mostrarMenu = false
                         }
                     }
                 )

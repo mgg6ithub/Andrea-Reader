@@ -95,9 +95,23 @@ struct AndreaAppView: View {
             DragGesture()
                 .onEnded { value in
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                        
+                        //CHECKEMOS SI ES DE DERCHA A IZQUIERDA PRIMERO
+                        if value.translation.width < -100 {
+                            if self.sideMenuVisible {
+                                self.sideMenuVisible = false
+                            }
+                            else {
+                                if let ultimo: Archivo = ap.ultimoArchivoLeido {
+                                    ap.archivoEnLectura = ultimo
+                                }
+                            }
+                        }
+                        
                         if value.translation.width > 100 {
                             self.sideMenuVisible = true
                         }
+                        
                     }
                 }
         )

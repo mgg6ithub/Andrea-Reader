@@ -57,6 +57,7 @@
 		D4A0FF3D2DEB3FD300195018 /* LineaSeparadora.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */; };
 		D4A0FF3F2DEB6F1500195018 /* MasTemas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */; };
 		D4A270482E4C93EE00ECEF2F /* CheckerEncimaDelElemento.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A270472E4C93EE00ECEF2F /* CheckerEncimaDelElemento.swift */; };
+		D4A2704A2E4CA2B300ECEF2F /* VistaGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A270492E4CA2B300ECEF2F /* VistaGeneral.swift */; };
 		D4A65E022E27EBB500729A57 /* ArrastreManual.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A65E012E27EBB500729A57 /* ArrastreManual.swift */; };
 		D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */; };
 		D4A6C7272DEA216400E7451F /* RectangleFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7262DEA216400E7451F /* RectangleFormView.swift */; };
@@ -161,6 +162,7 @@
 		D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineaSeparadora.swift; sourceTree = "<group>"; };
 		D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasTemas.swift; sourceTree = "<group>"; };
 		D4A270472E4C93EE00ECEF2F /* CheckerEncimaDelElemento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckerEncimaDelElemento.swift; sourceTree = "<group>"; };
+		D4A270492E4CA2B300ECEF2F /* VistaGeneral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VistaGeneral.swift; sourceTree = "<group>"; };
 		D4A65E012E27EBB500729A57 /* ArrastreManual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrastreManual.swift; sourceTree = "<group>"; };
 		D4A6C7242DEA1F9A00E7451F /* CirculoActivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirculoActivo.swift; sourceTree = "<group>"; };
 		D4A6C7262DEA216400E7451F /* RectangleFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleFormView.swift; sourceTree = "<group>"; };
@@ -571,6 +573,7 @@
 			children = (
 				D4B0BBA42E4C6B470073380E /* COMIC */,
 				D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */,
+				D4A270492E4CA2B300ECEF2F /* VistaGeneral.swift */,
 			);
 			path = archivos;
 			sourceTree = "<group>";
@@ -787,6 +790,7 @@
 				D47139C72E0AE76500B5FA35 /* CuadriculaArchivo.swift in Sources */,
 				D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */,
 				D4BF0B212DEF494000152333 /* FabricaColeccion.swift in Sources */,
+				D4A2704A2E4CA2B300ECEF2F /* VistaGeneral.swift in Sources */,
 				D4A888432E26F9EC00C64974 /* PlaceholderLista.swift in Sources */,
 				D485896C2DEB9DF10074DB8E /* Utilidades.swift in Sources */,
 				D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */,

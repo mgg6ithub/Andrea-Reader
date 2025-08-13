@@ -6,7 +6,17 @@ class AppEstado: ObservableObject {
     private let cpag = ClavesPersistenciaAjustesGenerales()
     private let uds = UserDefaults.standard
     
-    @Published var archivoEnLectura: Archivo? = nil
+    @Published var archivoEnLectura: Archivo? = nil {
+        didSet {
+            // Actualiza ultimoArchivoLeido cuando archivoEnLectura cambie
+            if archivoEnLectura != nil {
+                ultimoArchivoLeido = archivoEnLectura
+                print("Actualizando el ultimo archivo leido a: ", ultimoArchivoLeido?.nombre)
+            }
+        }
+    }
+        
+    @Published var ultimoArchivoLeido: Archivo? = nil
     
     // --- VARIABLES AL INICIAR LA APLICACION ---
     @Published var screenWidth: CGFloat
