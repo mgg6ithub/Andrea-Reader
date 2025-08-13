@@ -24,6 +24,8 @@ class AppEstado: ObservableObject {
     
     @Published var constantes: Constantes
     
+    @Published var currentColor: Color = .gray
+    
     // --- VARIABLES PARA MANEJAR LA CARGA DINAMICA AL INICIAR LA APLICACION ---
     @Published var menuCargado = false
     @Published var historialCargado = false
@@ -34,6 +36,9 @@ class AppEstado: ObservableObject {
     // --- AJUSTES TEMAS ---
     @Published var temaActual: EnumTemas { didSet { uds.setEnum(temaActual, forKey: cpag.temaActual ) } }
     @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { uds.setEnum(sistemaArchivos, forKey: cpag.sistemaArchivos) } }
+    
+    // --- AJUSTES DE COLORES ---
+    @Published var aplicarColorDirectorio: Bool = true
     
     // --- RENDIMIENTO
     @Published var shadows: Bool = true

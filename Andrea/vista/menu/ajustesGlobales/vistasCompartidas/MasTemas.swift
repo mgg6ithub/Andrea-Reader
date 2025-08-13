@@ -28,12 +28,11 @@ struct MasTemas<T: Equatable>: View {
     var isSelected: Bool { return opcionActual == opcionSeleccionada }
     
     var body: some View {
-        
-        VStack {
+        VStack(spacing: 10) {
             Text(tema.rawValue)
                 .frame(maxWidth: .infinity, alignment: .center)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+                .font(.system(size: const.titleSize))
+                .foregroundColor(ap.temaActual.colorContrario)
             
             Button(action: {
                 isBouncing.toggle()
@@ -74,7 +73,6 @@ struct MasTemas<T: Equatable>: View {
                 }
             }
         }
-        .padding(.bottom, 10)
     }
     
 }

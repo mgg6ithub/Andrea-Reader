@@ -1,6 +1,12 @@
 
 import SwiftUI
 
+//#Preview {
+//    AjustesGlobales()
+//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//        .environmentObject(MenuEstado())
+//}
+
 struct AjustesGlobales: View {
     
     // --- ENTORNO ---
@@ -21,9 +27,7 @@ struct AjustesGlobales: View {
     private let cpd: ConstantesPorDefecto = ConstantesPorDefecto()
     
     var body: some View {
-            
             VStack(alignment: .center, spacing: 0) {
-                
                 Text("Ajustes generales")
                     .font(.system(size: ap.constantes.titleSize * 1.7, weight: .bold))
                     .foregroundColor(ap.temaActual.colorContrario)

@@ -1,63 +1,6 @@
 import SwiftUI
 import TipKit
 
-struct Rotate3DModifier: ViewModifier {
-    var angle: Double
-    func body(content: Content) -> some View {
-        content.rotation3DEffect(
-            Angle(degrees: angle),
-            axis: (x: 0, y: 1, z: 0)
-        )
-    }
-}
-
-struct Rotate180Modifier: ViewModifier {
-    let isActive: Bool
-    
-    func body(content: Content) -> some View {
-        content
-            .rotationEffect(.degrees(isActive ? 180 : 0))
-    }
-}
-
-struct BlurTransition: ViewModifier {
-    let isActive: Bool
-    
-    func body(content: Content) -> some View {
-        content
-            .blur(radius: isActive ? 10 : 0)
-    }
-}
-
-struct FlipModifier: ViewModifier {
-    let angle: Double
-    
-    func body(content: Content) -> some View {
-        content
-            .rotation3DEffect(
-                .degrees(angle),
-                axis: (x: 1, y: 0, z: 0)
-            )
-    }
-}
-
-extension AnyTransition {
-    static var flip: AnyTransition {
-        .asymmetric(
-            insertion: .modifier(
-                active: FlipModifier(angle: 90),
-                identity: FlipModifier(angle: 0)
-            ),
-            removal: .modifier(
-                active: FlipModifier(angle: -90),
-                identity: FlipModifier(angle: 0)
-            )
-        )
-    }
-}
-
-
-
 struct VistaPrincipal: View {
     
     // --- ENTORNO ---

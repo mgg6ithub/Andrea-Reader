@@ -21,74 +21,47 @@ struct AjustesTema: View {
     private var paddingVertical: CGFloat {cpd.verticalPadding * const.scaleFactor} // 20
     private var paddingCorto: CGFloat { cpd.paddingCorto }
     
+    private var esOscuro: Bool { ap.temaActual == .dark }
+    
     var body: some View {
         
         VStack(alignment: .center, spacing: 0) {
-                
             Text("Tema principal") //TITULO
-                .font(.headline)
-                .foregroundColor(ap.temaActual.colorContrario)
-                .padding(.bottom, paddingVertical + 5) // 25
-                .padding(.trailing, paddingHorizontal)
+                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
-                .font(.subheadline)
-                .foregroundColor(ap.temaActual.secondaryText)
-                .frame(width: .infinity, alignment: .leading)
-                .padding(.bottom, paddingVertical) // 20
+                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
             
-            HStack {
+            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
                 
-                CirculoActivo(isSection: isSection)
+            HStack(spacing: 0) {
                 
-                Text("Selecciona un tema para establecerlo como principal.")
-                    .font(.caption2)
-                    .foregroundColor(ap.temaActual.secondaryText)
-                    .frame(alignment: .leading)
+                RectangleFormView<EnumTemas>(
+                    titulo: "Claro",
+                    icono: "sun.max.fill",
+                    coloresIcono: [Color.yellow],
+                    opcionSeleccionada: .light,
+                    opcionActual: $ap.temaActual
+                )
                 
-                Spacer()
+                RectangleFormView<EnumTemas>(
+                    titulo: "Oscuro",
+                    icono: "moon.fill",
+                    coloresIcono: [Color.blue],
+                    opcionSeleccionada: .dark,
+                    opcionActual: $ap.temaActual
+                )
+                
+                RectangleFormView<EnumTemas>(
+                    titulo: "Dia/Noche",
+                    icono: "custom.dayNight",
+                    coloresIcono: [Color.white, Color.white],
+                    opcionSeleccionada: .dayNight,
+                    opcionActual: $ap.temaActual,
+                    isCustomImage: true
+                )
             }
-            .padding(.bottom, paddingCorto)
-                
-            // Contenedor del rectángulo
-            ZStack {
-                
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.gray.opacity(0.2))
-                    .frame(
-                        height: const.altoRectanguloFondo
-                    )
-                    .shadow(color: ap.temaActual == .dark ? .black.opacity(0.6) : .black.opacity(0.225), radius: ap.shadows ? 10 : 0, x: 0, y: ap.shadows ? 5 : 0)
-                
-                HStack(spacing: 0) {
-                    
-                    RectangleFormView<EnumTemas>(
-                        titulo: "Claro",
-                        icono: "sun.max.fill",
-                        coloresIcono: [Color.yellow],
-                        opcionSeleccionada: .light,
-                        opcionActual: $ap.temaActual
-                    )
-                    
-                    RectangleFormView<EnumTemas>(
-                        titulo: "Oscuro",
-                        icono: "moon.fill",
-                        coloresIcono: [Color.blue],
-                        opcionSeleccionada: .dark,
-                        opcionActual: $ap.temaActual
-                    )
-                    
-                    RectangleFormView<EnumTemas>(
-                        titulo: "Dia/Noche",
-                        icono: "custom.dayNight",
-                        coloresIcono: [Color.white, Color.white],
-                        opcionSeleccionada: .dayNight,
-                        opcionActual: $ap.temaActual,
-                        isCustomImage: true
-                    )
-                }
-            } //fin zstack tema
-            .padding(.bottom, paddingVertical)
+            .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
             VStack(alignment: .leading, spacing: 0) {
                 Button(action: {
@@ -103,9 +76,9 @@ struct AjustesTema: View {
                     }
                     
                 }) {
-                    HStack(spacing: paddingCorto) {
+                    HStack(spacing: 5) {
                         Text("Más temas")
-                            .font(.system(size: const.subTitleSize))
+                            .font(.system(size: const.titleSize))
                             .foregroundColor(ap.temaActual.colorContrario)
                             .bold()
                         
@@ -120,16 +93,11 @@ struct AjustesTema: View {
                     }
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, paddingCorto)
+                .padding(.bottom, isThemeExpanded ? paddingCorto : 0)
                 
                 // 🎨 ANIMACIÓN MEJORADA DEL CONTENEDOR
                 if isThemeExpanded {
                     ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: const.altoRectanguloPeke * 0.9)
-                            .shadow(color: ap.temaActual == .dark ? .black.opacity(0.6) : .black.opacity(0.225), radius: ap.shadows ? 10 : 0, x: 0, y: ap.shadows ? 5 : 0)
-                        
                         //MAS TEMAS CON ANIMACIÓN INDIVIDUAL
                         HStack(spacing: 0) {
                             MasTemas(tema: .green, color1: .teal, color2: .green, opcionSeleccionada: .green, opcionActual: $ap.temaActual)
@@ -178,8 +146,8 @@ struct AjustesTema: View {
                                     value: isThemeExpanded
                                 )
                         }
-                    }
-                    .padding(.bottom, paddingVertical)
+                    }            
+                    .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                     .scaleEffect(isThemeExpanded ? 1 : 0.95)
                     .opacity(isThemeExpanded ? 1 : 0)
                     .offset(y: isThemeExpanded ? 0 : -5)
@@ -198,6 +166,5 @@ struct AjustesTema: View {
             
         } //fin vstack tema
         .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
-        .padding(.top, 10)
     }
 }

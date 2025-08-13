@@ -2,6 +2,62 @@
 
 import SwiftUI
 
+extension View {
+    
+    func fondoRectangular(esOscuro: Bool, shadow: Bool) -> some View {
+        self.padding(15) // margen interno
+            .background(
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(Color.gray.opacity(0.2))
+            )
+            .shadow(
+                color: esOscuro ? .black.opacity(0.6) : .black.opacity(0.225),
+                radius: shadow ? 10 : 0, x: 0, y: shadow ? 5 : 0
+            )
+            .padding(.bottom, 15)
+    }
+    
+}
+
+extension View {
+    func capaTituloPrincipal(s: CGFloat, c: Color, pH: CGFloat, pW: CGFloat) -> some View {
+        self.bold()
+            .font(.system(size: s * 1.4))
+            .foregroundColor(c)
+            .padding(.bottom, pH + 5) // 25
+            .padding(.trailing, pW)
+    }
+}
+
+extension View {
+    func capaDescripcion(s: CGFloat, c: Color, pH: CGFloat, pW: CGFloat) -> some View {
+        self.font(.system(size: s * 1.08))
+            .foregroundColor(c)
+            .padding(.bottom, pH) // 20
+    }
+}
+
+struct CirculoActivoVista: View {
+    
+    let isSection: Bool
+    let nombre: String
+    let titleSize: CGFloat
+    let color: Color
+    
+    var body: some View {
+        HStack {
+            CirculoActivo(isSection: isSection)
+            
+            Text(nombre)
+                .font(.system(size: titleSize))
+                .foregroundColor(color)
+                .frame(alignment: .leading)
+            Spacer()
+        }
+        .padding(.bottom, 5)
+    }
+}
+
 struct ContenidoAjustes: View {
     
     // --- ENTORNO ---
@@ -34,18 +90,22 @@ struct ContenidoAjustes: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .center, spacing: 0) {
-                    
                     HStack(spacing: 0) {
                         
-                        Image("libro-ajustes1")
-                            .resizable()
-                            .frame(width: 160 * constanteResizable, height: 160 * constanteResizable)
-                            .aspectRatio(contentMode: .fit)
-                            .aparicionStiffness(show: $show)
+                        if ap.resolucionLogica != .small {
+                            Image("libro-ajustes")
+    //                        Image("libro-ajustes1")
+                                .resizable()
+                                .frame(width: 160 * constanteResizable, height: 160 * constanteResizable)
+                                .aspectRatio(contentMode: .fit)
+                                .aparicionStiffness(show: $show)
+                        }
                         
                         Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
                             .font(.system(size: ap.constantes.titleSize))
+                            .foregroundColor(ap.temaActual.colorContrario)
                             .multilineTextAlignment(.center)
+                            .padding(.vertical, 10)
                         
                     }
                     .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
@@ -77,8 +137,7 @@ struct ContenidoAjustes: View {
                     }
                     
                     ForEach(sections, id: \.self) { section in
-                        VStack {
-                            
+                        VStack(spacing: 0) {
                             GeometryReader { geo in
                                 Color.clear
                                     .preference(key: ViewOffsetKey.self, value: geo.frame(in: .global).minY)
@@ -90,17 +149,22 @@ struct ContenidoAjustes: View {
                                     case "TemaPrincipal":
                                         AjustesTema(isSection: selectedSection == section)
                                     
-                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal)
+                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.top, 10).padding(.bottom, 15)
+                                    
+                                    case "ColorPrincipal":
+                                        AjustesColor(isSection: selectedSection == section)
+                                    
+                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                     
                                     case "SistemaArchivos":
                                             AjustesSistemaColecciones(isSection: selectedSection == section)
                                         
-                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal)
+                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                         
                                     case "Rendimiento":
                                         Rendimiento(isSection: selectedSection == section)
                                         
-                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal)
+                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                         
                                     case "AjustesMenu":
                                         AjustesMenu(isSection: selectedSection == section)
