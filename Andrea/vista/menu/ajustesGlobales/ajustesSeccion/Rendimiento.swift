@@ -3,9 +3,9 @@ import SwiftUI
 
 #Preview {
     AjustesGlobales()
-        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
+//        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
 //        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
-//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
 //        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
 //        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
         .environmentObject(MenuEstado())
@@ -48,7 +48,7 @@ struct Rendimiento: View {
                         
                 }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
         }
-        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : const.padding35 * 2)
+//        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : const.padding35 * 2)
         
     }
 }

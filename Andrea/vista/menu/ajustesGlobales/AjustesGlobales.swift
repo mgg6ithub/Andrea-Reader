@@ -25,6 +25,7 @@ struct AjustesGlobales: View {
     // --- VARIABLES CALCULADAS ---
     var sections: [String] { menuEstado.sections }
     private let cpd: ConstantesPorDefecto = ConstantesPorDefecto()
+    private var const: Constantes { ap.constantes }
     
     var body: some View {
             VStack(alignment: .center, spacing: 0) {
@@ -62,7 +63,8 @@ struct AjustesGlobales: View {
                 } //fin geometry hStackGeo
                 
             } //FIN VSTACK GENERAL
-            .padding(.horizontal, cpd.padding25) // 25
+            .padding(.horizontal, const.padding25) // 25
+            .border(.red)
             .frame(
                 maxHeight: .infinity,
                 alignment: .center

@@ -58,6 +58,16 @@ struct CirculoActivoVista: View {
     }
 }
 
+#Preview {
+    AjustesGlobales()
+//        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
+//        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
+        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
+//        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
+        .environmentObject(MenuEstado())
+}
+
 struct ContenidoAjustes: View {
     
     // --- ENTORNO ---
@@ -78,6 +88,7 @@ struct ContenidoAjustes: View {
     @State private var isScrollInitialized = false
     
     // --- VARIABLES CALCULADAS ---
+    private var const: Constantes { ap.constantes }
     var constanteResizable: CGFloat {
         if ap.resolucionLogica == .small {
             return ap.constantes.scaleFactor * 0.8
@@ -108,7 +119,7 @@ struct ContenidoAjustes: View {
                             .padding(.bottom, 10)
                         
                     }
-                    .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
+                    .padding(.leading, ap.resolucionLogica == .small ? 0 : const.padding25)
                     // 🎨 ANIMACIÓN MODERNA DE SCROLL
                     .opacity(haHechoScroll ? 0.0 : 1.0)
                     .scaleEffect(haHechoScroll ? 0.95 : 1.0)
@@ -137,7 +148,7 @@ struct ContenidoAjustes: View {
                     }
                     
                     ForEach(sections, id: \.self) { section in
-                        VStack(spacing: 0) {
+                        VStack(alignment: .trailing, spacing: 0) {
                             GeometryReader { geo in
                                 Color.clear
                                     .preference(key: ViewOffsetKey.self, value: geo.frame(in: .global).minY)
@@ -166,16 +177,19 @@ struct ContenidoAjustes: View {
                                         
                                     DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                         
-                                case "AjustesBarraEstado":
-                                    AjustesBarraEstado(isSection: selectedSection == section)
+                                    case "AjustesBarraEstado":
+                                        AjustesBarraEstado(isSection: selectedSection == section)
                                     
                                     DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                     
                                     case "AjustesMenu":
                                         AjustesMenu(isSection: selectedSection == section)
                                     
-                                    case "AjustesHistorial":
-                                        AjustesHistorial()
+//                                    case "AjustesHistorial":
+//                                        AjustesHistorial(sSection: selectedSection == section)
+                                    
+//                                    case "AjustesLibreria":
+//                                        AjustesLibreria(sSection: selectedSection == section)
                                     
                                     default:
                                         EmptyView()
@@ -183,6 +197,8 @@ struct ContenidoAjustes: View {
                             }
                             .id(section)
                         }
+                        .border(.red)
+                        .padding(.leading, ap.resolucionLogica == .small ? 0 : const.padding35) // 40
                         .background(GeometryReader { geo in
                             Color.clear
                                 .onChange(of: geo.frame(in: .global).minY) { oldValue, newValue in

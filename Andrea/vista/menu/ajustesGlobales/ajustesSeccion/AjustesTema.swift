@@ -162,6 +162,6 @@ struct AjustesTema: View {
             }
             
         } //fin vstack tema
-        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
+//        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
     }
 }
