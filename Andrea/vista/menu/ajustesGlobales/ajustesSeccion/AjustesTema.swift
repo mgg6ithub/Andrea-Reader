@@ -15,11 +15,8 @@ struct AjustesTema: View {
     
     // --- VARIABLES CALCULADAS ---
     var const: Constantes { ap.constantes }
-    private let cpd = ConstantesPorDefecto()
-    
-    private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * const.scaleFactor}
-    private var paddingVertical: CGFloat {cpd.verticalPadding * const.scaleFactor} // 20
-    private var paddingCorto: CGFloat { cpd.paddingCorto }
+    var paddingVertical: CGFloat { const.padding20 }
+    var paddingHorizontal: CGFloat { const.padding40 }
     
     private var esOscuro: Bool { ap.temaActual == .dark }
     
@@ -93,7 +90,7 @@ struct AjustesTema: View {
                     }
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, isThemeExpanded ? paddingCorto : 0)
+                .padding(.bottom, isThemeExpanded ? const.padding5 : 0)
                 
                 // 🎨 ANIMACIÓN MEJORADA DEL CONTENEDOR
                 if isThemeExpanded {

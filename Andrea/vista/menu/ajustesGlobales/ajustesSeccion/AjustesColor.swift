@@ -25,17 +25,9 @@ struct AjustesColor: View {
     //VARIABLES PARA EL TEMA
     @State private var isColorExpanded: Bool = false
     
-//    let colors: [Color] = [
-//        .red, .green, .blue, .yellow, .orange, .purple, .pink
-//    ]
-  
     var const: Constantes { ap.constantes }
-    private let cpd = ConstantesPorDefecto()
-    
-    private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * const.scaleFactor}
-    private var paddingVertical: CGFloat {cpd.verticalPadding * const.scaleFactor} // 20
-    private var paddingCorto: CGFloat { cpd.paddingCorto }
-    private var iconSize: CGFloat { ap.constantes.iconSize }
+    var paddingVertical: CGFloat { const.padding20 }
+    var paddingHorizontal: CGFloat { const.padding40 }
     
     private var esOscuro: Bool { ap.temaActual == .dark }
     
@@ -88,20 +80,11 @@ struct AjustesColor: View {
                                     .fill(color.gradient)
                                     .opacity(current ? 1 : 0.3)
                                     .frame(width: circleSize, height: circleSize)
-//                                    .overlay(
-//                                        Circle().stroke(
-//                                            ap.temaActual == .dark
-//                                                ? (current ? Color.white : .clear)
-//                                                : (current ? Color.black : .clear),
-//                                            lineWidth: 1.5
-//                                        )
-//                                    )
                             }
                             .buttonStyle(.plain)
                         }
                     }
                     .frame(maxWidth: .infinity)
-//                    .padding(.horizontal, 10)
                 } // FIN VSTACK COLORES MAS USADOS
             
             }
@@ -135,7 +118,7 @@ struct AjustesColor: View {
                     }
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, paddingCorto)
+                .padding(.bottom, const.padding5)
                 
                 if self.isColorExpanded {
                         
@@ -149,7 +132,6 @@ struct AjustesColor: View {
                     .animation(ap.animaciones ? .easeInOut(duration: 0.5) : .none, value: isColorExpanded)
                 }
             }
-            .padding(.bottom, 15)
             
             CirculoActivoVista(isSection: isSection, nombre: "Color automatico", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
             

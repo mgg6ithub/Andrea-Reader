@@ -624,11 +624,11 @@
 			children = (
 				D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */,
 				D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */,
-				D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */,
 				D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */,
 				D480E76B2E42216300C8BBCC /* Rendimiento.swift */,
-				D47035DA2E4288D0008906C9 /* AjustesHistorial.swift */,
 				D45A82262E4CFC7800B92262 /* AjustesBarraEstado.swift */,
+				D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */,
+				D47035DA2E4288D0008906C9 /* AjustesHistorial.swift */,
 			);
 			path = ajustesSeccion;
 			sourceTree = "<group>";

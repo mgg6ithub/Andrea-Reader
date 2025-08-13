@@ -105,6 +105,7 @@ struct ContenidoAjustes: View {
                             .foregroundColor(ap.temaActual.colorContrario)
                             .multilineTextAlignment(.center)
                             .padding(.vertical, 10)
+                            .padding(.bottom, 10)
                         
                     }
                     .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)

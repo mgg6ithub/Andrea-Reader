@@ -1,6 +1,16 @@
 
 import SwiftUI
 
+#Preview {
+    AjustesGlobales()
+        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
+//        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
+//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
+//        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
+        .environmentObject(MenuEstado())
+}
+
 struct Rendimiento: View {
     
     // --- ENTORNO ---
@@ -11,59 +21,32 @@ struct Rendimiento: View {
     var isSection: Bool
     
     // --- VARIABLES CALCULADAS ---
-    private let cpd = ConstantesPorDefecto()
-    private var const: Constantes { ap.constantes }
+    var const: Constantes { ap.constantes }
+    var paddingVertical: CGFloat { const.padding20 }
+    var paddingHorizontal: CGFloat { const.padding40 }
+    
+    private var esOscuro: Bool { ap.temaActual == .dark }
     
     var body: some View {
         
         VStack(alignment: .center, spacing: 0) {
             
             Text("Rendimiento")
-                .font(.headline)
-                .foregroundColor(ap.temaActual.colorContrario)
-                .padding(.vertical, const.padding25) // 25
-                .padding(.trailing, const.padding35)
+                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Ajustes para mejorar el rendimiento del programa sacrificando el aspecto visual.")
-                .font(.subheadline)
-                .foregroundColor(ap.temaActual.secondaryText)
-                .frame(width: .infinity)
-                .padding(.bottom, cpd.padding20) // 20
+                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+            
+            CirculoActivoVista(isSection: isSection, nombre: "Modifica las sombras", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
             
             VStack(spacing: 0) {
-                HStack {
-                    CirculoActivo(isSection: isSection)
-                    
-                    Text("Modifica las sombras")
-                        .font(.caption2)
-                        .foregroundColor(ap.temaActual.secondaryText)
-                        .frame(alignment: .leading)
-                    
-                    Spacer()
-                }
-                .padding(.bottom, cpd.padding5)
+                        
+                TogglePersonalizado(titulo: "Sombras", descripcion: "Activa o desactiva las sombras de la interfaz.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar sombras", opcionFalse: "Habilitar sombras", isInsideToggle: true, isDivider: true)
                 
-                ZStack {
-                    RoundedRectangle(cornerRadius: 25)
-                        .fill(Color.gray.opacity(0.2))
-                        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.6) : .black.opacity(0.225), radius: ap.shadows ? 10 : 0, x: 0, y: ap.shadows ? 5 : 0)
-                    
-                    VStack(spacing: 0) {
+                Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
+                    .capaDescripcion(s: const.titleSize * 0.8, c: ap.temaActual.secondaryText, pH: 0, pW: 0)
                         
-                        TogglePersonalizado(titulo: "Sombras", descripcion: "Activa o desactiva las sombras de la interfaz.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar sombras", opcionFalse: "Habilitar sombras", isInsideToggle: true, isDivider: true)
-                        
-                        Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
-                            .font(.subheadline)
-                            .foregroundColor(ap.temaActual.secondaryText)
-                            .padding(.top, 10)
-                        
-                    }
-                    .padding()
-                }
-                .padding(.bottom, cpd.padding20)
-                
-            }
-            
+                }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
         }
         .padding(.horizontal, ap.resolucionLogica == .small ? 0 : const.padding35 * 2)
         
