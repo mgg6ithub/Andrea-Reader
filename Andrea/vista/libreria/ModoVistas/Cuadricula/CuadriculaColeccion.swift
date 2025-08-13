@@ -99,17 +99,22 @@ struct CuadriculaColeccion: View {
                                 .textoAdaptativo(t: ap.constantes.titleSize, a: 0.6, l: 2, b: true, c: cDinamico, alig: .leading, mW: .infinity, mH: 40, fAlig: .leading)
                         }
                         
-                        HStack(spacing: 20) {
+                        HStack(spacing: 0) {
                             Text("3.25 GB")
-                                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.6, l: 1, b: false, c: cSec, alig: .leading, s: true)
+                                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.6, l: 1, b: false, c: cSec, alig: .leading, s: false)
+                            
+                            Spacer()
+                            
                             Text("\(coleccion.totalArchivos) elementos")
-                                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.6, l: 1, b: false, c: cSec, alig: .leading, s: true)
+                                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.6, l: 1, b: false, c: cSec, alig: .trailing, s: false)
                         }
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
+                        .padding(.leading, 5)
+                        .padding(.trailing, 10)
                     }
+                    .padding(.horizontal, 5)
                     
                 }
+                .offset(y: -10)
             }
             .disabled(me.seleccionMultiplePresionada)
         }
