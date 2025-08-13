@@ -166,6 +166,7 @@ struct CuadriculaArchivo: View {
                 }
                 .frame(width: width)
             }
+            .disabled(me.seleccionMultiplePresionada)
             
             Spacer()
             
