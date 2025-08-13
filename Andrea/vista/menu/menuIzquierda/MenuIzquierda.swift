@@ -60,6 +60,7 @@ struct MenuIzquierda: View {
                         .font(.system(size: appEstado.constantes.iconSize * 1.01))
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(appEstado.constantes.iconColor.gradient)
+//                        .foregroundStyle(appEstado.temaActual.colorContrario)
                         .fontWeight(.thin)
                     //                            .symbolEffect(.bounce, value: menuModel.newDirectoryCreated)
                 } content: { isExpandable, cerrarMenu in

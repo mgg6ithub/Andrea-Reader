@@ -99,7 +99,7 @@ extension View {
 
 // MARK: - BOTON FONDO
 extension View {
-    func fondoBoton1(pH: CGFloat, pV: CGFloat, isActive: Bool, color: Color, borde: Bool) -> some View {
+    func fondoBoton1(pH: CGFloat, pV: CGFloat, isActive: Bool, color: Color) -> some View {
         self.padding(.horizontal, pH)
             .padding(.vertical, pV)
             .background(

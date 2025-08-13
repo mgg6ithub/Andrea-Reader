@@ -77,7 +77,8 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .foregroundColor(colorPrimario)
             .fixedSize()
             .layoutPriority(1)
-            .fondoBoton1(pH: pH, pV: 7, isActive: isActive, color: color, borde: true)
+//            .fondoBoton(pH: pH, pV: 7, isActive: isActive, color: color, borde: true)
+            .fondoBoton1(pH: pH, pV: 7, isActive: isActive, color: color)
 //            .aparicionSuave(show: $show)
 //            .if(isActive) { view in
 //                view.aparicionStiffness(show: $show)

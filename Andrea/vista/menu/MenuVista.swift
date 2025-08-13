@@ -12,14 +12,17 @@ struct MenuVista: View {
             ZStack {
                 HStack {
                     MenuIzquierda()
+                        .fondoBoton1(pH: 3, pV: 3, isActive: false, color: .gray.opacity(0.6))
                         .padding(0)
                     Spacer()
                     MenuDerecha()
+                        .fondoBoton1(pH: 3, pV: 3, isActive: false, color: .gray.opacity(0.6))
                 }
                 .padding(0)
                 
                 GeometryReader { geo in
                     MenuCentro(coleccionActualVM: pc.getColeccionActual())
+                        .fondoBoton1(pH: 3, pV: 3, isActive: false, color: .gray.opacity(0.6))
                         .frame(maxWidth: .infinity)
                         .onAppear {
                             menuCentroWidth = geo.size.width

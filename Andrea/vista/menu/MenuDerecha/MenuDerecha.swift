@@ -11,7 +11,6 @@ struct MenuDerecha: View {
     var body: some View {
         
         HStack {
-            Spacer()
             ZStack {
                 Button(action: {
                     
@@ -30,9 +29,10 @@ struct MenuDerecha: View {
                     }
                 }
             }
-            
+            .padding(0)
         }
-        .frame(maxWidth: 70)
+        .padding(0)
+//        .frame(maxWidth: 70)
         
     }
     
