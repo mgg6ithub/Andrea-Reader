@@ -18,13 +18,15 @@ struct CuadriculaVista: View {
     var body: some View {
         GeometryReader { geo in
             
-//            VStack(spacing: 0) {
-//                
+//            ZStack {
 //                if hasScrolled {
 //                    Rectangle()
 //                        .fill(Color.gray)
 //                        .frame(height: 1)
 //                        .transition(.opacity)
+//                        .frame(maxHeight: .infinity, alignment: .top)
+//
+//                        .zIndex(1)
 //                }
 
                let outerPadding: CGFloat = 20      // ← cuanto quieras de margen a cada lado
@@ -158,6 +160,7 @@ struct CuadriculaVista: View {
                         atributo: "columnas"
                     )
                 }
+//                .zIndex(0)
 //            } //vstack porsiacaso
 
         }

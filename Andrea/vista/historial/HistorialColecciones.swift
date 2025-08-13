@@ -35,7 +35,8 @@ struct HistorialColecciones: View {
                     animationDelay: delay(0)
                 ) {
                     HStack(spacing: 10) {
-                        Image(systemName: "house").opacity(0.75)
+                        Image(systemName: "house")
+//                            .opacity(0.75)
                         
                         Text("Home")
                             .font(.system(size: 20 * appEstado.constantes.scaleFactor))

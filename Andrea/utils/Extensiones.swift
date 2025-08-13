@@ -77,7 +77,7 @@ extension View {
         self.padding(.horizontal, pH)
             .padding(.vertical, pV)
             .background(
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: 6)
                 .fill(LinearGradient(
                     gradient: Gradient(colors: [
                         color.opacity(isActive ? 0.4 : 0.2),
@@ -88,7 +88,7 @@ extension View {
                 ))
                 .if(borde) { view in
                     view.overlay(
-                        RoundedRectangle(cornerRadius: 10)
+                        RoundedRectangle(cornerRadius: 6)
                             .stroke(color.opacity(isActive ? 0.7 : 0.4).gradient, lineWidth: isActive ? 2 : 1)
                     )
                 }
@@ -96,6 +96,28 @@ extension View {
         )
     }
 }
+
+// MARK: - BOTON FONDO
+extension View {
+    func fondoBoton1(pH: CGFloat, pV: CGFloat, isActive: Bool, color: Color, borde: Bool) -> some View {
+        self.padding(.horizontal, pH)
+            .padding(.vertical, pV)
+            .background(
+                RoundedRectangle(cornerRadius: 6) // un poco más suave
+                    .fill(
+                        color.opacity(isActive ? 0.48 : 0.124) // color sólido suave
+                    )
+                    // Sin borde
+                    .shadow(
+                        color: Color.black.opacity(0.08), // sombra muy suave
+                        radius: 3,
+                        x: 0,
+                        y: 1
+                    )
+            )
+    }
+}
+
 
 //MARK: - EXTENSION ANIMACION APARICION STIFFNESS
 extension View {

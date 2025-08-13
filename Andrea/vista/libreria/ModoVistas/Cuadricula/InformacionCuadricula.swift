@@ -57,22 +57,25 @@ struct InformacionCuadricula: View, Equatable {
                             .foregroundColor(.blue)
                             .zIndex(3)
                     }
+                    Spacer()
                 }
                 
-                Spacer()
-                
-                HStack(spacing: 10) {
+                HStack(spacing: 0) {
                     Text(tipo)
                         .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
                         .foregroundColor(.gray)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
+                    
+                    Spacer()
 
                     Text("\(tamanioMB)")
                         .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
                         .foregroundColor(.gray)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
+                    
+                    Spacer()
 
                     Text("\(totalPaginas.map { "\($0) pages" } ?? "—")")
                         .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
