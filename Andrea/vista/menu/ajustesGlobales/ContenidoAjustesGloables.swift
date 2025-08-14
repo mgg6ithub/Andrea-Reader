@@ -185,11 +185,11 @@ struct ContenidoAjustes: View {
                                     case "AjustesMenu":
                                         AjustesMenu(isSection: selectedSection == section)
                                     
-//                                    case "AjustesHistorial":
-//                                        AjustesHistorial(sSection: selectedSection == section)
+                                    case "AjustesHistorial":
+                                        AjustesHistorial(isSection: selectedSection == section)
                                     
-//                                    case "AjustesLibreria":
-//                                        AjustesLibreria(sSection: selectedSection == section)
+                                    case "AjustesLibreria":
+                                        AjustesLibreria(isSection: selectedSection == section)
                                     
                                     default:
                                         EmptyView()

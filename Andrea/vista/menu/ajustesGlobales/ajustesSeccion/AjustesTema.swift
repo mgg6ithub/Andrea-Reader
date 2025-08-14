@@ -108,7 +108,7 @@ struct AjustesTema: View {
                                     value: isThemeExpanded
                                 )
                             
-                            MasTemas(tema: .red, color1: .red.opacity(0.6), color2: .red.opacity(0.9), opcionSeleccionada: .red, opcionActual: $ap.temaActual)
+                            MasTemas(tema: .red, color1: .purple, color2: .red, opcionSeleccionada: .red, opcionActual: $ap.temaActual)
                                 .scaleEffect(isThemeExpanded ? 1 : 0.8)
                                 .opacity(isThemeExpanded ? 1 : 0)
                                 .offset(y: isThemeExpanded ? 0 : 10)

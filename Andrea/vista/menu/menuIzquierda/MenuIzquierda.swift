@@ -12,6 +12,9 @@ struct MenuIzquierda: View {
     @State private var mostrarMenuLateral: Bool = false
     @State private var mostrarPopover = false
     
+    private var const: Constantes { appEstado.constantes }
+    private var iconColor: Color { appEstado.temaActual.menuIconos }
+    
     var body: some View {
 
         HStack {
@@ -56,12 +59,12 @@ struct MenuIzquierda: View {
             //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
             ZStack {
                 PopOutCollectionsView() { isExpandable in
-                    Image("custom.library")
-                        .font(.system(size: appEstado.constantes.iconSize * 1.01))
+                    Image("custom-library.badge")
+                        .font(.system(size: const.iconSize * 1.01))
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(appEstado.constantes.iconColor.gradient)
+                        .foregroundStyle(appEstado.colorActual, iconColor)
 //                        .foregroundStyle(appEstado.temaActual.colorContrario)
-                        .fontWeight(.thin)
+                        .fontWeight(const.iconWeight)
                     //                            .symbolEffect(.bounce, value: menuModel.newDirectoryCreated)
                 } content: { isExpandable, cerrarMenu in
                     ListaColeccionMenu(onSeleccionColeccion: cerrarMenu)

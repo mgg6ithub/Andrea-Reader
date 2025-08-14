@@ -207,6 +207,7 @@ class PilaColecciones: ObservableObject {
     /**
      Retorna la colección actual (última en la pila), o la colección HOME si no hay ninguna.
      */
+//    @MainActor
     public func getColeccionActual() -> ModeloColeccion {
         coleccionActualVM ?? ModeloColeccion(
             sa.cacheColecciones[self.homeURL]?.coleccion

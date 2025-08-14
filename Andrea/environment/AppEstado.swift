@@ -1,6 +1,7 @@
 
 import SwiftUI
 
+@MainActor
 class AppEstado: ObservableObject {
     
     private let cpag = ClavesPersistenciaAjustesGenerales()
@@ -24,8 +25,6 @@ class AppEstado: ObservableObject {
     
     @Published var constantes: Constantes
     
-    @Published var currentColor: Color = .gray
-    
     // --- VARIABLES PARA MANEJAR LA CARGA DINAMICA AL INICIAR LA APLICACION ---
     @Published var menuCargado = false
     @Published var historialCargado = false
@@ -38,7 +37,20 @@ class AppEstado: ObservableObject {
     @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { uds.setEnum(sistemaArchivos, forKey: cpag.sistemaArchivos) } }
     
     // --- AJUSTES DE COLORES ---
+    @Published var colorPersonalizadoActual: Color = .gray
+    @Published var colorPersonalizado: Bool = false
+    @Published var colorNeutro: Bool = false
     @Published var aplicarColorDirectorio: Bool = true
+
+    var colorActual: Color {
+        if aplicarColorDirectorio {
+            return PilaColecciones.pilaColecciones.getColeccionActual().color
+        } else if colorNeutro {
+            return .gray
+        } else {
+            return colorPersonalizadoActual
+        }
+    }
     
     // --- RENDIMIENTO
     @Published var shadows: Bool = true
@@ -46,7 +58,6 @@ class AppEstado: ObservableObject {
     
     // --- BARRA DE ESTADO ---
     @Published var modoBarraEstado: ModoBarraEstado = .auto
-    
     
     // --- MENU ---
     

@@ -27,11 +27,25 @@ struct MenuCentro: View {
     // --- VARIABLES CALCULADAS ---
     private let sa: SistemaArchivos = SistemaArchivos.sa
     private var const: Constantes { appEstado.constantes }
-    private var iconColor: Color { const.iconColor }
+    private var iconColor: Color { appEstado.temaActual.menuIconos }
+//    private var iconColor: Color { appEstado.temaActual.menuIconosNeutro }
+    private var iconW: Font.Weight { const.iconWeight }
     
     @ObservedObject var coleccionActualVM: ModeloColeccion
     
     private var menuRefreshTrigger: UUID { coleccionActualVM.menuRefreshTrigger }
+    
+//    private var appEstado.colorActual: Color {
+//        if appEstado.aplicarColorDirectorio {
+//            return coleccionActualVM.color
+//        } else if appEstado.colorNeutro {
+//            return .gray
+//        } else {
+//            return appEstado.colorPersonalizadoActual
+//        }
+//    }
+    
+    private var iconoSM: String { coleccionActualVM.modoVista == .cuadricula ?  "custom.hand.grid" : "custom.hand.list"}
 
     var body: some View {
         
@@ -40,8 +54,8 @@ struct MenuCentro: View {
             Button(action: {
                 withAnimation { menuEstado.seleccionMultiplePresionada = true }
             }) {
-                Image("custom.hand.grid")
-                    .capaIconos(iconSize: const.iconSize, c1: iconColor, c2: iconColor, fontW: const.iconWeight, ajuste: 1.35)
+                Image(iconoSM)
+                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.35)
                     .contentTransition(.symbolEffect(.replace))
             }
             .offset(y: 0.6)
@@ -56,7 +70,7 @@ struct MenuCentro: View {
                 if #available(iOS 17.0, *) { ConsejoImportarElementos().invalidate(reason: .actionPerformed) }
             }) {
                 Image(systemName: "tray.and.arrow.down")
-                    .capaIconos(iconSize: const.iconSize, c1: iconColor, c2: iconColor, fontW: const.iconWeight, ajuste: 1.05)
+                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
             }
 //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
             .popoverTip(ConsejoImportarElementos())
@@ -78,7 +92,7 @@ struct MenuCentro: View {
                     contentTypes: [.item]
                 )
             }
-            .offset(y: -2)
+            .offset(y: -2.5)
             
             //MARK: --- CREAR NUEVA COLECCION ---
             Button(action: {
@@ -89,7 +103,8 @@ struct MenuCentro: View {
                 }
             }) {
                 Image(systemName: "folder.badge.plus")
-                    .capaIconos(iconSize: const.iconSize, c1: iconColor, c2: iconColor, fontW: const.iconWeight, ajuste: 1.05)
+                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
+                    .offset(y: 0.6)
             }
 //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
             .popoverTip(ConsejoCrearColeccion())
@@ -229,20 +244,24 @@ struct MenuCentro: View {
                 }
                 
             } label: {
-                Image(systemName: "square.grid.3x3.square")
-                    .capaIconos(iconSize: const.iconSize, c1: iconColor, c2: iconColor, fontW: const.iconWeight, ajuste: 1.2)
+                Image("custom-folder-gear-top")
+                    .font(.system(size: const.iconSize * 1.05))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(appEstado.colorActual, iconColor)
+                    .fontWeight(iconW)
+                    .contentShape(Rectangle())
+                    .offset(x: 1)
+                    .offset(y: 0.6)
             }
             .id(coleccionActualVM.menuRefreshTrigger)
             .colorScheme(appEstado.temaActual == .dark ? .dark : .light)
-            .onTapGesture {
-                ConsejoSmartSorting.menuAbierto = true
-            }
             
             Button(action: {
                 self.menuEstado.ajustesGlobalesPresionado.toggle()
             }) {
-                Image(systemName: "slider.horizontal.3")
-                    .capaIconos(iconSize: const.iconSize, c1: iconColor, c2: iconColor, fontW: const.iconWeight, ajuste: 1.125)
+                Image("custom-gear")
+                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
+                    .offset(y: 2)
             }
             .sheet(isPresented: $menuEstado.ajustesGlobalesPresionado) {
                 AjustesGlobales()

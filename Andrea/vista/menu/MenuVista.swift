@@ -8,7 +8,6 @@ struct MenuVista: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            
             ZStack {
                 HStack {
                     MenuIzquierda()
@@ -34,4 +33,3 @@ struct MenuVista: View {
         .frame(height: 25)
     }
 }
-

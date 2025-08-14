@@ -20,10 +20,9 @@ struct VistaPrincipal: View {
     
     var body: some View {
         ZStack {
-            
-            ap.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
+//            ap.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
+            ap.temaActual.backgroundGradient.edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
-                
                 barraSuperior()
                     .animation(.easeInOut(duration: 0.2), value: me.seleccionMultiplePresionada)
                 
@@ -77,7 +76,8 @@ struct VistaPrincipal: View {
 //        .animation(.easeInOut, value: ap.archivoEnLectura)
         .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
             ContenedorLector(archivo: archivo)
-                .background(ap.temaActual.backgroundColor) // tu color
+//                .background(ap.temaActual.backgroundColor) // tu color
+                .background(ap.temaActual.backgroundGradient) // tu color
                 .ignoresSafeArea()
                 .presentationBackground(.clear)            // <- quita el blanco del presentador
         }
@@ -143,7 +143,8 @@ struct ContenedorLector: View {
 
     var body: some View {
         ZStack {
-            ap.temaActual.backgroundColor.ignoresSafeArea()
+//            ap.temaActual.backgroundColor.ignoresSafeArea()
+            ap.temaActual.backgroundGradient.ignoresSafeArea()
             switch archivo.fileType {
             case .cbr, .cbz:
                 if let comic = archivo as? any ProtocoloComic {

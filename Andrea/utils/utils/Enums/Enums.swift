@@ -103,6 +103,28 @@ extension Color {
 enum EnumTemas: String, CaseIterable {
     case light, dark, dayNight, blue, green, red, orange
     
+    var gradientColors: (Color, Color) {
+        switch self {
+        case .light:   return (.fixedSystemGray6_light, .fixedSystemGray6_light)
+        case .dark:    return (.fixedSystemGray5_dark, .fixedSystemGray5_dark)
+        case .dayNight:return (.indigo.opacity(0.8), .black.opacity(0.8))
+        case .blue:    return (.blue.opacity(0.5), .blue.opacity(0.8))
+        case .green:   return (.teal, .green)
+        case .red:     return (.purple, .red)
+        case .orange:  return (.orange.opacity(0.4), .orange.opacity(0.7))
+        }
+    }
+
+    var backgroundGradient: LinearGradient {
+        let (c1, c2) = gradientColors
+        return LinearGradient(colors: [c1, c2], startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+
+    var surfaceGradient: LinearGradient {
+        let (c1, c2) = gradientColors
+        return LinearGradient(colors: [c1.opacity(0.35), c2.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+    
     var backgroundColor: Color {
         switch self {
         case .light: return .fixedSystemGray6_light
@@ -114,6 +136,19 @@ enum EnumTemas: String, CaseIterable {
         case .orange: return .orange.opacity(0.2)
         }
     }
+    
+    var menuIconos: Color {
+        switch self {
+        case .light: return .black.opacity(1.0)
+        case .dark: return .white.opacity(1.0)
+        default: return .white.opacity(1.0)
+        }
+    }
+    
+    var menuIconosNeutro: Color {
+        return .gray
+    }
+    
     
     var colorContrario: Color {
         switch self {

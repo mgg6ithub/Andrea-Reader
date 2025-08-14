@@ -7,7 +7,6 @@ struct AjustesLibreria: View {
     
     var isSection: Bool
     
-    private let cpd = ConstantesPorDefecto()
     var const: Constantes { ap.constantes }
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }

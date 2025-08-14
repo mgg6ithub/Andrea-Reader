@@ -41,7 +41,6 @@ struct TogglePersonalizado: View {
                         .foregroundColor(ap.temaActual.colorContrario)
                 }
                 .toggleStyle(SwitchToggleStyle(tint: .blue))
-//                .padding(.bottom, 10)
 
             } else {
                 Toggle(isOn: $opcionBinding) {
@@ -50,7 +49,6 @@ struct TogglePersonalizado: View {
                         .foregroundColor(ap.temaActual.colorContrario)
                 }
                 .toggleStyle(SwitchToggleStyle(tint: .blue))
-//                .padding(.bottom, 10)
             }
             
             if isDivider && isInsideToggle {

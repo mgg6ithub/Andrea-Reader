@@ -7,7 +7,6 @@ struct AjustesHistorial: View {
     
     var isSection: Bool
     
-    private let cpd = ConstantesPorDefecto()
     var const: Constantes { ap.constantes }
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
@@ -31,8 +30,7 @@ struct AjustesHistorial: View {
                 Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
                     .capaDescripcion(s: const.titleSize * 0.8, c: ap.temaActual.secondaryText, pH: 0, pW: 0)
                         
-                }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-            
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
         }
     }
 }

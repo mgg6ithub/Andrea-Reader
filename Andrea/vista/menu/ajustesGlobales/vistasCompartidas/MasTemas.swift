@@ -42,7 +42,7 @@ struct MasTemas<T: Equatable>: View {
                     RoundedRectangle(cornerRadius: 15)
                         .fill(
                             LinearGradient(
-                                gradient: Gradient(colors: [color1.opacity(0.4), color2.opacity(0.9)]),
+                                gradient: Gradient(colors: [color1, color2.opacity(0.7)]),
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )

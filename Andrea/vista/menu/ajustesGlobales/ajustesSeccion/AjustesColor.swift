@@ -17,11 +17,6 @@ struct AjustesColor: View {
     
     var isSection: Bool
     
-    @State private var colorNeutral: Bool = false
-    
-    @State private var selectedColor: Color = Color.blue
-    @State private var isColorPersonalizado: Bool = false
-    
     //VARIABLES PARA EL TEMA
     @State private var isColorExpanded: Bool = false
     
@@ -44,10 +39,10 @@ struct AjustesColor: View {
             CirculoActivoVista(isSection: isSection, nombre: "Color personazalido", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
                 
             VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Color personalizado", descripcion: "Escoge el color que quieras.", opcionBinding: $isColorPersonalizado, opcionTrue: "Deshabilitar color personalizado", opcionFalse: "Habilitar color personalizado", isInsideToggle: true, isDivider: true)
-                    .onChange(of: isColorPersonalizado) { newValue, _ in
+                TogglePersonalizado(titulo: "Color personalizado", descripcion: "Escoge el color que quieras.", opcionBinding: $ap.colorPersonalizado, opcionTrue: "Deshabilitar color personalizado", opcionFalse: "Habilitar color personalizado", isInsideToggle: true, isDivider: true)
+                    .onChange(of: ap.colorPersonalizado) { newValue in
                         if newValue {
-                            colorNeutral = false
+                            ap.colorNeutro = false
                             ap.aplicarColorDirectorio = false
                         }
                     }
@@ -72,9 +67,9 @@ struct AjustesColor: View {
                         spacing: spacing
                     ) {
                         ForEach(ConstantesPorDefecto().listaColores, id: \.self) { color in
-                            let current = ap.currentColor == color
+                            let current = ap.colorPersonalizadoActual == color
                             Button {
-                                ap.currentColor = color
+                                ap.colorPersonalizadoActual = color
                             } label: {
                                 Circle()
                                     .fill(color.gradient)
@@ -124,7 +119,7 @@ struct AjustesColor: View {
                         
                     VStack(alignment: .leading) {
                         // ColorPicker personalizado
-                        ColorPicker("Escoge tu color", selection: $selectedColor)
+                        ColorPicker("Escoge tu color", selection: $ap.colorPersonalizadoActual)
                             .foregroundColor(ap.temaActual.colorContrario)
                     }
                     .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
@@ -137,28 +132,27 @@ struct AjustesColor: View {
             
             VStack(spacing: 0) {
                 VStack {
-                    TogglePersonalizado(titulo: "Color neutral", descripcion: "Un color neutral que se ajustará al tema", opcionBinding: $colorNeutral, opcionTrue: "Deshabilitar color neutral", opcionFalse: "Habilitar color neutral", isInsideToggle: true, isDivider: true)
-                        .onChange(of: colorNeutral) { newValue, _ in
+                    TogglePersonalizado(titulo: "Color neutral", descripcion: "Un color neutral que se ajustará al tema", opcionBinding: $ap.colorNeutro, opcionTrue: "Deshabilitar color neutral", opcionFalse: "Habilitar color neutral", isInsideToggle: true, isDivider: true)
+                        .onChange(of: ap.colorNeutro) { newValue in
                             if newValue {
-                                isColorPersonalizado = false
+                                ap.colorPersonalizado = false
                                 ap.aplicarColorDirectorio = false
                             }
                        }
                 }
                 
                 TogglePersonalizado(titulo: "Color del directorio", descripcion: "Activa o desactiva el color del directorio", opcionBinding: $ap.aplicarColorDirectorio, opcionTrue: "Deshabilitar color del directorio", opcionFalse: "Habilitar color del directorio", isInsideToggle: true, isDivider: false)
-                    .onChange(of: ap.aplicarColorDirectorio) { newValue, _ in
+                    .onChange(of: ap.aplicarColorDirectorio) { newValue in
                         if newValue {
-                            colorNeutral = false
-                            isColorPersonalizado = false
+                            ap.colorNeutro = false
+                            ap.colorPersonalizado = false
                         }
                     }
                 
             } //FIN VSTACK
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
-        }// FIN COLOR PRINCIPAL
-//        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
+        }
         
     }
     

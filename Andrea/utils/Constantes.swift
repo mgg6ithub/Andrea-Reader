@@ -27,7 +27,9 @@ struct ConstantesPorDefecto {
     
     //MARK: - ICONO
     var iconSize: CGFloat = 22
-    var iconWeight: Font.Weight = .thin
+    var iconWeightUltraThin: Font.Weight = .ultraLight
+    var iconWeightThin: Font.Weight = .thin
+    var iconWeightLight: Font.Weight = .light
     var iconColor: Color = .gray
     
     //MARK: - TIPOGRAFIA
@@ -135,7 +137,7 @@ struct Constantes {
         } else {
             self.iconSize = cpd.iconSize * scaleFactor + 2.5
         }
-        self.iconWeight = cpd.iconWeight
+        self.iconWeight = cpd.iconWeightLight
         self.iconColor = cpd.iconColor
         
         //TEXTO
