@@ -244,14 +244,7 @@ struct MenuCentro: View {
                 }
                 
             } label: {
-                Image("custom-folder-gear-top")
-                    .font(.system(size: const.iconSize * 1.05))
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(appEstado.colorActual, iconColor)
-                    .fontWeight(iconW)
-                    .contentShape(Rectangle())
-                    .offset(x: 1)
-                    .offset(y: 0.6)
+                IconoMenuColeccion()
             }
             .id(coleccionActualVM.menuRefreshTrigger)
             .colorScheme(appEstado.temaActual == .dark ? .dark : .light)
@@ -320,4 +313,19 @@ struct BotonMenu<T: Equatable>: View {
 }
 
 
+struct IconoMenuColeccion: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
+    var body: some View {
+        Image("custom-folder-gear-top")
+            .font(.system(size: ap.constantes.iconSize * 1.05))
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(ap.colorActual, ap.temaActual.menuIconos)
+            .fontWeight(ap.constantes.iconWeight)
+            .contentShape(Rectangle())
+            .offset(x: 1)
+            .offset(y: 0.6)
+    }
+}
 

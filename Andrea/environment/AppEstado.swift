@@ -57,7 +57,18 @@ class AppEstado: ObservableObject {
     @Published var animaciones: Bool = true
     
     // --- BARRA DE ESTADO ---
-    @Published var modoBarraEstado: ModoBarraEstado = .auto
+    @Published var modoBarraEstado: ModoBarraEstado = .on
+    
+    var barraEstado: Bool {
+        switch modoBarraEstado {
+        case .on:
+            return false
+        case .off:
+            return true
+        default:
+            return true
+        }
+    }
     
     // --- MENU ---
     

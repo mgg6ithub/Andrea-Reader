@@ -46,6 +46,14 @@ extension ModeloColeccion {
     }
 }
 
+extension View {
+    @ViewBuilder
+    func applyIf<T: View>(_ condition: Bool, transform: (Self) -> T) -> some View {
+        if condition { transform(self) } else { self }
+    }
+}
+
+
 //MARK: - --- PREVIEW ---
 
 struct AndreaAppView: View {
@@ -67,6 +75,7 @@ struct AndreaAppView: View {
         
         ZStack {
             VistaPrincipal()
+                .animation(.easeInOut(duration: 1.0), value: ap.modoBarraEstado)
                 .environmentObject(ap)
                 .environmentObject(me)
                 .environmentObject(pc)
@@ -91,6 +100,7 @@ struct AndreaAppView: View {
                 
             }
         }
+        .statusBar(hidden: ap.barraEstado)
         .gesture(
             DragGesture()
                 .onEnded { value in
