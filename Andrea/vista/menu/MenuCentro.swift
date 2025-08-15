@@ -24,6 +24,9 @@ struct MenuCentro: View {
     @State private var esNuevaColeccionPresionado: Bool = false
     @State private var nuevaColeccionNombre: String = ""
     
+    @State private var cPrimario: Color = .clear
+    @State private var cSecundario: Color = .clear
+    
     // --- VARIABLES CALCULADAS ---
     private let sa: SistemaArchivos = SistemaArchivos.sa
     private var const: Constantes { appEstado.constantes }
@@ -244,9 +247,11 @@ struct MenuCentro: View {
                 }
                 
             } label: {
-                IconoMenuColeccion()
+                Image("custom-folder-gear-top")
+                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
+                    .offset(x: 1, y: 0.6)
             }
-            .id(coleccionActualVM.menuRefreshTrigger)
+            .id(menuRefreshTrigger)
             .colorScheme(appEstado.temaActual == .dark ? .dark : .light)
             
             Button(action: {
@@ -256,11 +261,23 @@ struct MenuCentro: View {
                     .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
                     .offset(y: 2)
             }
+            .border(.red)
             .sheet(isPresented: $menuEstado.ajustesGlobalesPresionado) {
                 AjustesGlobales()
             }
         }
         .alignmentGuide(.firstTextBaseline) { d in d[.bottom] }
+        .onAppear { syncIconColors() }
+       .onChange(of: appEstado.temaActual) { syncIconColors() }
+       .onChange(of: appEstado.colorActual) { syncIconColors() }
+    }
+    
+    private func syncIconColors() {
+        // aquí decides tú cuándo y cómo cambian (con o sin animación)
+        withAnimation(.easeInOut(duration: 0.25)) {
+            cPrimario   = appEstado.colorActual
+            cSecundario = appEstado.temaActual.menuIconos
+        }
     }
 }
 
@@ -311,21 +328,3 @@ struct BotonMenu<T: Equatable>: View {
         }
     }
 }
-
-
-struct IconoMenuColeccion: View {
-    
-    @EnvironmentObject var ap: AppEstado
-    
-    var body: some View {
-        Image("custom-folder-gear-top")
-            .font(.system(size: ap.constantes.iconSize * 1.05))
-            .symbolRenderingMode(.palette)
-            .foregroundStyle(ap.colorActual, ap.temaActual.menuIconos)
-            .fontWeight(ap.constantes.iconWeight)
-            .contentShape(Rectangle())
-            .offset(x: 1)
-            .offset(y: 0.6)
-    }
-}
-
