@@ -21,7 +21,7 @@ struct VistaPrincipal: View {
     var body: some View {
         ZStack {
 //            ap.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
-            ap.temaActual.backgroundGradient.edgesIgnoringSafeArea(.all)
+//            ap.temaActual.backgroundGradient.edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
                 barraSuperior()
                     .animation(.easeInOut(duration: 0.2), value: me.seleccionMultiplePresionada)
@@ -131,10 +131,6 @@ extension View {
             .zIndex(10)
     }
 }
-
-
-
-
 
 struct ContenedorLector: View {
     var archivo: Archivo

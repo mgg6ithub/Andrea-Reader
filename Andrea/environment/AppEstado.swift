@@ -58,6 +58,7 @@ class AppEstado: ObservableObject {
     
     // --- BARRA DE ESTADO ---
     @Published var modoBarraEstado: ModoBarraEstado = .on
+    @Published var statusBarTopInsetBaseline: CGFloat = 0
     
     var barraEstado: Bool {
         switch modoBarraEstado {

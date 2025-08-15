@@ -54,6 +54,14 @@ extension View {
 }
 
 
+private struct TopInsetKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+
 //MARK: - --- PREVIEW ---
 
 struct AndreaAppView: View {
@@ -72,21 +80,25 @@ struct AndreaAppView: View {
     @State private var sideMenuVisible: Bool = false
     
     var body: some View {
-        
         ZStack {
-            VistaPrincipal()
-                .animation(.easeInOut(duration: 1.0), value: ap.modoBarraEstado)
-                .environmentObject(ap)
-                .environmentObject(me)
-                .environmentObject(pc)
-                .environmentObject(ne)
+            ap.temaActual.backgroundGradient.edgesIgnoringSafeArea(.all)
+            VStack(spacing: 0) {
+                
+                Color.clear
+                    .frame(height: ap.statusBarTopInsetBaseline)
+                
+                VistaPrincipal()
+                    .environmentObject(ap)
+                    .environmentObject(me)
+                    .environmentObject(pc)
+                    .environmentObject(ne)
+            }
             
             if sideMenuVisible {
                 Color.black.opacity(0.3)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         self.sideMenuVisible = false
-//                        print("FUNCIONA EL TAP")
                     }
                 
                 HStack {
@@ -98,6 +110,22 @@ struct AndreaAppView: View {
                     Spacer()
                 }
                 
+            }
+        }
+        // 3) Ignora el safe area superior del sistema: el hueco lo controlas tú
+        .ignoresSafeArea(.container, edges: .top)
+
+        // 4) Capta el top inset real cuando la barra esté visible y guárdalo
+        .background(
+            GeometryReader { geo in
+                Color.clear
+                    .preference(key: TopInsetKey.self, value: geo.safeAreaInsets.top)
+            }
+        )
+        .onPreferenceChange(TopInsetKey.self) { top in
+            // Sólo actualiza cuando la barra está visible (para no meter 0)
+            if !ap.barraEstado, top > 0 {
+                ap.statusBarTopInsetBaseline = top
             }
         }
         .statusBar(hidden: ap.barraEstado)
