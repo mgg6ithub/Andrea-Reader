@@ -64,7 +64,6 @@ struct AjustesGlobales: View {
                 
             } //FIN VSTACK GENERAL
             .padding(.horizontal, const.padding25) // 25
-            .border(.red)
             .frame(
                 maxHeight: .infinity,
                 alignment: .center

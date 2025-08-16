@@ -8,7 +8,7 @@ extension View {
         self.padding(15) // margen interno
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.gray.opacity(0.05))
+                    .fill(Color.gray.opacity(0.2))
             )
             .shadow(
                 color: esOscuro ? .black.opacity(0.6) : .black.opacity(0.225),
@@ -174,11 +174,6 @@ struct ContenidoAjustes: View {
                                         
                                     case "Rendimiento":
                                         Rendimiento(isSection: selectedSection == section)
-                                        
-                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
-                                        
-//                                    case "AjustesBarraEstado":
-//                                        AjustesBarraEstado(isSection: selectedSection == section)
                                     
                                     DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                     
@@ -197,7 +192,6 @@ struct ContenidoAjustes: View {
                             }
                             .id(section)
                         }
-                        .border(.red)
                         .padding(.leading, ap.resolucionLogica == .small ? 0 : const.padding35) // 40
                         .background(GeometryReader { geo in
                             Color.clear
