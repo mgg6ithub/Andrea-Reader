@@ -109,6 +109,9 @@ struct Constantes {
     var subTitleSize: CGFloat
     var smallTitleSize: CGFloat
     
+    var tituloAjustes: CGFloat { resLog == .small ? titleSize : titleSize * 0.75 }
+    var descripcionAjustes: CGFloat { resLog == .small ? titleSize : subTitleSize }
+    
     init(scaleFactor: CGFloat, resLog: EnumResolucionesLogicas) {
         
         self.scaleFactor = scaleFactor

@@ -31,7 +31,7 @@ struct MasTemas<T: Equatable>: View {
         VStack(spacing: 10) {
             Text(tema.rawValue)
                 .frame(maxWidth: .infinity, alignment: .center)
-                .font(.system(size: const.titleSize))
+                .font(.system(size: const.subTitleSize))
                 .foregroundColor(ap.temaActual.colorContrario)
             
             Button(action: {

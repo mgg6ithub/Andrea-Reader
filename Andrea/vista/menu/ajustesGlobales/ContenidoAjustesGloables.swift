@@ -34,6 +34,7 @@ extension View {
         self.font(.system(size: s * 1.08))
             .foregroundColor(c)
             .padding(.bottom, pH) // 20
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -46,11 +47,11 @@ struct CirculoActivoVista: View {
     
     var body: some View {
         HStack {
-            CirculoActivo(isSection: isSection)
+            CirculoActivo(isSection: isSection, color: color)
             
             Text(nombre)
                 .font(.system(size: titleSize))
-                .foregroundColor(color)
+                .foregroundColor(.gray)
                 .frame(alignment: .leading)
             Spacer()
         }
@@ -61,8 +62,8 @@ struct CirculoActivoVista: View {
 #Preview {
     AjustesGlobales()
 //        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
-//        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
-        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
+//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
 //        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
 //        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
         .environmentObject(MenuEstado())
@@ -160,22 +161,22 @@ struct ContenidoAjustes: View {
                                     case "TemaPrincipal":
                                         AjustesTema(isSection: selectedSection == section)
                                     
-                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.top, 10).padding(.bottom, 15)
+                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
                                     
                                     case "ColorPrincipal":
                                         AjustesColor(isSection: selectedSection == section)
                                     
-                                        DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
+                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
                                     
                                     case "SistemaArchivos":
                                             AjustesSistemaColecciones(isSection: selectedSection == section)
                                         
-                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
+                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
                                         
                                     case "Rendimiento":
                                         Rendimiento(isSection: selectedSection == section)
                                     
-                                    DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
+                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
                                     
                                     case "AjustesMenu":
                                         AjustesMenu(isSection: selectedSection == section)

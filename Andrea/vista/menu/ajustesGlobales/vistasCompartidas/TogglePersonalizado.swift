@@ -26,7 +26,6 @@ struct TogglePersonalizado: View {
     }
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 10) {
                 if let icono = iconoEjemplo {
@@ -34,6 +33,7 @@ struct TogglePersonalizado: View {
                         if UIImage(systemName: icono) != nil {
                             // Es un SF Symbol
                             Image(systemName: icono)
+                                .foregroundColor(ap.temaActual.colorContrario)
                         } else {
                             // Es una imagen personalizada de tus assets
                             Image(icono)

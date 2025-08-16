@@ -30,12 +30,12 @@ struct AjustesSistemaColecciones: View {
         VStack(alignment: .center, spacing: 0) {
             
             Text("Sistema de archivos") //TITULO
-                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
-                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Escoge el sistema de archivos", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Escoge el sistema de archivos", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
             HStack(spacing: 0) {
                 

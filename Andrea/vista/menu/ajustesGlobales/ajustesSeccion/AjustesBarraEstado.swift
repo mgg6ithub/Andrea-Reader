@@ -21,15 +21,15 @@ struct AjustesBarraEstado: View {
     
     private var esOscuro: Bool { ap.temaActual == .dark }
     
+    var isSection: Bool
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            Text("Barra de estado") //TITULO
-                .capaTituloPrincipal(s: const.titleSize * 0.7, c: ap.temaActual.colorContrario, pH: 0, pW: paddingHorizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
+//            Text("Barra de estado") //TITULO
+//                .capaTituloPrincipal(s: const.titleSize * 0.65, c: ap.temaActual.colorContrario, pH: 0, pW: paddingHorizontal)
+//                .frame(maxWidth: .infinity, alignment: .leading)
             
-            Text("Franja superior del dispositivo que muestra la hora, señal, Wi-Fi y batería. Muéstrala, ocúltala o deja que el sistema elija.")
-                .capaDescripcion(s: const.titleSize * 0.7, c: ap.temaActual.secondaryText, pH: 10, pW: 0)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            CirculoActivoVista(isSection: isSection, nombre: "Barra de estado", titleSize: const.subTitleSize, color: ap.colorActual)
             
             HStack(spacing: paddingHorizontal) {
                 BotonBE(titulo: "Activar", icono: "eye.fill", coloresIcono: [.black], opcionSeleccionada: .on, opcionActual: $ap.modoBarraEstado)
@@ -39,6 +39,10 @@ struct AjustesBarraEstado: View {
                 BotonBE(titulo: "Automático", icono: "wand.and.stars", coloresIcono: [.blue], opcionSeleccionada: .auto, opcionActual: $ap.modoBarraEstado)
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
+            Text("Franja superior del dispositivo que muestra la hora, señal, Wi-Fi y batería. Muéstrala, ocúltala o deja que el sistema elija.")
+                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: 10, pW: 0)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
         }
     }

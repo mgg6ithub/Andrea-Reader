@@ -4,8 +4,8 @@ import SwiftUI
 #Preview {
     AjustesGlobales()
 //        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
-//        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
-        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
+//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
 //        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
 //        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
         .environmentObject(MenuEstado())
@@ -27,16 +27,14 @@ struct AjustesColor: View {
     private var esOscuro: Bool { ap.temaActual == .dark }
     
     var body: some View {
-        
         VStack(alignment: .center, spacing: 0) {
-                
-                Text("Color principal")
-                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+            Text("Color principal")
+                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("El color principal se aplicará en los iconos del menu y todas aquellas acciones que no tengan un color seleccionado. Es decir, se establecerá como predeterminado.")
-                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Color personazalido", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Color personazalido", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
             VStack(spacing: 0) {
                 TogglePersonalizado(titulo: "Color personalizado", descripcion: "Escoge el color que quieras.", opcionBinding: $ap.colorPersonalizado, opcionTrue: "Deshabilitar color personalizado", opcionFalse: "Habilitar color personalizado", isInsideToggle: true, isDivider: true)
@@ -97,12 +95,12 @@ struct AjustesColor: View {
                 }) {
                     HStack(spacing: 5) {
                         Text("Paleta de colores")
-                            .font(.system(size: const.titleSize))
+                            .font(.system(size: const.descripcionAjustes))
                             .foregroundColor(ap.temaActual.colorContrario)
                             .bold()
     
                         Image(systemName: "chevron.forward")
-                            .font(.system(size: const.iconSize * 0.65))
+                            .font(.system(size: const.iconSize * 0.45))
                             .foregroundColor(ap.temaActual.colorContrario)
                             .bold()
                             .rotationEffect(.degrees(isColorExpanded ? 90 : 0))
@@ -112,7 +110,7 @@ struct AjustesColor: View {
                     }
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, const.padding5)
+                .padding(.bottom, const.padding15)
                 
                 if self.isColorExpanded {
                         
@@ -127,7 +125,7 @@ struct AjustesColor: View {
                 }
             }
             
-            CirculoActivoVista(isSection: isSection, nombre: "Color automatico", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Color automatico", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             VStack(spacing: 0) {
                 VStack {
@@ -150,7 +148,6 @@ struct AjustesColor: View {
                 
             } //FIN VSTACK
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-            
         }
         
     }

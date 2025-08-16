@@ -59,17 +59,16 @@ struct AjustesMenu: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Menu") //TITULO
-                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
-            //                .frame(maxWidth: .infinity, alignment: .leading)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("El menu son los iconos de arriba del todo y puedes personalizarlos como mas te guste.")
-                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
-            //                .frame(maxWidth: .infinity, alignment: .leading)
+                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
             
             //MARK: --- TAMAÑO ---
-            AjustesBarraEstado()
+            AjustesBarraEstado(isSection: isSection)
+                .padding(.bottom, 20)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Modificar iconos del menu", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Modificar iconos del menu", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             //MARK: --- ICONOS ---
             VStack(spacing: 0) {
@@ -93,7 +92,7 @@ struct AjustesMenu: View {
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
             //MARK: --- COLORES ---
-            CirculoActivoVista(isSection: isSection, nombre: "Colores de los iconos", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Colores de los iconos", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             VStack(spacing: 0) {
                 TogglePersonalizado(titulo: "Doble color", descripcion: "Habra dos colores por icono.", opcionBinding: $me.dobleColor, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: false)
@@ -119,8 +118,8 @@ struct AjustesMenu: View {
             CirculoActivoVista(
                 isSection: isSection,
                 nombre: "Tamaño de los iconos",
-                titleSize: const.titleSize,
-                color: ap.temaActual.secondaryText
+                titleSize: const.descripcionAjustes,
+                color: ap.colorActual
             )
             
             VStack(spacing: 30) {

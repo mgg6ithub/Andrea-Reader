@@ -77,7 +77,6 @@ struct IndicesVertical: View {
                                         print("Primera seccion scroll hasyta arriba")
                                         scrollProxy?.scrollTo("top", anchor: .top)
                                     } else {
-                                        print("Aqui")
                                         scrollProxy?.scrollTo(section, anchor: .top)
                                     }
                                 }

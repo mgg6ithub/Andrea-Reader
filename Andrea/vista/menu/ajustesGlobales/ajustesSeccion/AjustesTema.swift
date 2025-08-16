@@ -24,12 +24,12 @@ struct AjustesTema: View {
         
         VStack(alignment: .center, spacing: 0) {
             Text("Tema principal") //TITULO
-                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
-                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
             HStack(spacing: 0) {
                 
@@ -75,12 +75,12 @@ struct AjustesTema: View {
                 }) {
                     HStack(spacing: 5) {
                         Text("Más temas")
-                            .font(.system(size: const.titleSize))
+                            .font(.system(size: const.descripcionAjustes))
                             .foregroundColor(ap.temaActual.colorContrario)
                             .bold()
                         
                         Image(systemName: "chevron.forward")
-                            .font(.system(size: const.iconSize * 0.65))
+                            .font(.system(size: const.iconSize * 0.45))
                             .foregroundColor(ap.temaActual.colorContrario)
                             .bold()
                             .rotationEffect(.degrees(isThemeExpanded ? 90 : 0))
@@ -161,7 +161,6 @@ struct AjustesTema: View {
                 }
             }
             
-        } //fin vstack tema
-//        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
+        }
     }
 }

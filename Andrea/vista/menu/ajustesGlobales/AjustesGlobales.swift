@@ -120,18 +120,18 @@ struct Punto: View {
                     .frame(width: (anchoTexto * ap.constantes.scaleFactor) - 10, alignment: .leading)
                 
                 Circle()
-                    .fill(selectedSection == section ? ap.constantes.iconColor : .gray)
+                    .fill(selectedSection == section ? ap.colorActual : .gray)
                     .shadow(
-                        color: selectedSection == section ? ap.constantes.iconColor : .gray,
+                        color: selectedSection == section ? ap.colorActual : .gray,
                         radius: ((selectedSection == section ? 6 : 0))
                     )
                     .frame(width: 15, height: 15)
                     .overlay( //ANIMACION AVANZADA AL HACER CLICK
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke((selectedSection == section && isPressed) ? ap.constantes.iconColor : Color.clear, lineWidth: 4)
+                            .stroke((selectedSection == section && isPressed) ? ap.colorActual : Color.clear, lineWidth: 4)
                                     .animation(.easeInOut(duration: 0.3), value: isPressed)
                             )
-                    .shadow(color: (selectedSection == section && isPressed) ? ap.constantes.iconColor.opacity(0.3) : .clear, radius: (selectedSection == section && isPressed) ? 10 : 0, x: 0, y: (selectedSection == section && isPressed) ? 5 : 0)
+                    .shadow(color: (selectedSection == section && isPressed) ? ap.colorActual.opacity(0.3) : .clear, radius: (selectedSection == section && isPressed) ? 10 : 0, x: 0, y: (selectedSection == section && isPressed) ? 5 : 0)
                     .animation(.spring(response: 0.3, dampingFraction: 0.5, blendDuration: 0), value: isPressed)
                     .frame(alignment: .trailing)
             }
