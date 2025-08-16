@@ -20,8 +20,6 @@ struct VistaPrincipal: View {
     
     var body: some View {
         ZStack {
-//            ap.temaActual.backgroundColor.edgesIgnoringSafeArea(.all)
-//            ap.temaActual.backgroundGradient.edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
                 barraSuperior()
                     .animation(.easeInOut(duration: 0.2), value: me.seleccionMultiplePresionada)
@@ -45,8 +43,12 @@ struct VistaPrincipal: View {
             }
             .onAppear {
                 coleccionMostrada = pc.getColeccionActual()
+                coleccionMostrada?.setSistemaArchivos(ap.sistemaArchivos)
             }
-            .padding(0)
+            .onChange(of: ap.sistemaArchivos) {
+                print("Cambiando el tipo de sistema de archivos: ", ap.sistemaArchivos)
+                coleccionMostrada?.setSistemaArchivos(ap.sistemaArchivos)
+            }
             .onChange(of: pc.coleccionActualVM?.coleccion.id) {
                 guard pc.coleccionActualVM?.coleccion.id != coleccionMostrada?.coleccion.id else { return }
 

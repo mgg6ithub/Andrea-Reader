@@ -6,7 +6,7 @@ import SwiftUI
 class ModeloColeccion: ObservableObject {
     
   let coleccion: Coleccion
-  var tipoSA: EnumTipoSistemaArchivos?
+  @Published var tipoSA: EnumTipoSistemaArchivos?
     
   @Published var elementos: [ElementoSistemaArchivos] = []
   @Published var isLoading = false
@@ -145,8 +145,10 @@ class ModeloColeccion: ObservableObject {
     
     //Inyectamos appEstado desde CuadriculaVista
     func setSistemaArchivos(_ tipo: EnumTipoSistemaArchivos) {
-        guard self.tipoSA == nil else { return }
-        self.tipoSA = tipo
+        guard tipoSA != tipo else { return }
+        tipoSA = tipo
+        elementosCargados = false
+        cargarElementos()
     }
 
     func cargarElementos() {
@@ -163,7 +165,12 @@ class ModeloColeccion: ObservableObject {
             }
         }
         
+        print("El sa esta en modo: ", tipoSA)
+        
         if self.tipoSA == .arbol {
+            
+            print("Esta en modo arbol flitramos colecciones")
+            
             filteredURLs = filteredURLs.filter { url in
                 !SistemaArchivosUtilidades.sau.isDirectory(elementURL: url)
             }

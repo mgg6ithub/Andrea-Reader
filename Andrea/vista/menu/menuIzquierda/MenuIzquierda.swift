@@ -4,16 +4,16 @@ import SwiftUI
 struct MenuIzquierda: View {
     
     // --- ENTORNO ---
-    @EnvironmentObject var appEstado: AppEstado
-    @EnvironmentObject var menuEstado: MenuEstado
+    @EnvironmentObject var ap: AppEstado
+    @EnvironmentObject var me: MenuEstado
     @EnvironmentObject var pc: PilaColecciones
     
     // --- ESTADO ---
     @State private var mostrarMenuLateral: Bool = false
     @State private var mostrarPopover = false
     
-    private var const: Constantes { appEstado.constantes }
-    private var iconColor: Color { appEstado.temaActual.menuIconos }
+    private var const: Constantes { ap.constantes }
+    private var iconColor: Color { ap.temaActual.menuIconos }
     
     var body: some View {
 
@@ -57,21 +57,22 @@ struct MenuIzquierda: View {
             //
             
             //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
-            ZStack {
-                PopOutCollectionsView() { isExpandable in
-                    Image("custom-library.badge")
-                        .font(.system(size: const.iconSize * 1.01))
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(appEstado.colorActual, iconColor)
-//                        .foregroundStyle(appEstado.temaActual.colorContrario)
-                        .fontWeight(const.iconWeight)
-                    //                            .symbolEffect(.bounce, value: menuModel.newDirectoryCreated)
-                } content: { isExpandable, cerrarMenu in
-                    ListaColeccionMenu(onSeleccionColeccion: cerrarMenu)
-                        .frame(width: 300)
+            if ap.sistemaArchivos == .arbol {
+                ZStack {
+                    PopOutCollectionsView() { isExpandable in
+                        Image("custom-library.badge")
+                            .font(.system(size: const.iconSize * 1.01))
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(ap.colorActual, iconColor)
+                            .fontWeight(const.iconWeight)
+                        //                            .symbolEffect(.bounce, value: menuModel.newDirectoryCreated)
+                    } content: { isExpandable, cerrarMenu in
+                        ListaColeccionMenu(onSeleccionColeccion: cerrarMenu)
+                            .frame(width: 300)
+                    }
                 }
+                .padding(0)
             }
-            .padding(0)
             
         }
         .padding(0)
