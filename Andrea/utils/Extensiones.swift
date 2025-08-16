@@ -6,24 +6,24 @@ import ZIPFoundation
 /**
  Modificacion para poder guardar enums en UserDefaults
  */
-extension UserDefaults {
-    func setEnum<T: RawRepresentable>(_ value: T, forKey key: String) where T.RawValue == String {
-        set(value.rawValue, forKey: key)
-    }
-
-    func getEnum<T: RawRepresentable>(forKey key: String, default defaultValue: T) -> T where T.RawValue == String {
-        guard let rawValue = string(forKey: key), let value = T(rawValue: rawValue) else {
-            return defaultValue
-        }
-        return value
-    }
-    
-    // Si también usas enums con Int
-    func getEnum<T: RawRepresentable>(forKey key: String, default defaultValue: T) -> T where T.RawValue == Int {
-        let rawValue = self.integer(forKey: key)
-        return T(rawValue: rawValue) ?? defaultValue
-    }
-}
+//extension UserDefaults {
+//    func setEnum<T: RawRepresentable>(_ value: T, forKey key: String) where T.RawValue == String {
+//        set(value.rawValue, forKey: key)
+//    }
+//
+//    func getEnum<T: RawRepresentable>(forKey key: String, default defaultValue: T) -> T where T.RawValue == String {
+//        guard let rawValue = string(forKey: key), let value = T(rawValue: rawValue) else {
+//            return defaultValue
+//        }
+//        return value
+//    }
+//    
+//    // Si también usas enums con Int
+//    func getEnum<T: RawRepresentable>(forKey key: String, default defaultValue: T) -> T where T.RawValue == Int {
+//        let rawValue = self.integer(forKey: key)
+//        return T(rawValue: rawValue) ?? defaultValue
+//    }
+//}
 
 
 

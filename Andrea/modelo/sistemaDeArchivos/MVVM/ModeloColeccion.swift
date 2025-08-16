@@ -165,12 +165,7 @@ class ModeloColeccion: ObservableObject {
             }
         }
         
-        print("El sa esta en modo: ", tipoSA)
-        
         if self.tipoSA == .arbol {
-            
-            print("Esta en modo arbol flitramos colecciones")
-            
             filteredURLs = filteredURLs.filter { url in
                 !SistemaArchivosUtilidades.sau.isDirectory(elementURL: url)
             }

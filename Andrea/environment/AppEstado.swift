@@ -5,14 +5,13 @@ import SwiftUI
 class AppEstado: ObservableObject {
     
     private let cpag = ClavesPersistenciaAjustesGenerales()
-    private let uds = UserDefaults.standard
+    private let pd = PersistenciaDatos()
     
     @Published var archivoEnLectura: Archivo? = nil {
         didSet {
             // Actualiza ultimoArchivoLeido cuando archivoEnLectura cambie
             if archivoEnLectura != nil {
                 ultimoArchivoLeido = archivoEnLectura
-                print("Actualizando el ultimo archivo leido a: ", ultimoArchivoLeido?.nombre)
             }
         }
     }
@@ -33,8 +32,8 @@ class AppEstado: ObservableObject {
     @Published var resolucionLogica: EnumResolucionesLogicas
     
     // --- AJUSTES TEMAS ---
-    @Published var temaActual: EnumTemas { didSet { uds.setEnum(temaActual, forKey: cpag.temaActual ) } }
-    @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { uds.setEnum(sistemaArchivos, forKey: cpag.sistemaArchivos) } }
+    @Published var temaActual: EnumTemas { didSet { pd.guardarAjusteGeneral(valor: temaActual, key: cpag.temaActual) } }
+    @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { pd.guardarAjusteGeneral(valor: sistemaArchivos, key: cpag.sistemaArchivos) } }
     
     // --- AJUSTES DE COLORES ---
     @Published var colorPersonalizadoActual: Color = .gray
@@ -114,8 +113,14 @@ class AppEstado: ObservableObject {
         self.resolucionLogica = resLog
         
         //Persistencia
-        self.temaActual = uds.getEnum(forKey: cpag.temaActual, default: .light)
-        self.sistemaArchivos = uds.getEnum(forKey: cpag.sistemaArchivos, default: .tradicional)
+        self.temaActual = pd.obtenerAjusteGeneralEnum(key: cpag.temaActual, default: .light)
+        self.sistemaArchivos = pd.obtenerAjusteGeneralEnum(key: cpag.sistemaArchivos, default: .tradicional)
+
+        // Ejemplo si guardas un color global:
+        // self.colorPersonalizadoActual = pd.obtenerAjusteGeneralColor(key: "colorPersonalizadoActual", default: .gray)
+
+        // Ejemplo si guardas un bool global:
+        // self.animaciones = pd.obtenerAjusteGeneral(key: "animaciones", default: true)
         
     }
     
