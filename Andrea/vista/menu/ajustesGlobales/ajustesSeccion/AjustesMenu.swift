@@ -14,7 +14,7 @@ import SwiftUI
 struct AjustesMenu: View {
     
     @EnvironmentObject var ap: AppEstado
-    @EnvironmentObject var menuEstado: MenuEstado
+    @EnvironmentObject var me: MenuEstado
     
     var isSection: Bool
     
@@ -36,11 +36,28 @@ struct AjustesMenu: View {
             
             AjustesBarraEstado()
             
-            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Modificar iconos del menu", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
             
             VStack(spacing: 0) {
+                
+                Text("Iconos izquierda")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                TogglePersonalizado(titulo: "Menu lateral", descripcion: "Activa o desactiva el icono.", iconoEjemplo: "sidebar.trailing", opcionBinding: $me.iconoMenuLateral, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
+                
+                TogglePersonalizado(titulo: "Flecha atras", descripcion: "Activa o desactiva el icono.", iconoEjemplo: "arrow.backward", opcionBinding: $me.iconoFlechaAtras, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
                         
-                TogglePersonalizado(titulo: "Icono izquierdo", descripcion: "Activa o desactiva el icono.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
+                }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
+            
+            VStack(spacing: 0) {
+                
+                Text("Iconos izquierda")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                TogglePersonalizado(titulo: "Menu lateral", descripcion: "Activa o desactiva el icono.", opcionBinding: $me.iconoMenuLateral, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
+                
+                TogglePersonalizado(titulo: "Flecha atras", descripcion: "Activa o desactiva el icono.", opcionBinding: $me.iconoFlechaAtras, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
                 
 //                Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
 //                    .capaDescripcion(s: const.titleSize * 0.8, c: ap.temaActual.secondaryText, pH: 0, pW: 0)

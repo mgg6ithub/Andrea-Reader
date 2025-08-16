@@ -7,6 +7,7 @@ struct TogglePersonalizado: View {
     
     var titulo: String
     var descripcion: String
+    var iconoEjemplo: String? = nil
     
     @Binding var opcionBinding: Bool
     
@@ -19,9 +20,15 @@ struct TogglePersonalizado: View {
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {
-            Text(titulo)
-                .font(.headline)
-                .foregroundColor(ap.temaActual.colorContrario)
+            HStack(spacing: 10) {
+                Text(titulo)
+                    .font(.headline)
+                    .foregroundColor(ap.temaActual.colorContrario)
+                
+                if let icono = iconoEjemplo {
+                    Image(systemName: icono)
+                }
+            }
             
             Text(descripcion)
                 .font(.subheadline)

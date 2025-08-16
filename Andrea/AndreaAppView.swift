@@ -76,8 +76,6 @@ struct AndreaAppView: View {
     @StateObject private var me = MenuEstado()//Inicalizamos el sistema de archivos
     @StateObject private var pc = PilaColecciones.pilaColecciones
     @StateObject private var ne = NotificacionesEstado.ne
-
-    @State private var sideMenuVisible: Bool = false
     
     var body: some View {
         ZStack {
@@ -94,18 +92,18 @@ struct AndreaAppView: View {
                     .environmentObject(ne)
             }
             
-            if sideMenuVisible {
+            if me.sideMenuVisible {
                 Color.black.opacity(0.3)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
-                        self.sideMenuVisible = false
+                        me.sideMenuVisible = false
                     }
                 
                 HStack {
                     SideMenu()
                         .frame(width: 300)
-                        .offset(x: sideMenuVisible ? 0 : -300)
-                        .animation(.spring(), value: sideMenuVisible)
+                        .offset(x: me.sideMenuVisible ? 0 : -300)
+                        .animation(.spring(), value: me.sideMenuVisible)
                     
                     Spacer()
                 }
@@ -136,8 +134,8 @@ struct AndreaAppView: View {
                         
                         //CHECKEMOS SI ES DE DERCHA A IZQUIERDA PRIMERO
                         if value.translation.width < -100 {
-                            if self.sideMenuVisible {
-                                self.sideMenuVisible = false
+                            if me.sideMenuVisible {
+                                me.sideMenuVisible = false
                             }
                             else {
                                 if let ultimo: Archivo = ap.ultimoArchivoLeido {
@@ -147,7 +145,7 @@ struct AndreaAppView: View {
                         }
                         
                         if value.translation.width > 100 {
-                            self.sideMenuVisible = true
+                            me.sideMenuVisible = true
                         }
                         
                     }

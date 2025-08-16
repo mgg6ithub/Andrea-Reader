@@ -16,45 +16,41 @@ struct MenuIzquierda: View {
     private var iconColor: Color { ap.temaActual.menuIconos }
     
     var body: some View {
-
         HStack {
+            //MARK: --- MOSTRAR MENU LATERAL ---
+            if me.iconoMenuLateral {
+                Button(action: {
+                    me.sideMenuVisible.toggle()
+                }) {
+                    Image(systemName: "sidebar.trailing")
+                        .font(.system(size: const.iconSize))
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(ap.colorActual, iconColor)
+                        .fontWeight(const.iconWeight)
+                }
+                .offset(y: 3)
+            }
             
             //MARK: --- FLECHA TRADICIONAL PARA IR ATRAS UNA COLECCION ---
+            if me.iconoFlechaAtras {
+                if pc.getColeccionActual().coleccion.nombre != "HOME" {
+                    if ap.sistemaArchivos == .tradicional {
+                        Button(action: {
+
+                            pc.sacarColeccion()
+
+                        }) {
+                            Image(systemName: "arrow.backward")
+                                .font(.system(size: const.iconSize * 1.01))
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(ap.colorActual, iconColor)
+                                .fontWeight(const.iconWeight)
+                        }
+                        .offset(y: 1.0)
+                    }
+                }
+            }
             
-            //                if pc.getColeccionActual().coleccion.name != "HOME" {
-            //                    if menuEstado.menuIzquierdaFlechaLateral {
-            //                        Button(action: {
-            //
-            //                            pc.sacarColeccion()
-            //
-            //                        }) {
-            //                            Image(systemName: "arrow.backward")
-            //                                .font(.system(size: appEstado.constantes.iconSize * 0.9))
-            //                                .symbolRenderingMode(.palette)
-            //                                .foregroundStyle(appEstado.constantes.iconColor.gradient)
-            //                                .fontWeight(appEstado.constantes.iconWeight)
-            //                        }
-            //                        .offset(y: 1.0)
-            //                    }
-            //                }
-            
-            //MARK: --- MOSTRAR MENU LATERAL ---
-            
-            //                if menuEstado.menuIzquierdaSideMenuIcono {
-            //                    Button(action: {
-            //
-            //                        //                isSideMenuVisible.toggle()
-            //
-            //                    }) {
-            //                        Image(systemName: "sidebar.trailing")
-            //                            .font(.system(size: appEstado.constantes.iconSize))
-            //                            .symbolRenderingMode(.palette)
-            //                            .foregroundStyle(appEstado.constantes.iconColor.gradient)
-            //                            .fontWeight(appEstado.constantes.iconWeight)
-            //                    }
-            //                    .offset(y: 1.6)
-            //                }
-            //
             
             //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
             if ap.sistemaArchivos == .arbol {

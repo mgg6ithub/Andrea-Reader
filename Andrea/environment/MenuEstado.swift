@@ -12,8 +12,9 @@ class MenuEstado: ObservableObject {
     
     //MENU IZQUIERDA
     
-    @Published var menuIzquierdaFlechaLateral: Bool = true
-    @Published var menuIzquierdaSideMenuIcono: Bool = true
+    @Published var iconoFlechaAtras: Bool = false
+    @Published var iconoMenuLateral: Bool = false
+    @Published var sideMenuVisible: Bool = false
 
     //MENU CENTRO
     
