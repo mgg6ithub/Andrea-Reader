@@ -59,10 +59,13 @@ struct PersistenciaDatos {
     
     private func convertirValor(_ valor: Any) -> Any? {
         switch valor {
+        //datos basicos
         case let v as Int: return v
         case let v as Double: return v
         case let v as Bool: return v
         case let v as String: return v
+        
+        //enums
         case let v as EnumTipoMiniatura: return v.rawValue
         case let v as EnumTipoMiniaturaColeccion: return v.rawValue
         case let v as EnumDireccionAbanico: return v.rawValue
@@ -70,6 +73,10 @@ struct PersistenciaDatos {
         case let v as EnumOrdenaciones: return v.rawValue
         case let v as EnumTemas: return v.rawValue
         case let v as EnumTipoSistemaArchivos: return v.rawValue
+        case let v as EnumAjusteColor: return v.rawValue
+        case let v as EnumBarraEstado: return v.rawValue
+            
+        //colores
         case let v as Color: return v.toHexString
         default: return nil
         }
@@ -142,7 +149,6 @@ struct PersistenciaDatos {
     public func obtenerAjusteGeneralEnum<E: RawRepresentable>(key: String, default def: E) -> E where E.RawValue == String {
         if let raw = UserDefaults.standard.string(forKey: key),
            let e = E(rawValue: raw) {
-            print("Recuperando enum: \(e)")
             return e
         }
         return def

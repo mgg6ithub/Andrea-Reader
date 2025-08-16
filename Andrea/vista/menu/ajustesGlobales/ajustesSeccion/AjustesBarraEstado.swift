@@ -14,6 +14,7 @@ import SwiftUI
 struct AjustesBarraEstado: View {
     
     @EnvironmentObject var ap: AppEstado
+    @EnvironmentObject var me: MenuEstado
     var const: Constantes { ap.constantes }
     private let cpd = ConstantesPorDefecto()
     private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * const.scaleFactor}
@@ -32,11 +33,11 @@ struct AjustesBarraEstado: View {
             CirculoActivoVista(isSection: isSection, nombre: "Barra de estado", titleSize: const.subTitleSize, color: ap.colorActual)
             
             HStack(spacing: paddingHorizontal) {
-                BotonBE(titulo: "Activar", icono: "eye.fill", coloresIcono: [.black], opcionSeleccionada: .on, opcionActual: $ap.modoBarraEstado)
+                BotonBE(titulo: "Activar", icono: "eye.fill", coloresIcono: [.black], opcionSeleccionada: .on, opcionActual: $me.modoBarraEstado)
                 Spacer()
-                BotonBE(titulo: "Desactivar", icono: "eye.slash.fill", coloresIcono: [.black], opcionSeleccionada: .off, opcionActual: $ap.modoBarraEstado)
+                BotonBE(titulo: "Desactivar", icono: "eye.slash.fill", coloresIcono: [.black], opcionSeleccionada: .off, opcionActual: $me.modoBarraEstado)
                 Spacer()
-                BotonBE(titulo: "Automático", icono: "wand.and.stars", coloresIcono: [.blue], opcionSeleccionada: .auto, opcionActual: $ap.modoBarraEstado)
+                BotonBE(titulo: "Automático", icono: "wand.and.stars", coloresIcono: [.blue], opcionSeleccionada: .auto, opcionActual: $me.modoBarraEstado)
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
@@ -48,7 +49,7 @@ struct AjustesBarraEstado: View {
     }
 }
 
-enum ModoBarraEstado: String {
+enum EnumBarraEstado: String {
     case on, off, auto
 }
 

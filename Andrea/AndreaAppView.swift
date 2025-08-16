@@ -83,7 +83,7 @@ struct AndreaAppView: View {
             VStack(spacing: 0) {
                 
                 Color.clear
-                    .frame(height: ap.statusBarTopInsetBaseline)
+                    .frame(height: me.statusBarTopInsetBaseline)
                 
                 VistaPrincipal()
                     .environmentObject(ap)
@@ -122,11 +122,11 @@ struct AndreaAppView: View {
         )
         .onPreferenceChange(TopInsetKey.self) { top in
             // Sólo actualiza cuando la barra está visible (para no meter 0)
-            if !ap.barraEstado, top > 0 {
-                ap.statusBarTopInsetBaseline = top
+            if !me.barraEstado, top > 0 {
+                me.statusBarTopInsetBaseline = top
             }
         }
-        .statusBar(hidden: ap.barraEstado)
+        .statusBar(hidden: me.barraEstado)
         .gesture(
             DragGesture()
                 .onEnded { value in

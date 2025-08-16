@@ -1,7 +1,6 @@
-
 import SwiftUI
 
-struct TogglePersonalizado: View {
+struct TogglePersonalizado<T: Equatable>: View {
     
     @EnvironmentObject var ap: AppEstado
     
@@ -9,8 +8,8 @@ struct TogglePersonalizado: View {
     var descripcion: String? = nil
     var iconoEjemplo: String? = nil
     
-    @Binding var opcionBinding: Bool
-    
+    @Binding var opcionBinding: T
+    var opcionSeleccionada: T? = nil // si es enum, aquí dices qué valor quieres
     var opcionTrue: String
     var opcionFalse: String
     
@@ -18,7 +17,7 @@ struct TogglePersonalizado: View {
     var isDivider: Bool
     
     private var colorActivarDesactivar: Color {
-        if let _ = descripcion {
+        if descripcion != nil {
             return ap.temaActual.colorContrario
         } else {
             return ap.temaActual.secondaryText
@@ -31,11 +30,9 @@ struct TogglePersonalizado: View {
                 if let icono = iconoEjemplo {
                     Group {
                         if UIImage(systemName: icono) != nil {
-                            // Es un SF Symbol
                             Image(systemName: icono)
                                 .foregroundColor(ap.temaActual.colorContrario)
                         } else {
-                            // Es una imagen personalizada de tus assets
                             Image(icono)
                                 .if(titulo == "Seleccion multiple") { v in
                                     v.font(.system(size: ap.constantes.iconSize))
@@ -58,29 +55,39 @@ struct TogglePersonalizado: View {
                     .foregroundColor(ap.temaActual.secondaryText)
             }
             
-            if isInsideToggle {
-                Toggle(isOn: Binding(
-                    get: { self.opcionBinding },
-                    set: { newValue in
-                        withAnimation {
-                            self.opcionBinding = newValue
+            Toggle(isOn: Binding(
+                get: {
+                    if let opcionSeleccionada {
+                        return opcionBinding == opcionSeleccionada
+                    } else if let boolValue = opcionBinding as? Bool {
+                        return boolValue
+                    } else {
+                        return false
+                    }
+                },
+                set: { newValue in
+                    withAnimation {
+                        if let opcionSeleccionada {
+                            if newValue {
+                                opcionBinding = opcionSeleccionada
+                            }
+                        } else if opcionBinding is Bool {
+                            opcionBinding = (newValue as! T)
                         }
                     }
-                )) {
-                    Text(opcionBinding ? opcionTrue : opcionFalse)
-                        .font(.subheadline)
-                        .foregroundColor(colorActivarDesactivar)
                 }
-                .toggleStyle(SwitchToggleStyle(tint: .blue))
-
-            } else {
-                Toggle(isOn: $opcionBinding) {
-                    Text( opcionBinding ? opcionTrue : opcionFalse)
-                        .font(.subheadline)
-                        .foregroundColor(colorActivarDesactivar)
-                }
-                .toggleStyle(SwitchToggleStyle(tint: .blue))
+            )) {
+                Text(
+                    ( (opcionSeleccionada != nil && opcionBinding == opcionSeleccionada) ||
+                      (opcionSeleccionada == nil && (opcionBinding as? Bool) == true)
+                    )
+                    ? opcionTrue
+                    : opcionFalse
+                )
+                .font(.subheadline)
+                .foregroundColor(colorActivarDesactivar)
             }
+            .toggleStyle(SwitchToggleStyle(tint: .blue))
             
             if isDivider && isInsideToggle {
                 Rectangle()
@@ -88,10 +95,8 @@ struct TogglePersonalizado: View {
                     .frame(height: 0.5)
                     .padding(.vertical, 10)
             }
-            
         }
-        
     }
-    
 }
+
 

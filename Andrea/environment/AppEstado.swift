@@ -39,39 +39,24 @@ class AppEstado: ObservableObject {
     @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { pd.guardarAjusteGeneral(valor: sistemaArchivos, key: cpag.sistemaArchivos) } }
     
     // --- AJUSTES DE COLORES ---
-    @Published var colorPersonalizadoActual: Color = .gray
-    @Published var colorPersonalizado: Bool = false
-    @Published var colorNeutro: Bool = false
-    @Published var aplicarColorDirectorio: Bool = true
+    @Published var colorPersonalizadoActual: Color { didSet { pd.guardarAjusteGeneral(valor: colorPersonalizadoActual, key: cpag.colorPersonalizado) } }
+    @Published var ajusteColorSeleccionado: EnumAjusteColor { didSet { pd.guardarAjusteGeneral(valor: ajusteColorSeleccionado, key: cpag.ajusteColor) } }
 
+    //AJUSTE UNA UNICA VEZ PARA TODO EL PROGRAMA EL COLOR
     var colorActual: Color {
-        if aplicarColorDirectorio {
+        switch ajusteColorSeleccionado {
+        case .colorColeccion:
             return PilaColecciones.pilaColecciones.getColeccionActual().color
-        } else if colorNeutro {
+        case .colorNeutral:
             return .gray
-        } else {
+        case .colorPersonalizado:
             return colorPersonalizadoActual
         }
     }
     
     // --- RENDIMIENTO
-    @Published var shadows: Bool = true
+    @Published var shadows: Bool { didSet { pd.guardarAjusteGeneral(valor: shadows, key: cpag.shadows) } }
     @Published var animaciones: Bool = true
-    
-    // --- BARRA DE ESTADO ---
-    @Published var modoBarraEstado: ModoBarraEstado = .on
-    @Published var statusBarTopInsetBaseline: CGFloat = 0
-    
-    var barraEstado: Bool {
-        switch modoBarraEstado {
-        case .on:
-            return false
-        case .off:
-            return true
-        default:
-            return true
-        }
-    }
     
     // --- MENU ---
     
@@ -116,13 +101,20 @@ class AppEstado: ObservableObject {
         self.resolucionLogica = resLog
         
         //Persistencia
-        self.temaActual = pd.obtenerAjusteGeneralEnum(key: cpag.temaActual, default: .light)
-        self.sistemaArchivos = pd.obtenerAjusteGeneralEnum(key: cpag.sistemaArchivos, default: .tradicional)
+        let p = AjustesGeneralesPredeterminados()
+        
+        //TEMA
+        self.temaActual = pd.obtenerAjusteGeneralEnum(key: cpag.temaActual, default: p.temaP)
 
-        // Ejemplo si guardas un color global:
-        // self.colorPersonalizadoActual = pd.obtenerAjusteGeneralColor(key: "colorPersonalizadoActual", default: .gray)
+        // COLOR
+        self.colorPersonalizadoActual = pd.obtenerAjusteGeneralColor(key: cpag.colorPersonalizado, default: p.colorP)
+        self.ajusteColorSeleccionado = pd.obtenerAjusteGeneralEnum(key: cpag.ajusteColor, default: p.ajusteColorP)
 
-        // Ejemplo si guardas un bool global:
+        //SA
+        self.sistemaArchivos = pd.obtenerAjusteGeneralEnum(key: cpag.sistemaArchivos, default: p.saP)
+        
+        // Erendimiento
+        self.shadows = pd.obtenerAjusteGeneral(key: cpag.shadows, default: p.shadows)
         // self.animaciones = pd.obtenerAjusteGeneral(key: "animaciones", default: true)
         
     }

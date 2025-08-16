@@ -68,10 +68,53 @@ struct ConstantesPorDefecto {
 
 struct ClavesPersistenciaAjustesGenerales {
     
+    //TEMAS
     public let temaActual: String = "TemaActual"
+    
+    //COLORES
+    public let colorPersonalizado: String = "ColorPersonalizado"
+    public let ajusteColor: String = "ajusteColor"
+    
+    //SISTEMA DE ARCHIVOS
     public let sistemaArchivos: String = "SistemaArchivos"
     
+    //RENDIMIENTO
+    public let shadows: String = "shadows"
+    public let animaciones: String = "animaciones"
+    
+    //MENU
+    public let barraEstado: String = "barraEstado"
+    public let iconSize: String = "iconSize"
+    
+    //HISTORIAL
+    
 }
+
+
+struct AjustesGeneralesPredeterminados {
+    
+    //TEMAS
+    public let temaP: EnumTemas = .dayNight
+    
+    //COLORES
+    public let colorP: Color = .gray
+    public let ajusteColorP: EnumAjusteColor = .colorColeccion
+    
+    //SISTEMA DE ARCHIVOS
+    public let saP: EnumTipoSistemaArchivos = .tradicional
+    
+    //RENDIMIENTO
+    public let shadows: Bool = true
+    public let animaciones: Bool = true
+    
+    //MENU
+    public let barraEstado: EnumBarraEstado = .auto
+    public let iconSize: Double = 24
+    
+    //HISTORIAL
+    
+}
+
 
 //MARK: - --- TODAS LAS COSNTANTES MULTIPLICADAS POR LA ESCALA ---
 struct Constantes {

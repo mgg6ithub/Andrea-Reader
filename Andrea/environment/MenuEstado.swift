@@ -4,7 +4,22 @@ import SwiftUI
 class MenuEstado: ObservableObject {
     
     private let cpag = ClavesPersistenciaAjustesGenerales()
-    private let uds = UserDefaults.standard
+    private let pd = PersistenciaDatos()
+    
+    // --- BARRA DE ESTADO ---
+    @Published var modoBarraEstado: EnumBarraEstado { didSet { pd.guardarAjusteGeneral(valor: modoBarraEstado, key: cpag.barraEstado) } }
+    @Published var statusBarTopInsetBaseline: CGFloat = 0
+    
+    var barraEstado: Bool {
+        switch modoBarraEstado {
+        case .on:
+            return false
+        case .off:
+            return true
+        default:
+            return true
+        }
+    }
     
     //MARK: - ICONOS DEL MENU
     
@@ -16,7 +31,7 @@ class MenuEstado: ObservableObject {
     @Published var dobleColor: Bool = false
     
     //TAMAÑO ICONOS
-    @Published var iconSize: Double = 0.0
+    @Published var iconSize: Double { didSet { pd.guardarAjusteGeneral(valor: iconSize, key: cpag.iconSize) } }
     @Published var fuente: IconFontWeight = .thin
     
     //MENU IZQUIERDA
@@ -67,7 +82,15 @@ class MenuEstado: ObservableObject {
         }
     }
     
-    init() {}
+    init() {
+        
+        //Persistencia
+        let p = AjustesGeneralesPredeterminados()
+    
+        self.modoBarraEstado = pd.obtenerAjusteGeneralEnum(key: cpag.barraEstado, default: p.barraEstado)
+        self.iconSize = pd.obtenerAjusteGeneral(key: cpag.iconSize, default: p.iconSize)
+        
+    }
     
     //MARK: --- LOGICA PARA LA SELECCION MULTIPLE --- 
     

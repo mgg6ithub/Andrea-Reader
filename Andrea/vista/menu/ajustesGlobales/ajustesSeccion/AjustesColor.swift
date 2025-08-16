@@ -37,13 +37,20 @@ struct AjustesColor: View {
             CirculoActivoVista(isSection: isSection, nombre: "Color personazalido", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
             VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Color personalizado", descripcion: "Escoge el color que quieras.", opcionBinding: $ap.colorPersonalizado, opcionTrue: "Deshabilitar color personalizado", opcionFalse: "Habilitar color personalizado", isInsideToggle: true, isDivider: true)
-                    .onChange(of: ap.colorPersonalizado) { newValue in
-                        if newValue {
-                            ap.colorNeutro = false
-                            ap.aplicarColorDirectorio = false
+                TogglePersonalizado(
+                    titulo: "Color personalizado",
+                    descripcion: "Escoge el color que quieras.",
+                    opcionBinding: Binding(
+                        get: { ap.ajusteColorSeleccionado == .colorPersonalizado },
+                        set: { isOn in
+                            if isOn { ap.ajusteColorSeleccionado = .colorPersonalizado }
                         }
-                    }
+                    ),
+                    opcionTrue: "Deshabilitar color personalizado",
+                    opcionFalse: "Habilitar color personalizado",
+                    isInsideToggle: true,
+                    isDivider: true
+                )
                 
                 VStack(alignment: .center, spacing: 10) {
                     Text("Colores mas usados")
@@ -128,23 +135,37 @@ struct AjustesColor: View {
             CirculoActivoVista(isSection: isSection, nombre: "Color automatico", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             VStack(spacing: 0) {
-                VStack {
-                    TogglePersonalizado(titulo: "Color neutral", descripcion: "Un color neutral que se ajustará al tema", opcionBinding: $ap.colorNeutro, opcionTrue: "Deshabilitar color neutral", opcionFalse: "Habilitar color neutral", isInsideToggle: true, isDivider: true)
-                        .onChange(of: ap.colorNeutro) { newValue in
-                            if newValue {
-                                ap.colorPersonalizado = false
-                                ap.aplicarColorDirectorio = false
-                            }
-                       }
-                }
-                
-                TogglePersonalizado(titulo: "Color del directorio", descripcion: "Activa o desactiva el color del directorio", opcionBinding: $ap.aplicarColorDirectorio, opcionTrue: "Deshabilitar color del directorio", opcionFalse: "Habilitar color del directorio", isInsideToggle: true, isDivider: false)
-                    .onChange(of: ap.aplicarColorDirectorio) { newValue in
-                        if newValue {
-                            ap.colorNeutro = false
-                            ap.colorPersonalizado = false
+                // MARK: - Color neutral
+                TogglePersonalizado(
+                    titulo: "Color neutral",
+                    descripcion: "Un color neutral que se ajustará al tema",
+                    opcionBinding: Binding(
+                        get: { ap.ajusteColorSeleccionado == .colorNeutral },
+                        set: { isOn in
+                            if isOn { ap.ajusteColorSeleccionado = .colorNeutral }
                         }
-                    }
+                    ),
+                    opcionTrue: "Deshabilitar color neutral",
+                    opcionFalse: "Habilitar color neutral",
+                    isInsideToggle: true,
+                    isDivider: true
+                )
+                
+                // MARK: - Color del directorio (colección)
+                TogglePersonalizado(
+                    titulo: "Color del directorio",
+                    descripcion: "Activa o desactiva el color del directorio",
+                    opcionBinding: Binding(
+                        get: { ap.ajusteColorSeleccionado == .colorColeccion },
+                        set: { isOn in
+                            if isOn { ap.ajusteColorSeleccionado = .colorColeccion }
+                        }
+                    ),
+                    opcionTrue: "Deshabilitar color del directorio",
+                    opcionFalse: "Habilitar color del directorio",
+                    isInsideToggle: true,
+                    isDivider: false
+                )
                 
             } //FIN VSTACK
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)

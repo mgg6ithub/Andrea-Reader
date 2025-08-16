@@ -119,6 +119,13 @@ enum IconFontWeight: String, CaseIterable, Identifiable {
     }
 }
 
+//MARK: - COLORES
+enum EnumAjusteColor: String, CaseIterable {
+    case colorPersonalizado
+    case colorNeutral
+    case colorColeccion
+}
+
 
 //MARK: - TEMAS
 
