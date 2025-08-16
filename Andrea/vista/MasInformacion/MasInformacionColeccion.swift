@@ -20,7 +20,7 @@ struct MasInformacionColeccion: View {
                     coleccionVM.coleccion.color = colorTemporal
                     
                     // --- PERSISTENCIA ---
-                    PersistenciaDatos().guardarAtributoColeccion(coleccion: coleccionVM.coleccion, atributo: "color", valor: colorTemporal)
+                    PersistenciaDatos().guardarDatoElemento(url: coleccionVM.coleccion.url, atributo: "color", valor: colorTemporal)
                 }
             
             RoundedRectangle(cornerRadius: 10)

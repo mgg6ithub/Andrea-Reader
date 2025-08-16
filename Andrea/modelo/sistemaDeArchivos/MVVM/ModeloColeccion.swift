@@ -5,7 +5,7 @@ import SwiftUI
 @MainActor
 class ModeloColeccion: ObservableObject {
     
-  let coleccion: Coleccion
+    let coleccion: Coleccion
   @Published var tipoSA: EnumTipoSistemaArchivos?
     
   @Published var elementos: [ElementoSistemaArchivos] = []
@@ -52,7 +52,7 @@ class ModeloColeccion: ObservableObject {
     //crear un constrcutor por defecto con valores nulos para crear una instancia de ModeloColeccion vacia para tests
     init() {
             // Colección mínima para poder inicializar
-            self.coleccion = Coleccion(directoryName: "TEST", directoryURL: URL(fileURLWithPath: ""), fechaImportacion: Date(), fechaModificacion: Date(), favorito: true, protegido: true)
+        self.coleccion = Coleccion(directoryName: "TEST", directoryURL: URL(fileURLWithPath: ""), fechaImportacion: Date(), fechaModificacion: Date(), favorito: true, protegido: true)
             
             self.tipoSA = nil
             self.elementos = []
@@ -232,7 +232,7 @@ class ModeloColeccion: ObservableObject {
 
     func actualizarScroll(_ nuevo: Int) {
         scrollPosition = nuevo
-        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "scrollPosition", valor: nuevo)
+        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "scrollPosition", valor: nuevo)
     }
     
     //MARK: --- METODO PARA CAMBIAR EL MODO DE VISTA DE LA COLECCION
@@ -241,7 +241,7 @@ class ModeloColeccion: ObservableObject {
 //        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.modoVista = modoVista }
         withAnimation(.easeInOut(duration: 0.3)) {  self.modoVista = modoVista }
 //        self.modoVista = modoVista
-        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "tipoVista", valor: modoVista)
+        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "tipoVista", valor: modoVista)
     }
 
     
@@ -253,7 +253,7 @@ class ModeloColeccion: ObservableObject {
         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { self.elementos = tempElementos }
         
         //guardamos en persistencia el modo de ordenacion
-        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenacion", valor: modoOrdenacion)
+        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "ordenacion", valor: modoOrdenacion)
     }
     
     //MARK: --- INVERTIR ORDENACION ACTUAL ---
@@ -261,7 +261,7 @@ class ModeloColeccion: ObservableObject {
     func invertir() {
         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.esInvertido.toggle() }
         self.ordenarElementos(modoOrdenacion: self.ordenacion)
-        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "esInvertido", valor: esInvertido)
+        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "esInvertido", valor: esInvertido)
     }
     
     //Si esta invertido lo quitamos
@@ -299,9 +299,9 @@ class ModeloColeccion: ObservableObject {
         self.quitarInvertido()
         
         //guardamos la ordenacion
-        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenacion", valor: modoOrdenacion)
+        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "ordenacion", valor: modoOrdenacion)
         // Guarda el diccionario completo como atributo "ordenPersonalizado"
-        PersistenciaDatos().guardarAtributoColeccion(coleccion: self.coleccion, atributo: "ordenPersonalizado", valor: ordenDict)
+        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "ordenPersonalizado", valor: ordenDict)
     }
 
     

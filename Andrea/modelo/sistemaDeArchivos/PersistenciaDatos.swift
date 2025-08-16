@@ -5,11 +5,12 @@ import SwiftUI
 struct PersistenciaDatos {
     
     let mc = ManipulacionCadenas()
+    private let uds = UserDefaults.standard
     
     //MARK: --- ELIMINAR CLAVE Y VALOR DE PERSISTENCIA ---
     public func eliminarDatos(url: URL) {
         let key = obtenerKey(url)
-        UserDefaults.standard.removeObject(forKey: key)
+        uds.removeObject(forKey: key)
         print("🗑️ Eliminados datos de persistencia para la clave: \(key)")
     }
 
@@ -19,13 +20,13 @@ struct PersistenciaDatos {
         let keyAntigua = obtenerKey(origen)
         let keyNueva = obtenerKey(destino)
 
-        guard let datosAntiguos = UserDefaults.standard.dictionary(forKey: keyAntigua) else {
+        guard let datosAntiguos = uds.dictionary(forKey: keyAntigua) else {
             print("⚠️ No se encontraron datos en persistencia para la clave antigua: \(keyAntigua)")
             return
         }
 
-        UserDefaults.standard.set(datosAntiguos, forKey: keyNueva)
-        UserDefaults.standard.removeObject(forKey: keyAntigua)
+        uds.set(datosAntiguos, forKey: keyNueva)
+        uds.removeObject(forKey: keyAntigua)
         print("🔄 Persistencia actualizada de \(keyAntigua) → \(keyNueva)")
     }
     
@@ -34,12 +35,12 @@ struct PersistenciaDatos {
         let keyOrigen = obtenerKey(origen)
         let keyDestino = obtenerKey(destino)
         
-        guard let datosOrigen = UserDefaults.standard.dictionary(forKey: keyOrigen) else {
+        guard let datosOrigen = uds.dictionary(forKey: keyOrigen) else {
             print("⚠️ No se encontraron datos para duplicar desde la clave: \(keyOrigen)")
             return
         }
 
-        UserDefaults.standard.set(datosOrigen, forKey: keyDestino)
+        uds.set(datosOrigen, forKey: keyDestino)
         print("📄 Datos duplicados de \(keyOrigen) → \(keyDestino)")
     }
 
@@ -49,7 +50,7 @@ struct PersistenciaDatos {
     public func guardarDatoElemento(url: URL, atributo: String, valor: Any) {
         
         let key = obtenerKey(url)
-        var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
+        var dict = uds.dictionary(forKey: key) ?? [:]
 
         if let valor = valor as? Int {
             dict[atributo] = valor
@@ -65,12 +66,18 @@ struct PersistenciaDatos {
             dict[atributo] = tipoMiniatura.rawValue
         } else if let direccionAbanico = valor as? EnumDireccionAbanico {
             dict[atributo] = direccionAbanico.rawValue
+        } else if let tipoVistaEnum = valor as? EnumModoVista {
+            dict[atributo] = tipoVistaEnum.rawValue
+        } else if let ordenacionEnum = valor as? EnumOrdenaciones {
+            dict[atributo] = ordenacionEnum.rawValue
+        } else if let valorColor = valor as? Color {
+            dict[atributo] = valorColor.toHexString
         } else {
             print("⚠️ Tipo no soportado para persistencia en elemento: \(type(of: valor))")
             return
         }
         
-        UserDefaults.standard.set(dict, forKey: key)
+        uds.set(dict, forKey: key)
     }
 
     
@@ -85,7 +92,7 @@ struct PersistenciaDatos {
     // MARK: - Obtener todos los datos de un elemento
     public func obtenerAtributos(url: URL) -> [String: Any]? {
         let key = obtenerKey(url)
-        return UserDefaults.standard.dictionary(forKey: key)
+        return uds.dictionary(forKey: key)
     }
 
     // MARK: - Obtener un atributo específico
@@ -93,13 +100,13 @@ struct PersistenciaDatos {
         
         let key = obtenerKey(url)
         
-        guard let dict = UserDefaults.standard.dictionary(forKey: key) else { return nil }
+        guard let dict = uds.dictionary(forKey: key) else { return nil }
         return dict[atributo]
     }
     
     public func obtenerAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String) -> Any? {
         let key = obtenerKey(coleccion.url)
-        guard let dict = UserDefaults.standard.dictionary(forKey: key),
+        guard let dict = uds.dictionary(forKey: key),
               let vistaAtributos = dict["vistaAtributos"] as? [String: Any],
               let atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] else {
             return nil
@@ -109,70 +116,70 @@ struct PersistenciaDatos {
     }
     
     
-    // MARK: - Guardar todo el diccionario
-    @MainActor
-    public func guardarDatosColeccion(coleccion: ModeloColeccion) {
-        let key = obtenerKey(coleccion.coleccion.url)
-
-        var datos: [String: Any] = [
-            "scrollPosition": coleccion.scrollPosition,
-            "color": coleccion.color.toHexString,
-            "tipoVista": coleccion.modoVista.rawValue
-        ]
-        
-        // Atributos específicos de la vista actual
-        switch coleccion.modoVista {
-        case .cuadricula:
-            datos["vistaAtributos"] = [
-                "cuadricula": [
-                    "columnas": coleccion.columnas
-                ]
-            ]
-        case .lista:
-            datos["vistaAtributos"] = [
-                "lista": [
-                    "alturaItem": coleccion.altura
-                ]
-            ]
-        default:
-            break
-        }
-
-        UserDefaults.standard.set(datos, forKey: key)
-    }
-    
-
-    // MARK: - Guardar / modificar un solo atributo
-    public func guardarAtributoColeccion(coleccion: Coleccion, atributo: String, valor: Any) {
-        let key = obtenerKey(coleccion.url)
-        var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
-
-        if let tipoVistaEnum = valor as? EnumModoVista {
-            dict[atributo] = tipoVistaEnum.rawValue
-        } else if let ordenacionEnum = valor as? EnumOrdenaciones {
-            dict[atributo] = ordenacionEnum.rawValue
-        } else if let valorColor = valor as? Color {
-            dict[atributo] = valorColor.toHexString
-        } else if let valor = valor as? String {
-            dict[atributo] = valor
-        } else if let valor = valor as? Int {
-            dict[atributo] = valor
-        } else if let valor = valor as? Bool {
-            dict[atributo] = valor
-        } else if let valorDict = valor as? [String: Int] {
-            dict[atributo] = valorDict
-        } else {
-            print("⚠️ Tipo no soportado para persistencia: \(type(of: valor))")
-            return
-        }
-
-        UserDefaults.standard.set(dict, forKey: key)
-    }
+//    // MARK: - Guardar todo el diccionario
+//    @MainActor
+//    public func guardarDatosColeccion(coleccion: ModeloColeccion) {
+//        let key = obtenerKey(coleccion.coleccion.url)
+//
+//        var datos: [String: Any] = [
+//            "scrollPosition": coleccion.scrollPosition,
+//            "color": coleccion.color.toHexString,
+//            "tipoVista": coleccion.modoVista.rawValue
+//        ]
+//        
+//        // Atributos específicos de la vista actual
+//        switch coleccion.modoVista {
+//        case .cuadricula:
+//            datos["vistaAtributos"] = [
+//                "cuadricula": [
+//                    "columnas": coleccion.columnas
+//                ]
+//            ]
+//        case .lista:
+//            datos["vistaAtributos"] = [
+//                "lista": [
+//                    "alturaItem": coleccion.altura
+//                ]
+//            ]
+//        default:
+//            break
+//        }
+//
+//        uds.set(datos, forKey: key)
+//    }
+//    
+//
+//    // MARK: - Guardar / modificar un solo atributo
+//    public func guardarAtributoColeccion(coleccion: Coleccion, atributo: String, valor: Any) {
+//        let key = obtenerKey(coleccion.url)
+//        var dict = uds.dictionary(forKey: key) ?? [:]
+//
+//        if let tipoVistaEnum = valor as? EnumModoVista {
+//            dict[atributo] = tipoVistaEnum.rawValue
+//        } else if let ordenacionEnum = valor as? EnumOrdenaciones {
+//            dict[atributo] = ordenacionEnum.rawValue
+//        } else if let valorColor = valor as? Color {
+//            dict[atributo] = valorColor.toHexString
+//        } else if let valor = valor as? String {
+//            dict[atributo] = valor
+//        } else if let valor = valor as? Int {
+//            dict[atributo] = valor
+//        } else if let valor = valor as? Bool {
+//            dict[atributo] = valor
+//        } else if let valorDict = valor as? [String: Int] {
+//            dict[atributo] = valorDict
+//        } else {
+//            print("⚠️ Tipo no soportado para persistencia: \(type(of: valor))")
+//            return
+//        }
+//
+//        uds.set(dict, forKey: key)
+//    }
     
     //MARK: - gurdar un atributo
     public func guardarAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String, valor: Any) {
         let key = obtenerKey(coleccion.url)
-        var dict = UserDefaults.standard.dictionary(forKey: key) ?? [:]
+        var dict = uds.dictionary(forKey: key) ?? [:]
 
         var vistaAtributos = dict["vistaAtributos"] as? [String: Any] ?? [:]
         var atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] ?? [:]
@@ -181,7 +188,7 @@ struct PersistenciaDatos {
         vistaAtributos[modo.rawValue] = atributosVista
         dict["vistaAtributos"] = vistaAtributos
 
-        UserDefaults.standard.set(dict, forKey: key)
+        uds.set(dict, forKey: key)
     }
 
     
