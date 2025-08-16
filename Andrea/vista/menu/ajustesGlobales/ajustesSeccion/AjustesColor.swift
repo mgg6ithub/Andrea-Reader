@@ -48,7 +48,6 @@ struct AjustesColor: View {
                     }
                 
                 VStack(alignment: .center, spacing: 10) {
-                    
                     Text("Colores mas usados")
                         .font(.system(size: ap.constantes.titleSize))
                         .foregroundColor(ap.temaActual.colorContrario)

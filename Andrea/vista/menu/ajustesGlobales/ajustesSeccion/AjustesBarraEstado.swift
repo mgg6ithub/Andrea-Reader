@@ -56,6 +56,7 @@ struct BotonBE<T: Equatable>: View {
     var coloresIcono: [Color]
     var opcionSeleccionada: T
     @Binding var opcionActual: T
+    var fuente: Font.Weight? = nil
     
     var isSelected: Bool { return opcionActual == opcionSeleccionada }
     
@@ -70,14 +71,14 @@ struct BotonBE<T: Equatable>: View {
                         .foregroundColor(.primary)
                     
                     Image(systemName: icono)
-                        .font(.system(size: 22, weight: .medium))
+                        .font(.system(size: 22, weight: fuente ?? .medium))
                         .foregroundStyle(LinearGradient(colors: coloresIcono, startPoint: .top, endPoint: .bottom))
                         .frame(width: 30, height: 30)
                 }
                 .if(!isSelected) { v in
-                    v.opacity(0.5)
+                    v.opacity(0.4)
                 }
             }
             .buttonStyle(.plain)
-}
+    }
 }

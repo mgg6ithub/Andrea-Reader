@@ -92,18 +92,18 @@ struct AndreaAppView: View {
                     .environmentObject(ne)
             }
             
-            if me.sideMenuVisible {
+            if ap.sideMenuVisible {
                 Color.black.opacity(0.3)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
-                        me.sideMenuVisible = false
+                        ap.sideMenuVisible = false
                     }
                 
                 HStack {
                     SideMenu()
                         .frame(width: 300)
-                        .offset(x: me.sideMenuVisible ? 0 : -300)
-                        .animation(.spring(), value: me.sideMenuVisible)
+                        .offset(x: ap.sideMenuVisible ? 0 : -300)
+                        .animation(.spring(), value: ap.sideMenuVisible)
                     
                     Spacer()
                 }
@@ -134,8 +134,8 @@ struct AndreaAppView: View {
                         
                         //CHECKEMOS SI ES DE DERCHA A IZQUIERDA PRIMERO
                         if value.translation.width < -100 {
-                            if me.sideMenuVisible {
-                                me.sideMenuVisible = false
+                            if ap.sideMenuVisible {
+                                ap.sideMenuVisible = false
                             }
                             else {
                                 if let ultimo: Archivo = ap.ultimoArchivoLeido {
@@ -145,7 +145,7 @@ struct AndreaAppView: View {
                         }
                         
                         if value.translation.width > 100 {
-                            me.sideMenuVisible = true
+                            ap.sideMenuVisible = true
                         }
                         
                     }

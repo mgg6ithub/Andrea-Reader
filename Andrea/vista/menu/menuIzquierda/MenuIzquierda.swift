@@ -8,24 +8,49 @@ struct MenuIzquierda: View {
     @EnvironmentObject var me: MenuEstado
     @EnvironmentObject var pc: PilaColecciones
     
+    // --- PARAMETROS ---
+//    var c1: Color
+//    var c2: Color
+//    var iconSize: CGFloat
+//    var fuente: Font.Weight
+    
     // --- ESTADO ---
     @State private var mostrarMenuLateral: Bool = false
     @State private var mostrarPopover = false
     
     private var const: Constantes { ap.constantes }
-    private var iconColor: Color { ap.temaActual.menuIconos }
+    
+    private var c2: Color {
+        if me.colorGris {
+            return .gray
+        } else {
+            return ap.temaActual.menuIconos
+        }
+    }
+    
+    private var c1: Color {
+        if me.dobleColor {
+            return ap.colorActual
+        } else if me.colorGris {
+            return .gray
+        } else {
+            return ap.temaActual.menuIconos
+        }
+    }
+    
+    private var iconSize: CGFloat { me.iconSize }
     
     var body: some View {
         HStack {
             //MARK: --- MOSTRAR MENU LATERAL ---
             if me.iconoMenuLateral {
                 Button(action: {
-                    me.sideMenuVisible.toggle()
+                    ap.sideMenuVisible.toggle()
                 }) {
                     Image(systemName: "sidebar.trailing")
-                        .font(.system(size: const.iconSize))
+                        .font(.system(size: iconSize))
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(ap.colorActual, iconColor)
+                        .foregroundStyle(c1, c2)
                         .fontWeight(const.iconWeight)
                 }
                 .offset(y: 3)
@@ -41,9 +66,9 @@ struct MenuIzquierda: View {
 
                         }) {
                             Image(systemName: "arrow.backward")
-                                .font(.system(size: const.iconSize * 1.01))
+                                .font(.system(size: iconSize * 1.01))
                                 .symbolRenderingMode(.palette)
-                                .foregroundStyle(ap.colorActual, iconColor)
+                                .foregroundStyle(c1, c2)
                                 .fontWeight(const.iconWeight)
                         }
                         .offset(y: 1.0)
@@ -57,9 +82,9 @@ struct MenuIzquierda: View {
                 ZStack {
                     PopOutCollectionsView() { isExpandable in
                         Image("custom-library.badge")
-                            .font(.system(size: const.iconSize * 1.01))
+                            .font(.system(size: iconSize * 1.01))
                             .symbolRenderingMode(.palette)
-                            .foregroundStyle(ap.colorActual, iconColor)
+                            .foregroundStyle(c1, c2)
                             .fontWeight(const.iconWeight)
                         //                            .symbolEffect(.bounce, value: menuModel.newDirectoryCreated)
                     } content: { isExpandable, cerrarMenu in

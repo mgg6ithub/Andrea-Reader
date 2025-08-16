@@ -7,6 +7,9 @@ class AppEstado: ObservableObject {
     private let cpag = ClavesPersistenciaAjustesGenerales()
     private let pd = PersistenciaDatos()
     
+    //MENU LATERAL
+    @Published var sideMenuVisible: Bool = false
+    
     @Published var archivoEnLectura: Archivo? = nil {
         didSet {
             // Actualiza ultimoArchivoLeido cuando archivoEnLectura cambie

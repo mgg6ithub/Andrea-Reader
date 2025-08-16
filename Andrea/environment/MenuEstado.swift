@@ -10,13 +10,24 @@ class MenuEstado: ObservableObject {
     
     @Published var iconosSize: CGFloat = ConstantesPorDefecto().iconSize
     
+    //COLORES DE LOS ICONOS
+    @Published var colorGris: Bool = true
+    @Published var colorAutomatico: Bool = false
+    @Published var dobleColor: Bool = false
+    
+    //TAMAÑO ICONOS
+    @Published var iconSize: Double = 0.0
+    
     //MENU IZQUIERDA
     
     @Published var iconoFlechaAtras: Bool = false
     @Published var iconoMenuLateral: Bool = false
-    @Published var sideMenuVisible: Bool = false
 
     //MENU CENTRO
+    @Published var iconoSeleccionMultiple: Bool = true
+    
+    //MENU DERECHA
+    @Published var iconoNoticicaciones: Bool = true
     
     // --- SELECCION MULTIPLE ---
     @Published var seleccionMultiplePresionada: Bool = false {

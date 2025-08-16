@@ -18,7 +18,7 @@ struct MenuDerecha: View {
         HStack {
             ZStack {
                 PopOutCollectionsView() { isExpandable in
-                    Image("menu-historial")
+                    Image("notificaciones")
                         .font(.system(size: const.iconSize * 1.03))
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(appEstado.colorActual, iconColor)
