@@ -8,7 +8,7 @@ class MenuEstado: ObservableObject {
     
     // --- BARRA DE ESTADO ---
     @Published var modoBarraEstado: EnumBarraEstado { didSet { pd.guardarAjusteGeneral(valor: modoBarraEstado, key: cpag.barraEstado) } }
-    @Published var statusBarTopInsetBaseline: CGFloat = 0
+    @Published var statusBarTopInsetBaseline: CGFloat
     
     var barraEstado: Bool {
         switch modoBarraEstado {
@@ -88,6 +88,8 @@ class MenuEstado: ObservableObject {
         let p = AjustesGeneralesPredeterminados()
     
         self.modoBarraEstado = pd.obtenerAjusteGeneralEnum(key: cpag.barraEstado, default: p.barraEstado)
+        self.statusBarTopInsetBaseline = UIApplication.shared.keyWindowSafeAreaTop
+        
         self.iconSize = pd.obtenerAjusteGeneral(key: cpag.iconSize, default: p.iconSize)
         
     }
@@ -145,4 +147,19 @@ class MenuEstado: ObservableObject {
         
     }
     
+}
+
+extension UIApplication {
+    var keyWindowSafeAreaTop: CGFloat {
+        if #available(iOS 15.0, *) {
+            return (self.connectedScenes
+                        .compactMap { $0 as? UIWindowScene }
+                        .flatMap { $0.windows }
+                        .first { $0.isKeyWindow })?.safeAreaInsets.top ?? 20
+        } else if #available(iOS 13.0, *) {
+            return (self.windows.first { $0.isKeyWindow })?.safeAreaInsets.top ?? 20
+        } else {
+            return self.keyWindow?.safeAreaInsets.top ?? 20
+        }
+    }
 }

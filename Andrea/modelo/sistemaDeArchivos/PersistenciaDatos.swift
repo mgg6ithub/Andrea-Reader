@@ -137,7 +137,6 @@ struct PersistenciaDatos {
     //MARK: - --- AJUSTES GENERALES ---
     public func guardarAjusteGeneral(valor: Any, key: String) {
         if let convertido = self.convertirValor(valor) {
-            print("Guardando: \(valor) -> \(key)")
             uds.set(convertido, forKey: key)
         }
     }
