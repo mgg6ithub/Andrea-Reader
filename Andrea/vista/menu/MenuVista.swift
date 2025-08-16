@@ -11,7 +11,7 @@ struct MenuVista: View {
             ZStack {
                 HStack {
                     MenuIzquierda()
-                        .fondoBoton1(pH: 3, pV: 3, isActive: false, color: .gray.opacity(0.6))
+//                        .fondoBoton1(pH: 3, pV: 3, isActive: false, color: .gray.opacity(0.6))
                         .padding(0)
                     Spacer()
                     MenuDerecha()

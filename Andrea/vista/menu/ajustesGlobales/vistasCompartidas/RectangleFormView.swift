@@ -31,7 +31,9 @@ struct RectangleFormView<T: Equatable>: View {
 
             Button(action: {
                 isBouncing.toggle()
-                opcionActual = opcionSeleccionada
+                withAnimation {
+                    opcionActual = opcionSeleccionada
+                }
             }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
