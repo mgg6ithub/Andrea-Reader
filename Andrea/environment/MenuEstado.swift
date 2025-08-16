@@ -36,7 +36,7 @@ class MenuEstado: ObservableObject {
     
     let sections = [
         "TemaPrincipal", "ColorPrincipal", "SistemaArchivos", "Rendimiento",
-        "AjustesBarraEstado", "AjustesMenu", "AjustesHistorial", "AjustesLibreria", "AjustesVisualizacion"
+        "AjustesMenu", "AjustesHistorial", "AjustesLibreria", "AjustesVisualizacion"
     ]
     
     func sectionTitle(_ id: String) -> String {
@@ -45,7 +45,7 @@ class MenuEstado: ObservableObject {
         case "ColorPrincipal": return "Colores"
         case "SistemaArchivos": return "Sistema de archivos"
         case "Rendimiento": return "Rendimiento"
-        case "AjustesBarraEstado": return "AjustesBarraEstado"
+//        case "AjustesBarraEstado": return "AjustesBarraEstado"
         case "AjustesMenu": return "Menu"
         case "AjustesHistorial": return "Historial"
         case "AjustesLibreria": return "Libreria"

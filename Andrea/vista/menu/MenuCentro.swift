@@ -261,7 +261,6 @@ struct MenuCentro: View {
                     .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
                     .offset(y: 2)
             }
-            .border(.red)
             .sheet(isPresented: $menuEstado.ajustesGlobalesPresionado) {
                 AjustesGlobales()
             }

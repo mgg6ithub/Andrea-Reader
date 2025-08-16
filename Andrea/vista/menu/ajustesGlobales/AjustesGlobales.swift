@@ -1,11 +1,11 @@
 
 import SwiftUI
 
-//#Preview {
-//    AjustesGlobales()
-//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-//        .environmentObject(MenuEstado())
-//}
+#Preview {
+    AjustesGlobales()
+        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+        .environmentObject(MenuEstado())
+}
 
 struct AjustesGlobales: View {
     

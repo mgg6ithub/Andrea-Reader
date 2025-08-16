@@ -7,8 +7,8 @@ extension View {
     func fondoRectangular(esOscuro: Bool, shadow: Bool) -> some View {
         self.padding(15) // margen interno
             .background(
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.gray.opacity(0.2))
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.gray.opacity(0.05))
             )
             .shadow(
                 color: esOscuro ? .black.opacity(0.6) : .black.opacity(0.225),
@@ -177,8 +177,8 @@ struct ContenidoAjustes: View {
                                         
                                     DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                         
-                                    case "AjustesBarraEstado":
-                                        AjustesBarraEstado(isSection: selectedSection == section)
+//                                    case "AjustesBarraEstado":
+//                                        AjustesBarraEstado(isSection: selectedSection == section)
                                     
                                     DividerPersonalizado(paddingHorizontal: paddingHorizontal).padding(.vertical, 15)
                                     

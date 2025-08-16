@@ -3,9 +3,9 @@ import SwiftUI
 
 #Preview {
     AjustesGlobales()
-        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
+//        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
 //        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
-//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
 //        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
 //        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
         .environmentObject(MenuEstado())
@@ -14,8 +14,6 @@ import SwiftUI
 struct AjustesBarraEstado: View {
     
     @EnvironmentObject var ap: AppEstado
-    
-    var isSection: Bool
     var const: Constantes { ap.constantes }
     private let cpd = ConstantesPorDefecto()
     private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * const.scaleFactor}
@@ -26,35 +24,19 @@ struct AjustesBarraEstado: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Barra de estado") //TITULO
-                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.titleSize * 0.7, c: ap.temaActual.colorContrario, pH: 0, pW: paddingHorizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
             Text("Franja superior del dispositivo que muestra la hora, señal, Wi-Fi y batería. Muéstrala, ocúltala o deja que el sistema elija.")
-                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.titleSize * 0.7, c: ap.temaActual.secondaryText, pH: 10, pW: 0)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Modifica la barra de estado", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
-            
-            HStack(spacing: 0) {
-                RectangleFormView<ModoBarraEstado>(
-                    titulo: "Activar",
-                    icono: "eye.fill",
-                    coloresIcono: [ap.temaActual.colorContrario],
-                    opcionSeleccionada: .on,
-                    opcionActual: $ap.modoBarraEstado
-                )
-                RectangleFormView<ModoBarraEstado>(
-                    titulo: "Desactivar",
-                    icono: "eye.slash.fill",
-                    coloresIcono: [ap.temaActual.colorContrario],
-                    opcionSeleccionada: .off,
-                    opcionActual: $ap.modoBarraEstado
-                )
-                RectangleFormView<ModoBarraEstado>(
-                    titulo: "Automático",
-                    icono: "wand.and.stars",
-                    coloresIcono: [.blue.opacity(0.5)],
-                    opcionSeleccionada: .auto,
-                    opcionActual: $ap.modoBarraEstado
-                )
+            HStack(spacing: paddingHorizontal) {
+                BotonBE(titulo: "Activar", icono: "eye.fill", coloresIcono: [.black], opcionSeleccionada: .on, opcionActual: $ap.modoBarraEstado)
+                Spacer()
+                BotonBE(titulo: "Desactivar", icono: "eye.slash.fill", coloresIcono: [.black], opcionSeleccionada: .off, opcionActual: $ap.modoBarraEstado)
+                Spacer()
+                BotonBE(titulo: "Automático", icono: "wand.and.stars", coloresIcono: [.blue], opcionSeleccionada: .auto, opcionActual: $ap.modoBarraEstado)
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
@@ -64,4 +46,38 @@ struct AjustesBarraEstado: View {
 
 enum ModoBarraEstado: String {
     case on, off, auto
+}
+
+
+struct BotonBE<T: Equatable>: View {
+    
+    var titulo: String
+    var icono: String
+    var coloresIcono: [Color]
+    var opcionSeleccionada: T
+    @Binding var opcionActual: T
+    
+    var isSelected: Bool { return opcionActual == opcionSeleccionada }
+    
+    var body: some View {
+        Button(action: {
+                opcionActual = opcionSeleccionada
+            }) {
+                VStack(alignment: .center, spacing: 6) {
+                    
+                    Text(titulo)
+                        .font(.footnote)
+                        .foregroundColor(.primary)
+                    
+                    Image(systemName: icono)
+                        .font(.system(size: 22, weight: .medium))
+                        .foregroundStyle(LinearGradient(colors: coloresIcono, startPoint: .top, endPoint: .bottom))
+                        .frame(width: 30, height: 30)
+                }
+                .if(!isSelected) { v in
+                    v.opacity(0.5)
+                }
+            }
+            .buttonStyle(.plain)
+}
 }
