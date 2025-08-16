@@ -131,6 +131,8 @@ class PilaColecciones: ObservableObject {
     @MainActor
     private func actualizarColeccionActual() {
         // 1. Obtén la nueva VM (la última de la pila o la HOME)
+        self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
+        
         let nuevaVM: ModeloColeccion
         if let última = colecciones.last {
             nuevaVM = última

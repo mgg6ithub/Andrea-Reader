@@ -53,7 +53,7 @@ struct MenuIzquierda: View {
                         .foregroundStyle(c1, c2)
                         .fontWeight(const.iconWeight)
                 }
-                .offset(y: 3)
+//                .offset(y: 3)
             }
             
             //MARK: --- FLECHA TRADICIONAL PARA IR ATRAS UNA COLECCION ---
@@ -71,7 +71,7 @@ struct MenuIzquierda: View {
                                 .foregroundStyle(c1, c2)
                                 .fontWeight(const.iconWeight)
                         }
-                        .offset(y: 1.0)
+//                        .offset(y: 1.0)
                     }
                 }
             }

@@ -22,8 +22,18 @@ class MenuEstado: ObservableObject {
     }
     
     //MARK: - ICONOS DEL MENU
+
+    //MODIFICAR ICONOS
     
-    @Published var iconosSize: CGFloat = ConstantesPorDefecto().iconSize
+    //MENU IZQUIERDA
+    @Published var iconoMenuLateral: Bool { didSet { pd.guardarAjusteGeneral(valor: iconoMenuLateral, key: cpag.menuLateral) } }
+    @Published var iconoFlechaAtras: Bool { didSet { pd.guardarAjusteGeneral(valor: iconoFlechaAtras, key: cpag.flechaAtras) } }
+    
+    //MENU CENTRO
+    @Published var iconoSeleccionMultiple: Bool = true
+    
+    //MENU DERECHA
+    @Published var iconoNoticicaciones: Bool = true
     
     //COLORES DE LOS ICONOS
     @Published var colorGris: Bool = true
@@ -33,18 +43,7 @@ class MenuEstado: ObservableObject {
     //TAMAÑO ICONOS
     @Published var iconSize: Double { didSet { pd.guardarAjusteGeneral(valor: iconSize, key: cpag.iconSize) } }
     @Published var fuente: IconFontWeight = .thin
-    
-    //MENU IZQUIERDA
-    
-    @Published var iconoFlechaAtras: Bool = false
-    @Published var iconoMenuLateral: Bool = false
 
-    //MENU CENTRO
-    @Published var iconoSeleccionMultiple: Bool = true
-    
-    //MENU DERECHA
-    @Published var iconoNoticicaciones: Bool = true
-    
     // --- SELECCION MULTIPLE ---
     @Published var seleccionMultiplePresionada: Bool = false {
         didSet {
@@ -89,6 +88,10 @@ class MenuEstado: ObservableObject {
     
         self.modoBarraEstado = pd.obtenerAjusteGeneralEnum(key: cpag.barraEstado, default: p.barraEstado)
         self.statusBarTopInsetBaseline = UIApplication.shared.keyWindowSafeAreaTop
+        
+        //modificaicon de iconos
+        self.iconoMenuLateral = pd.obtenerAjusteGeneral(key: cpag.menuLateral, default: p.menuLateral)
+        self.iconoFlechaAtras = pd.obtenerAjusteGeneral(key: cpag.flechaAtras , default: p.flechaAtras)
         
         self.iconSize = pd.obtenerAjusteGeneral(key: cpag.iconSize, default: p.iconSize)
         

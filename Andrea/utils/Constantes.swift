@@ -84,6 +84,12 @@ struct ClavesPersistenciaAjustesGenerales {
     
     //MENU
     public let barraEstado: String = "barraEstado"
+    
+    public let menuLateral: String = "menuLateral"
+    public let flechaAtras: String = "flechaAtras"
+    public let seleccionMultiple: String = "seleccionMultiple"
+    public let notificaciones: String = "notificaciones"
+    
     public let iconSize: String = "iconSize"
     
     //HISTORIAL
@@ -109,6 +115,12 @@ struct AjustesGeneralesPredeterminados {
     
     //MENU
     public let barraEstado: EnumBarraEstado = .auto
+    
+    public let menuLateral: Bool = true
+    public let flechaAtras: Bool = true
+    public let seleccionMultiple: Bool = true
+    public let notificaciones: Bool = true
+    
     public let iconSize: Double = 24
     
     //HISTORIAL

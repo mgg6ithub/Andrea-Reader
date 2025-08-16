@@ -41,14 +41,13 @@ class SistemaArchivos: ObservableObject {
     //MARK: - CONSTRUCTOR
     /**
      1. Se obtiene el directorio actual
-     2. Metodo recursivo para calcular todos las colecciones.
+     2. Metodo recursivo para calcular todos las coleccones.
      3. Se asigna en la pila para inicializar la coleccion del usuario
      4. Se realiza el primer indexado de dicha coleccion
      */
     private init(preview: Bool = false) {
         
         self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
-        
         // Crear la coleccion raiz y asignarla
         let home = FabricaColeccion().crearColeccion(coleccionNombre: "HOME", coleccionURL: self.homeURL)
         cacheColecciones[homeURL] = ColeccionValor(coleccion: home)
@@ -110,7 +109,6 @@ class SistemaArchivos: ObservableObject {
     }
     
     private let indexacionQueue = OperationQueue()
-
     
     public func crearInstancia(elementoURL: URL, coleccionDestinoURL: URL? = nil) -> ElementoSistemaArchivos {
     
