@@ -39,6 +39,7 @@ struct MenuIzquierda: View {
     }
     
     private var iconSize: CGFloat { me.iconSize }
+    private var iconFont: EnumFuenteIcono { me.fuente }
     
     var body: some View {
         HStack {
@@ -51,31 +52,10 @@ struct MenuIzquierda: View {
                         .font(.system(size: iconSize))
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(c1, c2)
-                        .fontWeight(const.iconWeight)
+                        .fontWeight(iconFont.weight)
                 }
-//                .offset(y: 3)
+                .offset(y: 2)
             }
-            
-            //MARK: --- FLECHA TRADICIONAL PARA IR ATRAS UNA COLECCION ---
-            if me.iconoFlechaAtras {
-                if pc.getColeccionActual().coleccion.nombre != "HOME" {
-                    if ap.sistemaArchivos == .tradicional {
-                        Button(action: {
-
-                            pc.sacarColeccion()
-
-                        }) {
-                            Image(systemName: "arrow.backward")
-                                .font(.system(size: iconSize * 1.01))
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(c1, c2)
-                                .fontWeight(const.iconWeight)
-                        }
-//                        .offset(y: 1.0)
-                    }
-                }
-            }
-            
             
             //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
             if ap.sistemaArchivos == .arbol {
@@ -85,14 +65,33 @@ struct MenuIzquierda: View {
                             .font(.system(size: iconSize * 1.01))
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(c1, c2)
-                            .fontWeight(const.iconWeight)
+                            .fontWeight(iconFont.weight)
                         //                            .symbolEffect(.bounce, value: menuModel.newDirectoryCreated)
                     } content: { isExpandable, cerrarMenu in
                         ListaColeccionMenu(onSeleccionColeccion: cerrarMenu)
                             .frame(width: 300)
                     }
                 }
+                .offset(y: -1.5)
                 .padding(0)
+            }
+            
+            //MARK: --- FLECHA TRADICIONAL PARA IR ATRAS UNA COLECCION ---
+            if me.iconoFlechaAtras {
+                if pc.getColeccionActual().coleccion.nombre != "HOME" {
+//                    if ap.sistemaArchivos == .tradicional {
+                        Button(action: {
+                            pc.sacarColeccion()
+                        }) {
+                            Image(systemName: "arrow.backward")
+                                .font(.system(size: iconSize * 1.01))
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(c2)
+                                .fontWeight(iconFont.weight)
+                        }
+                        .offset(y: 1.0)
+//                    }
+                }
             }
             
         }

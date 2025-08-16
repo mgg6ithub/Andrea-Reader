@@ -90,7 +90,12 @@ struct ClavesPersistenciaAjustesGenerales {
     public let seleccionMultiple: String = "seleccionMultiple"
     public let notificaciones: String = "notificaciones"
     
+    public let iconosDobleColor: String = "iconocDobleColor"
+    public let iconosColorGris: String = "iconosColorGris"
+    public let iconosColorAuto: String = "iconosColorAuto"
+    
     public let iconSize: String = "iconSize"
+    public let iconoFuente: String = "iconoFuente"
     
     //HISTORIAL
     
@@ -121,7 +126,12 @@ struct AjustesGeneralesPredeterminados {
     public let seleccionMultiple: Bool = true
     public let notificaciones: Bool = true
     
+    public let iconosDobleColor: Bool = true
+    public let iconosColorGris: Bool = false
+    public let iconosColorAuto: Bool = true
+    
     public let iconSize: Double = 24
+    public let iconoFuente: EnumFuenteIcono = .thin
     
     //HISTORIAL
     

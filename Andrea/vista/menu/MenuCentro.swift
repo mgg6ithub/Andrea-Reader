@@ -14,8 +14,8 @@ extension View {
 struct MenuCentro: View {
     
     // --- ENTORNO ---
-    @EnvironmentObject var appEstado: AppEstado
-    @EnvironmentObject var menuEstado: MenuEstado
+    @EnvironmentObject var ap: AppEstado
+    @EnvironmentObject var me: MenuEstado
     @EnvironmentObject var pc: PilaColecciones
     
     // --- ESTADO ---
@@ -29,39 +29,50 @@ struct MenuCentro: View {
     
     // --- VARIABLES CALCULADAS ---
     private let sa: SistemaArchivos = SistemaArchivos.sa
-    private var const: Constantes { appEstado.constantes }
-    private var iconColor: Color { appEstado.temaActual.menuIconos }
-//    private var iconColor: Color { appEstado.temaActual.menuIconosNeutro }
-    private var iconW: Font.Weight { const.iconWeight }
+    private var const: Constantes { ap.constantes }
+//    private var c2: Color { ap.temaActual.menuIconos }
+//    private var iconFont.weight: Font.Weight { const.iconFont.weighteight }
+    
+    private var c2: Color {
+        if me.colorGris {
+            return .gray
+        } else {
+            return ap.temaActual.menuIconos
+        }
+    }
+    
+    private var c1: Color {
+        if me.dobleColor {
+            return ap.colorActual
+        } else if me.colorGris {
+            return .gray
+        } else {
+            return ap.temaActual.menuIconos
+        }
+    }
+    
+    private var iconSize: CGFloat { me.iconSize }
+    private var iconFont: EnumFuenteIcono { me.fuente }
     
     @ObservedObject var coleccionActualVM: ModeloColeccion
     
     private var menuRefreshTrigger: UUID { coleccionActualVM.menuRefreshTrigger }
-    
-//    private var appEstado.colorActual: Color {
-//        if appEstado.aplicarColorDirectorio {
-//            return coleccionActualVM.color
-//        } else if appEstado.colorNeutro {
-//            return .gray
-//        } else {
-//            return appEstado.colorPersonalizadoActual
-//        }
-//    }
-    
     private var iconoSM: String { coleccionActualVM.modoVista == .cuadricula ?  "custom.hand.grid" : "custom.hand.list"}
 
     var body: some View {
         
         HStack {
             //MARK: --- SELECCION MULTIPLE DE ELEMENTOS ---
-            Button(action: {
-                withAnimation { menuEstado.seleccionMultiplePresionada = true }
-            }) {
-                Image(iconoSM)
-                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.35)
-                    .contentTransition(.symbolEffect(.replace))
+            if me.iconoSeleccionMultiple {
+                Button(action: {
+                    withAnimation { me.seleccionMultiplePresionada = true }
+                }) {
+                    Image(iconoSM)
+                        .capaIconos(iconSize: iconSize, c1: c1, c2: c2, fontW: iconFont.weight, ajuste: 1.35)
+                        .contentTransition(.symbolEffect(.replace))
+                }
+                .offset(y: 0.85)
             }
-            .offset(y: 0.6)
 //MARK: - --- CONSEJO SELECCION MULTIPLE DE UNA COLECCION ---
 //            .popoverTip(ConsejoSeleccionMultiple())
 //MARK: - --- CONSEJO SELECCION MULTIPLE DE UNA COLECCION ---
@@ -73,8 +84,9 @@ struct MenuCentro: View {
                 if #available(iOS 17.0, *) { ConsejoImportarElementos().invalidate(reason: .actionPerformed) }
             }) {
                 Image(systemName: "tray.and.arrow.down")
-                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
+                    .capaIconos(iconSize: iconSize, c1: c1, c2: c2, fontW: iconFont.weight, ajuste: 1.05)
             }
+            .offset(y: 0.3)
 //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
             .popoverTip(ConsejoImportarElementos())
 //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
@@ -106,8 +118,7 @@ struct MenuCentro: View {
                 }
             }) {
                 Image(systemName: "folder.badge.plus")
-                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
-                    .offset(y: 0.6)
+                    .capaIconos(iconSize: iconSize, c1: c1, c2: c2, fontW: iconFont.weight, ajuste: 1.05)
             }
 //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
             .popoverTip(ConsejoCrearColeccion())
@@ -247,35 +258,26 @@ struct MenuCentro: View {
                 }
                 
             } label: {
-                Image("custom-folder-gear-top")
-                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
-                    .offset(x: 1, y: 0.6)
+                Image(systemName: "ellipsis")
+                    .rotationEffect(.degrees(90))
+                    .capaIconos(iconSize: iconSize, c1: c2, c2: c2, fontW: iconFont.weight, ajuste: 1.05)
+                    .offset(y: 0.5)
+                    .padding(.trailing, -3)
             }
             .id(menuRefreshTrigger)
-            .colorScheme(appEstado.temaActual == .dark ? .dark : .light)
-            
-            Button(action: {
-                self.menuEstado.ajustesGlobalesPresionado.toggle()
-            }) {
-                Image("custom-gear")
-                    .capaIconos(iconSize: const.iconSize, c1: appEstado.colorActual, c2: iconColor, fontW: iconW, ajuste: 1.05)
-                    .offset(y: 2)
-            }
-            .sheet(isPresented: $menuEstado.ajustesGlobalesPresionado) {
-                AjustesGlobales()
-            }
+            .colorScheme(ap.temaActual == .dark ? .dark : .light)
         }
         .alignmentGuide(.firstTextBaseline) { d in d[.bottom] }
         .onAppear { syncIconColors() }
-       .onChange(of: appEstado.temaActual) { syncIconColors() }
-       .onChange(of: appEstado.colorActual) { syncIconColors() }
+       .onChange(of: ap.temaActual) { syncIconColors() }
+       .onChange(of: c1) { syncIconColors() }
     }
     
     private func syncIconColors() {
         // aquí decides tú cuándo y cómo cambian (con o sin animación)
         withAnimation(.easeInOut(duration: 0.25)) {
-            cPrimario   = appEstado.colorActual
-            cSecundario = appEstado.temaActual.menuIconos
+            cPrimario   = c1
+            cSecundario = ap.temaActual.menuIconos
         }
     }
 }

@@ -28,21 +28,17 @@ class MenuEstado: ObservableObject {
     //MENU IZQUIERDA
     @Published var iconoMenuLateral: Bool { didSet { pd.guardarAjusteGeneral(valor: iconoMenuLateral, key: cpag.menuLateral) } }
     @Published var iconoFlechaAtras: Bool { didSet { pd.guardarAjusteGeneral(valor: iconoFlechaAtras, key: cpag.flechaAtras) } }
-    
-    //MENU CENTRO
-    @Published var iconoSeleccionMultiple: Bool = true
-    
-    //MENU DERECHA
-    @Published var iconoNoticicaciones: Bool = true
+    @Published var iconoSeleccionMultiple: Bool { didSet { pd.guardarAjusteGeneral(valor: iconoSeleccionMultiple, key: cpag.seleccionMultiple)} }
+    @Published var iconoNotificaciones: Bool { didSet { pd.guardarAjusteGeneral(valor: iconoNotificaciones, key: cpag.notificaciones)} }
     
     //COLORES DE LOS ICONOS
-    @Published var colorGris: Bool = true
-    @Published var colorAutomatico: Bool = false
-    @Published var dobleColor: Bool = false
-    
+    @Published var dobleColor: Bool { didSet { pd.guardarAjusteGeneral(valor: dobleColor, key: cpag.iconosDobleColor) } }
+    @Published var colorGris: Bool { didSet { pd.guardarAjusteGeneral(valor: colorGris, key: cpag.iconosColorGris) } }
+    @Published var colorAutomatico: Bool { didSet { pd.guardarAjusteGeneral(valor: colorAutomatico, key: cpag.iconosColorAuto) } }
+
     //TAMAÑO ICONOS
     @Published var iconSize: Double { didSet { pd.guardarAjusteGeneral(valor: iconSize, key: cpag.iconSize) } }
-    @Published var fuente: IconFontWeight = .thin
+    @Published var fuente: EnumFuenteIcono { didSet { pd.guardarAjusteGeneral(valor: fuente, key: cpag.iconoFuente) } }
 
     // --- SELECCION MULTIPLE ---
     @Published var seleccionMultiplePresionada: Bool = false {
@@ -92,8 +88,17 @@ class MenuEstado: ObservableObject {
         //modificaicon de iconos
         self.iconoMenuLateral = pd.obtenerAjusteGeneral(key: cpag.menuLateral, default: p.menuLateral)
         self.iconoFlechaAtras = pd.obtenerAjusteGeneral(key: cpag.flechaAtras , default: p.flechaAtras)
+        self.iconoSeleccionMultiple = pd.obtenerAjusteGeneral(key: cpag.seleccionMultiple , default: p.seleccionMultiple)
+        self.iconoNotificaciones = pd.obtenerAjusteGeneral(key: cpag.notificaciones , default: p.notificaciones)
         
+        //Colores iconos
+        self.dobleColor = pd.obtenerAjusteGeneral(key: cpag.iconosDobleColor, default: p.iconosDobleColor)
+        self.colorGris = pd.obtenerAjusteGeneral(key: cpag.iconosColorGris, default: p.iconosColorGris)
+        self.colorAutomatico = pd.obtenerAjusteGeneral(key: cpag.iconosColorAuto, default: p.iconosColorAuto)
+        
+        //tamaños iconos
         self.iconSize = pd.obtenerAjusteGeneral(key: cpag.iconSize, default: p.iconSize)
+        self.fuente = pd.obtenerAjusteGeneralEnum(key: cpag.iconoFuente, default: p.iconoFuente)
         
     }
     

@@ -97,7 +97,7 @@ extension Color {
 }
 
 //MARK: - FUENTES
-enum IconFontWeight: String, CaseIterable, Identifiable {
+enum EnumFuenteIcono: String, CaseIterable, Identifiable {
     case ultraLight = "UltraLight"
     case thin = "Thin"
     case light = "Light"

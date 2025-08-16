@@ -5,32 +5,65 @@ import SwiftUI
 
 struct MenuDerecha: View {
     
-    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var ap: AppEstado
+    @EnvironmentObject var me: MenuEstado
     @EnvironmentObject var hne: NotificacionesEstado
     @EnvironmentObject var pc: PilaColecciones
     
-    private var const: Constantes { appEstado.constantes }
-    private var iconColor: Color { appEstado.temaActual.menuIconos }
-    private var iconW: Font.Weight { const.iconWeight }
+    private var const: Constantes { ap.constantes }
+    
+    private var c2: Color {
+        if me.colorGris {
+            return .gray
+        } else {
+            return ap.temaActual.menuIconos
+        }
+    }
+    
+    private var c1: Color {
+        if me.dobleColor {
+            return ap.colorActual
+        } else if me.colorGris {
+            return .gray
+        } else {
+            return ap.temaActual.menuIconos
+        }
+    }
+    
+    private var iconSize: CGFloat { me.iconSize }
+    private var iconFont: EnumFuenteIcono { me.fuente }
     
     var body: some View {
-        
         HStack {
-            ZStack {
-                PopOutCollectionsView() { isExpandable in
-                    Image("notificaciones")
-                        .font(.system(size: const.iconSize * 1.03))
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(appEstado.colorActual, iconColor)
-                        .contentTransition(.symbolEffect(.replace))
-                        .fontWeight(iconW)
-                        .padding(.trailing, 2.5)
-                        .symbolEffect(.bounce, value: hne.nuevaNotificacion)
-                } content: { isExpandable, cerrarMenu in
-                    MenuHistorial()
+            if me.iconoNotificaciones {
+                ZStack {
+                    PopOutCollectionsView() { isExpandable in
+                        Image("notificaciones")
+                            .font(.system(size: iconSize * 1.03))
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(c1, c2)
+                            .contentTransition(.symbolEffect(.replace))
+                            .fontWeight(iconFont.weight)
+                            .padding(.trailing, 2)
+                            .symbolEffect(.bounce, value: hne.nuevaNotificacion)
+                    } content: { isExpandable, cerrarMenu in
+                        MenuHistorial()
+                    }
                 }
+                .padding(0)
             }
-            .padding(0)
+            
+            Button(action: {
+                withAnimation { self.me.ajustesGlobalesPresionado.toggle() }
+            }) {
+                Image("custom-gear")
+                    .capaIconos(iconSize: iconSize, c1: c1, c2: c2, fontW: iconFont.weight, ajuste: 1.05)
+                    .offset(y: 2)
+            }
+            .sheet(isPresented: $me.ajustesGlobalesPresionado) {
+                AjustesGlobales()
+            }
+            
         }
         .padding(0)
     }

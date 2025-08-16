@@ -75,6 +75,7 @@ struct PersistenciaDatos {
         case let v as EnumTipoSistemaArchivos: return v.rawValue
         case let v as EnumAjusteColor: return v.rawValue
         case let v as EnumBarraEstado: return v.rawValue
+        case let v as EnumFuenteIcono: return v.rawValue
             
         //colores
         case let v as Color: return v.toHexString

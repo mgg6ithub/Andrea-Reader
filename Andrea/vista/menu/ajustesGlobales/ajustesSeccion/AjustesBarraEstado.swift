@@ -67,23 +67,23 @@ struct BotonBE<T: Equatable>: View {
     
     var body: some View {
         Button(action: {
-                opcionActual = opcionSeleccionada
-            }) {
-                VStack(alignment: .center, spacing: 6) {
-                    
-                    Text(titulo)
-                        .font(.footnote)
-                        .foregroundColor(.primary)
-                    
-                    Image(systemName: icono)
-                        .font(.system(size: 22, weight: fuente ?? .medium))
-                        .foregroundStyle(LinearGradient(colors: coloresIcono, startPoint: .top, endPoint: .bottom))
-                        .frame(width: 30, height: 30)
-                }
-                .if(!isSelected) { v in
-                    v.opacity(0.4)
-                }
+            withAnimation { opcionActual = opcionSeleccionada }
+        }) {
+            VStack(alignment: .center, spacing: 6) {
+                
+                Text(titulo)
+                    .font(.footnote)
+                    .foregroundColor(.primary)
+                
+                Image(systemName: icono)
+                    .font(.system(size: 22, weight: fuente ?? .medium))
+                    .foregroundStyle(LinearGradient(colors: coloresIcono, startPoint: .top, endPoint: .bottom))
+                    .frame(width: 30, height: 30)
             }
-            .buttonStyle(.plain)
+            .if(!isSelected) { v in
+                v.opacity(0.4)
+            }
+        }
+        .buttonStyle(.plain)
     }
 }

@@ -87,7 +87,7 @@ struct AjustesMenu: View {
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
             VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Notificaciones", iconoEjemplo: "notificaciones", opcionBinding: $me.iconoNoticicaciones, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
+                TogglePersonalizado(titulo: "Notificaciones", iconoEjemplo: "notificaciones", opcionBinding: $me.iconoNotificaciones, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
                 
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
