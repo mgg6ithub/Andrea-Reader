@@ -20,7 +20,8 @@ import SwiftUI
 
 extension AppEstado {
     static var preview: AppEstado {
-        let ap = AppEstado(screenWidth: 393, screenHeight: 852)
+//        let ap = AppEstado(screenWidth: 393, screenHeight: 852)
+        let ap = AppEstado(screenWidth: 820, screenHeight: 1180)
         ap.temaActual = .dark
         ap.sistemaArchivos = .tradicional
         return ap
@@ -31,6 +32,7 @@ extension MenuEstado {
     static var preview: MenuEstado {
         let me = MenuEstado()
         me.iconSize = 24
+        me.fuente = .light
         return me
     }
 }
@@ -50,10 +52,9 @@ struct AjustesMenu: View {
     private var esOscuro: Bool { ap.temaActual == .dark }
     
     // Rango del slider
-    private let minIcon: Double = 16
-    private let maxIcon: Double = 44
-    // Marca recomendada al 35% del rango
-    private let recommendedSize: Double = 24 // <-- recomendado fijo
+    let minIcon = 16.0
+    let maxIcon = 44.0
+    let recommended = 24.0
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -122,102 +123,162 @@ struct AjustesMenu: View {
                 color: ap.temaActual.secondaryText
             )
             
-            VStack(spacing: 12) {
-                HStack {
-                    Text("Tamaño")
-                        .font(.headline)
-                        .foregroundColor(ap.temaActual.colorContrario)
-                    Spacer()
-                    Text("\(Int(me.iconSize)) pt")
-                        .font(.subheadline)
-                        .foregroundColor(ap.temaActual.secondaryText)
-                }
-
-                ZStack {
-                    Slider(value: $me.iconSize, in: minIcon...maxIcon, step: 1)
-
-                    GeometryReader { geo in
-                        // Posición horizontal de la muesca para 24 pt
-                        let t = CGFloat((recommendedSize - minIcon) / (maxIcon - minIcon)) // 0...1
-                        let x = t * geo.size.width
-
-                        VStack(spacing: 2) {
-                            Triangle()
-                                .fill(ap.temaActual.colorContrario.opacity(0.85))
-                                .frame(width: 10, height: 6)
-                                .rotationEffect(.degrees(180)) // punta hacia abajo
-
-                            Rectangle()
-                                .fill(ap.temaActual.colorContrario.opacity(0.85))
-                                .frame(width: 2, height: 12)
-
-                            // Etiqueta opcional
-                            Text("24 pt")
-                                .font(.caption2)
-                                .foregroundColor(ap.temaActual.secondaryText)
-                                .padding(.top, 2)
-                        }
-                        .padding(8) // área táctil más cómoda
-                        .background(Color.clear.contentShape(Rectangle()))
-                        .position(x: x, y: geo.size.height / 2)
-                        .onTapGesture {
-                            if me.iconSize != recommendedSize {
-                                withAnimation(.easeInOut) {
-                                    me.iconSize = recommendedSize
-                                }
-                            }
-                        }
-                        .accessibilityLabel("Tamaño recomendado 24 puntos")
-                        .accessibilityAddTraits(.isButton)
+            VStack(spacing: 30) {
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        Text("Tamaño")
+                            .font(.headline)
+                            .foregroundColor(ap.temaActual.colorContrario)
+                        Spacer()
+                        Text("\(Int(me.iconSize)) pt")
+                            .font(.subheadline)
+                            .foregroundColor(ap.temaActual.secondaryText)
                     }
-                    // importante: NO desactivar los gestos aquí, para que el tap en la muesca funcione
-                    // .allowsHitTesting(false)
-                }
-                .frame(height: 40)
 
-                // Vista previa rápida
-                HStack(spacing: 20) {
-                    Image(systemName: "sidebar.trailing")
-                    Image(systemName: "arrow.backward")
-                    Image(systemName: "bell")
-                }
-                .font(.system(size: me.iconSize))
-                .foregroundColor(ap.temaActual.colorContrario)
-                
-                HStack {
-                    Text("Fuente")
-                        .font(.headline)
-                        .foregroundColor(ap.temaActual.colorContrario)
-                    Spacer()
-                    Text(".light")
-                        .font(.subheadline)
-                        .foregroundColor(ap.temaActual.secondaryText)
+                    IconSizeSlider(
+                        value: $me.iconSize,
+                        min: minIcon,
+                        max: maxIcon,
+                        recommended: recommended,
+                        trackColor: ap.temaActual.colorContrario,     // base
+                        fillColor: .blue,                             // progreso
+                        markerColor: ap.temaActual.colorContrario,    // muesca
+                        textColor: ap.temaActual.secondaryText        // “24 pt”
+                    )
+                    
+                    Text("Escoge el tamaño que quieras para los iconos del menu.")
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
-                HStack(spacing: paddingHorizontal) {
-                    BotonBE(titulo: "UltraLight", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .on, opcionActual: $ap.modoBarraEstado, fuente: .ultraLight)
-                    Spacer()
-                    BotonBE(titulo: "Thin", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .off, opcionActual: $ap.modoBarraEstado, fuente: .thin)
-                    Spacer()
-                    BotonBE(titulo: "Light", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .auto, opcionActual: $ap.modoBarraEstado, fuente: .light)
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Text("Fuente")
+                            .font(.headline)
+                            .foregroundColor(ap.temaActual.colorContrario)
+                        Spacer()
+                        Text("\(me.fuente.displayName)")
+                            .font(.subheadline)
+                            .foregroundColor(ap.temaActual.secondaryText)
+                    }
+                    
+                    HStack(spacing: paddingHorizontal) {
+                        BotonBE(titulo: "UltraLight", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .ultraLight, opcionActual: $me.fuente, fuente: .ultraLight)
+                        Spacer()
+                        BotonBE(titulo: "Thin", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .thin, opcionActual: $me.fuente, fuente: .thin)
+                        Spacer()
+                        BotonBE(titulo: "Light", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .light, opcionActual: $me.fuente, fuente: .light)
+                    }
+                    .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                 }
-                .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                 
             }
-//            .padding(.horizontal, paddingHorizontal)
-//            .padding(.vertical, paddingVertical / 1.5)
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
         }
     }
 }
 
+struct IconSizeSlider: View {
+    @Binding var value: Double
+    let min: Double
+    let max: Double
+    let recommended: Double
+    var trackColor: Color
+    var fillColor: Color
+    var markerColor: Color
+    var textColor: Color
+
+    // qué tan “cerca” para ocultar marcador y snap
+    private let epsilon: Double = 0.5
+
+    var body: some View {
+        GeometryReader { geo in
+            let width = geo.size.width
+            let height = geo.size.height
+
+            // progreso actual 0...1
+            let t = CGFloat((value - min) / (max - min))
+            let xThumb = Swift.max(0, Swift.min(width, t * width))
+
+            // posición del recomendado
+            let tRec = CGFloat((recommended - min) / (max - min))
+            let xRec = Swift.max(0, Swift.min(width, tRec * width))
+
+            ZStack(alignment: .leading) {
+                // Track
+                Capsule().fill(trackColor.opacity(0.25)).frame(height: 4)
+
+                // Relleno hasta el thumb
+                Capsule().fill(fillColor).frame(width: Swift.max(8, xThumb), height: 4)
+
+                // Muesca recomendada (si no estamos prácticamente en 24)
+                if abs(value - recommended) > epsilon {
+                    VStack(spacing: 2) {
+                        Triangle()
+                            .fill(markerColor.opacity(0.9))
+                            .frame(width: 10, height: 6)
+                            .rotationEffect(.degrees(180))
+                        Rectangle()
+                            .fill(markerColor.opacity(0.9))
+                            .frame(width: 2, height: 12)
+                        Text("\(Int(recommended)) pt")
+                            .font(.caption2)
+                            .foregroundColor(textColor)
+                            .padding(.top, 2)
+                    }
+                    .padding(8) // área táctil
+                    .contentShape(Rectangle())
+                    .position(x: xRec, y: height/2)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) { value = recommended }
+                    }
+                    .accessibilityLabel("Tamaño recomendado \(Int(recommended)) puntos")
+                    .accessibilityAddTraits(.isButton)
+                }
+
+                // Thumb
+                Circle()
+                    .fill(.ultraThinMaterial)
+                    .overlay(Circle().stroke(fillColor, lineWidth: 2))
+                    .frame(width: 22, height: 22)
+                    .position(x: xThumb, y: height/2)
+                    .gesture(
+                        DragGesture(minimumDistance: 0)
+                            .onChanged { g in
+                                let x = Swift.max(0, Swift.min(width, g.location.x))
+                                let nt = x / width
+                                value = min + Double(nt) * (max - min)
+                            }
+                            .onEnded { _ in
+                                if abs(value - recommended) <= epsilon {
+                                    withAnimation(.spring(response: 0.25, dampingFraction: 0.9)) {
+                                        value = recommended
+                                    }
+                                }
+                            }
+                    )
+            }
+            .contentShape(Rectangle())
+            // tap sobre la pista
+            .onTapGesture { location in
+                let x = location.x
+                let nt = Swift.max(0, Swift.min(1, x / width))
+                let newVal = min + Double(nt) * (max - min)
+                withAnimation(.easeInOut) { value = newVal }
+            }
+        }
+        .frame(height: 44)
+    }
+}
+
+// Triángulo para la muesca
 private struct Triangle: Shape {
     func path(in rect: CGRect) -> Path {
-        Path { path in
-            path.move(to: CGPoint(x: rect.midX, y: rect.minY))
-            path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-            path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-            path.closeSubpath()
+        Path { p in
+            p.move(to: .init(x: rect.midX, y: rect.minY))
+            p.addLine(to: .init(x: rect.maxX, y: rect.maxY))
+            p.addLine(to: .init(x: rect.minX, y: rect.maxY))
+            p.closeSubpath()
         }
     }
 }
+

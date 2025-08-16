@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MenuVista: View {
-    
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var pc: PilaColecciones
     @State private var menuCentroWidth: CGFloat = 0
     
@@ -10,7 +10,7 @@ struct MenuVista: View {
             ZStack {
                 HStack {
                     MenuIzquierda()
-                        .fondoBoton1(pH: 3, pV: 3, isActive: false, color: .gray.opacity(0.6))
+                        .fondoBoton1(pH: 3, pV: 3, isActive: false, color: ap.sistemaArchivos == .tradicional ? .gray.opacity(0) : .gray.opacity(0.6))
                         .padding(0)
                     Spacer()
                     MenuDerecha()

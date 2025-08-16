@@ -17,6 +17,7 @@ class MenuEstado: ObservableObject {
     
     //TAMAÑO ICONOS
     @Published var iconSize: Double = 0.0
+    @Published var fuente: IconFontWeight = .thin
     
     //MENU IZQUIERDA
     

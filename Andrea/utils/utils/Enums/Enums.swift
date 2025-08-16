@@ -96,6 +96,28 @@ extension Color {
     }
 }
 
+//MARK: - FUENTES
+enum IconFontWeight: String, CaseIterable, Identifiable {
+    case ultraLight = "UltraLight"
+    case thin = "Thin"
+    case light = "Light"
+    
+    var id: String { rawValue }
+    
+    /// Retorna el Font.Weight correspondiente
+    var weight: Font.Weight {
+        switch self {
+        case .ultraLight: return .ultraLight
+        case .thin: return .thin
+        case .light: return .light
+        }
+    }
+    
+    /// Texto legible
+    var displayName: String {
+        rawValue
+    }
+}
 
 
 //MARK: - TEMAS
