@@ -3,21 +3,32 @@
 import SwiftUI
 
 @MainActor
+extension ModeloColeccion {
+    func elementosParaMostrar(segun modo: EnumTipoSistemaArchivos) -> [ElementoSistemaArchivos] {
+        if modo == .arbol {
+            return elementos.filter { !($0 is Coleccion) }
+        } else {
+            return elementos
+        }
+    }
+}
+
+
+@MainActor
 class ModeloColeccion: ObservableObject {
     
     let coleccion: Coleccion
-  @Published var tipoSA: EnumTipoSistemaArchivos?
-    
-  @Published var elementos: [ElementoSistemaArchivos] = []
-  @Published var isLoading = false
-    
-  @Published var color: Color
-  @Published var scrollPosition: Int
-  @Published var modoVista: EnumModoVista
-  @Published var ordenacion: EnumOrdenaciones
-  @Published var esInvertido: Bool = false
 
-  @Published var columnas: Int = 4
+    @Published var elementos: [ElementoSistemaArchivos] = []
+    @Published var isLoading = false
+
+    @Published var color: Color
+    @Published var scrollPosition: Int
+    @Published var modoVista: EnumModoVista
+    @Published var ordenacion: EnumOrdenaciones
+    @Published var esInvertido: Bool = false
+
+    @Published var columnas: Int = 4
     @Published var altura: CGFloat = 145 {
         didSet {
             ajusteHorizontal = actualizarAjusteHorizontal(altura: altura)
@@ -25,14 +36,14 @@ class ModeloColeccion: ObservableObject {
     }
 
     @Published var ajusteHorizontal: CGFloat = 40
-  @Published var tiempoCarga: Double? = nil
+    @Published var tiempoCarga: Double? = nil
 
-  @Published var elementosCargados: Bool = false
-    
-  @Published var isPerformingAutoScroll = false
-    
+    @Published var elementosCargados: Bool = false
+
+    @Published var isPerformingAutoScroll = false
+
     @Published var menuRefreshTrigger: UUID = UUID()
-    
+
     func actualizarAjusteHorizontal(altura: CGFloat) -> CGFloat {
         // Punto base: 140 -> 55 ajuste
         // Cada 10 puntos de altura extra, sumar 5 al ajuste
@@ -54,7 +65,7 @@ class ModeloColeccion: ObservableObject {
             // Colección mínima para poder inicializar
         self.coleccion = Coleccion(directoryName: "TEST", directoryURL: URL(fileURLWithPath: ""), fechaImportacion: Date(), fechaModificacion: Date(), favorito: true, protegido: true)
             
-            self.tipoSA = nil
+//            self.tipoSA = nil
             self.elementos = []
             self.isLoading = false
             self.color = .gray
@@ -142,14 +153,6 @@ class ModeloColeccion: ObservableObject {
         }
         
     }
-    
-    //Inyectamos appEstado desde CuadriculaVista
-    func setSistemaArchivos(_ tipo: EnumTipoSistemaArchivos) {
-        guard tipoSA != tipo else { return }
-        tipoSA = tipo
-        elementosCargados = false
-        cargarElementos()
-    }
 
     func cargarElementos() {
         guard !elementosCargados else { return }
@@ -162,12 +165,6 @@ class ModeloColeccion: ObservableObject {
         var filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
                 $0.shouldInclude(url: url)
-            }
-        }
-        
-        if self.tipoSA == .arbol {
-            filteredURLs = filteredURLs.filter { url in
-                !SistemaArchivosUtilidades.sau.isDirectory(elementURL: url)
             }
         }
 

@@ -36,7 +36,6 @@ class AppEstado: ObservableObject {
     
     // --- AJUSTES TEMAS ---
     @Published var temaActual: EnumTemas { didSet { pd.guardarAjusteGeneral(valor: temaActual, key: cpag.temaActual) } }
-    @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { pd.guardarAjusteGeneral(valor: sistemaArchivos, key: cpag.sistemaArchivos) } }
     
     // --- AJUSTES DE COLORES ---
     @Published var colorPersonalizadoActual: Color { didSet { pd.guardarAjusteGeneral(valor: colorPersonalizadoActual, key: cpag.colorPersonalizado) } }
@@ -53,6 +52,9 @@ class AppEstado: ObservableObject {
             return colorPersonalizadoActual
         }
     }
+    
+    //SISTEMA ARCHIVOS
+    @Published var sistemaArchivos: EnumTipoSistemaArchivos { didSet { pd.guardarAjusteGeneral(valor: sistemaArchivos, key: cpag.sistemaArchivos) } }
     
     // --- RENDIMIENTO
     @Published var shadows: Bool { didSet { pd.guardarAjusteGeneral(valor: shadows, key: cpag.shadows) } }

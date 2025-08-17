@@ -42,12 +42,7 @@ struct VistaPrincipal: View {
                 
             }
             .onAppear {
-                coleccionMostrada = pc.getColeccionActual()
-                coleccionMostrada?.setSistemaArchivos(ap.sistemaArchivos)
-            }
-            .onChange(of: ap.sistemaArchivos) {
-                print("Cambiando el tipo de sistema de archivos: ", ap.sistemaArchivos)
-                coleccionMostrada?.setSistemaArchivos(ap.sistemaArchivos)
+                coleccionMostrada = pc.getColeccionActual() // <- necesario
             }
             .onChange(of: pc.coleccionActualVM?.coleccion.id) {
                 guard pc.coleccionActualVM?.coleccion.id != coleccionMostrada?.coleccion.id else { return }

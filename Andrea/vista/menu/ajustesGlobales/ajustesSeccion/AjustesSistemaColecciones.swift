@@ -26,7 +26,6 @@ struct AjustesSistemaColecciones: View {
     private var esOscuro: Bool { ap.temaActual == .dark }
     
     var body: some View {
-        
         VStack(alignment: .center, spacing: 0) {
             
             Text("Sistema de archivos") //TITULO
@@ -38,7 +37,6 @@ struct AjustesSistemaColecciones: View {
             CirculoActivoVista(isSection: isSection, nombre: "Escoge el sistema de archivos", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
             HStack(spacing: 0) {
-                
                 RectangleFormView<EnumTipoSistemaArchivos>(
                     titulo: "Tradicional",
                     icono: "folder.fill",
@@ -54,12 +52,9 @@ struct AjustesSistemaColecciones: View {
                     opcionSeleccionada: .arbol,
                     opcionActual: $ap.sistemaArchivos
                 )
-                
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-            
         }
-//        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
     }
     
 }

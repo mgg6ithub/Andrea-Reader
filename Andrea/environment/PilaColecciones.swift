@@ -266,12 +266,6 @@ class PilaColecciones: ObservableObject {
         guard !colecciones.isEmpty else { return }
         guard let home = colecciones.first else { return }
         
-        print("TODAS LAS COLECCIONES: ")
-        for col in self.colecciones {
-            print(col.coleccion.nombre)
-        }
-        print("volviendo a la primera coleccion: ", home.coleccion.nombre)
-        
         withAnimation(.easeInOut(duration: 0.15)) {
             colecciones = [home]
             actualizarColeccionActual()
