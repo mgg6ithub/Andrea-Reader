@@ -99,7 +99,11 @@ struct ClavesPersistenciaAjustesGenerales {
     
     public let fondoMenu: String = "fondoMenu"
     public let colorFondoMenu: String = "colorFondoMenu"
+    
     //HISTORIAL
+    public let historiaclColecciones: String = "historialColecciones"
+    public let historialEstilo: String = "historialEstilo"
+    public let historialSize: String = "historialSize"
     
 }
 
@@ -139,6 +143,9 @@ struct AjustesGeneralesPredeterminados {
     public let colorFondoMenu: EnumFondoMenu = .transparente
     
     //HISTORIAL
+    public let historialColecciones: Bool = true
+    public let historialEstilo: EnumEstiloHistorialColecciones = .basico
+    public let historialSize: Double = 18.0
     
 }
 

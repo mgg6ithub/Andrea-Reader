@@ -199,7 +199,6 @@ struct AjustesMenu: View {
                 
                 if me.fondoMenu {
                     VStack( alignment: .trailing, spacing: 0) {
-                        
                         TogglePersonalizado(
                             titulo: "Transparente",
                             opcionBinding: Binding(

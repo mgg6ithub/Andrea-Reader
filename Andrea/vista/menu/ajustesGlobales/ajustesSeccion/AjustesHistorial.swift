@@ -15,21 +15,77 @@ struct AjustesHistorial: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            Text("Menu") //TITULO
-                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+            Text("Historial de colecciones") //TITULO
+                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("El menu son los iconos de arriba del todo y puedes personalizarlos como mas te guste.")
-                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+            Text("Un historial rapido para navegar y ubicarte entre las colecciones. Quitalo o modificalo a tu gusto.")
+                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.temaActual.secondaryText)
             
             VStack(spacing: 0) {
                         
-                TogglePersonalizado(titulo: "Icono izquierdo", descripcion: "Activa o desactiva el icono.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
+                TogglePersonalizado(titulo: "Historial de colecciones", descripcion: "Activa o desactiva el historial.", opcionBinding: $ap.historialColecciones, opcionTrue: "Deshabilitar historial", opcionFalse: "Habilitar historial", isInsideToggle: true, isDivider: ap.historialColecciones ? true : false)
                 
-                Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
-                    .capaDescripcion(s: const.titleSize * 0.8, c: ap.temaActual.secondaryText, pH: 0, pW: 0)
+                if ap.historialColecciones {
+                    VStack( alignment: .trailing, spacing: 0) {
+                        TogglePersonalizado(
+                            titulo: "Básico",
+                            opcionBinding: Binding(
+                                get: { ap.historialEstilo == .basico },
+                                set: { isOn in
+                                    if isOn { ap.historialEstilo = .basico }
+                                }
+                            ),
+                            opcionTrue: "Deshabilitar estilo",
+                            opcionFalse: "Habilitar estilo",
+                            isInsideToggle: true,
+                            isDivider: false
+                        ).fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                         
+                        TogglePersonalizado(
+                            titulo: "Degradado",
+                            opcionBinding: Binding(
+                                get: { ap.historialEstilo == .degradado },
+                                set: { isOn in
+                                    if isOn { ap.historialEstilo = .degradado }
+                                }
+                            ),
+                            opcionTrue: "Deshabilitar estilo",
+                            opcionFalse: "Habilitar estilo",
+                            isInsideToggle: true,
+                            isDivider: false
+                        ).fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                        
+                    }
+                }
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        Text("Tamaño")
+                            .font(.headline)
+                            .foregroundColor(ap.temaActual.colorContrario)
+                        Spacer()
+                        Text("\(Int(ap.historialSize)) pt")
+                            .font(.subheadline)
+                            .foregroundColor(ap.temaActual.secondaryText)
+                    }
+
+                    IconSizeSlider(
+                        value: $ap.historialSize,
+                        min: 16,
+                        max: 26,
+                        recommended: AjustesGeneralesPredeterminados().historialSize,
+                        trackColor: ap.temaActual.colorContrario,     // base
+                        fillColor: .blue,                             // progreso
+                        markerColor: ap.temaActual.colorContrario,    // muesca
+                        textColor: ap.temaActual.secondaryText        // “24 pt”
+                    )
+                    
+                    Text("Escoge el tamaño que quieras para el historial de colecciones.")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
         }
     }

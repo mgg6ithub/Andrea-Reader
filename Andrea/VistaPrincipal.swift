@@ -99,8 +99,10 @@ struct VistaPrincipal: View {
                         .padding(.vertical, 8 * escala)
                         .padding(.bottom, 12.5 * escala)
 
-                    HistorialColecciones()
-                        .frame(height: 50)
+                    if ap.historialColecciones {
+                        HistorialColecciones()
+                            .frame(height: 50)
+                    }
                 }
                 .padding(.horizontal, cpd.padding15)
             }

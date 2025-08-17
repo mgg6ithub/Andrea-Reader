@@ -32,8 +32,7 @@ struct ChevronAnimado: View {
         Image(systemName: "chevron.forward")
             .font(.system(size: isActive ? 16 : 10))
             .foregroundColor(.gray.opacity(isActive ? 1.0 : 0.8))
-//            .aparicionStiffness(show: $show)
-//            .aparicionSuave(show: $show)
+            .aparicionSuave(show: $show)
     }
 }
 
@@ -58,7 +57,29 @@ extension View {
     }
 }
 
+extension View {
+    @ViewBuilder
+    func fondoHistorial(
+        estilo: EnumEstiloHistorialColecciones,
+        pH: CGFloat,
+        pV: CGFloat = 7,
+        isActive: Bool,
+        color: Color,
+        borde: Bool = true
+    ) -> some View {
+        switch estilo {
+        case .basico:
+            self.fondoBoton1(pH: pH, pV: pV, isActive: isActive, color: color)
+        case .degradado:
+            self.fondoBoton(pH: pH, pV: pV, isActive: isActive, color: color, borde: borde)
+        }
+    }
+}
+
 struct ColeccionRectanguloAvanzado<Content: View>: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
     let textoSize: CGFloat
     let colorPrimario: Color
     let color: Color
@@ -78,11 +99,12 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .fixedSize()
             .layoutPriority(1)
 //            .fondoBoton(pH: pH, pV: 7, isActive: isActive, color: color, borde: true)
-            .fondoBoton1(pH: pH, pV: 7, isActive: isActive, color: color)
-//            .aparicionSuave(show: $show)
-//            .if(isActive) { view in
-//                view.aparicionStiffness(show: $show)
-//            }
+//            .fondoBoton1(pH: pH, pV: 7, isActive: isActive, color: color)
+            .fondoHistorial(estilo: ap.historialEstilo, pH: pH, isActive: isActive, color: color)
+            .if(isActive) { view in
+                view.aparicionStiffness(show: $show)
+            }
+            .aparicionSuave(show: $show)
     }
 }
 

@@ -18,7 +18,7 @@ class AppEstado: ObservableObject {
             }
         }
     }
-        
+    
     @Published var ultimoArchivoLeido: Archivo? = nil
     
     // --- VARIABLES AL INICIAR LA APLICACION ---
@@ -41,7 +41,7 @@ class AppEstado: ObservableObject {
     // --- AJUSTES DE COLORES ---
     @Published var colorPersonalizadoActual: Color { didSet { pd.guardarAjusteGeneral(valor: colorPersonalizadoActual, key: cpag.colorPersonalizado) } }
     @Published var ajusteColorSeleccionado: EnumAjusteColor { didSet { pd.guardarAjusteGeneral(valor: ajusteColorSeleccionado, key: cpag.ajusteColor) } }
-
+    
     //AJUSTE UNA UNICA VEZ PARA TODO EL PROGRAMA EL COLOR
     var colorActual: Color {
         switch ajusteColorSeleccionado {
@@ -61,6 +61,9 @@ class AppEstado: ObservableObject {
     // --- MENU ---
     
     // --- HISTORIAL DE COLECCIONES ---
+    @Published var historialColecciones: Bool { didSet { pd.guardarAjusteGeneral(valor: historialColecciones, key: cpag.historiaclColecciones) } }
+    @Published var historialEstilo: EnumEstiloHistorialColecciones { didSet { pd.guardarAjusteGeneral(valor: historialEstilo, key: cpag.historialEstilo) } }
+    @Published var historialSize: Double { didSet { pd.guardarAjusteGeneral(valor: historialSize, key: cpag.historialSize) } }
     
     // --- LIBRERIA ---
     
@@ -116,6 +119,11 @@ class AppEstado: ObservableObject {
         // Erendimiento
         self.shadows = pd.obtenerAjusteGeneral(key: cpag.shadows, default: p.shadows)
         // self.animaciones = pd.obtenerAjusteGeneral(key: "animaciones", default: true)
+        
+        //HISTORIAL
+        self.historialColecciones = pd.obtenerAjusteGeneral(key: cpag.historiaclColecciones, default: p.historialColecciones)
+        self.historialEstilo = pd.obtenerAjusteGeneralEnum(key: cpag.historiaclColecciones, default: p.historialEstilo)
+        self.historialSize = pd.obtenerAjusteGeneral(key: cpag.historialSize, default: p.historialSize)
         
     }
     

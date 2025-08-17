@@ -15,7 +15,7 @@ struct HistorialColecciones: View {
     @State private var show: Bool = false
 
     // --- VARIABLES CALCULADAS ---
-    private var variable: CGFloat = 18
+    private var variable: CGFloat { appEstado.historialSize }
     private var escala: CGFloat { appEstado.constantes.scaleFactor }
     private var grande: CGFloat { variable * escala }
     private var peke: CGFloat { (variable - 7) * escala }
@@ -36,10 +36,9 @@ struct HistorialColecciones: View {
                 ) {
                     HStack(spacing: 10) {
                         Image(systemName: "house")
-//                            .opacity(0.75)
                         
                         Text("Home")
-                            .font(.system(size: 20 * appEstado.constantes.scaleFactor))
+                            .font(.system(size: (variable - 1) * appEstado.constantes.scaleFactor))
                             .bold()
                     }
                 }
@@ -64,7 +63,6 @@ struct HistorialColecciones: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
                     let coleccionesFiltradas = pc.colecciones.filter { $0.coleccion.nombre != "HOME" }
-                    
                     ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
                         Group {
                             if pc.esColeccionActual(coleccion: vm.coleccion) {

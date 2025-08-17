@@ -96,7 +96,6 @@ extension Color {
     }
 }
 
-//MARK: - FUENTES
 // MARK: - FUENTES
 enum EnumFuenteIcono: String, CaseIterable, Identifiable {
     case ultraLight = "UltraLight"
@@ -134,6 +133,13 @@ enum EnumFondoMenu: String, CaseIterable {
     case transparente
     case liquido
     case metalico
+}
+
+
+//MARK: - HISTORIAL
+enum EnumEstiloHistorialColecciones: String, CaseIterable {
+    case basico
+    case degradado
 }
 
 
