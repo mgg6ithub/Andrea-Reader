@@ -181,11 +181,17 @@ struct ContenidoAjustes: View {
                                     case "AjustesMenu":
                                         AjustesMenu(isSection: selectedSection == section)
                                     
+                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
+                                    
                                     case "AjustesHistorial":
                                         AjustesHistorial(isSection: selectedSection == section)
                                     
+                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
+                                    
                                     case "AjustesLibreria":
                                         AjustesLibreria(isSection: selectedSection == section)
+                                    
+                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
                                     
                                     default:
                                         EmptyView()

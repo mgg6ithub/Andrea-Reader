@@ -119,6 +119,168 @@ extension View {
     }
 }
 
+// MARK: - BOTÓN FONDO: LIQUID GLASS
+extension View {
+    func fondoBotonGlass(
+        pH: CGFloat,
+        pV: CGFloat,
+        isActive: Bool,
+        color: Color? = nil,
+        cornerRadius: CGFloat = 10,
+        trailingP: CGFloat? = nil
+    ) -> some View {
+        let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+
+        return self
+            .padding(.horizontal, pH)
+            .padding(.vertical, pV)
+            // Capa de vidrio (detrás) — NO capta toques
+            .background {
+                shape
+                    .fill(.ultraThinMaterial)
+                    .allowsHitTesting(false)
+            }
+            // Película de color (encima) — NO capta toques
+            .overlay {
+                Group {
+                    if let color {
+                        shape
+                            .fill(color.opacity(isActive ? 0.18 : 0.12))
+                            .blendMode(.plusLighter)
+                    }
+                }
+                .allowsHitTesting(false)
+            }
+            // Borde/realce (encima) — NO capta toques
+            .overlay {
+                shape
+                    .strokeBorder(
+                        LinearGradient(
+                            stops: [
+                                .init(color: .white.opacity(0.65), location: 0.0),
+                                .init(color: .white.opacity(0.12), location: 1.0)
+                            ],
+                            startPoint: .topLeading, endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 0.75
+                    )
+                    .allowsHitTesting(false)
+            }
+            .compositingGroup()
+            .shadow(color: .black.opacity(isActive ? 0.18 : 0.12),
+                    radius: isActive ? 10 : 6, x: 0, y: 2)
+            .modifier(TrailingPadding(trailing: trailingP))
+    }
+}
+
+
+// MARK: - BOTÓN FONDO: METAL OSCURO (no bloquea toques)
+extension View {
+    /// Fondo metálico oscuro tipo "gunmetal".
+    /// - Parameters:
+    ///   - pH/pV: padding interno
+    ///   - isActive: sube contraste/sombra al activarse
+    ///   - tint: tinte opcional para colorear el metal (ej. .blue, .teal). Nil = acero oscuro neutro
+    ///   - cornerRadius: radio de la tarjeta
+    ///   - trailingP: padding externo opcional en .trailing
+    func fondoBotonMetalDark(
+        pH: CGFloat,
+        pV: CGFloat,
+        isActive: Bool,
+        color: Color? = nil,
+        cornerRadius: CGFloat = 10,
+        trailingP: CGFloat? = nil
+    ) -> some View {
+        let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+
+        // Paleta base "gunmetal"
+        let top = Color(red: 0.20, green: 0.21, blue: 0.23)
+        let mid = Color(red: 0.13, green: 0.14, blue: 0.16)
+        let bot = Color(red: 0.17, green: 0.18, blue: 0.20)
+
+        return self
+            .padding(.horizontal, pH)
+            .padding(.vertical, pV)
+
+            // Base metálica
+            .background {
+                shape
+                    .fill(
+                        LinearGradient(
+                            stops: [
+                                .init(color: top, location: 0.0),
+                                .init(color: mid, location: 0.55),
+                                .init(color: bot, location: 1.0)
+                            ],
+                            startPoint: .topLeading, endPoint: .bottomTrailing
+                        )
+                    )
+                    // Brillo especular (banda diagonal)
+                    .overlay {
+                        shape
+                            .fill(
+                                LinearGradient(
+                                    stops: [
+                                        .init(color: .white.opacity(isActive ? 0.20 : 0.12), location: 0.00),
+                                        .init(color: .clear,                               location: 0.38),
+                                        .init(color: .white.opacity(isActive ? 0.12 : 0.06), location: 0.62),
+                                        .init(color: .clear,                               location: 1.00)
+                                    ],
+                                    startPoint: .topLeading, endPoint: .bottomTrailing
+                                )
+                            )
+                            .blendMode(.screen)
+                    }
+                    // Volumen vertical sutil (como "grain" leve)
+                    .overlay {
+                        shape
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        .white.opacity(0.04),
+                                        .clear,
+                                        .black.opacity(0.05)
+                                    ],
+                                    startPoint: .top, endPoint: .bottom
+                                )
+                            )
+                            .blendMode(.overlay)
+                    }
+                    // Borde interno claro (resalta la arista superior/izquierda)
+                    .overlay {
+                        shape
+                            .strokeBorder(.white.opacity(0.10), lineWidth: 0.9)
+                            .blendMode(.overlay)
+                    }
+                    // Sombra exterior (profundidad)
+                    .shadow(color: .black.opacity(isActive ? 0.32 : 0.22),
+                            radius: isActive ? 10 : 7, x: 0, y: 2)
+                    .allowsHitTesting(false) // <- no roba toques
+            }
+
+            // Tinte opcional para “anodizado” o tono sutil
+            .overlay {
+                if let color {
+                    shape
+                        .fill(color.opacity(0.18))
+                        .blendMode(.color)
+                        .allowsHitTesting(false)
+                }
+            }
+            // Bisel oscuro muy suave para separar de fondos claros
+            .overlay {
+                shape
+                    .stroke(.black.opacity(0.20), lineWidth: 0.6)
+                    .blendMode(.multiply)
+                    .allowsHitTesting(false)
+            }
+            .compositingGroup()
+            .modifier(TrailingPadding(trailing: trailingP))
+    }
+}
+
+
+
 private struct TrailingPadding: ViewModifier {
     let trailing: CGFloat?
     func body(content: Content) -> some View {

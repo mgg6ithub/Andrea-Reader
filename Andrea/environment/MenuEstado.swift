@@ -39,6 +39,11 @@ class MenuEstado: ObservableObject {
     //TAMAÑO ICONOS
     @Published var iconSize: Double { didSet { pd.guardarAjusteGeneral(valor: iconSize, key: cpag.iconSize) } }
     @Published var fuente: EnumFuenteIcono { didSet { pd.guardarAjusteGeneral(valor: fuente, key: cpag.iconoFuente) } }
+    
+    //FONDO DEL MENU
+    @Published var fondoMenu: Bool { didSet { pd.guardarAjusteGeneral(valor: fondoMenu, key: cpag.fondoMenu) } }
+    @Published var colorFondoMenu: EnumFondoMenu { didSet { pd.guardarAjusteGeneral(valor: colorFondoMenu, key: cpag.colorFondoMenu) } }
+    
 
     // --- SELECCION MULTIPLE ---
     @Published var seleccionMultiplePresionada: Bool = false {
@@ -99,6 +104,9 @@ class MenuEstado: ObservableObject {
         self.iconSize = pd.obtenerAjusteGeneral(key: cpag.iconSize, default: p.iconSize)
         self.fuente = pd.obtenerAjusteGeneralEnum(key: cpag.iconoFuente, default: p.iconoFuente)
         
+        //fondo
+        self.fondoMenu = pd.obtenerAjusteGeneral(key: cpag.fondoMenu, default: p.fondoMenu)
+        self.colorFondoMenu = pd.obtenerAjusteGeneralEnum(key: cpag.colorFondoMenu, default: p.colorFondoMenu)
     }
     
     //MARK: --- LOGICA PARA LA SELECCION MULTIPLE --- 

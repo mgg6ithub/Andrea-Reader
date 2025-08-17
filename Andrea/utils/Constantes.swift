@@ -97,6 +97,8 @@ struct ClavesPersistenciaAjustesGenerales {
     public let iconSize: String = "iconSize"
     public let iconoFuente: String = "iconoFuente"
     
+    public let fondoMenu: String = "fondoMenu"
+    public let colorFondoMenu: String = "colorFondoMenu"
     //HISTORIAL
     
 }
@@ -132,6 +134,9 @@ struct AjustesGeneralesPredeterminados {
     
     public let iconSize: Double = 24
     public let iconoFuente: EnumFuenteIcono = .thin
+    
+    public let fondoMenu: Bool = true
+    public let colorFondoMenu: EnumFondoMenu = .transparente
     
     //HISTORIAL
     

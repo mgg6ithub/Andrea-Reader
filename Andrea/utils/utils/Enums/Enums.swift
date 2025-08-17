@@ -97,33 +97,43 @@ extension Color {
 }
 
 //MARK: - FUENTES
+// MARK: - FUENTES
 enum EnumFuenteIcono: String, CaseIterable, Identifiable {
     case ultraLight = "UltraLight"
-    case thin = "Thin"
-    case light = "Light"
-    
+    case thin       = "Thin"
+    case light      = "Light"
+    case regular    = "Regular"  // nuevo
+    case medium     = "Medium"   // nuevo
+
     var id: String { rawValue }
-    
+
     /// Retorna el Font.Weight correspondiente
     var weight: Font.Weight {
         switch self {
         case .ultraLight: return .ultraLight
-        case .thin: return .thin
-        case .light: return .light
+        case .thin:       return .thin
+        case .light:      return .light
+        case .regular:    return .regular     // nuevo
+        case .medium:     return .medium      // nuevo
         }
     }
-    
+
     /// Texto legible
-    var displayName: String {
-        rawValue
-    }
+    var displayName: String { rawValue }
 }
+
 
 //MARK: - COLORES
 enum EnumAjusteColor: String, CaseIterable {
     case colorPersonalizado
     case colorNeutral
     case colorColeccion
+}
+
+enum EnumFondoMenu: String, CaseIterable {
+    case transparente
+    case liquido
+    case metalico
 }
 
 

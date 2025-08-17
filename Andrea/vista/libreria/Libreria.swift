@@ -9,7 +9,7 @@ struct Libreria: View {
         ZStack {
             if vm.elementos.isEmpty {
                 if vm.coleccion.nombre == "HOME" {
-                    ImagenLibreriaVacia(imagen: "estanteria-vacia", texto: "Biblioteca \"Andrea\" vacía.", anchura: 300, altura: 350)
+                    ImagenLibreriaVacia(imagen: "estanteria-vacia2", texto: "Biblioteca \"Andrea\" vacía.", anchura: 315, altura: 350)
                 } else {
                     ImagenLibreriaVacia(imagen: "caja-vacia", texto: "Colección vacia, sin elementos.", anchura: 235, altura: 235)
                 }

@@ -20,8 +20,8 @@ import SwiftUI
 
 extension AppEstado {
     static var preview: AppEstado {
-//        let ap = AppEstado(screenWidth: 393, screenHeight: 852)
-        let ap = AppEstado(screenWidth: 820, screenHeight: 1180)
+        let ap = AppEstado(screenWidth: 393, screenHeight: 852)
+//        let ap = AppEstado(screenWidth: 820, screenHeight: 1180)
         ap.temaActual = .dark
         ap.sistemaArchivos = .tradicional
         return ap
@@ -112,6 +112,7 @@ struct AjustesMenu: View {
                             me.colorAutomatico = false
                         }
                     }
+                
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
             // MARK: --- TAMAÑO DE ICONOS ---
@@ -149,7 +150,7 @@ struct AjustesMenu: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .center, spacing: 10) {
                     HStack {
                         Text("Fuente")
                             .font(.headline)
@@ -162,16 +163,91 @@ struct AjustesMenu: View {
                     
                     HStack(spacing: paddingHorizontal) {
                         BotonBE(titulo: "UltraLight", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .ultraLight, opcionActual: $me.fuente, fuente: .ultraLight)
-                        Spacer()
+//                        Spacer()
                         BotonBE(titulo: "Thin", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .thin, opcionActual: $me.fuente, fuente: .thin)
-                        Spacer()
+//                        Spacer()
                         BotonBE(titulo: "Light", icono: "textformat.alt", coloresIcono: [.black], opcionSeleccionada: .light, opcionActual: $me.fuente, fuente: .light)
+//                        Spacer()
+                        BotonBE(titulo: "Regular", icono: "textformat.alt", coloresIcono: [.black],
+                                opcionSeleccionada: .regular, opcionActual: $me.fuente, fuente: .regular)
+//                        Spacer()
+                        BotonBE(titulo: "Medium", icono: "textformat.alt", coloresIcono: [.black],
+                                opcionSeleccionada: .medium, opcionActual: $me.fuente, fuente: .medium)
                     }
                     .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
                 
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
+            // MARK: --- FONDO DE LOS ICONOS ---
+            CirculoActivoVista(
+                isSection: isSection,
+                nombre: "Fondo del menu",
+                titleSize: const.descripcionAjustes,
+                color: ap.colorActual
+            )
+            
+            VStack(spacing: 0) {
+                TogglePersonalizado(titulo: "Fondo de los menus", descripcion: "Cada menu con iconos tiene un fondo. Puedes desactivarlo o modificarlo.", opcionBinding: $me.fondoMenu, opcionTrue: "Deshabilitar fondo", opcionFalse: "Habilitar fondo", isInsideToggle: true, isDivider: me.fondoMenu ? true : false)
+                    .onChange(of: me.colorAutomatico) { newValue in
+                        if newValue {
+                            me.colorGris = false
+                        }
+                    }
+                
+                if me.fondoMenu {
+                    VStack( alignment: .trailing, spacing: 0) {
+                        
+                        TogglePersonalizado(
+                            titulo: "Transparente",
+                            opcionBinding: Binding(
+                                get: { me.colorFondoMenu == .transparente },
+                                set: { isOn in
+                                    if isOn { me.colorFondoMenu = .transparente }
+                                }
+                            ),
+                            opcionTrue: "Deshabilitar color",
+                            opcionFalse: "Habilitar color",
+                            isInsideToggle: true,
+                            isDivider: false
+                        ).fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                        
+                        TogglePersonalizado(
+                            titulo: "Líquido",
+                            opcionBinding: Binding(
+                                get: { me.colorFondoMenu == .liquido },
+                                set: { isOn in
+                                    if isOn { me.colorFondoMenu = .liquido }
+                                }
+                            ),
+                            opcionTrue: "Deshabilitar color",
+                            opcionFalse: "Habilitar color",
+                            isInsideToggle: true,
+                            isDivider: false
+                        ).fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                        
+                        TogglePersonalizado(
+                            titulo: "Metálico",
+                            opcionBinding: Binding(
+                                get: { me.colorFondoMenu == .metalico },
+                                set: { isOn in
+                                    if isOn { me.colorFondoMenu = .metalico }
+                                }
+                            ),
+                            opcionTrue: "Deshabilitar color",
+                            opcionFalse: "Habilitar color",
+                            isInsideToggle: true,
+                            isDivider: false
+                        ).fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                        
+                    }
+                    .padding(.leading, 30)
+                }
+                
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
         }
     }
 }
@@ -258,12 +334,12 @@ struct IconSizeSlider: View {
             }
             .contentShape(Rectangle())
             // tap sobre la pista
-            .onTapGesture { location in
-                let x = location.x
-                let nt = Swift.max(0, Swift.min(1, x / width))
-                let newVal = min + Double(nt) * (max - min)
-                withAnimation(.easeInOut) { value = newVal }
-            }
+//            .onTapGesture { location in
+//                let x = location.x
+//                let nt = Swift.max(0, Swift.min(1, x / width))
+//                let newVal = min + Double(nt) * (max - min)
+//                withAnimation(.easeInOut) { value = newVal }
+//            }
         }
         .frame(height: 44)
     }
