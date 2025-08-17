@@ -334,12 +334,12 @@ struct IconSizeSlider: View {
             }
             .contentShape(Rectangle())
             // tap sobre la pista
-//            .onTapGesture { location in
-//                let x = location.x
-//                let nt = Swift.max(0, Swift.min(1, x / width))
-//                let newVal = min + Double(nt) * (max - min)
-//                withAnimation(.easeInOut) { value = newVal }
-//            }
+            .onTapGesture { location in
+                let x = location.x
+                let nt = Swift.max(0, Swift.min(1, x / width))
+                let newVal = min + Double(nt) * (max - min)
+                withAnimation(.easeInOut) { value = newVal }
+            }
         }
         .frame(height: 44)
     }
