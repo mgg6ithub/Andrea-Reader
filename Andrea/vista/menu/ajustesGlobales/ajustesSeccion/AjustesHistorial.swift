@@ -24,7 +24,6 @@ struct AjustesHistorial: View {
             CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.temaActual.secondaryText)
             
             VStack(spacing: 0) {
-                        
                 TogglePersonalizado(titulo: "Historial de colecciones", descripcion: "Activa o desactiva el historial.", opcionBinding: $ap.historialColecciones, opcionTrue: "Deshabilitar historial", opcionFalse: "Habilitar historial", isInsideToggle: true, isDivider: ap.historialColecciones ? true : false)
                 
                 if ap.historialColecciones {

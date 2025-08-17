@@ -15,20 +15,17 @@ struct AjustesLibreria: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            Text("Menu") //TITULO
-                .capaTituloPrincipal(s: const.titleSize, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+            Text("Libreria") //TITULO
+                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("El menu son los iconos de arriba del todo y puedes personalizarlos como mas te guste.")
-                .capaDescripcion(s: const.titleSize, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+            Text("Ajusta los libros y el comportamiento de la libreria.")
+                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.titleSize, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.temaActual.secondaryText)
             
             VStack(spacing: 0) {
-                        
-                TogglePersonalizado(titulo: "Icono izquierdo", descripcion: "Activa o desactiva el icono.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
                 
-                Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
-                    .capaDescripcion(s: const.titleSize * 0.8, c: ap.temaActual.secondaryText, pH: 0, pW: 0)
+                TogglePersonalizado(titulo: "Icono izquierdo", descripcion: "Activa o desactiva el icono.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
                         
                 }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
