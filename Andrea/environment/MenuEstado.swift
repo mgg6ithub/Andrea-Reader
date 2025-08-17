@@ -68,7 +68,6 @@ class MenuEstado: ObservableObject {
         case "ColorPrincipal": return "Colores"
         case "SistemaArchivos": return "Sistema de archivos"
         case "Rendimiento": return "Rendimiento"
-//        case "AjustesBarraEstado": return "AjustesBarraEstado"
         case "AjustesMenu": return "Menu"
         case "AjustesHistorial": return "Historial"
         case "AjustesLibreria": return "Libreria"

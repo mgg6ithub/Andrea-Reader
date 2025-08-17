@@ -131,7 +131,7 @@ class PilaColecciones: ObservableObject {
     @MainActor
     private func actualizarColeccionActual() {
         // 1. Obtén la nueva VM (la última de la pila o la HOME)
-        self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
+//        self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
         
         let nuevaVM: ModeloColeccion
         if let última = colecciones.last {
@@ -265,6 +265,12 @@ class PilaColecciones: ObservableObject {
     public func conservarSoloHome() {
         guard !colecciones.isEmpty else { return }
         guard let home = colecciones.first else { return }
+        
+        print("TODAS LAS COLECCIONES: ")
+        for col in self.colecciones {
+            print(col.coleccion.nombre)
+        }
+        print("volviendo a la primera coleccion: ", home.coleccion.nombre)
         
         withAnimation(.easeInOut(duration: 0.15)) {
             colecciones = [home]

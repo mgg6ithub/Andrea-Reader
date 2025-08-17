@@ -258,12 +258,18 @@ struct MenuCentro: View {
                 }
                 
             } label: {
-                Image(systemName: "ellipsis")
-                    .rotationEffect(.degrees(90))
-                    .capaIconos(iconSize: iconSize, c1: c2, c2: c2, fontW: iconFont.weight, ajuste: 1.05)
-                    .offset(y: 0.5)
-                    .padding(.trailing, -3)
+                ZStack {
+                    Rectangle().fill(.clear)
+                        .frame(width: 20, height: 35) // área táctil grande
+                        .contentShape(Rectangle())
+                    Image(systemName: "ellipsis")
+                        .rotationEffect(.degrees(90))
+                        .capaIconos(iconSize: iconSize, c1: c2, c2: c2, fontW: iconFont.weight, ajuste: 1.05)
+                        .offset(y: 0.5)
+                        .padding(.trailing, -3)
+                }
             }
+            .padding(0) // quita el padding negativo
             .id(menuRefreshTrigger)
             .colorScheme(ap.temaActual == .dark ? .dark : .light)
         }

@@ -47,24 +47,23 @@ class SistemaArchivos: ObservableObject {
      */
     private init(preview: Bool = false) {
         
-        self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
         // Crear la coleccion raiz y asignarla
         let home = FabricaColeccion().crearColeccion(coleccionNombre: "HOME", coleccionURL: self.homeURL)
         cacheColecciones[homeURL] = ColeccionValor(coleccion: home)
         
-        if preview {
-            let coleccion1 = homeURL.appendingPathComponent("Coleccion1")
-            let coleccion2 = homeURL.appendingPathComponent("Coleccion2")
-            let coleccion3 = homeURL.appendingPathComponent("Coleccion3")
-            
-            for url in [coleccion1, coleccion2, coleccion3] {
-                let nombre = url.lastPathComponent
-                let col = FabricaColeccion().crearColeccion(coleccionNombre: nombre, coleccionURL: url)
-                cacheColecciones[url] = ColeccionValor(coleccion: col)
-                cacheColecciones[homeURL]?.subColecciones.insert(url)
-            }
-            return
-        }
+//        if preview {
+//            let coleccion1 = homeURL.appendingPathComponent("Coleccion1")
+//            let coleccion2 = homeURL.appendingPathComponent("Coleccion2")
+//            let coleccion3 = homeURL.appendingPathComponent("Coleccion3")
+//            
+//            for url in [coleccion1, coleccion2, coleccion3] {
+//                let nombre = url.lastPathComponent
+//                let col = FabricaColeccion().crearColeccion(coleccionNombre: nombre, coleccionURL: url)
+//                cacheColecciones[url] = ColeccionValor(coleccion: col)
+//                cacheColecciones[homeURL]?.subColecciones.insert(url)
+//            }
+//            return
+//        }
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: homeURL)
