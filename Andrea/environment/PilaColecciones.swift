@@ -66,11 +66,13 @@ class PilaColecciones: ObservableObject {
         let homeURLStripped = self.homeURL.deletingLastPathComponent()
 
         if let pilaGuardada = UserDefaults.standard.array(forKey: ConstantesPorDefecto().pilaColeccionesClave) as? [String] {
+            
             let coleccionesGuardadas: [URL] = pilaGuardada.compactMap { col in
                 let absolutaURL = homeURLStripped.appendingPathComponent(col)
                 return ManipulacionCadenas().agregarPrivate(absolutaURL)
             }
-
+            
+            //Comprobamos que existen las colecciones recuperadas
             let cache = sa.cacheColecciones
 
             var vistaModelos = coleccionesGuardadas.compactMap { url in
@@ -82,7 +84,7 @@ class PilaColecciones: ObservableObject {
                 }
             }
             
-            self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
+            self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL) // <- necesario si no falla
             
             if let home = cache[self.homeURL]?.coleccion {
                 let homeVM = ModeloColeccion(home)
@@ -113,15 +115,16 @@ class PilaColecciones: ObservableObject {
      Guarda la pila de colecciones en `UserDefaults` como rutas relativas.
      */
     public func guardarPila() {
-        let homeURLStripped = self.homeURL.deletingLastPathComponent().path
 
+        let homeURLStripped = ManipulacionCadenas().normalizarURL(self.homeURL).deletingLastPathComponent().path
+        
         let rutasRelativas = self.colecciones.map { vm in
             let normalizarURL = ManipulacionCadenas().normalizarURL(vm.coleccion.url).path
             return normalizarURL
                 .replacingOccurrences(of: homeURLStripped, with: "")
                 .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         }
-
+        
         UserDefaults.standard.set(rutasRelativas, forKey: ConstantesPorDefecto().pilaColeccionesClave)
     }
     
@@ -264,6 +267,10 @@ class PilaColecciones: ObservableObject {
      Establece la HOME como actual y guarda la pila.
      */
     public func conservarSoloHome() {
+        
+        print("Volviendo a home")
+        print(colecciones)
+        
         guard !colecciones.isEmpty else { return }
         guard let home = colecciones.first else { return }
         

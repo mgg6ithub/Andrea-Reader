@@ -374,13 +374,6 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
-		D48CC0482E53A16D00063AD9 /* tests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = tests;
-			sourceTree = "<group>";
-		};
 		D48CC0512E53A55A00063AD9 /* AndreaTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -466,7 +459,6 @@
 		D4ADDB6F2DE9B4A50097A010 /* modelo */ = {
 			isa = PBXGroup;
 			children = (
-				D48CC0482E53A16D00063AD9 /* tests */,
 				D49DE74C2E0D3458002FDB7A /* imagenes */,
 				D4ADDB852DE9C0820097A010 /* sistemaDeArchivos */,
 			);
