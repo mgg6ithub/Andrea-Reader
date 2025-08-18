@@ -25,17 +25,18 @@ struct Rendimiento: View {
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     var body: some View {
         
         VStack(alignment: .center, spacing: 0) {
             
             Text("Rendimiento")
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Ajustes para mejorar el rendimiento del programa sacrificando el aspecto visual.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             CirculoActivoVista(isSection: isSection, nombre: "Modifica las sombras", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
@@ -44,7 +45,7 @@ struct Rendimiento: View {
                 TogglePersonalizado(titulo: "Sombras", descripcion: "Activa o desactiva las sombras de la interfaz.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar sombras", opcionFalse: "Habilitar sombras", isInsideToggle: true, isDivider: true)
                 
                 Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
-                    .capaDescripcion(s: const.descripcionAjustes * 0.8, c: ap.temaActual.secondaryText, pH: 0, pW: 0)
+                    .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)
                         
                 }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
         }

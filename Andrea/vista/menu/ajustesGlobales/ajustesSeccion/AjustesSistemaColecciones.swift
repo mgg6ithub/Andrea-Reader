@@ -23,16 +23,17 @@ struct AjustesSistemaColecciones: View {
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             
             Text("Sistema de archivos") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             CirculoActivoVista(isSection: isSection, nombre: "Escoge el sistema de archivos", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 

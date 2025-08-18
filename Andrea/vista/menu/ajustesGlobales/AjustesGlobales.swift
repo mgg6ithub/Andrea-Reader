@@ -63,12 +63,13 @@ struct AjustesGlobales: View {
     var sections: [String] { menuEstado.sections }
     private let cpd: ConstantesPorDefecto = ConstantesPorDefecto()
     private var const: Constantes { ap.constantes }
+    private var tema: EnumTemas { ap.temaResuelto }
     
     var body: some View {
             VStack(alignment: .center, spacing: 0) {
                 Text("Ajustes generales")
                     .font(.system(size: ap.constantes.titleSize * 1.7, weight: .bold))
-                    .foregroundColor(ap.temaActual.colorContrario)
+                    .foregroundColor(tema.colorContrario)
                     .bold()
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, cpd.padding15)
@@ -106,7 +107,7 @@ struct AjustesGlobales: View {
                 alignment: .center
             )
             .background(ap.temaResuelto.backgroundGradient)
-            .animation(.easeInOut, value: ap.temaActual)
+            .animation(.easeInOut, value: tema)
     }
     
 }
@@ -125,56 +126,6 @@ struct DividerPersonalizado: View {
             .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
     }
 }
-
-
-//// MARK: - Punto
-//struct Punto: View {
-//    @EnvironmentObject var ap: AppEstado
-//    @EnvironmentObject var menuEstado: MenuEstado
-//
-//    // Anchos de la columna izquierda
-//    // railWidth es la columna del “rail” (línea + puntos)
-//    // labelWidth es la columna donde va el título de la sección
-//    var railWidth: CGFloat = 28
-//    var labelWidth: CGFloat = 140
-//
-//    // Parámetros
-//    let index: Int
-//    let section: String
-//    @Binding var selectedSection: String?
-//    @Binding var isPressed: Bool
-//    let rowHeight: CGFloat     // altura por fila (calculada en IndicesVertical)
-//    let dotDiameter: CGFloat   // diámetro del punto
-//
-//    var body: some View {
-//        HStack(spacing: 12) {
-//            // Columna rail (el punto se centra en el rail)
-//            ZStack {
-//                // El trazo vertical lo pinta IndicesVertical de fondo;
-//                // aquí solo el punto
-//                Circle()
-//                    .fill(selectedSection == section ? ap.colorActual : .gray)
-//                    .frame(width: dotDiameter, height: dotDiameter)
-//                    .shadow(color: selectedSection == section ? ap.colorActual : .gray, radius: selectedSection == section ? 6 : 0)
-//                    .overlay(
-//                        RoundedRectangle(cornerRadius: 10)
-//                            .stroke((selectedSection == section && isPressed) ? ap.colorActual : .clear, lineWidth: 4)
-//                            .animation(.easeInOut(duration: 0.3), value: isPressed)
-//                    )
-//            }
-//            .frame(width: railWidth, alignment: .center) // punto centrado en el rail
-//
-//            // Título a la DERECHA del punto
-//            Text(menuEstado.sectionTitle(section))
-//                .font(.system(size: ap.constantes.smallTitleSize))
-//                .foregroundColor(selectedSection == section ? ap.temaActual.textColor : ap.temaActual.secondaryText)
-//                .frame(width: labelWidth, alignment: .leading)
-//
-//            Spacer(minLength: 0)
-//        }
-//        .frame(height: rowHeight)
-//    }
-//}
 
 struct ViewOffsetKey: PreferenceKey {
     static var defaultValue: CGFloat = 0

@@ -11,17 +11,18 @@ struct AjustesHistorial: View {
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Historial de colecciones") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Un historial rapido para navegar y ubicarte entre las colecciones. Quitalo o modificalo a tu gusto.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.temaActual.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: tema.secondaryText)
             
             VStack(spacing: 0) {
                 TogglePersonalizado(titulo: "Historial de colecciones", descripcion: "Activa o desactiva el historial.", opcionBinding: $ap.historialColecciones, opcionTrue: "Deshabilitar historial", opcionFalse: "Habilitar historial", isInsideToggle: true, isDivider: ap.historialColecciones ? true : false)
@@ -63,11 +64,11 @@ struct AjustesHistorial: View {
                     HStack {
                         Text("Tamaño")
                             .font(.headline)
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(tema.colorContrario)
                         Spacer()
                         Text("\(Int(ap.historialSize)) pt")
                             .font(.subheadline)
-                            .foregroundColor(ap.temaActual.secondaryText)
+                            .foregroundColor(tema.secondaryText)
                     }
 
                     IconSizeSlider(
@@ -75,10 +76,10 @@ struct AjustesHistorial: View {
                         min: 16,
                         max: 26,
                         recommended: AjustesGeneralesPredeterminados().historialSize,
-                        trackColor: ap.temaActual.colorContrario,     // base
+                        trackColor: tema.colorContrario,     // base
                         fillColor: .blue,                             // progreso
-                        markerColor: ap.temaActual.colorContrario,    // muesca
-                        textColor: ap.temaActual.secondaryText        // “24 pt”
+                        markerColor: tema.colorContrario,    // muesca
+                        textColor: tema.secondaryText        // “24 pt”
                     )
                     
                     Text("Escoge el tamaño que quieras para el historial de colecciones.")

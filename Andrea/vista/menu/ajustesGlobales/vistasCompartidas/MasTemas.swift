@@ -32,7 +32,7 @@ struct MasTemas<T: Equatable>: View {
             Text(tema.rawValue)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.system(size: const.subTitleSize))
-                .foregroundColor(ap.temaActual.colorContrario)
+                .foregroundColor(ap.temaResuelto.colorContrario)
             
             Button(action: {
                 isBouncing.toggle()

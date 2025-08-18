@@ -256,7 +256,7 @@ struct Punto: View {
             // En Punto
             Text(menuEstado.sectionTitle(section))
                 .font(.system(size: ap.constantes.smallTitleSize * fontScale * 1.4))
-                .foregroundColor(selectedSection == section ? ap.temaActual.textColor : ap.temaActual.secondaryText)
+                .foregroundColor(selectedSection == section ? ap.temaResuelto.textColor : ap.temaResuelto.secondaryText)
                 .frame(width: labelWidth, alignment: .leading)   // ancho fijo
                 .lineLimit(nil)                                  // permite varias líneas
                 .multilineTextAlignment(.leading)                // alinea a la izquierda

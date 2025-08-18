@@ -28,14 +28,15 @@ struct RectangleFormView<T: Equatable>: View {
     var const: Constantes { ap.constantes }
     private var iconSize: CGFloat { ap.constantes.iconSize + 20 }
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
 
     var body: some View {
         VStack {
             Text(titulo)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.subheadline)
-                .foregroundColor(isSelected ? ap.temaActual.textColor : ap.temaActual.secondaryText.opacity(0.3))
+                .foregroundColor(isSelected ? tema.textColor : tema.secondaryText.opacity(0.3))
 
             Button(action: {
                 isBouncing.toggle()
@@ -55,7 +56,7 @@ struct RectangleFormView<T: Equatable>: View {
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(
                                     isSelected
-                                        ? (ap.temaActual == .dark ? Color.white : Color.black)
+                                        ? (tema == .dark ? Color.white : Color.black)
                                         : Color.clear,
                                     lineWidth: 1.5
                                 )

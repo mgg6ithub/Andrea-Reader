@@ -24,22 +24,23 @@ struct AjustesTema: View {
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Tema principal") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             Text("Información del tema seleccionado")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.colorContrario, pH: 0, pW: 0, b: true)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
                 .padding(.bottom, 15)
             
             Text(ap.temaActual.descripcionTema)
-                .capaDescripcion(s: const.descripcionAjustes * 0.8, c: ap.temaActual.secondaryText, pH: 0, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)
                 .padding(.bottom, 20)
             
             CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.colorActual)
@@ -99,12 +100,12 @@ struct AjustesTema: View {
                     HStack(spacing: 5) {
                         Text("Más temas")
                             .font(.system(size: const.descripcionAjustes))
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(tema.colorContrario)
                             .bold()
                         
                         Image(systemName: "chevron.forward")
                             .font(.system(size: const.iconSize * 0.45))
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(tema.colorContrario)
                             .bold()
                             .rotationEffect(.degrees(isThemeExpanded ? 90 : 0))
                             .animation(ap.animaciones ? .interpolatingSpring(stiffness: 400, damping: 25) : .none, value: isThemeExpanded)

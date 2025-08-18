@@ -16,11 +16,13 @@ struct TogglePersonalizado<T: Equatable>: View {
     var isInsideToggle: Bool
     var isDivider: Bool
     
+    private var tema: EnumTemas { ap.temaResuelto }
+    
     private var colorActivarDesactivar: Color {
         if descripcion != nil {
-            return ap.temaActual.colorContrario
+            return tema.colorContrario
         } else {
-            return ap.temaActual.secondaryText
+            return tema.secondaryText
         }
     }
     
@@ -31,14 +33,14 @@ struct TogglePersonalizado<T: Equatable>: View {
                     Group {
                         if UIImage(systemName: icono) != nil {
                             Image(systemName: icono)
-                                .foregroundColor(ap.temaActual.colorContrario)
+                                .foregroundColor(tema.colorContrario)
                         } else {
                             Image(icono)
                                 .if(titulo == "Seleccion multiple") { v in
                                     v.font(.system(size: ap.constantes.iconSize))
                                 }
                                 .symbolRenderingMode(.palette)
-                                .foregroundStyle(.gray, ap.temaActual.colorContrario)
+                                .foregroundStyle(.gray, tema.colorContrario)
                         }
                     }
                     .frame(width: 30, height: 30)
@@ -46,13 +48,13 @@ struct TogglePersonalizado<T: Equatable>: View {
                 
                 Text(titulo)
                     .font(.headline)
-                    .foregroundColor(ap.temaActual.colorContrario)
+                    .foregroundColor(tema.colorContrario)
             }
             
             if let descripcion = descripcion {
                 Text(descripcion)
                     .font(.subheadline)
-                    .foregroundColor(ap.temaActual.secondaryText)
+                    .foregroundColor(tema.secondaryText)
             }
             
             Toggle(isOn: Binding(

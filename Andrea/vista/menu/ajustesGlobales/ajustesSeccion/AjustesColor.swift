@@ -24,15 +24,16 @@ struct AjustesColor: View {
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Color principal")
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("El color principal se aplicará en los iconos del menu y todas aquellas acciones que no tengan un color seleccionado. Es decir, se establecerá como predeterminado.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             CirculoActivoVista(isSection: isSection, nombre: "Color personazalido", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
@@ -55,11 +56,11 @@ struct AjustesColor: View {
                 VStack(alignment: .center, spacing: 10) {
                     Text("Colores mas usados")
                         .font(.system(size: ap.constantes.titleSize))
-                        .foregroundColor(ap.temaActual.colorContrario)
+                        .foregroundColor(tema.colorContrario)
                     
                     Text("Selecciona un color para establecerlo como principal.")
                         .font(.system(size: ap.constantes.subTitleSize))
-                        .foregroundColor(ap.temaActual.secondaryText)
+                        .foregroundColor(tema.secondaryText)
                     
                     // Recorrer los colores principales y crear botones circulares
                     let circleSize = const.iconSize * 2
@@ -103,12 +104,12 @@ struct AjustesColor: View {
                     HStack(spacing: 5) {
                         Text("Paleta de colores")
                             .font(.system(size: const.descripcionAjustes))
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(tema.colorContrario)
                             .bold()
     
                         Image(systemName: "chevron.forward")
                             .font(.system(size: const.iconSize * 0.45))
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(tema.colorContrario)
                             .bold()
                             .rotationEffect(.degrees(isColorExpanded ? 90 : 0))
                             .animation(ap.animaciones ? .interpolatingSpring(stiffness: 400, damping: 25) : .none, value: isColorExpanded)
@@ -124,7 +125,7 @@ struct AjustesColor: View {
                     VStack(alignment: .leading) {
                         // ColorPicker personalizado
                         ColorPicker("Escoge tu color", selection: $ap.colorPersonalizadoActual)
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(tema.colorContrario)
                     }
                     .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                     .transition(.opacity)  // Transición de opacidad cuando se muestra o esconde

@@ -117,7 +117,7 @@ struct ContenidoAjustes: View {
 
                         Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
                             .font(.system(size: ap.constantes.titleSize))
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(ap.temaResuelto.colorContrario)
                             .multilineTextAlignment(.center)
                             .padding(.vertical, 10)
                             .padding(.bottom, 10)

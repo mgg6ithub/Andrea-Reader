@@ -13,7 +13,8 @@ struct AjustesMenu: View {
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     // Rango del slider
     let minIcon = 16.0
@@ -23,10 +24,10 @@ struct AjustesMenu: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Menu") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("El menu son los iconos de arriba del todo y puedes personalizarlos como mas te guste.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             //MARK: --- TAMAÑO ---
             AjustesBarraEstado(isSection: isSection)
@@ -92,11 +93,11 @@ struct AjustesMenu: View {
                     HStack {
                         Text("Tamaño")
                             .font(.headline)
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(tema.colorContrario)
                         Spacer()
                         Text("\(Int(me.iconSize)) pt")
                             .font(.subheadline)
-                            .foregroundColor(ap.temaActual.secondaryText)
+                            .foregroundColor(tema.secondaryText)
                     }
 
                     IconSizeSlider(
@@ -104,10 +105,10 @@ struct AjustesMenu: View {
                         min: minIcon,
                         max: maxIcon,
                         recommended: recommended,
-                        trackColor: ap.temaActual.colorContrario,     // base
+                        trackColor: tema.colorContrario,     // base
                         fillColor: .blue,                             // progreso
-                        markerColor: ap.temaActual.colorContrario,    // muesca
-                        textColor: ap.temaActual.secondaryText        // “24 pt”
+                        markerColor: tema.colorContrario,    // muesca
+                        textColor: tema.secondaryText        // “24 pt”
                     )
                     
                     Text("Escoge el tamaño que quieras para los iconos del menu.")
@@ -118,11 +119,11 @@ struct AjustesMenu: View {
                     HStack {
                         Text("Fuente")
                             .font(.headline)
-                            .foregroundColor(ap.temaActual.colorContrario)
+                            .foregroundColor(tema.colorContrario)
                         Spacer()
                         Text("\(me.fuente.displayName)")
                             .font(.subheadline)
-                            .foregroundColor(ap.temaActual.secondaryText)
+                            .foregroundColor(tema.secondaryText)
                     }
                     
                     HStack(spacing: paddingHorizontal) {

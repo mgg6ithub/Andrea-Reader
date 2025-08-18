@@ -20,14 +20,15 @@ struct AjustesBarraEstado: View {
     private var paddingHorizontal: CGFloat { (cpd.horizontalPadding + 20) * const.scaleFactor}
     private var paddingVertical: CGFloat {cpd.verticalPadding * const.scaleFactor} // 20
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     var isSection: Bool
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
 //            Text("Barra de estado") //TITULO
-//                .capaTituloPrincipal(s: const.titleSize * 0.65, c: ap.temaActual.colorContrario, pH: 0, pW: paddingHorizontal)
+//                .capaTituloPrincipal(s: const.titleSize * 0.65, c: tema.colorContrario, pH: 0, pW: paddingHorizontal)
 //                .frame(maxWidth: .infinity, alignment: .leading)
             
             CirculoActivoVista(isSection: isSection, nombre: "Barra de estado", titleSize: const.subTitleSize, color: ap.colorActual)
@@ -42,7 +43,7 @@ struct AjustesBarraEstado: View {
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
             Text("Franja superior del dispositivo que muestra la hora, señal, Wi-Fi y batería. Muéstrala, ocúltala o deja que el sistema elija.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: 10, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: 10, pW: 0)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
         }
@@ -55,6 +56,8 @@ enum EnumBarraEstado: String {
 
 
 struct BotonBE<T: Equatable>: View {
+    
+    @EnvironmentObject var ap: AppEstado
     
     var titulo: String
     var icono: String
@@ -77,8 +80,9 @@ struct BotonBE<T: Equatable>: View {
                 
                 Image(systemName: icono)
                     .font(.system(size: 22, weight: fuente ?? .medium))
-                    .foregroundStyle(LinearGradient(colors: coloresIcono, startPoint: .top, endPoint: .bottom))
+//                    .foregroundStyle(LinearGradient(colors: coloresIcono, startPoint: .top, endPoint: .bottom))
                     .frame(width: 30, height: 30)
+                    .foregroundColor(ap.temaResuelto.colorContrario)
             }
             .if(!isSelected) { v in
                 v.opacity(0.4)
