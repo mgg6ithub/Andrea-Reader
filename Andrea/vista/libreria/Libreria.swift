@@ -67,6 +67,7 @@ struct ImagenLibreriaVacia: View {
                 
                 Text(texto)
                     .font(.headline)
+                    .foregroundColor(ap.temaResuelto.textColor)
                 
             }
             Spacer()

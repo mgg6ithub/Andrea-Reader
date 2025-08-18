@@ -9,6 +9,7 @@ struct ArchivoIncompatibleView: View {
     @Environment(\.dismiss) private var dismiss
     
     private var escala: CGFloat { ap.constantes.scaleFactor }
+    private var tema: EnumTemas { ap.temaResuelto }
 
     var body: some View {
         VStack(spacing: 24) {
@@ -20,16 +21,16 @@ struct ArchivoIncompatibleView: View {
                     .frame(width: 240 * escala, height: 240 * escala)
 
                 Text("No se puede mostrar este archivo")
-                    .textoAdaptativo(t: ap.constantes.titleSize, a: 1.0, l: 1, c: ap.temaActual.colorContrario, alig: .center)
+                    .textoAdaptativo(t: ap.constantes.titleSize, a: 1.0, l: 1, c: tema.colorContrario, alig: .center)
                 
                 Text("El archivo no cumple con el protocolo requerido")
-                    .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.9, l: 1, c: ap.temaActual.secondaryText, alig: .center)
+                    .textoAdaptativo(t: ap.constantes.subTitleSize, a: 0.9, l: 1, c: tema.secondaryText, alig: .center)
             }
             .padding(24 * escala)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(ap.temaActual.backgroundColor)
-                    .shadow(color: ap.temaActual == .dark ? .black.opacity(0.3) : .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                    .fill(tema.backgroundGradient)
+                    .shadow(color: tema == .dark ? .black.opacity(0.3) : .black.opacity(0.15), radius: 8, x: 0, y: 4)
             )
             .padding(.horizontal)
 
@@ -41,10 +42,10 @@ struct ArchivoIncompatibleView: View {
                     .padding(12 * escala)
                     .background(
                         RoundedRectangle(cornerRadius: 6)
-                            .fill(ap.temaActual.backgroundColor)
-                            .shadow(color: ap.temaActual == .dark ? .black.opacity(0.15) : .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                            .fill(tema.backgroundColor)
+                            .shadow(color: tema == .dark ? .black.opacity(0.15) : .black.opacity(0.1), radius: 8, x: 0, y: 4)
                     )
-                    .textoAdaptativo(t: ap.constantes.subTitleSize, a: 1.0, l: 1, c: ap.temaActual.colorContrario, alig: .center)
+                    .textoAdaptativo(t: ap.constantes.subTitleSize, a: 1.0, l: 1, c: tema.colorContrario, alig: .center)
             }
         }
         .onAppear {

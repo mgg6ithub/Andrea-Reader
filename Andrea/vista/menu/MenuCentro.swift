@@ -30,14 +30,15 @@ struct MenuCentro: View {
     // --- VARIABLES CALCULADAS ---
     private let sa: SistemaArchivos = SistemaArchivos.sa
     private var const: Constantes { ap.constantes }
-//    private var c2: Color { ap.temaActual.menuIconos }
+    private var tema: EnumTemas { ap.temaResuelto }
+//    private var c2: Color { tema.menuIconos }
 //    private var iconFont.weight: Font.Weight { const.iconFont.weighteight }
     
     private var c2: Color {
         if me.colorGris {
             return .gray
         } else {
-            return ap.temaActual.menuIconos
+            return tema.menuIconos
         }
     }
     
@@ -47,7 +48,7 @@ struct MenuCentro: View {
         } else if me.colorGris {
             return .gray
         } else {
-            return ap.temaActual.menuIconos
+            return tema.menuIconos
         }
     }
     
@@ -271,11 +272,11 @@ struct MenuCentro: View {
             }
             .padding(0) // quita el padding negativo
             .id(menuRefreshTrigger)
-            .colorScheme(ap.temaActual == .dark ? .dark : .light)
+            .colorScheme(tema == .dark ? .dark : .light)
         }
         .alignmentGuide(.firstTextBaseline) { d in d[.bottom] }
         .onAppear { syncIconColors() }
-       .onChange(of: ap.temaActual) { syncIconColors() }
+       .onChange(of: tema) { syncIconColors() }
        .onChange(of: c1) { syncIconColors() }
     }
     
@@ -283,7 +284,7 @@ struct MenuCentro: View {
         // aquí decides tú cuándo y cómo cambian (con o sin animación)
         withAnimation(.easeInOut(duration: 0.25)) {
             cPrimario   = c1
-            cSecundario = ap.temaActual.menuIconos
+            cSecundario = tema.menuIconos
         }
     }
 }
@@ -303,7 +304,7 @@ struct BotonMenu<T: Equatable>: View {
         valor == valorActual
     }
     
-    private var dC: Color { ap.temaActual.textColor }
+    private var dC: Color { ap.temaResuelto.textColor }
     
     var body: some View {
         Button {

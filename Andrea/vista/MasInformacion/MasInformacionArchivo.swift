@@ -217,7 +217,7 @@ struct NotaCard: View {
             }
         }
         .padding()
-        .background(ap.temaActual.backgroundColor.opacity(0.5))
+        .background(ap.temaActual.backgroundGradient.opacity(0.5))
         .cornerRadius(15)
         .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
     }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CuadriculaArchivo: View {
     
-    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var me: MenuEstado
     
     @ObservedObject var archivo: Archivo
@@ -25,7 +25,7 @@ struct CuadriculaArchivo: View {
             // --- Imagen ---
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.5)) {
-                    appEstado.archivoEnLectura = archivo
+                    ap.archivoEnLectura = archivo
                 }
             }) {
                 ZStack {
@@ -174,9 +174,9 @@ struct CuadriculaArchivo: View {
             
         }
         .frame(width: width, height: height)
-        .background(appEstado.temaActual.cardColor)
+        .background(ap.temaResuelto.cardColor)
         .cornerRadius(15)
-        .shadow(color: appEstado.temaActual == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 3)
+        .shadow(color: ap.temaResuelto == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 3)
 //        .scaleEffect(isVisible ? 1 : 0.95)
 //        .opacity(isVisible ? 1 : 0)
         .onAppear {

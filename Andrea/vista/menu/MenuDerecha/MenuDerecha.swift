@@ -16,7 +16,7 @@ struct MenuDerecha: View {
         if me.colorGris {
             return .gray
         } else {
-            return ap.temaActual.menuIconos
+            return ap.temaResuelto.menuIconos
         }
     }
     
@@ -26,7 +26,7 @@ struct MenuDerecha: View {
         } else if me.colorGris {
             return .gray
         } else {
-            return ap.temaActual.menuIconos
+            return ap.temaResuelto.menuIconos
         }
     }
     

@@ -15,6 +15,8 @@ struct MenuSeleccionMultipleArriba: View {
     // --- ESTADO ---
     @State var isActive: Bool = true
     
+    private var tema: EnumTemas { ap.temaResuelto }
+    
     var body: some View {
         HStack(spacing: 15) {
             
@@ -22,10 +24,12 @@ struct MenuSeleccionMultipleArriba: View {
             if totalElementos > 0 {
                 Text("\(totalElementos) \(totalElementos == 1 ? "elemento" : "elementos")")
                     .font(.system(size: ap.constantes.titleSize))
+                    .foregroundColor(tema.textColor)
                     .minimumScaleFactor(0.7)
             } else {
                 Text("El estante está listo, falta el primer libro.")
                     .font(.system(size: ap.constantes.subTitleSize))
+                    .foregroundColor(tema.textColor)
                     .minimumScaleFactor(0.7)
             }
             
@@ -48,6 +52,7 @@ struct MenuSeleccionMultipleArriba: View {
             }) {
                 Text(me.todosSeleccionados ? "Deseleccionar todos" : "Seleccionar todos")
                     .font(.system(size: ap.constantes.subTitleSize))
+                    .foregroundColor(tema.textColor)
             }
             
             Button(action: {
@@ -55,11 +60,12 @@ struct MenuSeleccionMultipleArriba: View {
             }) {
                 Text("Cancelar")
                     .font(.system(size: ap.constantes.subTitleSize))
+                    .foregroundColor(tema.textColor)
                 
                 Image(systemName: "xmark.square.fill")
                     .font(.system(size: 25))
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(ap.temaActual.colorContrario, Color.red)
+                    .foregroundStyle(ap.temaResuelto.colorContrario, Color.red)
             }
             .fondoBoton(pH: ConstantesPorDefecto().horizontalPadding * 0.8, pV: 5, isActive: true, color: .gray, borde: false)
 

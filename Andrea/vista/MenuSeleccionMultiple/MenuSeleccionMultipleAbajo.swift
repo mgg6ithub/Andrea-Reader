@@ -5,6 +5,7 @@ import SwiftUI
 
 struct MenuSeleccionMultipleAbajo: View {
     
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var me: MenuEstado
     @EnvironmentObject var pc: PilaColecciones
     
@@ -13,6 +14,9 @@ struct MenuSeleccionMultipleAbajo: View {
     private let constantes = ConstantesPorDefecto()
     
     @ObservedObject private var coleccionActualVM: ModeloColeccion
+    
+    private var tema: EnumTemas { ap.temaResuelto }
+    
     //PREVIEW
 //    private var coleccionActualVM: ModeloColeccion {
 //            pc.getColeccionActual()
@@ -135,6 +139,7 @@ struct AccionSeleccionMultiple: View {
         Button(action: action) {
             Text(nombreBoton)
                 .font(.system(size: ap.constantes.subTitleSize))
+                .foregroundColor(ap.temaResuelto.textColor)
         }
     }
 }

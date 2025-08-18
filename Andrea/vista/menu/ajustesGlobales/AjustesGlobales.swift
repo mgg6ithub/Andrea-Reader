@@ -105,7 +105,7 @@ struct AjustesGlobales: View {
                 maxHeight: .infinity,
                 alignment: .center
             )
-            .background(ap.temaActual.backgroundColor)
+            .background(ap.temaResuelto.backgroundGradient)
             .animation(.easeInOut, value: ap.temaActual)
     }
     

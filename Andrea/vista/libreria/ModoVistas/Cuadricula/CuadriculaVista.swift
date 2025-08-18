@@ -105,7 +105,6 @@ struct CuadriculaVista: View {
                         .padding(.horizontal, outerPadding)
                         .padding(.vertical, spacing/2)
                         .animation(.easeInOut(duration: 0.3), value: vm.columnas)
-                        
                         .background(
                             GeometryReader { _ in Color.clear }
                         )

@@ -4,7 +4,7 @@ import SwiftUI
 
 struct InformacionCuadricula: View, Equatable {
     
-    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var ap: AppEstado
     
     let nombre: String
     let tipo: String
@@ -13,6 +13,8 @@ struct InformacionCuadricula: View, Equatable {
     let progreso: Int
     let coleccionColor: Color
     let maxWidth: CGFloat
+    
+    private var tema: EnumTemas { ap.temaResuelto }
 
     static func == (lhs: InformacionCuadricula, rhs: InformacionCuadricula) -> Bool {
         lhs.nombre == rhs.nombre &&
@@ -34,7 +36,7 @@ struct InformacionCuadricula: View, Equatable {
                     .transition(.opacity.combined(with: .scale)) // o .slide, .move(edge:), etc.
                     .animation(.easeInOut(duration: 0.3), value: nombre)
                     .font(.system(size: ConstantesPorDefecto().titleSize))
-                    .foregroundColor(appEstado.temaActual.textColor)
+                    .foregroundColor(tema.colorContrario)
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.85)
                     .lineLimit(2)
@@ -63,7 +65,7 @@ struct InformacionCuadricula: View, Equatable {
                 HStack(spacing: 0) {
                     Text(tipo)
                         .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
-                        .foregroundColor(.gray)
+                        .foregroundColor(tema.secondaryText)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                     
@@ -71,7 +73,7 @@ struct InformacionCuadricula: View, Equatable {
 
                     Text("\(tamanioMB)")
                         .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
-                        .foregroundColor(.gray)
+                        .foregroundColor(tema.secondaryText)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                     
@@ -79,7 +81,7 @@ struct InformacionCuadricula: View, Equatable {
 
                     Text("\(totalPaginas.map { "\($0) pages" } ?? "—")")
                         .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
-                        .foregroundColor(.gray)
+                        .foregroundColor(tema.secondaryText)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                 }

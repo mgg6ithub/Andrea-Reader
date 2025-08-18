@@ -133,7 +133,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
             .padding([.leading, .trailing, .top], animateView ? 10 : 0)
             
             Rectangle()
-                .fill(ap.temaActual.colorContrario) // O ap.temaActual.separatorColor
+                .fill(ap.temaResuelto.colorContrario) // O ap.temaResuelto.separatorColor
                 .frame(height: 1.5)
                 .padding(.horizontal, 10)
             
@@ -145,7 +145,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
         }
         .frame(width: animateView ? 300 : nil, height: animateView ? nil : 0)
         .background(
-            ap.temaActual.backgroundColor
+            ap.temaResuelto.backgroundGradient
                 .mask(
                     RoundedRectangle(cornerRadius: animateView ? 20 : 10)
                 )

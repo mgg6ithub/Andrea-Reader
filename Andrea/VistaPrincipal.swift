@@ -15,6 +15,7 @@ struct VistaPrincipal: View {
     // --- VARIABLES CALCULADAS ---
     private let cpd = ConstantesPorDefecto()
     private var escala: CGFloat { ap.constantes.scaleFactor }
+    private var tema: EnumTemas { ap.temaResuelto }
     
     @State private var isPresented = false
     
@@ -73,13 +74,13 @@ struct VistaPrincipal: View {
 //        .animation(.easeInOut, value: ap.archivoEnLectura)
         .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
             ContenedorLector(archivo: archivo)
-//                .background(ap.temaActual.backgroundColor) // tu color
-                .background(ap.temaActual.backgroundGradient) // tu color
+//                .background(tema.backgroundColor) // tu color
+                .background(tema.backgroundGradient) // tu color
                 .ignoresSafeArea()
                 .presentationBackground(.clear)            // <- quita el blanco del presentador
         }
-        .foregroundColor(ap.temaActual.textColor)
-        .animation(.easeInOut, value: ap.temaActual)
+        .foregroundColor(tema.textColor)
+        .animation(.easeInOut, value: tema)
     }
 
     // --- FUNCIONES ---
@@ -138,8 +139,7 @@ struct ContenedorLector: View {
 
     var body: some View {
         ZStack {
-//            ap.temaActual.backgroundColor.ignoresSafeArea()
-            ap.temaActual.backgroundGradient.ignoresSafeArea()
+            ap.temaResuelto.backgroundGradient.edgesIgnoringSafeArea(.all)
             switch archivo.fileType {
             case .cbr, .cbz:
                 if let comic = archivo as? any ProtocoloComic {

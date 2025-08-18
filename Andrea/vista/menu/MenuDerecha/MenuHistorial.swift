@@ -103,7 +103,7 @@ struct SwipeToDeleteRow<Content: View>: View {
 
             // La propia fila, desplazable
             content()
-                .background(ap.temaActual.backgroundColor)
+                .background(ap.temaResuelto.backgroundGradient)
                 .cornerRadius(10)
                 .offset(x: offsetX)
                 .gesture(

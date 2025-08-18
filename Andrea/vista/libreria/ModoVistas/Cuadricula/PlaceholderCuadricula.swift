@@ -55,7 +55,7 @@ struct PlaceholderCuadricula: View {
             .padding(8)
         }
         .frame(width: width, height: height)
-        .background(appEstado.temaActual.cardColor)
+        .background(appEstado.temaResuelto.cardColor)
         .cornerRadius(18)
     }
 }

@@ -24,7 +24,7 @@ struct MenuIzquierda: View {
         if me.colorGris {
             return .gray
         } else {
-            return ap.temaActual.menuIconos
+            return ap.temaResuelto.menuIconos
         }
     }
     
@@ -34,7 +34,7 @@ struct MenuIzquierda: View {
         } else if me.colorGris {
             return .gray
         } else {
-            return ap.temaActual.menuIconos
+            return ap.temaResuelto.menuIconos
         }
     }
     
@@ -51,7 +51,7 @@ struct MenuIzquierda: View {
                     Image(systemName: "sidebar.trailing")
                         .font(.system(size: iconSize))
                         .symbolRenderingMode(.palette)
-                        .foregroundStyle(c1, c2)
+                        .foregroundStyle(c2)
                         .fontWeight(iconFont.weight)
                 }
                 .offset(y: 2)

@@ -15,8 +15,8 @@ struct CuadriculaColeccion: View {
     private let constantes = ConstantesPorDefecto()
     private var escala: CGFloat { ap.constantes.scaleFactor }
     private var isSmall: Bool { ap.constantes.resLog == .small }
-    private var cDinamico: Color { ap.temaActual.colorContrario }
-    private var cSec: Color { ap.temaActual.secondaryText }
+    private var cDinamico: Color { ap.temaResuelto.colorContrario }
+    private var cSec: Color { ap.temaResuelto.secondaryText }
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {

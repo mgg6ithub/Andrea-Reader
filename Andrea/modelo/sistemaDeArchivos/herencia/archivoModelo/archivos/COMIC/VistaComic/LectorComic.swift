@@ -37,7 +37,6 @@ struct LectorComic: View {
     
     var body: some View {
         ZStack {
-                
                 //MARK: - PAGINADO (PAGINA A PAGINA)
                 
                 SinglePage(
