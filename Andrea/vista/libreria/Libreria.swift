@@ -9,6 +9,13 @@ struct Libreria: View {
 
     var body: some View {
         
+        let visibles = vm.elementosParaMostrar(segun: ap.sistemaArchivos)
+
+        // Caso especial: en ARBOL no hay archivos (puede haber subcolecciones, pero no se pintan)
+        // Si tienes vm.elementosCargados, agrégalo al condicional para evitar parpadeos:
+        // let noHayArchivosEnArbol = ap.sistemaArchivos == .arbol && vm.elementosCargados && !vm.tieneArchivos
+        let noHayArchivosEnArbol = ap.sistemaArchivos == .arbol && !vm.tieneArchivos
+        
         ZStack {
             if vm.elementos.isEmpty {
                 if vm.coleccion.nombre == "HOME" {
@@ -16,14 +23,16 @@ struct Libreria: View {
                 } else {
                     ImagenLibreriaVacia(imagen: "caja-vacia", texto: "Colección vacia, sin elementos.", anchura: 235, altura: 235)
                 }
+            } else if noHayArchivosEnArbol {
+                ImagenLibreriaVacia(imagen: "caja-vacia", texto: "Colección vacia, sin elementos.", anchura: 235, altura: 235)
             } else {
                 switch vm.modoVista {
                 case .cuadricula:
-                    CuadriculaVista(vm: vm, namespace: animationNamespace)
+                    CuadriculaVista(vm: vm, namespace: animationNamespace, elementos: visibles)
                         .transition(.opacity.combined(with: .scale))
 
                 case .lista:
-                    ListaVista(vm: vm, namespace: animationNamespace)
+                    ListaVista(vm: vm, namespace: animationNamespace, elementos: visibles)
                         .transition(.opacity.combined(with: .scale))
 
                 default:

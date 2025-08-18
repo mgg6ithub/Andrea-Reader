@@ -81,10 +81,14 @@ class PilaColecciones: ObservableObject {
                     return nil
                 }
             }
-
+            
+            self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
+            
             if let home = cache[self.homeURL]?.coleccion {
                 let homeVM = ModeloColeccion(home)
 
+                print("coleccion principal modelocoleccion: ", homeVM.coleccion.nombre)
+                
                 // Evita duplicarla si ya estaba
                 if !vistaModelos.contains(where: { $0.coleccion.url == home.url }) {
                     vistaModelos.insert(homeVM, at: 0)
@@ -262,6 +266,12 @@ class PilaColecciones: ObservableObject {
      Establece la HOME como actual y guarda la pila.
      */
     public func conservarSoloHome() {
+        
+        print("Colecciones")
+        for col in self.colecciones {
+            print(col.coleccion.nombre)
+        }
+        
         guard !colecciones.isEmpty else { return }
         guard let home = colecciones.first else { return }
         

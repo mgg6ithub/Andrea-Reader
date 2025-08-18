@@ -46,9 +46,7 @@ struct PersistenciaDatos {
     
     //MARK: --- ARCHIVO ---
     public func guardarDatoElemento(url: URL, atributo: String, valor: Any) {
-        print("Guardando url: ", url)
         let key = obtenerKey(url)
-        print("Llave equivalente: ", key)
         var dict = uds.dictionary(forKey: key) ?? [:]
 
         if let convertido = self.convertirValor(valor) {
@@ -114,9 +112,7 @@ struct PersistenciaDatos {
 
     // MARK: - Obtener un atributo específico
     public func obtenerAtributoConcreto(url: URL, atributo: String) -> Any? {
-        print("Obteniendo url: ", url)
         let key = obtenerKey(url)
-        print("Llave equivalente: ", key)
         
         guard let dict = uds.dictionary(forKey: key) else { return nil }
         return dict[atributo]

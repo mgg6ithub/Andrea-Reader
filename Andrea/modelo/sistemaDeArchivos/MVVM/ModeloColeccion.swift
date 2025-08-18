@@ -2,7 +2,23 @@
 
 import SwiftUI
 
+@MainActor
+extension ModeloColeccion {
+    /// Elementos que la UI debe pintar según el modo de sistema de archivos
+    func elementosParaMostrar(segun modo: EnumTipoSistemaArchivos) -> [ElementoSistemaArchivos] {
+        if modo == .arbol {
+            // En modo árbol solo mostramos archivos (y opcionalmente placeholders si los usas)
+            return elementos.filter { $0 is Archivo /* || $0 is ElementoPlaceholder */ }
+        } else {
+            return elementos
+        }
+    }
 
+    /// ¿Hay al menos un archivo entre los elementos?
+    var tieneArchivos: Bool {
+        elementos.contains { $0 is Archivo }
+    }
+}
 
 
 @MainActor

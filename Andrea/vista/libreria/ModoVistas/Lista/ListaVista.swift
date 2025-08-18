@@ -9,6 +9,8 @@ struct ListaVista: View {
     @ObservedObject var vm: ModeloColeccion
     var namespace: Namespace.ID
     
+    let elementos: [ElementoSistemaArchivos]
+    
     @State private var visibleIndices: [VisibleIndex] = []
     @State private var debounceWorkItem: DispatchWorkItem?
     @State private var elementoArrastrando: ElementoSistemaArchivos? = nil
@@ -29,7 +31,7 @@ struct ListaVista: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 10) {
-                    ForEach(Array(vm.elementos.enumerated()), id: \.element.id) { index, elemento in
+                    ForEach(Array(elementos.enumerated()), id: \.element.id) { index, elemento in
                         ElementoVista(vm: vm, elemento: elemento, scrollIndex: index,
                             cambiarMiniaturaArchivo: { nuevoTipo in
                             if let archivo = elemento as? Archivo {
