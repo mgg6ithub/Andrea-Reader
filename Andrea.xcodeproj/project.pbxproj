@@ -42,7 +42,7 @@
 		D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */; };
 		D48B45A42DF250720088F40E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D48B45A32DF250720088F40E /* ZIPFoundation */; };
 		D48C58802E3BA855006D9C07 /* CabeceraMasInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */; };
-		D48CC04B2E53A23A00063AD9 /* EnumTemasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48CC04A2E53A23A00063AD9 /* EnumTemasTests.swift */; };
+		D48CC0532E53A55A00063AD9 /* AndreaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48CC0522E53A55A00063AD9 /* AndreaTests.swift */; };
 		D4924F252E468759000FD544 /* MasInformacionArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4924F242E468759000FD544 /* MasInformacionArchivo.swift */; };
 		D49961932E44D7A40089488D /* MenuHistorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49961922E44D7A40089488D /* MenuHistorial.swift */; };
 		D49961952E44F9380089488D /* NotificacionLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49961942E44F9380089488D /* NotificacionLog.swift */; };
@@ -115,6 +115,16 @@
 		D4E0B4BC2E1D9FA5008586D2 /* Unrar in Frameworks */ = {isa = PBXBuildFile; productRef = D4E0B4BB2E1D9FA5008586D2 /* Unrar */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D48CC0542E53A55A00063AD9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D45E6FEC2DE7A772001F816A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D45E6FF32DE7A772001F816A;
+			remoteInfo = Andrea;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorialColecciones.swift; sourceTree = "<group>"; };
 		D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesSistemaColecciones.swift; sourceTree = "<group>"; };
@@ -150,7 +160,8 @@
 		D48589752DEBA1C50074DB8E /* Coleccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coleccion.swift; sourceTree = "<group>"; };
 		D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBZArchivo.swift; sourceTree = "<group>"; };
 		D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CabeceraMasInformacion.swift; sourceTree = "<group>"; };
-		D48CC04A2E53A23A00063AD9 /* EnumTemasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTemasTests.swift; sourceTree = "<group>"; };
+		D48CC0502E53A55A00063AD9 /* AndreaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AndreaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D48CC0522E53A55A00063AD9 /* AndreaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AndreaTests.swift; sourceTree = "<group>"; };
 		D4924F242E468759000FD544 /* MasInformacionArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacionArchivo.swift; sourceTree = "<group>"; };
 		D49961922E44D7A40089488D /* MenuHistorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHistorial.swift; sourceTree = "<group>"; };
 		D49961942E44F9380089488D /* NotificacionLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificacionLog.swift; sourceTree = "<group>"; };
@@ -234,6 +245,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D48CC04D2E53A55A00063AD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -242,6 +260,7 @@
 			children = (
 				D45E6FFB2DE7A773001F816A /* Assets.xcassets */,
 				D45E6FF62DE7A772001F816A /* Andrea */,
+				D48CC0512E53A55A00063AD9 /* AndreaTests */,
 				D45E6FF52DE7A772001F816A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -250,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				D45E6FF42DE7A772001F816A /* Andrea.app */,
+				D48CC0502E53A55A00063AD9 /* AndreaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -261,7 +281,6 @@
 				D45E6FF72DE7A772001F816A /* AndreaApp.swift */,
 				D45E70052DE7A7C4001F816A /* AndreaAppView.swift */,
 				D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */,
-				D48CC0492E53A1A000063AD9 /* tests */,
 				D4ADDB802DE9C03F0097A010 /* environment */,
 				D4ADDB702DE9B4AD0097A010 /* utils */,
 				D4ADDB6F2DE9B4A50097A010 /* modelo */,
@@ -362,12 +381,12 @@
 			path = tests;
 			sourceTree = "<group>";
 		};
-		D48CC0492E53A1A000063AD9 /* tests */ = {
+		D48CC0512E53A55A00063AD9 /* AndreaTests */ = {
 			isa = PBXGroup;
 			children = (
-				D48CC04A2E53A23A00063AD9 /* EnumTemasTests.swift */,
+				D48CC0522E53A55A00063AD9 /* AndreaTests.swift */,
 			);
-			path = tests;
+			path = AndreaTests;
 			sourceTree = "<group>";
 		};
 		D49961912E44D78F0089488D /* MenuDerecha */ = {
@@ -693,6 +712,24 @@
 			productReference = D45E6FF42DE7A772001F816A /* Andrea.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D48CC04F2E53A55A00063AD9 /* AndreaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D48CC0562E53A55A00063AD9 /* Build configuration list for PBXNativeTarget "AndreaTests" */;
+			buildPhases = (
+				D48CC04C2E53A55A00063AD9 /* Sources */,
+				D48CC04D2E53A55A00063AD9 /* Frameworks */,
+				D48CC04E2E53A55A00063AD9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D48CC0552E53A55A00063AD9 /* PBXTargetDependency */,
+			);
+			name = AndreaTests;
+			productName = AndreaTests;
+			productReference = D48CC0502E53A55A00063AD9 /* AndreaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -705,6 +742,10 @@
 				TargetAttributes = {
 					D45E6FF32DE7A772001F816A = {
 						CreatedOnToolsVersion = 15.1;
+					};
+					D48CC04F2E53A55A00063AD9 = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = D45E6FF32DE7A772001F816A;
 					};
 				};
 			};
@@ -726,6 +767,7 @@
 			projectRoot = "";
 			targets = (
 				D45E6FF32DE7A772001F816A /* Andrea */,
+				D48CC04F2E53A55A00063AD9 /* AndreaTests */,
 			);
 		};
 /* End PBXProject section */
@@ -740,6 +782,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D48CC04E2E53A55A00063AD9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -747,7 +796,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D48CC04B2E53A23A00063AD9 /* EnumTemasTests.swift in Sources */,
 				D49961932E44D7A40089488D /* MenuHistorial.swift in Sources */,
 				D49DE74B2E0D33F1002FDB7A /* CBRArchivo.swift in Sources */,
 				D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */,
@@ -851,7 +899,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D48CC04C2E53A55A00063AD9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D48CC0532E53A55A00063AD9 /* AndreaTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D48CC0552E53A55A00063AD9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D45E6FF32DE7A772001F816A /* Andrea */;
+			targetProxy = D48CC0542E53A55A00063AD9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D45E70002DE7A773001F816A /* Debug */ = {
@@ -1041,6 +1105,44 @@
 			};
 			name = Release;
 		};
+		D48CC0572E53A55A00063AD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L8AMU3NLW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nothing.AndreaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Andrea.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Andrea";
+			};
+			name = Debug;
+		};
+		D48CC0582E53A55A00063AD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L8AMU3NLW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nothing.AndreaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Andrea.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Andrea";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1058,6 +1160,15 @@
 			buildConfigurations = (
 				D45E70032DE7A773001F816A /* Debug */,
 				D45E70042DE7A773001F816A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D48CC0562E53A55A00063AD9 /* Build configuration list for PBXNativeTarget "AndreaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D48CC0572E53A55A00063AD9 /* Debug */,
+				D48CC0582E53A55A00063AD9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

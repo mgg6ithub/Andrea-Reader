@@ -156,7 +156,7 @@ extension EnumTemas {
             return scheme == .dark ? .dark : .light
         case .dayNight:
             let hour = Calendar.current.component(.hour, from: date)
-            return (7..<20).contains(hour) ? .light : .dark
+            return (7..<21).contains(hour) ? .light : .dark
         default:
             return self // <-
         }
