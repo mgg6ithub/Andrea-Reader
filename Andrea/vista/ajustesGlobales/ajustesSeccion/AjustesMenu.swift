@@ -24,7 +24,7 @@ struct AjustesMenu: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Menu") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("El menu son los iconos de arriba del todo y puedes personalizarlos como mas te guste.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
@@ -124,6 +124,7 @@ struct AjustesMenu: View {
                         Text("\(me.fuente.displayName)")
                             .font(.subheadline)
                             .foregroundColor(tema.secondaryText)
+                            .animation(.smooth, value: me.fuente.displayName)
                     }
                     
                     HStack(spacing: paddingHorizontal) {

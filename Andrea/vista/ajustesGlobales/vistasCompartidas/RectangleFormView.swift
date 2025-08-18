@@ -19,6 +19,7 @@ struct RectangleFormView<T: Equatable>: View {
     var opcionSeleccionada: T                     // Valor que representa esta opción
     @Binding var opcionActual: T                  // Valor actualmente seleccionado
     var isCustomImage: Bool? = nil                // Imagen personalizada o no
+    var esSistemaIcono: String? = nil
 
     // --- VARIABLES ESTADO ---
     @State private var isBouncing = false         // Estado para controlar el rebote
@@ -64,7 +65,7 @@ struct RectangleFormView<T: Equatable>: View {
 
                     ZStack {
                         Image(systemName: "rectangle.fill")
-                            .font(.system(size: iconSize))
+                            .font(.system(size: iconSize * 1.15))
                             .scaleEffect(x: 1.1, y: 1.3, anchor: .center)
                             .foregroundColor(isSelected ? Color.gray.opacity(0.8) : Color.clear)
                             .zIndex(0)
@@ -84,14 +85,26 @@ struct RectangleFormView<T: Equatable>: View {
 //                            )
 
                         if isCustomImage != nil {
-                            Image(icono)
-                                .zIndex(1)
-                                .font(.system(size: iconSize))
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(
-                                    isSelected ? coloresIcono[0] : coloresIcono[0].opacity(0.6),
-                                    coloresIcono.dropFirst().first ?? coloresIcono[0]
-                                )
+                            ZStack {
+                                Image(icono)
+                                    .zIndex(1)
+                                    .font(.system(size: iconSize))
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(
+                                        isSelected ? coloresIcono[0] : coloresIcono[0].opacity(0.5),
+                                        coloresIcono.dropFirst().first ?? coloresIcono[0]
+                                    )
+                                
+                                if let iconoDispositivo = esSistemaIcono {
+                                    Image(systemName: iconoDispositivo)
+                                        .zIndex(2)
+                                        .font(.system(size: iconSize * 0.45))
+                                        .symbolRenderingMode(.palette)
+                                        .foregroundStyle( isSelected ? tema.colorContrario : tema.colorContrario.opacity(0.5), isSelected ? .gray : .gray.opacity(0.5))
+                                        .offset(x: 13.5, y: 11)
+                                }
+                                    
+                            }
 //                                .shadow(
 //                                    color: ap.shadows
 //                                        ? (isSelected
@@ -113,7 +126,7 @@ struct RectangleFormView<T: Equatable>: View {
                                 .font(.system(size: iconSize))
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(
-                                    isSelected ? coloresIcono[0] : coloresIcono[0].opacity(0.6),
+                                    isSelected ? coloresIcono[0] : coloresIcono[0].opacity(0.5),
                                     coloresIcono.dropFirst().first ?? coloresIcono[0]
                                 )
 //                                .shadow(

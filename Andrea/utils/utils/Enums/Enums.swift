@@ -5,7 +5,46 @@
 //  Created by mgg on 30/5/25.
 //
 
+#Preview {
+    AjustesGlobales()
+        .environmentObject(AppEstado.preview)
+        .environmentObject(MenuEstado.preview)
+}
+
 import SwiftUI
+
+// MARK: - Tipo de dispositivo según resolución lógica
+enum EnumDispositivoActual: String, CaseIterable {
+    case iphoneGen3
+    case iphone15
+    case ipadMini
+    case ipad
+    case ipadGen10
+    case ipad12
+    
+    /// Ícono asociado en SF Symbols
+    var iconoDispositivo: String {
+        switch self {
+        case .iphoneGen3, .iphone15:
+            return "iphone"       // 📱
+        case .ipadMini, .ipad, .ipadGen10, .ipad12:
+            return "ipad"         // 📝
+        }
+    }
+    
+    /// Nombre legible (opcional para mostrar en UI)
+    var nombreDispositivo: String {
+        switch self {
+        case .iphoneGen3: return "iPhone (1ª Gen)"
+        case .iphone15:  return "iPhone"
+        case .ipadMini:   return "iPad mini"
+        case .ipad:       return "iPad"
+        case .ipadGen10:  return "iPad 10th Gen"
+        case .ipad12:     return "iPad Pro 12\""
+        }
+    }
+}
+
 
 //MARK: - FILTROS DE ARCHIVOS NO DESEADOS
 enum EnumFiltroArchivos {
@@ -163,6 +202,31 @@ extension EnumTemas {
     }
 }
 
+//extension EnumTemas {
+//    func resolved(for scheme: ColorScheme, date: Date = Date()) -> EnumTemas {
+//        switch self {
+//        case .sistema:
+//            return scheme == .dark ? .dark : .light
+//
+//        case .dayNight:
+//            let hour = Calendar.current.component(.hour, from: date)
+//            let minute = Calendar.current.component(.minute, from: date)
+//
+//            // Día = desde 07:00 hasta 21:09 inclusive
+//            // Noche = a partir de 21:10 o antes de 07:00
+//            if (hour > 7 && hour < 21) || (hour == 7 && minute >= 0) || (hour == 21 && minute < 10) {
+//                return .light
+//            } else {
+//                return .dark
+//            }
+//
+//        default:
+//            return self
+//        }
+//    }
+//}
+
+
 
 enum EnumTemas: String, CaseIterable {
     case light, dark, sistema, dayNight, blue, green, red, orange
@@ -197,11 +261,22 @@ enum EnumTemas: String, CaseIterable {
         let (c1, c2) = gradientColors
         return LinearGradient(colors: [c1, c2], startPoint: .topLeading, endPoint: .bottomTrailing)
     }
+    
+    var reversedBackgroundGradient: LinearGradient {
+        let (c1, c2) = gradientColors
+        return LinearGradient(colors: [c2, c1], startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
 
     var surfaceGradient: LinearGradient {
         let (c1, c2) = gradientColors
-        return LinearGradient(colors: [c1.opacity(0.35), c2.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing)
+        return LinearGradient(colors: [c1.opacity(0.5), c2.opacity(0.85)], startPoint: .topLeading, endPoint: .bottomTrailing)
     }
+    
+    var reversedsurfaceGradient: LinearGradient {
+        let (c1, c2) = gradientColors
+        return LinearGradient(colors: [c2.opacity(0.6), c1.opacity(0.35)], startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+    
     
     var backgroundColor: Color {
         switch self {
@@ -210,7 +285,7 @@ enum EnumTemas: String, CaseIterable {
         case .sistema: return .clear
         case .dayNight: return .clear
         case .blue: return .blue.opacity(0.2)
-        case .green: return .green.opacity(0.2)
+        case .green: return .teal.opacity(0.5)
         case .red: return .red.opacity(0.2)
         case .orange: return .orange.opacity(0.2)
         }
@@ -220,7 +295,21 @@ enum EnumTemas: String, CaseIterable {
         switch self {
         case .light: return .black.opacity(1.0)
         case .dark: return .white.opacity(1.0)
+        case .green: return .black.opacity(0.5)
         default: return .white.opacity(1.0)
+        }
+    }
+    
+    var lineaColor: Color {
+        switch self {
+        case .light: return .gray.opacity(0.2)
+        case .dark: return .gray.opacity(0.2)
+        case .sistema: return .clear
+        case .dayNight: return .clear
+        case .blue: return .blue.opacity(0.2)
+        case .green: return .black.opacity(0.7)
+        case .red: return .black.opacity(0.7)
+        case .orange: return .orange.opacity(0.2)
         }
     }
     
@@ -228,11 +317,13 @@ enum EnumTemas: String, CaseIterable {
         return .gray
     }
     
-    
     var colorContrario: Color {
         switch self {
         case .light: return .black
         case .dark: return .white
+        case .blue: return .white
+        case .green: return .black.opacity(0.7)
+        case .red: return .black.opacity(0.7)
         default: return .white
         }
     }
@@ -246,9 +337,9 @@ enum EnumTemas: String, CaseIterable {
         case .sistema: return .clear
         case .dayNight: return .clear
         case .blue: return .blue.opacity(0.5)
-        case .green: return .green.opacity(0.5)
+        case .green: return .teal.opacity(0.5)
         case .red: return .red.opacity(0.5)
-        case .orange: return .orange.opacity(0.5)
+        case .orange: return .indigo.opacity(0.5)
         }
         
     }
@@ -260,9 +351,22 @@ enum EnumTemas: String, CaseIterable {
         case .sistema: return .clear
         case .dayNight: return .clear
         case .blue: return .blue.opacity(0.5)
-        case .green: return .green.opacity(0.5)
-        case .red: return .red.opacity(0.5)
+        case .green: return .black.opacity(0.7)
+        case .red: return .black.opacity(0.7)
         case .orange: return .orange.opacity(0.5)
+        }
+    }
+    
+    var tituloColor: Color {
+        switch self {
+        case .light: return .fixedSystemGray5_dark
+        case .dark: return .fixedSystemGray6_light
+        case .sistema: return .clear
+        case .dayNight: return .clear
+        case .blue: return .white
+        case .green: return .black
+        case .red: return .black
+        case .orange: return .white
         }
     }
     
@@ -272,9 +376,9 @@ enum EnumTemas: String, CaseIterable {
         case .dark: return .fixedSystemGray6_light
         case .sistema: return .clear
         case .dayNight: return .clear
-        case .blue: return .blue
-        case .green: return .green
-        case .red: return .red
+        case .blue: return .white
+        case .green: return .black.opacity(0.7)
+        case .red: return .black.opacity(0.7)
         case .orange: return .orange
         }
     }
@@ -285,10 +389,10 @@ enum EnumTemas: String, CaseIterable {
         case .dark: return .gray
         case .sistema: return .clear
         case .dayNight: return .clear
-        case .blue: return .blue.opacity(0.5)
-        case .green: return .green.opacity(0.5)
-        case .red: return .red.opacity(0.5)
-        case .orange: return .orange.opacity(0.5)
+        case .blue: return .white.opacity(0.5)
+        case .green: return .black.opacity(0.5)
+        case .red: return .black.opacity(0.5)
+        case .orange: return .orange.opacity(0.7)
         }
     }
 }

@@ -30,7 +30,7 @@ struct AjustesTema: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Tema principal") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
@@ -65,11 +65,12 @@ struct AjustesTema: View {
                 
                 RectangleFormView<EnumTemas>(
                     titulo: "Sistema",
-                    icono: "custom.dayNight",
+                    icono: "yy",
                     coloresIcono: [Color.white, Color.white],
                     opcionSeleccionada: .sistema,
                     opcionActual: $ap.temaActual,
-                    isCustomImage: true
+                    isCustomImage: true,
+                    esSistemaIcono: ap.dispositivoActual.iconoDispositivo
                 )
                 
                 RectangleFormView<EnumTemas>(

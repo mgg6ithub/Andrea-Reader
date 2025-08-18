@@ -17,7 +17,6 @@ struct IndicesHorizontal: View {
     @Binding var scrollProxy: ScrollViewProxy?
     
     var body: some View {
-        
         ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(sections, id: \.self) { section in
@@ -40,6 +39,7 @@ struct IndicesHorizontal: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .fill(selectedSection == section ? Color.blue.opacity(0.2) : Color.clear)
                                 )
+                                .bold(selectedSection == section)
                         }
                     }
                 }
@@ -138,7 +138,7 @@ struct IndicesVertical: View {
                                 path.move(to: p1)
                                 path.addLine(to: p2)
                             }
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                            .stroke(ap.temaResuelto.lineaColor, lineWidth: 1.1)
                             .mask(   // 👇 recorta donde hay círculos
                                 ZStack {
                                     // Fondo blanco = línea visible
@@ -233,14 +233,16 @@ struct Punto: View {
     let rowHeight: CGFloat
     let dotDiameter: CGFloat
     let fontScale: CGFloat   // ⬅️ nuevo
+    
+    private var tema: EnumTemas { ap.temaResuelto }
 
     var body: some View {
         HStack(spacing: 0) {
             ZStack {
                 Circle()
-                    .fill(selectedSection == section ? ap.colorActual : .gray)
+                    .fill(selectedSection == section ? ap.colorActual : tema.lineaColor)
                     .frame(width: dotDiameter, height: dotDiameter)
-                    .shadow(color: selectedSection == section ? ap.colorActual : .gray,
+                    .shadow(color: selectedSection == section ? ap.colorActual : tema.lineaColor,
                             radius: selectedSection == section ? 6 : 0)
                     .overlay(
                         Circle()
@@ -255,6 +257,7 @@ struct Punto: View {
             // Título a la derecha
             // En Punto
             Text(menuEstado.sectionTitle(section))
+                .bold(selectedSection == section)
                 .font(.system(size: ap.constantes.smallTitleSize * fontScale * 1.4))
                 .foregroundColor(selectedSection == section ? ap.temaResuelto.textColor : ap.temaResuelto.secondaryText)
                 .frame(width: labelWidth, alignment: .leading)   // ancho fijo

@@ -269,9 +269,6 @@ class PilaColecciones: ObservableObject {
      */
     public func conservarSoloHome() {
         
-        print("Volviendo a home")
-        print(colecciones)
-        
         guard !colecciones.isEmpty else { return }
         guard let home = colecciones.first else { return }
         

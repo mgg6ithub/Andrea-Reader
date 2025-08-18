@@ -27,9 +27,6 @@ struct AjustesBarraEstado: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-//            Text("Barra de estado") //TITULO
-//                .capaTituloPrincipal(s: const.titleSize * 0.65, c: tema.colorContrario, pH: 0, pW: paddingHorizontal)
-//                .frame(maxWidth: .infinity, alignment: .leading)
             
             CirculoActivoVista(isSection: isSection, nombre: "Barra de estado", titleSize: const.subTitleSize, color: ap.colorActual)
             
@@ -70,19 +67,19 @@ struct BotonBE<T: Equatable>: View {
     
     var body: some View {
         Button(action: {
-            withAnimation { opcionActual = opcionSeleccionada }
+            withAnimation(.easeIn(duration: 0.15)) { opcionActual = opcionSeleccionada }
         }) {
             VStack(alignment: .center, spacing: 6) {
                 
                 Text(titulo)
                     .font(.footnote)
-                    .foregroundColor(.primary)
+                    .foregroundColor(ap.temaResuelto.colorContrario)
                 
                 Image(systemName: icono)
                     .font(.system(size: 22, weight: fuente ?? .medium))
 //                    .foregroundStyle(LinearGradient(colors: coloresIcono, startPoint: .top, endPoint: .bottom))
                     .frame(width: 30, height: 30)
-                    .foregroundColor(ap.temaResuelto.colorContrario)
+                    .foregroundColor(ap.temaResuelto.secondaryText)
             }
             .if(!isSelected) { v in
                 v.opacity(0.4)

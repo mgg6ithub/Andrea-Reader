@@ -79,8 +79,7 @@ struct TogglePersonalizado<T: Equatable>: View {
                     }
                 }
             )) {
-                Text(
-                    ( (opcionSeleccionada != nil && opcionBinding == opcionSeleccionada) ||
+                Text(((opcionSeleccionada != nil && opcionBinding == opcionSeleccionada) ||
                       (opcionSeleccionada == nil && (opcionBinding as? Bool) == true)
                     )
                     ? opcionTrue
@@ -89,11 +88,11 @@ struct TogglePersonalizado<T: Equatable>: View {
                 .font(.subheadline)
                 .foregroundColor(colorActivarDesactivar)
             }
-            .toggleStyle(SwitchToggleStyle(tint: .blue))
+            .toggleStyle(SwitchToggleStyle(tint: ap.colorActual))
             
             if isDivider && isInsideToggle {
                 Rectangle()
-                    .fill(Color.gray.opacity(0.5))
+                    .fill(tema.lineaColor)
                     .frame(height: 0.5)
                     .padding(.vertical, 10)
             }

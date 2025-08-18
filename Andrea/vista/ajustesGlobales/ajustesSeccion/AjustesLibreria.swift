@@ -16,7 +16,7 @@ struct AjustesLibreria: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Libreria") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Ajusta los libros y el comportamiento de la libreria.")
                 .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)

@@ -69,7 +69,7 @@ struct AjustesGlobales: View {
             VStack(alignment: .center, spacing: 0) {
                 Text("Ajustes generales")
                     .font(.system(size: ap.constantes.titleSize * 1.7, weight: .bold))
-                    .foregroundColor(tema.colorContrario)
+                    .foregroundColor(tema.tituloColor)
                     .bold()
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, cpd.padding15)
@@ -83,7 +83,7 @@ struct AjustesGlobales: View {
                 
                 if haHechoScroll {
                     Rectangle()
-                        .fill(Color.gray.opacity(0.2))
+                        .fill(ap.temaResuelto.lineaColor)
                         .frame(height: 2.5)
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
@@ -120,7 +120,7 @@ struct DividerPersonalizado: View {
     
     var body: some View {
         Rectangle()
-            .fill(Color.gray.opacity(0.5))
+            .fill(ap.temaActual.lineaColor)
             .frame(height: 1.1)
             .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
             .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40

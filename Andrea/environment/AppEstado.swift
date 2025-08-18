@@ -7,6 +7,9 @@ class AppEstado: ObservableObject {
     private let cpag = ClavesPersistenciaAjustesGenerales()
     private let pd = PersistenciaDatos()
     
+    //DISPOSITIVO ACTUAL
+    @Published var dispositivoActual: EnumDispositivoActual
+    
     //MENU LATERAL
     @Published var sideMenuVisible: Bool = false
     
@@ -98,6 +101,22 @@ class AppEstado: ObservableObject {
             default:
                 resLog = .medium
                 break
+        }
+        
+        switch (actualScreenWidth, actualScreenHeight) {
+            case (..<380, ..<700):
+                self.dispositivoActual = .iphoneGen3
+            case (..<500, ..<900):
+                self.dispositivoActual = .iphone15
+            case (..<750, ..<1100):
+                self.dispositivoActual = .ipad
+            case (..<850, ..<1200):
+                self.dispositivoActual = .ipadGen10
+            case (..<1100, ..<1500):
+                self.dispositivoActual = .ipad12
+            default:
+                self.dispositivoActual = .iphone15
+                
         }
         
         self.screenWidth = actualScreenWidth
