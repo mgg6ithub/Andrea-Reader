@@ -86,8 +86,6 @@ class PilaColecciones: ObservableObject {
             
             if let home = cache[self.homeURL]?.coleccion {
                 let homeVM = ModeloColeccion(home)
-
-                print("coleccion principal modelocoleccion: ", homeVM.coleccion.nombre)
                 
                 // Evita duplicarla si ya estaba
                 if !vistaModelos.contains(where: { $0.coleccion.url == home.url }) {

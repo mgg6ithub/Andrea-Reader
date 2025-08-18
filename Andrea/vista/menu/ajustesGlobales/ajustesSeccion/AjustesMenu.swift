@@ -1,57 +1,6 @@
 
 import SwiftUI
 
-//#Preview {
-//    AjustesGlobales()
-////        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
-//        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
-////        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-////        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
-////        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
-//        .environmentObject(MenuEstado())
-//}
-
-#Preview {
-    AjustesGlobales()
-        .environmentObject(AppEstado.preview)
-        .environmentObject(MenuEstado.preview)
-}
-
-
-extension AppEstado {
-    static var preview: AppEstado {
-//        let ap = AppEstado(screenWidth: 393, screenHeight: 852)
-        let ap = AppEstado(screenWidth: 820, screenHeight: 1180)
-        ap.temaActual = .dark
-        ap.sistemaArchivos = .tradicional
-        ap.ajusteColorSeleccionado = .colorPersonalizado
-        ap.colorPersonalizadoActual = .blue
-        ap.shadows = true
-        return ap
-    }
-}
-
-extension MenuEstado {
-    static var preview: MenuEstado {
-        let me = MenuEstado()
-        me.modoBarraEstado = .on
-        me.statusBarTopInsetBaseline = 0
-        me.iconoMenuLateral = true
-        me.iconoFlechaAtras = false
-        me.iconoSeleccionMultiple = true
-        me.iconoNotificaciones = true
-        me.dobleColor = false
-        me.colorGris = false
-        me.colorAutomatico = true
-        me.iconSize = 24
-        me.fuente = .light
-        me.fondoMenu = true
-        me.colorFondoMenu = .transparente
-        return me
-    }
-}
-
-
 struct AjustesMenu: View {
     
     @EnvironmentObject var ap: AppEstado

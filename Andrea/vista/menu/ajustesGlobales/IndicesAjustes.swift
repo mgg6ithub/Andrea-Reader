@@ -1,6 +1,11 @@
 
-
 import SwiftUI
+
+#Preview {
+    AjustesGlobales()
+        .environmentObject(AppEstado.preview)
+        .environmentObject(MenuEstado.preview)
+}
 
 struct IndicesHorizontal: View {
     
@@ -119,8 +124,8 @@ struct IndicesVertical: View {
                 .padding(.bottom, topPad)
                 .frame(maxHeight: .infinity, alignment: .top)
                 .frame(width: railWidthBase + 12 + labelWidth)
-                
                 // Línea entre puntos usando anchors reales
+                // Línea entre puntos usando anchors reales (con recorte en los círculos)
                 .overlayPreferenceValue(RailAnchorsKey.self) { anchors in
                     GeometryReader { proxy in
                         let firstIdx = 0
@@ -128,12 +133,30 @@ struct IndicesVertical: View {
                         if let a1 = anchors[firstIdx], let a2 = anchors[lastIdx] {
                             let p1 = proxy[a1]
                             let p2 = proxy[a2]
-                            let r  = dot / 2
+                            
                             Path { path in
-                                path.move(to: CGPoint(x: p1.x, y: p1.y + r))
-                                path.addLine(to: CGPoint(x: p2.x, y: p2.y - r))
+                                path.move(to: p1)
+                                path.addLine(to: p2)
                             }
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                            .mask(   // 👇 recorta donde hay círculos
+                                ZStack {
+                                    // Fondo blanco = línea visible
+                                    Rectangle().fill(Color.white)
+                                    
+                                    // Círculos negros = "agujeros" en la línea
+                                    ForEach(Array(anchors.keys), id: \.self) { i in
+                                        if let anchor = anchors[i] {
+                                            let p = proxy[anchor]
+                                            Circle()
+                                                .frame(width: dot + 3, height: dot + 3)
+                                                .position(p)
+                                                .blendMode(.destinationOut)
+                                        }
+                                    }
+                                }
+                            )
+                            .compositingGroup()
                         }
                     }
                     .allowsHitTesting(false)
@@ -141,8 +164,8 @@ struct IndicesVertical: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        .frame(maxWidth: 28 + 12 + 140) // rail + gap + label
-        .border(.red)
+        .frame(maxWidth: 28 + 12 + 60) // rail + gap + label
+        .padding(.bottom, 50)
     }
     
     // Cálculo adaptativo fuera del ViewBuilder
@@ -201,7 +224,7 @@ struct Punto: View {
     @EnvironmentObject var menuEstado: MenuEstado
 
     var railWidth: CGFloat = 28
-    var labelWidth: CGFloat = 140
+    var labelWidth: CGFloat = 90
 
     let index: Int
     let section: String
@@ -212,8 +235,7 @@ struct Punto: View {
     let fontScale: CGFloat   // ⬅️ nuevo
 
     var body: some View {
-        HStack(spacing: 12) {
-            // Punto centrado en el rail
+        HStack(spacing: 0) {
             ZStack {
                 Circle()
                     .fill(selectedSection == section ? ap.colorActual : .gray)
@@ -221,8 +243,9 @@ struct Punto: View {
                     .shadow(color: selectedSection == section ? ap.colorActual : .gray,
                             radius: selectedSection == section ? 6 : 0)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke((selectedSection == section && isPressed) ? ap.colorActual : .clear, lineWidth: 4)
+                        Circle()
+                            .stroke((selectedSection == section && isPressed) ? ap.colorActual : .clear,
+                                    lineWidth: 3.5)
                             .animation(.easeInOut(duration: 0.3), value: isPressed)
                     )
             }
@@ -230,10 +253,13 @@ struct Punto: View {
             .anchorPreference(key: RailAnchorsKey.self, value: .center) { [index: $0] }
 
             // Título a la derecha
+            // En Punto
             Text(menuEstado.sectionTitle(section))
-                .font(.system(size: ap.constantes.smallTitleSize * fontScale))
+                .font(.system(size: ap.constantes.smallTitleSize * fontScale * 1.4))
                 .foregroundColor(selectedSection == section ? ap.temaActual.textColor : ap.temaActual.secondaryText)
-                .frame(width: labelWidth, alignment: .leading)
+                .frame(width: labelWidth, alignment: .leading)   // ancho fijo
+                .lineLimit(nil)                                  // permite varias líneas
+                .multilineTextAlignment(.leading)                // alinea a la izquierda
 
             Spacer(minLength: 0)
         }
