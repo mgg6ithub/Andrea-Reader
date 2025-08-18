@@ -90,64 +90,54 @@ struct DividerPersonalizado: View {
 }
 
 
-struct Punto: View {
-    
-    // --- ENTORNO ---
-    @EnvironmentObject var ap: AppEstado
-    @EnvironmentObject var menuEstado: MenuEstado
-    
-    // --- CONSTANTES ---
-    var anchoIndicePuntos: CGFloat = 77.5
-    var anchoTexto: CGFloat = 72.5
-    
-    // --- PARAMETROS ---
-    let index: Int
-    let section: String
-    @Binding var selectedSection: String?
-    @Binding var isPressed: Bool
-    let distPoints: CGFloat
-    
-    // --- VARIABLES CALCULADAS ---
-    var sections: [String] { menuEstado.sections }
-    
-    var body: some View {
-        
-        VStack(spacing: 0) {
-            HStack(spacing: ConstantesPorDefecto().paddingCorto - 2) {
-                Text(menuEstado.sectionTitle(section))
-                    .font(.system(size: ap.constantes.smallTitleSize))
-                    .foregroundColor(selectedSection == section ? ap.temaActual.textColor : ap.temaActual.secondaryText)
-                    .frame(width: (anchoTexto * ap.constantes.scaleFactor) - 10, alignment: .leading)
-                
-                Circle()
-                    .fill(selectedSection == section ? ap.colorActual : .gray)
-                    .shadow(
-                        color: selectedSection == section ? ap.colorActual : .gray,
-                        radius: ((selectedSection == section ? 6 : 0))
-                    )
-                    .frame(width: 15, height: 15)
-                    .overlay( //ANIMACION AVANZADA AL HACER CLICK
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke((selectedSection == section && isPressed) ? ap.colorActual : Color.clear, lineWidth: 4)
-                                    .animation(.easeInOut(duration: 0.3), value: isPressed)
-                            )
-                    .shadow(color: (selectedSection == section && isPressed) ? ap.colorActual.opacity(0.3) : .clear, radius: (selectedSection == section && isPressed) ? 10 : 0, x: 0, y: (selectedSection == section && isPressed) ? 5 : 0)
-                    .animation(.spring(response: 0.3, dampingFraction: 0.5, blendDuration: 0), value: isPressed)
-                    .frame(alignment: .trailing)
-            }
-            
-            if index < sections.count - 1 {
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(width: 2, height: distPoints, alignment: .trailing)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-        }
-        .frame(maxWidth: (anchoIndicePuntos * ap.constantes.scaleFactor) - 1.5)
-        
-    }
-    
-}
+//// MARK: - Punto
+//struct Punto: View {
+//    @EnvironmentObject var ap: AppEstado
+//    @EnvironmentObject var menuEstado: MenuEstado
+//
+//    // Anchos de la columna izquierda
+//    // railWidth es la columna del “rail” (línea + puntos)
+//    // labelWidth es la columna donde va el título de la sección
+//    var railWidth: CGFloat = 28
+//    var labelWidth: CGFloat = 140
+//
+//    // Parámetros
+//    let index: Int
+//    let section: String
+//    @Binding var selectedSection: String?
+//    @Binding var isPressed: Bool
+//    let rowHeight: CGFloat     // altura por fila (calculada en IndicesVertical)
+//    let dotDiameter: CGFloat   // diámetro del punto
+//
+//    var body: some View {
+//        HStack(spacing: 12) {
+//            // Columna rail (el punto se centra en el rail)
+//            ZStack {
+//                // El trazo vertical lo pinta IndicesVertical de fondo;
+//                // aquí solo el punto
+//                Circle()
+//                    .fill(selectedSection == section ? ap.colorActual : .gray)
+//                    .frame(width: dotDiameter, height: dotDiameter)
+//                    .shadow(color: selectedSection == section ? ap.colorActual : .gray, radius: selectedSection == section ? 6 : 0)
+//                    .overlay(
+//                        RoundedRectangle(cornerRadius: 10)
+//                            .stroke((selectedSection == section && isPressed) ? ap.colorActual : .clear, lineWidth: 4)
+//                            .animation(.easeInOut(duration: 0.3), value: isPressed)
+//                    )
+//            }
+//            .frame(width: railWidth, alignment: .center) // punto centrado en el rail
+//
+//            // Título a la DERECHA del punto
+//            Text(menuEstado.sectionTitle(section))
+//                .font(.system(size: ap.constantes.smallTitleSize))
+//                .foregroundColor(selectedSection == section ? ap.temaActual.textColor : ap.temaActual.secondaryText)
+//                .frame(width: labelWidth, alignment: .leading)
+//
+//            Spacer(minLength: 0)
+//        }
+//        .frame(height: rowHeight)
+//    }
+//}
 
 struct ViewOffsetKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
