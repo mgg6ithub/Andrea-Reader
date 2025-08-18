@@ -2,16 +2,7 @@
 
 import SwiftUI
 
-@MainActor
-extension ModeloColeccion {
-    func elementosParaMostrar(segun modo: EnumTipoSistemaArchivos) -> [ElementoSistemaArchivos] {
-        if modo == .arbol {
-            return elementos.filter { !($0 is Coleccion) }
-        } else {
-            return elementos
-        }
-    }
-}
+
 
 
 @MainActor
@@ -156,13 +147,13 @@ class ModeloColeccion: ObservableObject {
 
     func cargarElementos() {
         guard !elementosCargados else { return }
-        
+            
         let startTime = CFAbsoluteTimeGetCurrent()
         isLoading = true
 
         // 1. Obtener y filtrar URLs
         let allURLs = SistemaArchivos.sa.obtenerURLSDirectorio(coleccionURL: coleccion.url)
-        var filteredURLs = allURLs.filter { url in
+        let filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
                 $0.shouldInclude(url: url)
             }
@@ -193,14 +184,15 @@ class ModeloColeccion: ObservableObject {
                 let elemento = SistemaArchivos.sa.crearInstancia(elementoURL: url)
                 todosLosElementos.append((idx, elemento))
             }
-
+            
             // Ordenar todos los elementos (sin importar el orden de entrada)
             let elementosOrdenados = await Algoritmos().ordenarElementos(todosLosElementos.map { $0.1 }, por: ordenacion, esInvertido: self.esInvertido, coleccionURL: self.coleccion.url)
-
+            
             await MainActor.run {
                 
                 self.elementos = elementosOrdenados
-                //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA --- 
+                
+                //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
                 ConsejoImportarElementos.coleccionVacia = self.elementos.isEmpty
                 
                 self.isLoading = false
@@ -284,14 +276,19 @@ class ModeloColeccion: ObservableObject {
         self.ordenacion = .personalizado
         
         var ordenDict: [String: Int] = [:]
+        
+        print("Guardando diccinario de orden personzalido")
+        
         for (i, elemento) in self.elementos.enumerated() {
             ordenDict[PersistenciaDatos().obtenerKey(elemento.url)] = i
         }
         
         self.quitarInvertido()
-        
+
         //guardamos la ordenacion
         PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "ordenacion", valor: modoOrdenacion)
+        
+        print("Guardando diccinario: ", ordenDict)
         // Guarda el diccionario completo como atributo "ordenPersonalizado"
         PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "ordenPersonalizado", valor: ordenDict)
     }

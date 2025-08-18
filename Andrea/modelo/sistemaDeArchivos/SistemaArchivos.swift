@@ -47,6 +47,8 @@ class SistemaArchivos: ObservableObject {
      */
     private init(preview: Bool = false) {
         
+        self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
+        
         // Crear la coleccion raiz y asignarla
         let home = FabricaColeccion().crearColeccion(coleccionNombre: "HOME", coleccionURL: self.homeURL)
         cacheColecciones[homeURL] = ColeccionValor(coleccion: home)

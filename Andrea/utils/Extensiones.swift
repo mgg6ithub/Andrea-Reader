@@ -26,6 +26,12 @@ import ZIPFoundation
 //}
 
 
+extension URL {
+    var canon: URL { standardizedFileURL.resolvingSymlinksInPath() }
+    var canonPath: String { canon.path }
+}
+
+
 
 //MARK: - MODELO HERENCIA PARA EL SISTEMA DE ARCHVIOS
 

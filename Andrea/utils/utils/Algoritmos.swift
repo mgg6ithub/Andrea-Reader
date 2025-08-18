@@ -45,8 +45,10 @@ struct Algoritmos {
             guard let coleccionURL = coleccionURL else { return [] }
             
             guard let ordenDict = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "ordenPersonalizado") as? [String: Int] else {
-                    return []
-                }
+                return []
+            }
+            
+            print("AHORA SI")
                 
             tempElementos = elementos.sorted { (a, b) -> Bool in
                 let posA = ordenDict[PersistenciaDatos().obtenerKey(a.url)] ?? Int.max

@@ -46,8 +46,9 @@ struct PersistenciaDatos {
     
     //MARK: --- ARCHIVO ---
     public func guardarDatoElemento(url: URL, atributo: String, valor: Any) {
-        
+        print("Guardando url: ", url)
         let key = obtenerKey(url)
+        print("Llave equivalente: ", key)
         var dict = uds.dictionary(forKey: key) ?? [:]
 
         if let convertido = self.convertirValor(valor) {
@@ -81,6 +82,17 @@ struct PersistenciaDatos {
             
         //colores
         case let v as Color: return v.toHexString
+            
+        //Arrays y diccinarios
+        case let v as [String:Int]:    return v
+        case let v as [String:Double]: return v
+        case let v as [String:Bool]:   return v
+        case let v as [String:String]: return v
+        case let v as [Int]:           return v
+        case let v as [Double]:        return v
+        case let v as [Bool]:          return v
+        case let v as [String]:        return v
+            
         default: return nil
         }
     }
@@ -102,8 +114,9 @@ struct PersistenciaDatos {
 
     // MARK: - Obtener un atributo específico
     public func obtenerAtributoConcreto(url: URL, atributo: String) -> Any? {
-        
+        print("Obteniendo url: ", url)
         let key = obtenerKey(url)
+        print("Llave equivalente: ", key)
         
         guard let dict = uds.dictionary(forKey: key) else { return nil }
         return dict[atributo]

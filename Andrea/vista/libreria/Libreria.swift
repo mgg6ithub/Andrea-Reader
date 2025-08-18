@@ -9,8 +9,6 @@ struct Libreria: View {
 
     var body: some View {
         
-        let visibles = vm.elementosParaMostrar(segun: ap.sistemaArchivos)
-        
         ZStack {
             if vm.elementos.isEmpty {
                 if vm.coleccion.nombre == "HOME" {
@@ -21,7 +19,7 @@ struct Libreria: View {
             } else {
                 switch vm.modoVista {
                 case .cuadricula:
-                    CuadriculaVista(vm: vm, namespace: animationNamespace, elementos: visibles)
+                    CuadriculaVista(vm: vm, namespace: animationNamespace)
                         .transition(.opacity.combined(with: .scale))
 
                 case .lista:
@@ -34,12 +32,6 @@ struct Libreria: View {
             }
         }
         .animation(.easeInOut(duration: 0.3), value: vm.modoVista)
-        .onAppear {
-            print("ELEMENTOS de vm.elementos: ", vm.elementos)
-            print()
-            print("ELEMENTOS DE visibles: ", visibles)
-            print()
-        }
     }
 }
 
