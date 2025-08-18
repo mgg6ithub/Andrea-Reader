@@ -81,7 +81,6 @@ struct AjustesTema: View {
                     isCustomImage: true
                 )
             }
-//            .padding(.vertical, 30)
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
             VStack(alignment: .leading, spacing: 0) {

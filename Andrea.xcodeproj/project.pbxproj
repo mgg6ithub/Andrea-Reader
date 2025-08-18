@@ -42,6 +42,7 @@
 		D48B45A12DF24E9E0088F40E /* CBZArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */; };
 		D48B45A42DF250720088F40E /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D48B45A32DF250720088F40E /* ZIPFoundation */; };
 		D48C58802E3BA855006D9C07 /* CabeceraMasInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */; };
+		D48CC04B2E53A23A00063AD9 /* EnumTemasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48CC04A2E53A23A00063AD9 /* EnumTemasTests.swift */; };
 		D4924F252E468759000FD544 /* MasInformacionArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4924F242E468759000FD544 /* MasInformacionArchivo.swift */; };
 		D49961932E44D7A40089488D /* MenuHistorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49961922E44D7A40089488D /* MenuHistorial.swift */; };
 		D49961952E44F9380089488D /* NotificacionLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49961942E44F9380089488D /* NotificacionLog.swift */; };
@@ -149,6 +150,7 @@
 		D48589752DEBA1C50074DB8E /* Coleccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coleccion.swift; sourceTree = "<group>"; };
 		D48B45A02DF24E9E0088F40E /* CBZArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBZArchivo.swift; sourceTree = "<group>"; };
 		D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CabeceraMasInformacion.swift; sourceTree = "<group>"; };
+		D48CC04A2E53A23A00063AD9 /* EnumTemasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTemasTests.swift; sourceTree = "<group>"; };
 		D4924F242E468759000FD544 /* MasInformacionArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacionArchivo.swift; sourceTree = "<group>"; };
 		D49961922E44D7A40089488D /* MenuHistorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHistorial.swift; sourceTree = "<group>"; };
 		D49961942E44F9380089488D /* NotificacionLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificacionLog.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				D45E6FF72DE7A772001F816A /* AndreaApp.swift */,
 				D45E70052DE7A7C4001F816A /* AndreaAppView.swift */,
 				D45E6FF92DE7A772001F816A /* VistaPrincipal.swift */,
+				D48CC0492E53A1A000063AD9 /* tests */,
 				D4ADDB802DE9C03F0097A010 /* environment */,
 				D4ADDB702DE9B4AD0097A010 /* utils */,
 				D4ADDB6F2DE9B4A50097A010 /* modelo */,
@@ -352,6 +355,21 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
+		D48CC0482E53A16D00063AD9 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
+		D48CC0492E53A1A000063AD9 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				D48CC04A2E53A23A00063AD9 /* EnumTemasTests.swift */,
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
 		D49961912E44D78F0089488D /* MenuDerecha */ = {
 			isa = PBXGroup;
 			children = (
@@ -415,6 +433,7 @@
 			children = (
 				D4DA1BD52E3BC9CA00529C47 /* consejos */,
 				D4ADDB732DE9B69C0097A010 /* principal */,
+				D4DEBBEA2DE9CCB100F06C30 /* ajustesGlobales */,
 				D4ADDB722DE9B4E90097A010 /* menu */,
 				D4B3C3B92E3A8E0B00CA6064 /* MenuSeleccionMultiple */,
 				D4ADDB7F2DE9BE730097A010 /* historial */,
@@ -428,6 +447,7 @@
 		D4ADDB6F2DE9B4A50097A010 /* modelo */ = {
 			isa = PBXGroup;
 			children = (
+				D48CC0482E53A16D00063AD9 /* tests */,
 				D49DE74C2E0D3458002FDB7A /* imagenes */,
 				D4ADDB852DE9C0820097A010 /* sistemaDeArchivos */,
 			);
@@ -462,7 +482,6 @@
 				D4D8CCF22E377C3D00F7F18D /* menuIzquierda */,
 				D4ADDB7B2DE9B9F10097A010 /* MenuCentro.swift */,
 				D49961912E44D78F0089488D /* MenuDerecha */,
-				D4DEBBEA2DE9CCB100F06C30 /* ajustesGlobales */,
 			);
 			path = menu;
 			sourceTree = "<group>";
@@ -728,6 +747,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D48CC04B2E53A23A00063AD9 /* EnumTemasTests.swift in Sources */,
 				D49961932E44D7A40089488D /* MenuHistorial.swift in Sources */,
 				D49DE74B2E0D33F1002FDB7A /* CBRArchivo.swift in Sources */,
 				D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */,
