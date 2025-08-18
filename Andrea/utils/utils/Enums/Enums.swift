@@ -94,6 +94,10 @@ extension Color {
                      brightness: max(brightness - CGFloat(percentage), 0),
                      opacity: Double(alpha))
     }
+    
+    static let fixedBlack = Color(red: 0/255, green: 0/255, blue: 0/255)
+    static let fixedWhite = Color(red: 255/255, green: 255/255, blue: 255/255)
+    
 }
 
 // MARK: - FUENTES
@@ -172,7 +176,7 @@ enum EnumTemas: String, CaseIterable {
         case .blue:    return (.blue.opacity(0.5), .blue.opacity(0.8))
         case .green:   return (.teal, .green)
         case .red:     return (.purple, .red)
-        case .orange:  return (.indigo.opacity(0.8), .black.opacity(0.8))
+        case .orange:  return (.indigo, .black)
         }
     }
     

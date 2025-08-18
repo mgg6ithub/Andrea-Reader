@@ -79,7 +79,8 @@ struct MasInformacion: View {
                         width: pantallaCompleta ? cW : cWSmall,
                         height: pantallaCompleta ? cH : cHSmall
                     ) // Altura dinámica
-                    .background(Color(ap.temaActual == .dark ? UIColor.systemGray5 : UIColor.systemGray6))
+//                    .background(Color(ap.temaActual == .dark ? UIColor.systemGray5 : UIColor.systemGray6))
+                    .background(ap.temaResuelto.backgroundGradient)
                     .cornerRadius(pantallaCompleta ? 0 : 15)
                     .shadow(radius: !pantallaCompleta ? 10 : 0)
                     .transition(.opacity.combined(with: .scale)) // Transición más suave

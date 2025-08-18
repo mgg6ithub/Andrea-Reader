@@ -264,12 +264,6 @@ class PilaColecciones: ObservableObject {
      Establece la HOME como actual y guarda la pila.
      */
     public func conservarSoloHome() {
-        
-        print("Colecciones")
-        for col in self.colecciones {
-            print(col.coleccion.nombre)
-        }
-        
         guard !colecciones.isEmpty else { return }
         guard let home = colecciones.first else { return }
         
