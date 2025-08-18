@@ -65,7 +65,8 @@ private struct TopInsetKey: PreferenceKey {
 //MARK: - --- PREVIEW ---
 
 struct AndreaAppView: View {
-//    
+    @Environment(\.colorScheme) private var systemScheme
+//
 //    @StateObject private var ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
 //    @StateObject private var ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
 //    @StateObject private var ap = AppEstado(screenWidth: 744, screenHeight: 1133) ipad mini 6 gen
@@ -78,8 +79,9 @@ struct AndreaAppView: View {
     @StateObject private var ne = NotificacionesEstado.ne
     
     var body: some View {
+        let temaResuelto = ap.temaActual.resolved(for: systemScheme)
         ZStack {
-            ap.temaActual.backgroundGradient.edgesIgnoringSafeArea(.all)
+            temaResuelto.backgroundGradient.edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
                 
                 //Espacio vertical para respetar cuando no hay barra de estado. No habra espacio en seleccion multiple.
@@ -112,6 +114,15 @@ struct AndreaAppView: View {
                 }
                 
             }
+        }
+        .onChange(of: ap.temaActual) {
+            ap.temaResuelto = ap.temaActual.resolved(for: systemScheme)
+        }
+        .onChange(of: systemScheme) {
+            ap.temaResuelto = ap.temaActual.resolved(for: systemScheme)
+        }
+        .onAppear {
+            ap.temaResuelto = ap.temaActual.resolved(for: systemScheme)
         }
         // 3) Ignora el safe area superior del sistema: el hueco lo controlas tú
         .ignoresSafeArea(.container, edges: .top)

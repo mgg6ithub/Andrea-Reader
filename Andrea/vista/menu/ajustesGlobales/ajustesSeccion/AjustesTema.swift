@@ -1,6 +1,12 @@
 
 import SwiftUI
 
+#Preview {
+    AjustesGlobales()
+        .environmentObject(AppEstado.preview)
+        .environmentObject(MenuEstado.preview)
+}
+
 struct AjustesTema: View {
     
     // --- ENTORNO ---
@@ -21,13 +27,20 @@ struct AjustesTema: View {
     private var esOscuro: Bool { ap.temaActual == .dark }
     
     var body: some View {
-        
         VStack(alignment: .center, spacing: 0) {
             Text("Tema principal") //TITULO
                 .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.colorContrario, pH: paddingVertical, pW: paddingHorizontal)
             
             Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
                 .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+            
+            Text("Información del tema seleccionado")
+                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.colorContrario, pH: 0, pW: 0, b: true)
+                .padding(.bottom, 15)
+            
+            Text(ap.temaActual.descripcionTema)
+                .capaDescripcion(s: const.descripcionAjustes * 0.8, c: ap.temaActual.secondaryText, pH: 0, pW: 0)
+                .padding(.bottom, 20)
             
             CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
@@ -50,6 +63,15 @@ struct AjustesTema: View {
                 )
                 
                 RectangleFormView<EnumTemas>(
+                    titulo: "Sistema",
+                    icono: "custom.dayNight",
+                    coloresIcono: [Color.white, Color.white],
+                    opcionSeleccionada: .sistema,
+                    opcionActual: $ap.temaActual,
+                    isCustomImage: true
+                )
+                
+                RectangleFormView<EnumTemas>(
                     titulo: "Dia/Noche",
                     icono: "custom.dayNight",
                     coloresIcono: [Color.white, Color.white],
@@ -58,6 +80,7 @@ struct AjustesTema: View {
                     isCustomImage: true
                 )
             }
+//            .padding(.vertical, 30)
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
             VStack(alignment: .leading, spacing: 0) {

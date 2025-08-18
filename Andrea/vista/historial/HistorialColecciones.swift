@@ -1,11 +1,10 @@
 import SwiftUI
 
 struct HistorialColecciones: View {
-    
     // --- ENTORNO ---
     @Namespace private var breadcrumb
     @EnvironmentObject var pc: PilaColecciones
-    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var ap: AppEstado
 
     // --- ESTADO ---
     @State private var esVerColeccionPresionado: Bool = false
@@ -15,20 +14,22 @@ struct HistorialColecciones: View {
     @State private var show: Bool = false
 
     // --- VARIABLES CALCULADAS ---
-    private var variable: CGFloat { appEstado.historialSize }
-    private var escala: CGFloat { appEstado.constantes.scaleFactor }
+    private var variable: CGFloat { ap.historialSize }
+    private var escala: CGFloat { ap.constantes.scaleFactor }
     private var grande: CGFloat { variable * escala }
     private var peke: CGFloat { (variable - 7) * escala }
     private var paddingScalado: CGFloat { (variable - 10) * escala }
     private var spacioG: CGFloat { 5 * escala }
     private var spacioP: CGFloat { 4 * escala }
+    
+    private var tema: EnumTemas { ap.temaResuelto }
 
     var body: some View {
         HStack(spacing: 0) {
             if pc.getColeccionActual().coleccion.nombre == "HOME" {
                 ColeccionRectanguloAvanzado(
                     textoSize: grande,
-                    colorPrimario: appEstado.temaActual.textColor,
+                    colorPrimario: tema.textColor,
                     color: Color.gray,
                     isActive: true,
                     pH: paddingScalado,
@@ -38,7 +39,7 @@ struct HistorialColecciones: View {
                         Image(systemName: "house")
                         
                         Text("Home")
-                            .font(.system(size: (variable - 1) * appEstado.constantes.scaleFactor))
+                            .font(.system(size: (variable - 1) * ap.constantes.scaleFactor))
                             .bold()
                     }
                 }
@@ -49,7 +50,7 @@ struct HistorialColecciones: View {
                 }) {
                     ColeccionRectanguloAvanzado(
                         textoSize: peke,
-                        colorPrimario: appEstado.temaActual.textColor,
+                        colorPrimario: tema.textColor,
                         color: Color.gray,
                         isActive: false,
                         pH: paddingScalado,
@@ -74,7 +75,7 @@ struct HistorialColecciones: View {
                                     
                                     ColeccionRectanguloAvanzado(
                                         textoSize: grande,
-                                        colorPrimario: appEstado.temaActual.textColor,
+                                        colorPrimario: tema.textColor,
                                         color: vm.color,
                                         isActive: true,
                                         pH: paddingScalado,
@@ -95,7 +96,7 @@ struct HistorialColecciones: View {
                                         
                                         ColeccionRectanguloAvanzado(
                                             textoSize: peke,
-                                            colorPrimario: appEstado.temaActual.secondaryText,
+                                            colorPrimario: tema.secondaryText,
                                             color: vm.color,
                                             isActive: false,
                                             pH: paddingScalado,
@@ -126,7 +127,7 @@ struct HistorialColecciones: View {
                     
                     self.colorTemporal = pc.getColeccionActual().color
                     
-                    if appEstado.animaciones {
+                    if ap.animaciones {
                         withAnimation {
                             esVerColeccionPresionado.toggle()
                         }
@@ -137,14 +138,14 @@ struct HistorialColecciones: View {
                     HStack(spacing: 6) {
                         Image("custom-folder-lupa")
                             .symbolRenderingMode(.palette)
-                            .foregroundStyle(appEstado.temaActual.secondaryText)
+                            .foregroundStyle(tema.secondaryText)
                             .font(.system(size: 16))
                             .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
                             .offset(y: 1.5)
                         
                         Text("Ver")
                             .font(.system(size: 16))
-                            .foregroundColor(appEstado.temaActual.secondaryText)
+                            .foregroundColor(tema.secondaryText)
                             .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
                     }
                     .fondoBoton(pH: ConstantesPorDefecto().horizontalPadding, pV: 7, isActive: false, color: .gray, borde: false)
@@ -171,6 +172,6 @@ struct HistorialColecciones: View {
     private func delay(_ index: Double) -> Double {
         if primeraCarga { return 0 }
         let hayMasDeUna = pc.colecciones.count > 1
-        return appEstado.animaciones && hayMasDeUna ? index * 0.25 : 0
+        return ap.animaciones && hayMasDeUna ? index * 0.25 : 0
     }
 }

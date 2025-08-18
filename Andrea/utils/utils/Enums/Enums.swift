@@ -144,22 +144,51 @@ enum EnumEstiloHistorialColecciones: String, CaseIterable {
 
 
 //MARK: - TEMAS
+// TEMAS ESPECIALES QUE DEPENDEN DE UN CALCULO ANTES DE PODER SER UTILIZADOS
+extension EnumTemas {
+    func resolved(for scheme: ColorScheme, date: Date = Date()) -> EnumTemas {
+        switch self {
+        case .sistema:
+            return scheme == .dark ? .dark : .light
+        case .dayNight:
+            let hour = Calendar.current.component(.hour, from: date)
+            return (7..<20).contains(hour) ? .light : .dark
+        default:
+            return self // <-
+        }
+    }
+}
+
 
 enum EnumTemas: String, CaseIterable {
-    case light, dark, dayNight, blue, green, red, orange
+    case light, dark, sistema, dayNight, blue, green, red, orange
     
     var gradientColors: (Color, Color) {
         switch self {
         case .light:   return (.fixedSystemGray6_light, .fixedSystemGray6_light)
         case .dark:    return (.fixedSystemGray5_dark, .fixedSystemGray5_dark)
-        case .dayNight:return (.indigo.opacity(0.8), .black.opacity(0.8))
+        case .sistema: return (.clear, .clear) // 👈 neutro
+        case .dayNight:return (.clear, .clear) // 👈 neutro
         case .blue:    return (.blue.opacity(0.5), .blue.opacity(0.8))
         case .green:   return (.teal, .green)
         case .red:     return (.purple, .red)
-        case .orange:  return (.orange.opacity(0.4), .orange.opacity(0.7))
+        case .orange:  return (.indigo.opacity(0.8), .black.opacity(0.8))
         }
     }
-
+    
+    var descripcionTema: String {
+        switch self {
+        case .light:   return "El tema claro predeterminado."
+        case .dark:    return "El tema oscuro predeterminado."
+        case .sistema: return "Se adapta al sistema."
+        case .dayNight:return "Durante el día se aplicará el tema claro y de noche el oscuro."
+        case .blue:    return "Tema con gradiente en tonos azules."
+        case .green:   return "Tema con gradiente en tonos verdes y teal."
+        case .red:     return "Tema con gradiente en tonos púrpura y rojo."
+        case .orange:  return "Tema con gradiente en tonos naranjas cálidos."
+        }
+    }
+    
     var backgroundGradient: LinearGradient {
         let (c1, c2) = gradientColors
         return LinearGradient(colors: [c1, c2], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -174,7 +203,8 @@ enum EnumTemas: String, CaseIterable {
         switch self {
         case .light: return .fixedSystemGray6_light
         case .dark: return .fixedSystemGray5_dark
-        case .dayNight: return .black.opacity(0.5)
+        case .sistema: return .clear
+        case .dayNight: return .clear
         case .blue: return .blue.opacity(0.2)
         case .green: return .green.opacity(0.2)
         case .red: return .red.opacity(0.2)
@@ -209,7 +239,8 @@ enum EnumTemas: String, CaseIterable {
         case .light: return .fixedSystemGray6_light
         case .dark: return .fixedSystemGray5_dark
 //        case .dark: return .black.opacity(0.3)
-        case .dayNight: return .black.opacity(0.5)
+        case .sistema: return .clear
+        case .dayNight: return .clear
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)
         case .red: return .red.opacity(0.5)
@@ -222,7 +253,8 @@ enum EnumTemas: String, CaseIterable {
         switch self {
         case .light: return .fixedSystemGray6_light
         case .dark: return .fixedSystemGray5_dark
-        case .dayNight: return .black.opacity(0.5)
+        case .sistema: return .clear
+        case .dayNight: return .clear
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)
         case .red: return .red.opacity(0.5)
@@ -234,7 +266,8 @@ enum EnumTemas: String, CaseIterable {
         switch self {
         case .light: return .fixedSystemGray5_dark
         case .dark: return .fixedSystemGray6_light
-        case .dayNight: return .white
+        case .sistema: return .clear
+        case .dayNight: return .clear
         case .blue: return .blue
         case .green: return .green
         case .red: return .red
@@ -246,7 +279,8 @@ enum EnumTemas: String, CaseIterable {
         switch self {
         case .light: return .gray
         case .dark: return .gray
-        case .dayNight: return .white
+        case .sistema: return .clear
+        case .dayNight: return .clear
         case .blue: return .blue.opacity(0.5)
         case .green: return .green.opacity(0.5)
         case .red: return .red.opacity(0.5)

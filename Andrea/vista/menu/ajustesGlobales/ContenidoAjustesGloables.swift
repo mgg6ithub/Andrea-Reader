@@ -30,13 +30,21 @@ extension View {
 }
 
 extension View {
-    func capaDescripcion(s: CGFloat, c: Color, pH: CGFloat, pW: CGFloat) -> some View {
+    func capaDescripcion(
+        s: CGFloat,
+        c: Color,
+        pH: CGFloat,
+        pW: CGFloat,
+        b: Bool? = nil
+    ) -> some View {
         self.font(.system(size: s * 1.08))
             .foregroundColor(c)
-            .padding(.bottom, pH) // 20
+            .padding(.bottom, pH)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .fontWeight((b ?? false) ? .bold : .regular) // 👈 condicional
     }
 }
+
 
 struct CirculoActivoVista: View {
     

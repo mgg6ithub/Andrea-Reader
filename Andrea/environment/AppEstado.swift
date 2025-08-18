@@ -35,6 +35,7 @@ class AppEstado: ObservableObject {
     @Published var resolucionLogica: EnumResolucionesLogicas
     
     // --- AJUSTES TEMAS ---
+    @Published var temaResuelto: EnumTemas = .light 
     @Published var temaActual: EnumTemas { didSet { pd.guardarAjusteGeneral(valor: temaActual, key: cpag.temaActual) } }
     
     // --- AJUSTES DE COLORES ---

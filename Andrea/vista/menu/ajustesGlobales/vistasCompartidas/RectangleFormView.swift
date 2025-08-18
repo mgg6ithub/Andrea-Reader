@@ -1,5 +1,11 @@
 import SwiftUI
 
+#Preview {
+    AjustesGlobales()
+        .environmentObject(AppEstado.preview)
+        .environmentObject(MenuEstado.preview)
+}
+
 struct RectangleFormView<T: Equatable>: View {
     
     // --- ENTORNO ---
@@ -21,6 +27,8 @@ struct RectangleFormView<T: Equatable>: View {
     var isSelected: Bool { return opcionActual == opcionSeleccionada }
     var const: Constantes { ap.constantes }
     private var iconSize: CGFloat { ap.constantes.iconSize + 20 }
+    
+    private var esOscuro: Bool { ap.temaActual == .dark }
 
     var body: some View {
         VStack {
@@ -39,10 +47,10 @@ struct RectangleFormView<T: Equatable>: View {
                     RoundedRectangle(cornerRadius: 15)
                         .frame(width: const.cAnchoRect, height: const.cAlturaRect)
                         .foregroundColor(isSelected ? Color.gray.opacity(1.0) : Color.gray.opacity(0.3))
-                        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.6) : .black.opacity(0.225),
-                                radius: ap.shadows ? 5 : 0,
-                                x: 0,
-                                y: ap.shadows ? 2 : 0)
+//                        .shadow(color: esOscuro ? .black.opacity(0.225) : .black.opacity(0.225),
+//                                radius: ap.shadows ? 5 : 0,
+//                                x: 0,
+//                                y: ap.shadows ? 2 : 0)
                         .overlay(
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(
@@ -59,10 +67,20 @@ struct RectangleFormView<T: Equatable>: View {
                             .scaleEffect(x: 1.1, y: 1.3, anchor: .center)
                             .foregroundColor(isSelected ? Color.gray.opacity(0.8) : Color.clear)
                             .zIndex(0)
-                            .shadow(color: .black.opacity(0.1),
-                                    radius: ap.shadows ? 2.5 : 0,
-                                    x: 0,
-                                    y: ap.shadows ? 2.5 : 0)
+//                            .shadow(
+//                                color: ap.shadows
+//                                    ? (isSelected
+//                                       ? (esOscuro ? .black.opacity(0.15) : .black.opacity(0.1))
+//                                       : .clear)
+//                                    : .clear,
+//                                radius: ap.shadows
+//                                ? (isSelected && esOscuro ? 0.5 : 2.5)   // 👈 radio menor si oscuro
+//                                    : 0,
+//                                x: 0,
+//                                y: ap.shadows
+//                                ? (isSelected && esOscuro ? 0.5 : 2.5)   // 👈 sombra más baja en oscuro
+//                                    : 0
+//                            )
 
                         if isCustomImage != nil {
                             Image(icono)
@@ -73,12 +91,20 @@ struct RectangleFormView<T: Equatable>: View {
                                     isSelected ? coloresIcono[0] : coloresIcono[0].opacity(0.6),
                                     coloresIcono.dropFirst().first ?? coloresIcono[0]
                                 )
-                                .shadow(
-                                    color: isSelected ? coloresIcono[0].opacity(0.5) : .clear,
-                                    radius: ap.shadows ? 5 : 0,
-                                    x: 0,
-                                    y: ap.shadows ? 5 : 0
-                                )
+//                                .shadow(
+//                                    color: ap.shadows
+//                                        ? (isSelected
+//                                           ? (esOscuro ? coloresIcono[0].opacity(0.5) : coloresIcono[0].opacity(0.1))
+//                                           : .clear)
+//                                        : .clear,
+//                                    radius: ap.shadows
+//                                        ? (isSelected && esOscuro ? 0.5 : 3)   // 👈 en oscuro más pequeño
+//                                        : 0,
+//                                    x: 0,
+//                                    y: ap.shadows
+//                                        ? (isSelected && esOscuro ? 1.5 : 5)   // 👈 en oscuro más bajo
+//                                        : 0
+//                                )
                                 .symbolEffect(.bounce, value: isBouncing)
                         } else {
                             Image(systemName: icono)
@@ -89,12 +115,20 @@ struct RectangleFormView<T: Equatable>: View {
                                     isSelected ? coloresIcono[0] : coloresIcono[0].opacity(0.6),
                                     coloresIcono.dropFirst().first ?? coloresIcono[0]
                                 )
-                                .shadow(
-                                    color: isSelected ? coloresIcono[0].opacity(0.5) : .clear,
-                                    radius: ap.shadows ? 5 : 0,
-                                    x: 0,
-                                    y: ap.shadows ? 5 : 0
-                                )
+//                                .shadow(
+//                                    color: ap.shadows
+//                                        ? (isSelected
+//                                           ? (esOscuro ? coloresIcono[0].opacity(0.5) : coloresIcono[0].opacity(0.1))
+//                                           : .clear)
+//                                        : .clear,
+//                                    radius: ap.shadows
+//                                        ? (isSelected && esOscuro ? 0.5 : 3)   // 👈 en oscuro más pequeño
+//                                        : 0,
+//                                    x: 0,
+//                                    y: ap.shadows
+//                                        ? (isSelected && esOscuro ? 1.5 : 5)   // 👈 en oscuro más bajo
+//                                        : 0
+//                                )
                                 .symbolEffect(.bounce, value: isBouncing)
                         }
                     }
