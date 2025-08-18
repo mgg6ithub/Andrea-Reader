@@ -37,9 +37,6 @@ struct ConstantesPorDefecto {
     var subTitleSize: CGFloat = 16
     var smallTitleSize: CGFloat = 10
     
-    //MARK: - --- PERSISTENCIA ---
-    var pilaColeccionesClave: String = "pilaGuardada"
-    
     //MARK: - COLORES
     let listaColores: [Color] = [
         .red,
@@ -68,6 +65,11 @@ struct ConstantesPorDefecto {
 
 struct ClavesPersistenciaAjustesGenerales {
     
+    //MARK: - --- PILA COLECCIONES ---
+    var pilaGuardada: String = "pilaGuardada"
+    //MARK: - --- PILA COLECCIONES ---
+    
+    //MARK: - --- AJUSTES GENERALES ---
     //TEMAS
     public let temaActual: String = "TemaActual"
     
@@ -105,10 +107,16 @@ struct ClavesPersistenciaAjustesGenerales {
     public let historialEstilo: String = "historialEstilo"
     public let historialSize: String = "historialSize"
     
+    
+    //MARK: - --- AJUSTES GENERALES ---
+    
 }
 
 
 struct AjustesGeneralesPredeterminados {
+    
+    //MARK: - --- PILA COLECCIONES ---
+    public let pilaGuardada: [String]? = [SistemaArchivosUtilidades.sau.home.path]
     
     //TEMAS
     public let temaP: EnumTemas = .dayNight

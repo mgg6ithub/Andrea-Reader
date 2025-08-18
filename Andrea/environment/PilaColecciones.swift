@@ -64,8 +64,8 @@ class PilaColecciones: ObservableObject {
      */
     public func cargarPila() {
         let homeURLStripped = self.homeURL.deletingLastPathComponent()
-
-        if let pilaGuardada = UserDefaults.standard.array(forKey: ConstantesPorDefecto().pilaColeccionesClave) as? [String] {
+//        if let pilaGuardada = UserDefaults.standard.array(forKey: ConstantesPorDefecto().pilaColeccionesClave) as? [String] {
+        if let pilaGuardada = PersistenciaDatos().obtenerAjusteGeneral(key: ClavesPersistenciaAjustesGenerales().pilaGuardada, default: AjustesGeneralesPredeterminados().pilaGuardada) {
             
             let coleccionesGuardadas: [URL] = pilaGuardada.compactMap { col in
                 let absolutaURL = homeURLStripped.appendingPathComponent(col)
@@ -125,7 +125,8 @@ class PilaColecciones: ObservableObject {
                 .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         }
         
-        UserDefaults.standard.set(rutasRelativas, forKey: ConstantesPorDefecto().pilaColeccionesClave)
+//        UserDefaults.standard.set(rutasRelativas, forKey: ConstantesPorDefecto().pilaColeccionesClave)
+        PersistenciaDatos().guardarAjusteGeneral(valor: rutasRelativas, key: ClavesPersistenciaAjustesGenerales().pilaGuardada)
     }
     
 
