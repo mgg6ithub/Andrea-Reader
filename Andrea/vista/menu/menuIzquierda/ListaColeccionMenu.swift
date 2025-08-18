@@ -23,6 +23,7 @@ struct ListaColeccionMenu: View {
     }
     
     @State private var show: Bool = false
+    private var tema: EnumTemas { ap.temaResuelto }
     
     var body: some View {
         
@@ -36,7 +37,7 @@ struct ListaColeccionMenu: View {
                         HStack {
                             ColeccionRectanguloAvanzado(
                                 textoSize: 14,
-                                colorPrimario: ap.temaActual.textColor,
+                                colorPrimario: tema.textColor,
                                 color: Color.gray,
                                 isActive: pc.getColeccionActual().coleccion == coleccionPrincipal,
                                 pH: 7,
@@ -54,19 +55,19 @@ struct ListaColeccionMenu: View {
                                     if coleccionPrincipal.totalArchivos > 0 {
                                         Text("\(coleccionPrincipal.totalArchivos) archivos")
                                             .font(.system(size: 12))
-                                            .foregroundColor(ap.temaActual.secondaryText)
+                                            .foregroundColor(tema.secondaryText)
                                     }
                                     
                                     if coleccionPrincipal.totalColecciones > 0 {
                                         Text("\(coleccionPrincipal.totalColecciones) colecciones")
                                             .font(.system(size: 12))
-                                            .foregroundColor(ap.temaActual.secondaryText)
+                                            .foregroundColor(tema.secondaryText)
                                     }
                                     
                                     if coleccionPrincipal.totalArchivos == 0 && coleccionPrincipal.totalColecciones == 0 {
                                         Text("vacia")
                                             .font(.system(size: 12))
-                                            .foregroundColor(ap.temaActual.secondaryText)
+                                            .foregroundColor(tema.secondaryText)
                                     }
                                 }
 
@@ -86,7 +87,7 @@ struct ListaColeccionMenu: View {
                         
                         if !coleccionesFiltradas.isEmpty {
                             Rectangle()
-                                .fill(Color.gray) // O ap.temaActual.separatorColor
+                                .fill(Color.gray) // O tema.separatorColor
                                 .frame(height: 0.5)
                                 .padding(.leading, 50)
                         }
@@ -95,7 +96,7 @@ struct ListaColeccionMenu: View {
             }
             .listRowBackground(Color.clear)
             .listRowInsets(EdgeInsets()) // <- Elimina los insets del sistema
-            .background(ap.temaActual.backgroundColor)
+//            .background(tema.backgroundColor)
             
             ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.key) { index, colValor in
                 let isLast = index == coleccionesFiltradas.count - 1
@@ -133,19 +134,19 @@ struct ListaColeccionMenu: View {
                                     if col.totalArchivos > 0 {
                                         Text("\(col.totalArchivos) archivos")
                                             .font(.system(size: 12))
-                                            .foregroundColor(ap.temaActual.secondaryText)
+                                            .foregroundColor(tema.secondaryText)
                                     }
                                     
                                     if col.totalColecciones > 0 {
                                         Text("\(col.totalColecciones) colecciones")
                                             .font(.system(size: 12))
-                                            .foregroundColor(ap.temaActual.secondaryText)
+                                            .foregroundColor(tema.secondaryText)
                                     }
                                     
                                     if col.totalArchivos == 0 && col.totalColecciones == 0 {
                                         Text("vacia")
                                             .font(.system(size: 12))
-                                            .foregroundColor(ap.temaActual.secondaryText)
+                                            .foregroundColor(tema.secondaryText)
                                     }
                                 }
                             }
@@ -161,14 +162,13 @@ struct ListaColeccionMenu: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 10)
                         .frame(maxWidth: .infinity)
-                        .background(ap.temaActual.backgroundColor)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                     
                     // Línea de separación personalizada
                     if !isLast {
                         Rectangle()
-                            .fill(Color.gray) // O ap.temaActual.separatorColor
+                            .fill(Color.gray) // O tema.separatorColor
                             .frame(height: 0.5)
                             .padding(.leading, 50)
                     }
