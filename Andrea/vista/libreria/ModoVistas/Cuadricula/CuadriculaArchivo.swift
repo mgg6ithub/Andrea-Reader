@@ -21,7 +21,6 @@ struct CuadriculaArchivo: View {
     
     var body: some View {
         VStack(spacing: 0) {
-
             // --- Imagen ---
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.5)) {
@@ -54,6 +53,15 @@ struct CuadriculaArchivo: View {
                             }
                         }
                     }
+                    .overlay(alignment: .bottom) {
+                        LinearGradient(
+                            colors: [Color.black.opacity(0.95), .clear],
+                            startPoint: .bottom,
+                            endPoint: .top
+                        )
+                        .frame(height: 100) // ajusta a tu gusto
+                        .allowsHitTesting(false)
+                    }
                     .onChange(of: coleccionVM.color) { //Si se cambia de color volvemos a genera la imagen base
                         if archivo.tipoMiniatura == .imagenBase {
                             viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
@@ -63,23 +71,23 @@ struct CuadriculaArchivo: View {
                     if mostrarMiniatura {
                         VStack(spacing: 0) {
                             Spacer()
-                            HStack(spacing: 3.5) {
-                                
-    //                            if archivo.progreso > 0 {
-    //                                HStack(spacing: 0) {
-    //                                    Text("%")
-    //                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.65))
-    //                                        .bold()
-    //                                        .foregroundColor(coleccionVM.color)
-    //                                        .zIndex(3)
-    //
-    //                                    Text("\(archivo.progreso)")
-    //                                        .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.95))
-    //                                        .bold()
-    //                                        .foregroundColor(coleccionVM.color)
-    //                                        .zIndex(3)
-    //                                }
-    //                            }
+                            HStack(spacing: 2.5) {
+                                if archivo.progreso > 0 {
+                                    HStack(spacing: 0) {
+                                        Text("%")
+                                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.65))
+                                            .bold()
+                                            .foregroundColor(coleccionVM.color)
+                                        Text("\(archivo.progreso)")
+                                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.95))
+                                            .bold()
+                                            .foregroundColor(coleccionVM.color)
+                                    }
+//                                    .background(ap.temaResuelto.cardColorFixed.opacity(0.95), in: Capsule())
+//                                    .background(.black.opacity(0.85),
+//                                                in: RoundedRectangle(cornerRadius: 2.5, style: .continuous))
+//                                    .background(.ultraThinMaterial, in: ContainerRelativeShape())
+                                }
                                 
                                 // --- ICONOS DE LOS ESTADOS DE UN ARCHIVO ---
                                 if archivo.protegido {
@@ -113,42 +121,41 @@ struct CuadriculaArchivo: View {
                             .padding(.horizontal, archivo.tipoMiniatura == .imagenBase ? 13 : 10)
                             .padding(.bottom, -6)
                             
-    //                        ProgresoCuadricula(
-    //                            progreso: archivo.progreso,
-    //                            coleccionColor: coleccionVM.color,
-    //                            totalWidth: width - 20,
-    //                            padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
-    //                        )
-    //                        .frame(maxHeight: 24)
+                            ProgresoCuadricula(
+                                progreso: archivo.progreso,
+                                coleccionColor: coleccionVM.color,
+                                totalWidth: width - 20,
+                                padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
+                            )
                             
                         }
                         .padding(.bottom, 2)
                         .frame(maxHeight: .infinity, alignment: .bottom)
                         .zIndex(3)
                         
-    //                    if archivo.tipoMiniatura != .imagenBase {
-    //                        VStack {
-    //                            Spacer()
-    //                            HStack {
-    //                                RadialGradient(
-    //                                    gradient: Gradient(colors: [
-    //                                        Color.black,
-    //                                        Color.black.opacity(0.95)
-    //                                    ]),
-    //                                    center: .bottomLeading,
-    //                                    startRadius: 10,
-    //                                    endRadius: 90
-    //                                )
-    //                                .frame(width: 120, height: 80)
-    //                                .blur(radius: 20)
-    //                                .offset(x: -20, y: 20)
-    //                                .allowsHitTesting(false)
-    //
-    //                                Spacer()
-    //                            }
-    //                        }
-    //                        .zIndex(2) // 🔽 Importante: para que quede detrás de la barra y texto
-    //                    }
+//                        if archivo.tipoMiniatura != .imagenBase {
+//                            VStack {
+//                                Spacer()
+//                                HStack {
+//                                    RadialGradient(
+//                                        gradient: Gradient(colors: [
+//                                            Color.black,
+//                                            Color.black.opacity(0.95)
+//                                        ]),
+//                                        center: .bottomLeading,
+//                                        startRadius: 10,
+//                                        endRadius: 90
+//                                    )
+//                                    .frame(width: 120, height: 80)
+//                                    .blur(radius: 20)
+//                                    .offset(x: -20, y: 20)
+//                                    .allowsHitTesting(false)
+//    
+//                                    Spacer()
+//                                }
+//                            }
+//                            .zIndex(2) // 🔽 Importante: para que quede detrás de la barra y texto
+//                        }
                     }
                     
                 }
@@ -170,21 +177,18 @@ struct CuadriculaArchivo: View {
                 maxWidth: width
             )
             .equatable()
-            .frame(height: 58)            
+            .frame(height: 38)
+            .border(.red)
         }
         .frame(width: width, height: height)
         .background(ap.temaResuelto.cardColorFixed)
         .cornerRadius(15)
         .shadow(color: ap.temaResuelto == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 3)
-//        .scaleEffect(isVisible ? 1 : 0.95)
-//        .opacity(isVisible ? 1 : 0)
         .onAppear {
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
-//            isVisible = true
             mostrarMiniatura = false // ← reinicia animación si se reutiliza la celda
         }
-        .onDisappear { 
-//            isVisible = false
+        .onDisappear {
             viewModel.unloadThumbnail(for: archivo)
         }
         .onChange(of: archivo.tipoMiniatura) {

@@ -46,26 +46,26 @@ struct InformacionCuadricula: View, Equatable {
 //            }
 
             HStack(spacing: 0) {
-                if progreso > 0 {
-                    HStack(spacing: 0) {
-                        Group {
-                            Text("%")
-                                .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.55))
-                                .bold()
-                                .foregroundColor(coleccionVM.color)
-                                .zIndex(3)
-                            
-                            Text("\(progreso)")
-                                .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.85))
-                                .bold()
-                                .foregroundColor(coleccionVM.color)
-                                .zIndex(3)
-                        }
-//                        .animation(.easeInOut(duration: 0.45), value: coleccionVM.coleccion.color)
-                        .animacionDesvanecer(coleccionVM.coleccion.color)
-                    }
-                    Spacer()
-                }
+//                if progreso > 0 {
+//                    HStack(spacing: 0) {
+//                        Group {
+//                            Text("%")
+//                                .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.55))
+//                                .bold()
+//                                .foregroundColor(coleccionVM.color)
+//                                .zIndex(3)
+//                            
+//                            Text("\(progreso)")
+//                                .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.85))
+//                                .bold()
+//                                .foregroundColor(coleccionVM.color)
+//                                .zIndex(3)
+//                        }
+////                        .animation(.easeInOut(duration: 0.45), value: coleccionVM.coleccion.color)
+//                        .animacionDesvanecer(coleccionVM.coleccion.color)
+//                    }
+//                    Spacer()
+//                }
                 
                 HStack(spacing: 0) {
                     Text(tipo)
@@ -92,14 +92,14 @@ struct InformacionCuadricula: View, Equatable {
                 }
             }
             
-            ProgresoCuadricula(
-                progreso: progreso,
-                coleccionColor: coleccionVM.color,
-                totalWidth: .infinity,
-                padding: 0
-            )
-            .frame(maxHeight: 24)
-            .padding(.bottom, 10)
+//            ProgresoCuadricula(
+//                progreso: progreso,
+//                coleccionColor: coleccionVM.color,
+//                totalWidth: .infinity,
+//                padding: 0
+//            )
+//            .frame(maxHeight: 24)
+//            .padding(.bottom, 10)
             
         }
         .padding(8)
