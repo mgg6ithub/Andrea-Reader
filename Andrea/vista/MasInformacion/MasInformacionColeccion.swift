@@ -18,6 +18,7 @@ struct MasInformacionColeccion: View {
                 .onChange(of: colorTemporal) {
                     // --- VISTA ---
                     coleccionVM.coleccion.color = colorTemporal
+                    coleccionVM.color = colorTemporal
                     
                     // --- PERSISTENCIA ---
                     PersistenciaDatos().guardarDatoElemento(url: coleccionVM.coleccion.url, atributo: "color", valor: colorTemporal)

@@ -24,7 +24,7 @@ struct General: View {
             Text("Ajustes generales") //TITULO
                 .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("Ajusta las preferencias generales de la aplicación: idioma, barra de estado y otras opciones básicas para adaptar la app a tu dispositivo.")
+            Text("Ajusta las opciones generales de la aplicación: idioma, barra de estado y otras opciones básicas para adaptar la app a tu dispositivo.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             //MARK: --- TAMAÑO ---
