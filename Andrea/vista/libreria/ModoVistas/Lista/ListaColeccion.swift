@@ -11,6 +11,7 @@ struct ListaColeccion: View {
     
     private var const: Constantes { ap.constantes }
     private var escala: CGFloat { const.scaleFactor }
+    private var tema: EnumTemas { ap.temaResuelto }
     
     var body: some View {
             HStack(spacing: 15) {
@@ -102,7 +103,7 @@ struct ListaColeccion: View {
                         }
                         
                         Text(coleccion.nombre)
-                            .textoAdaptativo(t: const.titleSize, a: 0.6, l: 2, b: true, c: ap.temaActual.colorContrario, alig: .leading, mW: .infinity, fAlig: .leading)
+                            .textoAdaptativo(t: const.titleSize, a: 0.6, l: 2, b: true, c: tema.colorContrario, alig: .leading, mW: .infinity, fAlig: .leading)
                     }
                     
                     Text("3.25 GB")
@@ -118,7 +119,7 @@ struct ListaColeccion: View {
                     coleccion.meterColeccion()
                 }) {
                     Text("Entrar a la colección")
-                        .textoAdaptativo(t: const.subTitleSize, a: 0.7, l: 1, b: true, c: ap.temaActual.colorContrario, alig: .center, s: true)
+                        .textoAdaptativo(t: const.subTitleSize, a: 0.7, l: 1, b: true, c: tema.colorContrario, alig: .center, s: true)
                     
                     Image(systemName: "chevron.forward")
                         .font(.system(size: const.iconSize * 0.55))
@@ -132,7 +133,7 @@ struct ListaColeccion: View {
             .padding(.vertical, 20 * escala)
             .padding(.horizontal, 5 * escala)
             .frame(height: coleccionVM.altura * escala * 0.8)
-            .background(ap.temaActual.cardColorFixed)
+            .background(tema.cardColorFixed)
             .cornerRadius(8, corners: [.topLeft, .bottomLeft])
     }
 }
@@ -146,7 +147,8 @@ struct TotalElementosColeccion: View {
     
     private var const: Constantes { ap.constantes }
     private var totalElementos: Int { coleccion.totalArchivos + coleccion.totalColecciones }
-    private var dColor: Color { ap.temaActual.colorContrario }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var dColor: Color { tema.colorContrario }
     
     var body: some View {
         if totalElementos == 0 {

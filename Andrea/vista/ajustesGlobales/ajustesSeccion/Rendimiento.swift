@@ -41,13 +41,22 @@ struct Rendimiento: View {
             CirculoActivoVista(isSection: isSection, nombre: "Modifica las sombras", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             VStack(spacing: 0) {
-                        
                 TogglePersonalizado(titulo: "Sombras", descripcion: "Activa o desactiva las sombras de la interfaz.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar sombras", opcionFalse: "Habilitar sombras", isInsideToggle: true, isDivider: true)
                 
-                Text("Las sombras pueden afectar al rendimiento del programa, ralentizando la experiencia del usuario. El clásico dilema entre estilo y rendimiento.")
+                Text("Activar sombras añade estilo a la interfaz, aunque podría ralentizar ligeramente la aplicación.")
                     .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)
-                        
-                }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                    
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
+            CirculoActivoVista(isSection: isSection, nombre: "Modifica las animaciones", titleSize: const.descripcionAjustes, color: ap.colorActual)
+            
+            VStack(spacing: 0) {
+                TogglePersonalizado(titulo: "Animaciones", descripcion: "Activa o desactiva las animaciones de la interfaz.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar animaciones", opcionFalse: "Habilitar animaciones", isInsideToggle: true, isDivider: true)
+                
+                Text("Las animaciones hacen la experiencia más atractiva, aunque pueden consumir más recursos y afectar al rendimiento.")
+                    .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)
+                    
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
         }
 //        .padding(.horizontal, ap.resolucionLogica == .small ? 0 : const.padding35 * 2)
         

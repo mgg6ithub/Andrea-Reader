@@ -13,6 +13,7 @@ struct ListaArchivo: View {
     @State private var isVisible = false
     
     private var escala: CGFloat { ap.constantes.scaleFactor }
+    private var tema: EnumTemas { ap.temaResuelto }
     
     private var ratio: CGFloat {
         if let img = viewModel.miniatura {
@@ -64,7 +65,7 @@ struct ListaArchivo: View {
                     
                     Text(archivo.nombre)
                         .font(.headline)
-                        .foregroundColor(ap.temaActual.textColor)
+                        .foregroundColor(tema.textColor)
                         .id(archivo.nombre) // fuerza la transición
                             .transition(.opacity.combined(with: .scale)) // o .slide, .move(edge:), etc.
                             .animation(.easeInOut(duration: 0.3), value: archivo.nombre)
@@ -73,7 +74,7 @@ struct ListaArchivo: View {
                     
                     Text("Andrea la mas guapa del mundo pero que guapa es con esos pedazo de papos la madre que me pario. Hay diso mios que guapa es la pocala blablanskanks askdaskd algo mas no se que mas.")
                         .font(.subheadline)
-                        .foregroundColor(ap.temaActual.secondaryText)
+                        .foregroundColor(tema.secondaryText)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Spacer()
@@ -91,7 +92,7 @@ struct ListaArchivo: View {
         .padding(.vertical, 10 * escala)
         .padding(.horizontal, 5 * escala)
         .frame(height: coleccionVM.altura * escala)
-        .background(ap.temaActual.cardColorFixed)
+        .background(tema.cardColorFixed)
         .cornerRadius(8, corners: [.topLeft, .bottomLeft])
         .onAppear {
             

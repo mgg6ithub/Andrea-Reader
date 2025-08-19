@@ -274,7 +274,10 @@ struct ContenidoAjustes: View {
 
         // 2) Si el centro cae dentro de alguna sección, usar esa
         if let inRange = sectionRanges.first(where: { $0.value.contains(centerY) })?.key {
-            if selectedSection != inRange { selectedSection = inRange }
+            if selectedSection != inRange {
+                selectedSection = inRange
+                schedulePersistSectionUpdate()
+            }
             return
         }
 
@@ -282,9 +285,24 @@ struct ContenidoAjustes: View {
         if let closest = sectionRanges.min(by: {
             distance(centerY, to: $0.value) < distance(centerY, to: $1.value)
         })?.key {
-            if selectedSection != closest { selectedSection = closest }
+            if selectedSection != closest {
+                selectedSection = closest
+                schedulePersistSectionUpdate()
+            }
         }
     }
+    
+    @State private var scrollStopWorkItem: DispatchWorkItem?
+    
+    private func schedulePersistSectionUpdate() {
+        scrollStopWorkItem?.cancel()  // cancelar anterior
+        let workItem = DispatchWorkItem {
+            ap.seccionSeleccionada = selectedSection ?? ""
+        }
+        scrollStopWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: workItem)
+    }
+
 
     // Distancia de un punto a un rango (0 si está dentro)
     private func distance(_ y: CGFloat, to r: ClosedRange<CGFloat>) -> CGFloat {

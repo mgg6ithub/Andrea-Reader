@@ -370,7 +370,7 @@ enum EnumTemas: String, CaseIterable {
     var cardColorFixed: Color {
         switch self {
         case .light, .dark, .sistema, .dayNight:
-            return cardColor
+            return self.backgroundColor
         default:
             let (c1, c2) = gradientColors
             return c1.opacity(0.7) // o mezcla de c1 y c2 si quieres

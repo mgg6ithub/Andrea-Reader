@@ -1,6 +1,12 @@
 
 import SwiftUI
 
+#Preview {
+    AjustesGlobales()
+        .environmentObject(AppEstado.preview)
+        .environmentObject(MenuEstado.preview)
+}
+
 struct AjustesMenu: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -23,55 +29,75 @@ struct AjustesMenu: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            Text("Menu") //TITULO
+            Text("Menú superior") //TITULO
                 .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("El menu son los iconos de arriba del todo y puedes personalizarlos como mas te guste.")
+            Text("Configura el menú superior a tu gusto: elige iconos, colores, tamaños y fondo.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             //MARK: --- TAMAÑO ---
             AjustesBarraEstado(isSection: isSection)
-                .padding(.bottom, 20)
+            
+            DividerDentroSeccion(pH: 25, pV: 25)
+            
+            Text("Mostrar iconos")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 6, pW: 0, b: true)
+            
+            Text("Activa o desactiva iconos al instante. Oculta los que no necesites y mantén el menú superior siempre limpio.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             CirculoActivoVista(isSection: isSection, nombre: "Modificar iconos del menu", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             //MARK: --- ICONOS ---
             VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Menu lateral", iconoEjemplo: "sidebar.trailing", opcionBinding: $me.iconoMenuLateral, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
+                TogglePersonalizado(titulo: "Menu lateral", descripcion: "Despliega el menú lateral. También puedes abrirlo con un gesto desde la izquierda.", iconoEjemplo: "sidebar.trailing", opcionBinding: $me.iconoMenuLateral, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
                 
-                TogglePersonalizado(titulo: "Flecha atras", iconoEjemplo: "arrow.backward", opcionBinding: $me.iconoFlechaAtras, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
+                TogglePersonalizado(titulo: "Flecha atras", descripcion: "Permite retroceder a la colección anterior. También puedes usar el historial de colecciones.", iconoEjemplo: "arrow.backward", opcionBinding: $me.iconoFlechaAtras, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
                 
+                //                TogglePersonalizado(titulo: "Seleccion multiple", iconoEjemplo: PilaColecciones.pilaColecciones.getColeccionActual().modoVista == .cuadricula ?  "custom.hand.grid" : "custom.hand.list", opcionBinding: $me.iconoSeleccionMultiple, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
+                
+                TogglePersonalizado(titulo: "Seleccion multiple", descripcion: "Activa la selección múltiple. También puedes iniciarla seleccionando un elemento.", iconoEjemplo: "custom.hand.list", opcionBinding: $me.iconoSeleccionMultiple, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
+
+                TogglePersonalizado(titulo: "Notificaciones", descripcion: "Muestra un historial de notificaciones con las acciones que realizas.", iconoEjemplo: "notificaciones", opcionBinding: $me.iconoNotificaciones, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-            
-            VStack(spacing: 0) {
-//                TogglePersonalizado(titulo: "Seleccion multiple", iconoEjemplo: PilaColecciones.pilaColecciones.getColeccionActual().modoVista == .cuadricula ?  "custom.hand.grid" : "custom.hand.list", opcionBinding: $me.iconoSeleccionMultiple, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
-                
-                TogglePersonalizado(titulo: "Seleccion multiple", iconoEjemplo: "custom.hand.list", opcionBinding: $me.iconoSeleccionMultiple, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
-                
-            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-            
-            VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Notificaciones", iconoEjemplo: "notificaciones", opcionBinding: $me.iconoNotificaciones, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: false)
-                
-            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+
+            DividerDentroSeccion(pH: 25, pV: 25)
             
             //MARK: --- COLORES ---
-            CirculoActivoVista(isSection: isSection, nombre: "Colores de los iconos", titleSize: const.descripcionAjustes, color: ap.colorActual)
+            Text("Colores del menu")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 6, pW: 0, b: true)
+            
+            Text("Configura cómo se muestran los colores en el menú superior.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
+            
+            Text("Iconos")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 6, pW: 0, b: true)
+            
+            Text("Puedes usar doble color que se adapta a la aplicación, hacer que cambien según el tema o mantenerlos en un gris neutro más discreto.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
+            
+            // MARK: --- FONDO DE LOS ICONOS ---
+            CirculoActivoVista(
+                isSection: isSection,
+                nombre: "Escoge un color para los iconos",
+                titleSize: const.descripcionAjustes,
+                color: ap.colorActual
+            )
             
             VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Doble color", descripcion: "Habra dos colores por icono.", opcionBinding: $me.dobleColor, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: false)
+                TogglePersonalizado(titulo: "Doble color", descripcion: "Activa un segundo color en los iconos. Este color se adapta al color principal de la aplicación.", opcionBinding: $me.dobleColor, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: false)
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
             VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Adaptar al tema", descripcion: "El color de los iconos se adaptara al tema.", opcionBinding: $me.colorAutomatico, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: true)
+                TogglePersonalizado(titulo: "Adaptar al tema", descripcion: "El color de los iconos se ajusta automáticamente al tema actual.", opcionBinding: $me.colorAutomatico, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: true)
                     .onChange(of: me.colorAutomatico) { newValue in
                         if newValue {
                             me.colorGris = false
                         }
                     }
                 
-                TogglePersonalizado(titulo: "Color gris", descripcion: "Se aplicara un color neutro.", opcionBinding: $me.colorGris, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: false)
+                TogglePersonalizado(titulo: "Color neutral", descripcion: "Aplica un tono gris neutro a todos los iconos.", opcionBinding: $me.colorGris, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: false)
                     .onChange(of: me.colorGris) { newValue in
                         if newValue {
                             me.colorAutomatico = false
@@ -79,6 +105,94 @@ struct AjustesMenu: View {
                     }
                 
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
+            Text("Fondo")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 6, pW: 0, b: true)
+                .padding(.top, 15)
+            
+            Text("Puedes dejarlo transparente para integrarlo con la interfaz, aplicar un estilo líquido más moderno o darle un acabado metálico más llamativo.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
+            
+            // MARK: --- FONDO DE LOS ICONOS ---
+            CirculoActivoVista(
+                isSection: isSection,
+                nombre: "Escoge un fondo",
+                titleSize: const.descripcionAjustes,
+                color: ap.colorActual
+            )
+            
+            VStack(spacing: 0) {
+                TogglePersonalizado(titulo: "Fondo de los menus", descripcion: "Cada menu con iconos tiene un fondo. Puedes desactivarlo o modificarlo.", opcionBinding: $me.fondoMenu, opcionTrue: "Deshabilitar fondo", opcionFalse: "Habilitar fondo", isInsideToggle: true, isDivider: me.fondoMenu ? true : false)
+                    .onChange(of: me.colorAutomatico) { newValue in
+                        if newValue {
+                            me.colorGris = false
+                        }
+                    }
+                
+                if me.fondoMenu {
+                    VStack( alignment: .trailing, spacing: 0) {
+                        TogglePersonalizado(
+                            titulo: "Transparente",
+                            descripcion: "Apenas perceptible, perfecto para temas minimalistas.",
+                            opcionBinding: Binding(
+                                get: { me.colorFondoMenu == .transparente },
+                                set: { isOn in
+                                    if isOn { me.colorFondoMenu = .transparente }
+                                }
+                            ),
+                            opcionTrue: "Deshabilitar color",
+                            opcionFalse: "Habilitar color",
+                            isInsideToggle: true,
+                            isDivider: true
+                        )
+//                        .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                        
+                        TogglePersonalizado(
+                            titulo: "Líquido",
+                            descripcion: "Fondo con un efecto fluido y moderno.",
+                            opcionBinding: Binding(
+                                get: { me.colorFondoMenu == .liquido },
+                                set: { isOn in
+                                    if isOn { me.colorFondoMenu = .liquido }
+                                }
+                            ),
+                            opcionTrue: "Deshabilitar color",
+                            opcionFalse: "Habilitar color",
+                            isInsideToggle: true,
+                            isDivider: true
+                        )
+//                        .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                        
+                        TogglePersonalizado(
+                            titulo: "Metálico",
+                            descripcion: "Fondo con un acabado metálico y oscuro.",
+                            opcionBinding: Binding(
+                                get: { me.colorFondoMenu == .metalico },
+                                set: { isOn in
+                                    if isOn { me.colorFondoMenu = .metalico }
+                                }
+                            ),
+                            opcionTrue: "Deshabilitar color",
+                            opcionFalse: "Habilitar color",
+                            isInsideToggle: true,
+                            isDivider: false
+                        )
+//                        .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                        
+                    }
+                    .padding(.leading, 30)
+                }
+                
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
+            DividerDentroSeccion(pH: 25, pV: 25)
+            
+            Text("Tamaño del menu")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 6, pW: 0, b: true)
+                .padding(.top, 15)
+            
+            Text("Ajusta el tamaño de los iconos y la fuente del menú superior para que se adapten a tu forma de usar la aplicación. Hazlos más grandes para una mejor visibilidad o más pequeños para ganar espacio.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             // MARK: --- TAMAÑO DE ICONOS ---
             CirculoActivoVista(
@@ -111,7 +225,7 @@ struct AjustesMenu: View {
                         textColor: tema.secondaryText        // “24 pt”
                     )
                     
-                    Text("Escoge el tamaño que quieras para los iconos del menu.")
+                    Text("Utiliza la barra de desplazamiento para seleccionar el tamaño de los iconos.")
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
@@ -146,72 +260,6 @@ struct AjustesMenu: View {
                 
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-            
-            // MARK: --- FONDO DE LOS ICONOS ---
-            CirculoActivoVista(
-                isSection: isSection,
-                nombre: "Fondo del menu",
-                titleSize: const.descripcionAjustes,
-                color: ap.colorActual
-            )
-            
-            VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Fondo de los menus", descripcion: "Cada menu con iconos tiene un fondo. Puedes desactivarlo o modificarlo.", opcionBinding: $me.fondoMenu, opcionTrue: "Deshabilitar fondo", opcionFalse: "Habilitar fondo", isInsideToggle: true, isDivider: me.fondoMenu ? true : false)
-                    .onChange(of: me.colorAutomatico) { newValue in
-                        if newValue {
-                            me.colorGris = false
-                        }
-                    }
-                
-                if me.fondoMenu {
-                    VStack( alignment: .trailing, spacing: 0) {
-                        TogglePersonalizado(
-                            titulo: "Transparente",
-                            opcionBinding: Binding(
-                                get: { me.colorFondoMenu == .transparente },
-                                set: { isOn in
-                                    if isOn { me.colorFondoMenu = .transparente }
-                                }
-                            ),
-                            opcionTrue: "Deshabilitar color",
-                            opcionFalse: "Habilitar color",
-                            isInsideToggle: true,
-                            isDivider: false
-                        ).fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-                        
-                        TogglePersonalizado(
-                            titulo: "Líquido",
-                            opcionBinding: Binding(
-                                get: { me.colorFondoMenu == .liquido },
-                                set: { isOn in
-                                    if isOn { me.colorFondoMenu = .liquido }
-                                }
-                            ),
-                            opcionTrue: "Deshabilitar color",
-                            opcionFalse: "Habilitar color",
-                            isInsideToggle: true,
-                            isDivider: false
-                        ).fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-                        
-                        TogglePersonalizado(
-                            titulo: "Metálico",
-                            opcionBinding: Binding(
-                                get: { me.colorFondoMenu == .metalico },
-                                set: { isOn in
-                                    if isOn { me.colorFondoMenu = .metalico }
-                                }
-                            ),
-                            opcionTrue: "Deshabilitar color",
-                            opcionFalse: "Habilitar color",
-                            isInsideToggle: true,
-                            isDivider: false
-                        ).fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-                        
-                    }
-                    .padding(.leading, 30)
-                }
-                
-            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
         }
     }
@@ -257,9 +305,10 @@ struct IconSizeSlider: View {
                             .fill(markerColor.opacity(0.9))
                             .frame(width: 10, height: 6)
                             .rotationEffect(.degrees(180))
-                        Rectangle()
-                            .fill(markerColor.opacity(0.9))
-                            .frame(width: 2, height: 12)
+                            .padding(.bottom, 10)
+//                        Rectangle()
+//                            .fill(markerColor.opacity(0.9))
+//                            .frame(width: 2, height: 12)
                         Text("\(Int(recommended)) pt")
                             .font(.caption2)
                             .foregroundColor(textColor)

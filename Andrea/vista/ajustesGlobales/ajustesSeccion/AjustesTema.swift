@@ -43,22 +43,7 @@ struct AjustesTema: View {
             Text("Los temas son combinaciones de colores que afectan a toda la interfaz. Puedes elegir entre opciones clásicas como claro y oscuro, o probar estilos más coloridos.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            HStack(spacing: 6) {
-                Image(systemName: "info.bubble")
-                    .foregroundColor(tema.colorContrario)
-                    .font(.system(size: const.iconSize * 0.5)) // ajusta al tamaño que uses en la UI
-
-                Text("Tema actual")
-                    .capaDescripcion(
-                        s: const.descripcionAjustes,
-                        c: tema.colorContrario,
-                        pH: 0,
-                        pW: 0,
-                        b: true
-                    )
-                    .underline(isSection, color: ap.colorActual)
-            }
-            .padding(.bottom, 6)
+            TituloInformacion(titulo: "Tema actual", isSection: isSection)
             
             Text(ap.temaActual.descripcionTema)
                 .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)
@@ -86,7 +71,7 @@ struct AjustesTema: View {
                 
                 RectangleFormView<EnumTemas>(
                     titulo: "Sistema",
-                    icono: "custom-yy",
+                    icono: "yy-custom",
                     coloresIcono: [Color.white, Color.gray],
                     opcionSeleccionada: .sistema,
                     opcionActual: $ap.temaActual,

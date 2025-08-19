@@ -31,16 +31,7 @@ struct AjustesColor: View {
             Text("Hay tres opciones generales para seleccionar un color.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            HStack(spacing: 6) {
-                Image(systemName: "info.bubble")
-                    .foregroundColor(tema.colorContrario)
-                    .font(.system(size: const.iconSize * 0.5)) // ajusta al tamaño que uses en la UI
-                
-                Text("Personalizado")
-                    .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
-                    .underline(isSection, color: ap.colorActual)
-            }
-            .padding(.bottom, 6)
+            TituloInformacion(titulo: "Personalizado", isSection: isSection)
             
             Text("Escoge un color fijo que se usará en iconos y acciones por defecto. El color que elijas aquí se aplicará de manera global, independientemente del tema o la colección.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
@@ -88,11 +79,6 @@ struct AjustesColor: View {
                                     .fill(color.gradient)
                                     .opacity(current ? 1 : 0.3)
                                     .frame(width: circleSize, height: circleSize)
-                            }
-                            .onAppear {
-                                print(color)
-                                print(ap.colorPersonalizadoActual)
-                                print()
                             }
                             .buttonStyle(.plain)
                         }
@@ -147,18 +133,8 @@ struct AjustesColor: View {
             }
             
             DividerDentroSeccion(pH: 25, pV: 25)
-        
             
-            HStack(spacing: 6) {
-                Image(systemName: "info.bubble")
-                    .foregroundColor(tema.colorContrario)
-                    .font(.system(size: const.iconSize * 0.5)) // ajusta al tamaño que uses en la UI
-                
-                Text("Neutral")
-                    .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
-                    .underline(isSection, color: ap.colorActual)
-            }
-            .padding(.bottom, 6)
+            TituloInformacion(titulo: "Neutral", isSection: isSection)
             
             Text("Un color adaptable que cambia según el tema actual. Al activar esta opción, los iconos y acciones usarán el color adaptado al tema actual.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
@@ -193,7 +169,8 @@ struct AjustesColor: View {
                 HStack(spacing: 6) {
                     Image(systemName: "info.bubble")
                         .foregroundColor(tema.colorContrario)
-                        .font(.system(size: const.iconSize * 0.5)) // ajusta al tamaño que uses en la UI
+                        .font(.system(size: const.iconSize * 0.55,
+                                          weight: isSection ? .bold : .regular))
                     
                     Text("Colección")
                         .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)

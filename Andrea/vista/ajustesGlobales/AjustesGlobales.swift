@@ -112,9 +112,37 @@ struct AjustesGlobales: View {
             .background(ap.temaResuelto.backgroundGradient)
             .animation(.easeInOut, value: tema)
     }
-    
 }
 
+struct TituloInformacion: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
+    let titulo: String
+    let isSection: Bool
+    
+    private var tema: EnumTemas { ap.temaResuelto }
+    var const: Constantes { ap.constantes }
+    
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "info.bubble")
+                .foregroundColor(tema.colorContrario)
+                .font(.system(size: const.iconSize * 0.55,
+                                  weight: isSection ? .bold : .regular))
+            Text(titulo)
+                .capaDescripcion(
+                    s: const.descripcionAjustes,
+                    c: tema.colorContrario,
+                    pH: 0,
+                    pW: 0,
+                    b: true
+                )
+                .underline(isSection, color: ap.colorActual)
+        }
+        .padding(.bottom, 6)
+    }
+}
 
 struct DividerPersonalizado: View {
     

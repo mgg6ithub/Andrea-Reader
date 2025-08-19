@@ -57,16 +57,8 @@ struct AjustesSistemaColecciones: View {
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
-            HStack(spacing: 6) {
-                Image(systemName: "info.bubble")
-                    .foregroundColor(tema.colorContrario)
-                    .font(.system(size: const.iconSize * 0.5)) // ajusta al tamaño que uses en la UI
-                
-                Text(esTradicional ? "Tradicional" : "Acceso rápido")
-                    .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
-                    .underline(isSection, color: ap.colorActual)
-            }
-            .padding(.bottom, 6)
+            TituloInformacion(titulo: esTradicional ? "Tradicional" : "Acceso rápido", isSection: isSection)
+                .animation(.smooth, value: ap.sistemaArchivos)
             
             Group {
                 if esTradicional {

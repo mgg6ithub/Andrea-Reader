@@ -39,8 +39,10 @@ struct AjustesBarraEstado: View {
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
+            TituloInformacion(titulo: "Barra estado", isSection: isSection)
+            
             Text("Franja superior del dispositivo que muestra la hora, señal, Wi-Fi y batería. Muéstrala, ocúltala o deja que el sistema elija.")
-                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: 10, pW: 0)
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: 0, pW: 0)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
         }
@@ -69,22 +71,47 @@ struct BotonBE<T: Equatable>: View {
         Button(action: {
             withAnimation(.easeIn(duration: 0.15)) { opcionActual = opcionSeleccionada }
         }) {
-            VStack(alignment: .center, spacing: 6) {
+            ZStack {
+                if titulo == "Thin" {
+                    Triangle()
+                        .fill(.black.opacity(0.9))
+                        .frame(width: 10, height: 6)
+                        .rotationEffect(.degrees(180))
+                        .offset(y: -33)
+                }
                 
-                Text(titulo)
-                    .font(.footnote)
-                    .foregroundColor(ap.temaResuelto.colorContrario)
-                
-                Image(systemName: icono)
-                    .font(.system(size: 22, weight: fuente ?? .medium))
-//                    .foregroundStyle(LinearGradient(colors: coloresIcono, startPoint: .top, endPoint: .bottom))
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(ap.temaResuelto.secondaryText)
-            }
-            .if(!isSelected) { v in
-                v.opacity(0.4)
+                VStack(alignment: .center, spacing: 6) {
+                    Text(titulo)
+                        .font(.footnote)
+                        .bold(isSelected)
+                        .foregroundColor(ap.temaResuelto.colorContrario)
+                        .animation(.smooth, value: isSelected)
+                    
+                    Image(systemName: icono)
+                        .font(.system(size: 22, weight: fuente ?? .medium))
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(coloresIcono[0])
+                        .scaleEffect(isSelected ? 1 : 0.8)
+                    
+                    
+                }
+                .if(!isSelected) { v in
+                    v.opacity(0.4)
+                }
             }
         }
         .buttonStyle(.plain)
+    }
+}
+
+// Triángulo para la muesca
+private struct Triangle: Shape {
+    func path(in rect: CGRect) -> Path {
+        Path { p in
+            p.move(to: .init(x: rect.midX, y: rect.minY))
+            p.addLine(to: .init(x: rect.maxX, y: rect.maxY))
+            p.addLine(to: .init(x: rect.minX, y: rect.maxY))
+            p.closeSubpath()
+        }
     }
 }

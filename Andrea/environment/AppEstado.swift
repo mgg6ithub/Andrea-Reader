@@ -39,7 +39,6 @@ class AppEstado: ObservableObject {
     
     //MARK: - --- AJUSTES GENERALES ---
     @Published var seccionSeleccionada: String { didSet {
-        print("Guardando seccion: ", seccionSeleccionada)
         pd.guardarAjusteGeneral(valor: seccionSeleccionada, key: cpag.seccionSeleccionada)
     } }
     
