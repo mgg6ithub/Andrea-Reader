@@ -1,11 +1,11 @@
-//
-//  General.swift
-//  Andrea
-//
-//  Created by mgg on 19/8/25.
-//
 
 import SwiftUI
+
+#Preview {
+    AjustesGlobales()
+        .environmentObject(AppEstado.preview)
+        .environmentObject(MenuEstado.preview)
+}
 
 struct General: View {
     
@@ -17,13 +17,15 @@ struct General: View {
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
     
+    private var tema: EnumTemas { ap.temaResuelto }
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Ajustes generales") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("Ajusta los libros y el comportamiento de la libreria.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+            Text("Ajusta las preferencias generales de la aplicación: idioma, barra de estado y otras opciones básicas para adaptar la app a tu dispositivo.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             //MARK: --- TAMAÑO ---
             AjustesBarraEstado(isSection: isSection)

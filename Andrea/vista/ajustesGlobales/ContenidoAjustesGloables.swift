@@ -163,7 +163,7 @@ struct ContenidoAjustes: View {
                                 switch section {
                                     
                                 case "General":
-                                    AjustesLibreria(isSection: selectedSection == section)
+                                    General(isSection: selectedSection == section)
                                     DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
                                     
                                 case "TemaPrincipal":

@@ -86,7 +86,6 @@ struct AjustesGlobales: View {
                         Text("Tu aplicación, a tu manera.")
                             .font(.system(size: ap.constantes.subTitleSize * 0.7, weight: .bold))
                             .foregroundColor(tema.secondaryText)
-                            .bold()
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .offset(y: -9)
                         
