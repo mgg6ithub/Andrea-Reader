@@ -226,8 +226,22 @@ struct ContenidoAjustes: View {
             .frame(maxHeight: .infinity)
             .onAppear {
                 self.scrollProxy = proxy
-                if selectedSection == nil { selectedSection = sections.first }
+                let target = selectedSection ?? ap.seccionSeleccionada
+                if sections.contains(target) {
+                    selectedSection = target
+                    // espera al siguiente ciclo para que todos los .id(section) estén montados
+                    DispatchQueue.main.async {
+                        withAnimation(.interpolatingSpring(stiffness: 20, damping: 4)) {
+                            if target == sections.first {
+                                proxy.scrollTo("top", anchor: .top)
+                            } else {
+                                proxy.scrollTo(target, anchor: .top)
+                            }
+                        }
+                    }
+                }
             }
+
         }
     }
 

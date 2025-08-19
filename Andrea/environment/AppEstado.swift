@@ -38,6 +38,10 @@ class AppEstado: ObservableObject {
     @Published var resolucionLogica: EnumResolucionesLogicas
     
     //MARK: - --- AJUSTES GENERALES ---
+    @Published var seccionSeleccionada: String { didSet {
+        print("Guardando seccion: ", seccionSeleccionada)
+        pd.guardarAjusteGeneral(valor: seccionSeleccionada, key: cpag.seccionSeleccionada)
+    } }
     
     // --- AJUSTES TEMAS ---
     @Published var temaResuelto: EnumTemas = .light 
@@ -129,6 +133,8 @@ class AppEstado: ObservableObject {
         
         //Persistencia
         let p = AjustesGeneralesPredeterminados()
+        
+        self.seccionSeleccionada = pd.obtenerAjusteGeneral(key: cpag.seccionSeleccionada, default: p.seccionSeleccionada)
         
         //TEMA
         self.temaActual = pd.obtenerAjusteGeneralEnum(key: cpag.temaActual, default: p.temaP)

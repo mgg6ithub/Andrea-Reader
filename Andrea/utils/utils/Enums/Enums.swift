@@ -319,9 +319,9 @@ enum EnumTemas: String, CaseIterable {
         case .dark: return .gray.opacity(0.2)
         case .sistema: return .clear
         case .dayNight: return .clear
-        case .blue: return .blue.opacity(0.7)
-        case .green: return .black.opacity(0.7)
-        case .red: return .black.opacity(0.7)
+        case .blue: return .blue.opacity(0.4)
+        case .green: return .black.opacity(0.4)
+        case .red: return .black.opacity(0.4)
         case .orange: return .white.opacity(0.7)
         }
     }

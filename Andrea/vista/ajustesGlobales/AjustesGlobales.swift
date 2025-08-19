@@ -101,6 +101,9 @@ struct AjustesGlobales: View {
                 } //fin geometry hStackGeo
                 
             } //FIN VSTACK GENERAL
+            .onAppear {
+                selectedSection = ap.seccionSeleccionada
+            }
             .padding(.horizontal, const.padding25) // 25
             .frame(
                 maxHeight: .infinity,

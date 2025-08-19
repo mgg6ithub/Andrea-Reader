@@ -70,6 +70,8 @@ struct ClavesPersistenciaAjustesGenerales {
     //MARK: - --- PILA COLECCIONES ---
     
     //MARK: - --- AJUSTES GENERALES ---
+    public let seccionSeleccionada: String = "seccionSeleccionada"
+    
     //TEMAS
     public let temaActual: String = "TemaActual"
     
@@ -117,6 +119,9 @@ struct AjustesGeneralesPredeterminados {
     
     //MARK: - --- PILA COLECCIONES ---
     public let pilaGuardada: [String]? = [SistemaArchivosUtilidades.sau.home.path]
+    
+    //MARK: - --- AJUSTES GENERALES ---
+    public let seccionSeleccionada: String = "TemaPrincipal"
     
     //TEMAS
     public let temaP: EnumTemas = .dayNight

@@ -95,6 +95,7 @@ struct IndicesVertical: View {
                             isPressed = true
                             withAnimation(.interpolatingSpring(stiffness: 70, damping: 12)) {
                                 selectedSection = sections[index]
+                                ap.seccionSeleccionada = sections[index]
                                 isUserInteracting = true
                                 if section == sections.first {
                                     scrollProxy?.scrollTo("top", anchor: .top)
