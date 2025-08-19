@@ -19,6 +19,14 @@ struct AjustesTema: View {
     // --- VARIABLES ESTADO ---
     @State private var isThemeExpanded: Bool = false
     
+    private var isExtraThemeSelected: Bool {
+        [.blue, .green, .red, .orange].contains(ap.temaActual)
+    }
+
+    private var shouldShowMoreThemes: Bool {
+        isThemeExpanded || isExtraThemeSelected
+    }
+    
     // --- VARIABLES CALCULADAS ---
     var const: Constantes { ap.constantes }
     var paddingVertical: CGFloat { const.padding20 }
@@ -86,7 +94,6 @@ struct AjustesTema: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 Button(action: {
-                   
                     if ap.animaciones {
                         withAnimation(.interpolatingSpring(stiffness: 300, damping: 30)) {
                             self.isThemeExpanded.toggle()
@@ -115,8 +122,7 @@ struct AjustesTema: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 .padding(.bottom, isThemeExpanded ? const.padding5 : 0)
-                
-                // 🎨 ANIMACIÓN MEJORADA DEL CONTENEDOR
+
                 if isThemeExpanded {
                     ZStack(alignment: .leading) {
                         //MAS TEMAS CON ANIMACIÓN INDIVIDUAL
@@ -127,7 +133,7 @@ struct AjustesTema: View {
                                 .offset(y: isThemeExpanded ? 0 : 10)
                                 .animation(
                                     ap.animaciones ?
-                                        .interpolatingSpring(stiffness: 200, damping: 20).delay(0.1) :
+                                        .interpolatingSpring(stiffness: 200, damping: 20).delay(0.3) :
                                         .none,
                                     value: isThemeExpanded
                                 )
@@ -138,7 +144,7 @@ struct AjustesTema: View {
                                 .offset(y: isThemeExpanded ? 0 : 10)
                                 .animation(
                                     ap.animaciones ?
-                                        .interpolatingSpring(stiffness: 200, damping: 20).delay(0.2) :
+                                        .interpolatingSpring(stiffness: 200, damping: 20).delay(0.6) :
                                         .none,
                                     value: isThemeExpanded
                                 )
@@ -150,7 +156,7 @@ struct AjustesTema: View {
                                 .offset(y: isThemeExpanded ? 0 : 10)
                                 .animation(
                                     ap.animaciones ?
-                                        .interpolatingSpring(stiffness: 200, damping: 20).delay(0.3) :
+                                        .interpolatingSpring(stiffness: 200, damping: 20).delay(0.9) :
                                         .none,
                                     value: isThemeExpanded
                                 )
@@ -162,7 +168,7 @@ struct AjustesTema: View {
                                 .offset(y: isThemeExpanded ? 0 : 10)
                                 .animation(
                                     ap.animaciones ?
-                                        .interpolatingSpring(stiffness: 200, damping: 20).delay(0.4) :
+                                        .interpolatingSpring(stiffness: 200, damping: 20).delay(1.2) :
                                         .none,
                                     value: isThemeExpanded
                                 )

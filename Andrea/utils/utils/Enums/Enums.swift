@@ -235,8 +235,8 @@ enum EnumTemas: String, CaseIterable {
         switch self {
         case .light:   return (.fixedSystemGray6_light, .fixedSystemGray6_light)
         case .dark:    return (.fixedSystemGray5_dark, .fixedSystemGray5_dark)
-        case .sistema: return (.clear, .clear) // 👈 neutro
-        case .dayNight:return (.clear, .clear) // 👈 neutro
+        case .sistema: return (.clear, .clear)
+        case .dayNight:return (.clear, .clear)
         case .blue:    return (.blue.opacity(0.5), .blue.opacity(0.8))
         case .green:   return (.teal, .green)
         case .red:     return (.purple, .red)
@@ -274,7 +274,7 @@ enum EnumTemas: String, CaseIterable {
     
     var reversedsurfaceGradient: LinearGradient {
         let (c1, c2) = gradientColors
-        return LinearGradient(colors: [c2.opacity(0.6), c1.opacity(0.35)], startPoint: .topLeading, endPoint: .bottomTrailing)
+        return LinearGradient(colors: [c2.opacity(0.3), c1.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing)
     }
     
     
@@ -300,22 +300,32 @@ enum EnumTemas: String, CaseIterable {
         }
     }
     
+    var fondoMenus: Color {
+        switch self {
+        case .light: return .gray
+        case .dark: return .gray
+        case .sistema: return .clear
+        case .dayNight: return .clear
+        case .blue: return .gray
+        case .green: return .black
+        case .red: return .black
+        case .orange: return .orange
+        }
+    }
+    
     var lineaColor: Color {
         switch self {
         case .light: return .gray.opacity(0.2)
         case .dark: return .gray.opacity(0.2)
         case .sistema: return .clear
         case .dayNight: return .clear
-        case .blue: return .blue.opacity(0.2)
+        case .blue: return .blue.opacity(0.7)
         case .green: return .black.opacity(0.7)
         case .red: return .black.opacity(0.7)
-        case .orange: return .orange.opacity(0.2)
+        case .orange: return .white.opacity(0.7)
         }
     }
-    
-    var menuIconosNeutro: Color {
-        return .gray
-    }
+
     
     var colorContrario: Color {
         switch self {
@@ -379,7 +389,7 @@ enum EnumTemas: String, CaseIterable {
         case .blue: return .white
         case .green: return .black.opacity(0.7)
         case .red: return .black.opacity(0.7)
-        case .orange: return .orange
+        case .orange: return .white
         }
     }
     
@@ -395,6 +405,7 @@ enum EnumTemas: String, CaseIterable {
         case .orange: return .orange.opacity(0.7)
         }
     }
+    
 }
 
 //MARK: - IDIOMAS

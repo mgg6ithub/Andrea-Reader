@@ -172,7 +172,7 @@ struct CuadriculaArchivo: View {
             .frame(height: 58)            
         }
         .frame(width: width, height: height)
-        .background(ap.temaResuelto.backgroundGradient)
+        .background(ap.temaActual.reversedsurfaceGradient)
         .cornerRadius(15)
         .shadow(color: ap.temaResuelto == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 3)
 //        .scaleEffect(isVisible ? 1 : 0.95)

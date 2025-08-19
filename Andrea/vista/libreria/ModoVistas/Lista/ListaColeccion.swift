@@ -132,7 +132,7 @@ struct ListaColeccion: View {
             .padding(.vertical, 20 * escala)
             .padding(.horizontal, 5 * escala)
             .frame(height: coleccionVM.altura * escala * 0.8)
-            .background(ap.temaActual.cardColor)
+            .background(ap.temaActual.reversedsurfaceGradient)
             .cornerRadius(8, corners: [.topLeft, .bottomLeft])
     }
 }

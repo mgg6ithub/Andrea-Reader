@@ -90,6 +90,7 @@
 		D4B3C3BB2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */; };
 		D4B3C3BD2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */; };
 		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
+		D4B88CB02E5467A900E68D45 /* Colores.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B88CAF2E5467A900E68D45 /* Colores.swift */; };
 		D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8B3882E1324B200585A6D /* ThumbnailService.swift */; };
 		D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */; };
 		D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */; };
@@ -210,6 +211,7 @@
 		D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSeleccionMultipleArriba.swift; sourceTree = "<group>"; };
 		D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSeleccionMultipleAbajo.swift; sourceTree = "<group>"; };
 		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
+		D4B88CAF2E5467A900E68D45 /* Colores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colores.swift; sourceTree = "<group>"; };
 		D4B8B3882E1324B200585A6D /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
 		D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformacionCuadricula.swift; sourceTree = "<group>"; };
 		D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCuadricula.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 				D4ACA2682E48D51800A367D9 /* ManipulacionFechas.swift */,
 				D4BF0B242DEF4B2B00152333 /* Enums */,
 				D4ACA26A2E48EB8D00A367D9 /* ManipulacionSizes.swift */,
+				D4B88CAF2E5467A900E68D45 /* Colores.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -874,6 +877,7 @@
 				D4DF31792DEC7362000D15CC /* ElementoPlaceholder.swift in Sources */,
 				D46E94352DEA287000ABD9EE /* Toggle.swift in Sources */,
 				D4B0BBA82E4C6D880073380E /* ComicPaginado.swift in Sources */,
+				D4B88CB02E5467A900E68D45 /* Colores.swift in Sources */,
 				D45A82292E4D0E3700B92262 /* AjustesVisualizacion.swift in Sources */,
 				D485896A2DEB9DC30074DB8E /* Extensiones.swift in Sources */,
 				D4ACA26B2E48EB8D00A367D9 /* ManipulacionSizes.swift in Sources */,

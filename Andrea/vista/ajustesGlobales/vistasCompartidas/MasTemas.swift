@@ -36,7 +36,9 @@ struct MasTemas<T: Equatable>: View {
             
             Button(action: {
                 isBouncing.toggle()
-                ap.temaActual = tema
+                withAnimation {
+                    ap.temaActual = tema
+                }
             }) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)

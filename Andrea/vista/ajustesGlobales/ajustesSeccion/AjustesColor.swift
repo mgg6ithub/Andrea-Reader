@@ -72,7 +72,7 @@ struct AjustesColor: View {
                         spacing: spacing
                     ) {
                         ForEach(ConstantesPorDefecto().listaColores, id: \.self) { color in
-                            let current = ap.colorPersonalizadoActual == color
+                            let current = colorsEqual(ap.colorPersonalizadoActual, color)
                             Button {
                                 ap.colorPersonalizadoActual = color
                             } label: {
@@ -80,6 +80,11 @@ struct AjustesColor: View {
                                     .fill(color.gradient)
                                     .opacity(current ? 1 : 0.3)
                                     .frame(width: circleSize, height: circleSize)
+                            }
+                            .onAppear {
+                                print(color)
+                                print(ap.colorPersonalizadoActual)
+                                print()
                             }
                             .buttonStyle(.plain)
                         }

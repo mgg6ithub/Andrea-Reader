@@ -48,6 +48,8 @@ extension View {
 
 struct CirculoActivoVista: View {
     
+    @EnvironmentObject var ap: AppEstado
+    
     let isSection: Bool
     let nombre: String
     let titleSize: CGFloat
@@ -59,7 +61,7 @@ struct CirculoActivoVista: View {
             
             Text(nombre)
                 .font(.system(size: titleSize))
-                .foregroundColor(.gray)
+                .foregroundColor(isSection ? ap.temaResuelto.textColor : ap.temaResuelto.textColor.opacity(0.25))
                 .frame(alignment: .leading)
             Spacer()
         }

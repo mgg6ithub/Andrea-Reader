@@ -37,6 +37,8 @@ class AppEstado: ObservableObject {
     @Published var isFirstTimeLaunch: Bool = false
     @Published var resolucionLogica: EnumResolucionesLogicas
     
+    //MARK: - --- AJUSTES GENERALES ---
+    
     // --- AJUSTES TEMAS ---
     @Published var temaResuelto: EnumTemas = .light 
     @Published var temaActual: EnumTemas { didSet { pd.guardarAjusteGeneral(valor: temaActual, key: cpag.temaActual) } }

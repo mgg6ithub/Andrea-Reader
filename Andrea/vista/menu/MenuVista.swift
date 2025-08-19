@@ -33,7 +33,7 @@ struct MenuVista: View {
     @EnvironmentObject var pc: PilaColecciones
     @State private var menuCentroWidth: CGFloat = 0
     
-    let colorFondo: Color = .gray
+    private var colorFondo: Color { ap.temaResuelto.fondoMenus }
     let opacidad: CGFloat = 0.65
     
     var body: some View {
