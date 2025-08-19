@@ -35,7 +35,7 @@ struct Rendimiento: View {
             Text("Rendimiento")
                 .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("Ajustes para mejorar el rendimiento del programa sacrificando el aspecto visual.")
+            Text("Optimiza la velocidad y el consumo de recursos reduciendo algunos efectos visuales.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             CirculoActivoVista(isSection: isSection, nombre: "Modifica las sombras", titleSize: const.descripcionAjustes, color: ap.colorActual)

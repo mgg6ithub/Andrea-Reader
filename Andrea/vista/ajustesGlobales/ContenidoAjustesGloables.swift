@@ -4,7 +4,7 @@ import SwiftUI
 
 extension View {
     
-    func fondoRectangular(esOscuro: Bool, shadow: Bool) -> some View {
+    func fondoRectangular(esOscuro: Bool, shadow: Bool, pV: Bool = true) -> some View {
         self.padding(15) // margen interno
             .background(
                 RoundedRectangle(cornerRadius: 10)
@@ -14,7 +14,9 @@ extension View {
                 color: esOscuro ? .black.opacity(0.6) : .black.opacity(0.225),
                 radius: shadow ? 10 : 0, x: 0, y: shadow ? 5 : 0
             )
-            .padding(.bottom, 15)
+            .if(pV) { v in
+                v.padding(.bottom, 15)
+            }
     }
     
 }

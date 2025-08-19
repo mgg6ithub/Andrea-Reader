@@ -3,12 +3,8 @@ import SwiftUI
 
 #Preview {
     AjustesGlobales()
-//        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
-        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
-//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-//        .environmentObject(AppEstado(screenWidth: 834, screenHeight: 1194)
-//        .environmentObject(AppEstado(screenWidth: 1024, screenHeight: 1366))
-        .environmentObject(MenuEstado())
+        .environmentObject(AppEstado.preview)
+        .environmentObject(MenuEstado.preview)
 }
 
 struct AjustesColor: View {
@@ -32,10 +28,22 @@ struct AjustesColor: View {
             Text("Color principal")
                 .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("El color principal se aplicará en los iconos del menu y todas aquellas acciones que no tengan un color seleccionado. Es decir, se establecerá como predeterminado.")
+            Text("Hay tres opciones generales para seleccionar un color.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Color personazalido", titleSize: const.descripcionAjustes, color: ap.colorActual)
+            HStack(spacing: 6) {
+                Image(systemName: "info.bubble")
+                    .foregroundColor(tema.colorContrario)
+                    .font(.system(size: const.iconSize * 0.5)) // ajusta al tamaño que uses en la UI
+                
+                Text("Personalizado")
+                    .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
+                    .underline(isSection, color: ap.colorActual)
+            }
+            .padding(.bottom, 6)
+            
+            Text("Escoge un color fijo que se usará en iconos y acciones por defecto. El color que elijas aquí se aplicará de manera global, independientemente del tema o la colección.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
                 
             VStack(spacing: 0) {
                 TogglePersonalizado(
@@ -93,7 +101,7 @@ struct AjustesColor: View {
                 } // FIN VSTACK COLORES MAS USADOS
             
             }
-            .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows, pV: false)
             
             VStack(alignment: .leading, spacing: 0) {
                 Button(action: {
@@ -123,7 +131,7 @@ struct AjustesColor: View {
                     }
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, const.padding15)
+                .padding(.top, const.padding15)
                 
                 if self.isColorExpanded {
                         
@@ -132,19 +140,33 @@ struct AjustesColor: View {
                         ColorPicker("Escoge tu color", selection: $ap.colorPersonalizadoActual)
                             .foregroundColor(tema.colorContrario)
                     }
-                    .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                    .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows, pV: false)
                     .transition(.opacity)  // Transición de opacidad cuando se muestra o esconde
                     .animation(ap.animaciones ? .easeInOut(duration: 0.5) : .none, value: isColorExpanded)
                 }
             }
             
-            CirculoActivoVista(isSection: isSection, nombre: "Color automatico", titleSize: const.descripcionAjustes, color: ap.colorActual)
+            DividerDentroSeccion(pH: 25, pV: 25)
+        
+            
+            HStack(spacing: 6) {
+                Image(systemName: "info.bubble")
+                    .foregroundColor(tema.colorContrario)
+                    .font(.system(size: const.iconSize * 0.5)) // ajusta al tamaño que uses en la UI
+                
+                Text("Neutral")
+                    .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
+                    .underline(isSection, color: ap.colorActual)
+            }
+            .padding(.bottom, 6)
+            
+            Text("Un color adaptable que cambia según el tema actual. Al activar esta opción, los iconos y acciones usarán el color adaptado al tema actual.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
             VStack(spacing: 0) {
                 // MARK: - Color neutral
                 TogglePersonalizado(
                     titulo: "Color neutral",
-                    descripcion: "Un color neutral que se ajustará al tema",
                     opcionBinding: Binding(
                         get: { ap.ajusteColorSeleccionado == .colorNeutral },
                         set: { isOn in
@@ -154,13 +176,43 @@ struct AjustesColor: View {
                     opcionTrue: "Deshabilitar color neutral",
                     opcionFalse: "Habilitar color neutral",
                     isInsideToggle: true,
-                    isDivider: true
+                    isDivider: false
                 )
                 
+            } //FIN VSTACK
+            .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows, pV: false)
+            
+            DividerDentroSeccion(pH: 25, pV: 25)
+            
+//            Text("Colección")
+//                .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
+//                .underline(isSection, color: ap.colorActual)
+//                .padding(.bottom, 8)
+            
+            HStack(spacing: 6) {
+                HStack(spacing: 6) {
+                    Image(systemName: "info.bubble")
+                        .foregroundColor(tema.colorContrario)
+                        .font(.system(size: const.iconSize * 0.5)) // ajusta al tamaño que uses en la UI
+                    
+                    Text("Colección")
+                        .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
+                        .underline(isSection, color: ap.colorActual)
+                }
+
+                Text("Recomendado")
+                    .font(.system(size: const.descripcionAjustes * 0.55))
+                    .foregroundColor(.gray)
+            }
+            .padding(.bottom, 6)
+            
+            Text("Usa el color propio de cada colección como color principal. Al activar esta opción, los iconos y acciones usarán el color de la colección en la que te encuentres.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
+            
+            VStack(spacing: 0) {
                 // MARK: - Color del directorio (colección)
                 TogglePersonalizado(
-                    titulo: "Color del directorio",
-                    descripcion: "Activa o desactiva el color del directorio",
+                    titulo: "Color de la colección",
                     opcionBinding: Binding(
                         get: { ap.ajusteColorSeleccionado == .colorColeccion },
                         set: { isOn in
@@ -172,9 +224,7 @@ struct AjustesColor: View {
                     isInsideToggle: true,
                     isDivider: false
                 )
-                
-            } //FIN VSTACK
-            .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows, pV: true)
         }
         
     }

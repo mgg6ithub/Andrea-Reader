@@ -9,9 +9,9 @@ import SwiftUI
 
 extension AppEstado {
     static var preview: AppEstado {
-        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+//        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
 //        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
-//        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
+        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
 //        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
 //        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
         ap.temaActual = .dark
@@ -123,11 +123,27 @@ struct DividerPersonalizado: View {
     
     var body: some View {
         Rectangle()
-            .fill(ap.temaActual.lineaColor)
+            .fill(ap.temaResuelto.lineaColor)
             .frame(height: 1.1)
             .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2)
             .padding(.horizontal, ap.resolucionLogica == .small ? 0 : paddingHorizontal * 2) // 40
     }
+}
+
+struct DividerDentroSeccion: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    var pH: CGFloat
+    var pV: CGFloat
+    
+    var body: some View {
+        Rectangle()
+            .fill(ap.temaResuelto.lineaColor)
+            .frame(height: 0.5)
+            .padding(.horizontal, pH)
+            .padding(.vertical, pV)
+    }
+    
 }
 
 struct ViewOffsetKey: PreferenceKey {

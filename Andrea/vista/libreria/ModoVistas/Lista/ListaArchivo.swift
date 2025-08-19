@@ -91,7 +91,7 @@ struct ListaArchivo: View {
         .padding(.vertical, 10 * escala)
         .padding(.horizontal, 5 * escala)
         .frame(height: coleccionVM.altura * escala)
-        .background(ap.temaActual.reversedsurfaceGradient)
+        .background(ap.temaActual.cardColorFixed)
         .cornerRadius(8, corners: [.topLeft, .bottomLeft])
         .onAppear {
             
