@@ -20,3 +20,27 @@ extension View {
             .animation(.easeInOut(duration: 0.25), value: value)
     }
 }
+
+//MARK: --- ANIMACIONES DE TEXTO ---
+//porcentaje
+extension View {
+    /// Le pasas tu Int, internamente se convierte a Double
+    func animatedProgressText1(_ intValue: Int) -> some View {
+        let doubleValue = Double(intValue)
+        return self.modifier(ProgressTextModifier1(value: doubleValue))
+    }
+}
+
+struct ProgressTextModifier1: AnimatableModifier {
+    /// Este es el valor animable
+    var value: Double
+
+    var animatableData: Double {
+        get { value }
+        set { value = newValue }
+    }
+
+    func body(content: Content) -> some View {
+        Text("% \(Int(value))")
+    }
+}

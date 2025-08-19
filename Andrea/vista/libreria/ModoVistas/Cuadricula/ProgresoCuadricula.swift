@@ -27,7 +27,6 @@ struct ProgresoCuadricula: View, Equatable {
         }
         .frame(height: 3)
         .padding(.horizontal, padding)
-        .padding(.top, 8)
     }
 }
 

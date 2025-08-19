@@ -54,13 +54,17 @@ struct CuadriculaArchivo: View {
                         }
                     }
                     .overlay(alignment: .bottom) {
-                        LinearGradient(
-                            colors: [Color.black.opacity(0.95), .clear],
-                            startPoint: .bottom,
-                            endPoint: .top
-                        )
-                        .frame(height: 100) // ajusta a tu gusto
-                        .allowsHitTesting(false)
+                        if archivo.tipoMiniatura != .imagenBase && viewModel.miniatura != nil {
+                            LinearGradient(
+                                colors: [Color.black.opacity(0.9), .clear],
+                                startPoint: .bottom,
+                                endPoint: .top
+                            )
+                            .frame(height: 80)
+//                            .opacity(viewModel.miniatura == nil ? 0 : 1)           // <- clave
+                            //                        .animation(.easeInOut(duration: 0.2), value: viewModel.miniatura != nil)
+                            .allowsHitTesting(false)
+                        }
                     }
                     .onChange(of: coleccionVM.color) { //Si se cambia de color volvemos a genera la imagen base
                         if archivo.tipoMiniatura == .imagenBase {
@@ -69,27 +73,40 @@ struct CuadriculaArchivo: View {
                     }
 
                     if mostrarMiniatura {
-                        VStack(spacing: 0) {
+                        VStack(spacing: 3) {
                             Spacer()
-                            HStack(spacing: 2.5) {
+                            HStack(alignment: .bottom, spacing: 2.5) {
                                 if archivo.progreso > 0 {
                                     HStack(spacing: 0) {
                                         Text("%")
-                                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.65))
+                                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.75))
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
-                                        Text("\(archivo.progreso)")
-                                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.95))
+                                            .offset(y: 1.7)
+//                                        Text("\(archivo.progreso)")
+                                        Color.clear
+                                            .animatedProgressText1(archivo.progreso)
+                                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 1.1))
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
+                                            .alignmentGuide(.bottom) { d in d[.bottom] }
                                     }
-//                                    .background(ap.temaResuelto.cardColorFixed.opacity(0.95), in: Capsule())
-//                                    .background(.black.opacity(0.85),
-//                                                in: RoundedRectangle(cornerRadius: 2.5, style: .continuous))
-//                                    .background(.ultraThinMaterial, in: ContainerRelativeShape())
                                 }
                                 
                                 // --- ICONOS DE LOS ESTADOS DE UN ARCHIVO ---
+                                if archivo.favorito {
+                                    Image(systemName: "star.fill")
+                                        .font(.system(size: 14))
+                                        .symbolRenderingMode(.palette)
+                                        .foregroundStyle(.yellow.gradient)
+                                        .transition(.asymmetric(
+                                            insertion: .scale.combined(with: .opacity),
+                                            removal: .scale.combined(with: .opacity))
+                                        )
+                                        .alignmentGuide(.bottom) { d in d[.bottom] + 3 }
+                                        .animation(.easeInOut(duration: 0.3), value: archivo.favorito)
+                                }
+                                
                                 if archivo.protegido {
                                     Image(systemName: "lock.shield")
                                         .font(.system(size: 15))
@@ -99,27 +116,13 @@ struct CuadriculaArchivo: View {
                                             insertion: .scale.combined(with: .opacity),
                                             removal: .scale.combined(with: .opacity))
                                         )
+                                        .alignmentGuide(.bottom) { d in d[.bottom] + 2 }
                                         .animation(.easeInOut(duration: 0.3), value: archivo.protegido)
-                                }
-                                
-                                if archivo.favorito {
-                                    Image(systemName: "star.fill")
-                                        .font(.system(size: 14))
-                                        .symbolRenderingMode(.palette)
-                                        .foregroundStyle(.yellow.gradient)
-                                        .padding(.bottom, 1)
-                                        .transition(.asymmetric(
-                                            insertion: .scale.combined(with: .opacity),
-                                            removal: .scale.combined(with: .opacity))
-                                        )
-                                        .animation(.easeInOut(duration: 0.3), value: archivo.favorito)
                                 }
                                 
                                 Spacer()
                             }
-                            .frame(alignment: .leading)
                             .padding(.horizontal, archivo.tipoMiniatura == .imagenBase ? 13 : 10)
-                            .padding(.bottom, -6)
                             
                             ProgresoCuadricula(
                                 progreso: archivo.progreso,
@@ -129,41 +132,15 @@ struct CuadriculaArchivo: View {
                             )
                             
                         }
-                        .padding(.bottom, 2)
+                        .padding(.bottom, 4.5)
                         .frame(maxHeight: .infinity, alignment: .bottom)
                         .zIndex(3)
-                        
-//                        if archivo.tipoMiniatura != .imagenBase {
-//                            VStack {
-//                                Spacer()
-//                                HStack {
-//                                    RadialGradient(
-//                                        gradient: Gradient(colors: [
-//                                            Color.black,
-//                                            Color.black.opacity(0.95)
-//                                        ]),
-//                                        center: .bottomLeading,
-//                                        startRadius: 10,
-//                                        endRadius: 90
-//                                    )
-//                                    .frame(width: 120, height: 80)
-//                                    .blur(radius: 20)
-//                                    .offset(x: -20, y: 20)
-//                                    .allowsHitTesting(false)
-//    
-//                                    Spacer()
-//                                }
-//                            }
-//                            .zIndex(2) // 🔽 Importante: para que quede detrás de la barra y texto
-//                        }
                     }
                     
                 }
                 .frame(width: width)
             }
             .disabled(me.seleccionMultiplePresionada)
-            
-            Spacer()
             
             // --- Titulo e informacion ---
             InformacionCuadricula(
@@ -178,7 +155,7 @@ struct CuadriculaArchivo: View {
             )
             .equatable()
             .frame(height: 38)
-            .border(.red)
+            .padding(7)
         }
         .frame(width: width, height: height)
         .background(ap.temaResuelto.cardColorFixed)

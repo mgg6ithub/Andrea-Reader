@@ -102,7 +102,6 @@ struct InformacionCuadricula: View, Equatable {
 //            .padding(.bottom, 10)
             
         }
-        .padding(8)
     }
 }
 
