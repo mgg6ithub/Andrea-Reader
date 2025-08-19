@@ -67,7 +67,7 @@ struct AjustesGlobales: View {
     
     var body: some View {
             VStack(alignment: .center, spacing: 0) {
-                Text("Ajustes generales")
+                Text("Ajustes de la aplicación")
                     .font(.system(size: ap.constantes.titleSize * 1.7, weight: .bold))
                     .foregroundColor(tema.tituloColor)
                     .bold()
@@ -82,10 +82,19 @@ struct AjustesGlobales: View {
                 }
                 
                 if haHechoScroll {
-                    Rectangle()
-                        .fill(ap.temaResuelto.lineaColor)
-                        .frame(height: 2.5)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
+                    ZStack {
+                        Text("Tu aplicación, a tu manera.")
+                            .font(.system(size: ap.constantes.subTitleSize * 0.7, weight: .bold))
+                            .foregroundColor(tema.secondaryText)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .offset(y: -9)
+                        
+                        Rectangle()
+                            .fill(ap.temaResuelto.lineaColor)
+                            .frame(height: 2.5)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
                 }
                 
                 GeometryReader { hStackGeo in

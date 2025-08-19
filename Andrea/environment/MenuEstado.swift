@@ -63,12 +63,13 @@ class MenuEstado: ObservableObject {
     @Published var ajustesGlobalesPresionado: Bool = false
     
     let sections = [
-        "TemaPrincipal", "ColorPrincipal", "SistemaArchivos", "Rendimiento",
-        "AjustesMenu", "AjustesHistorial", "AjustesLibreria", "AjustesVisualizacion"
+        "General", "TemaPrincipal", "ColorPrincipal", "SistemaArchivos", "Rendimiento",
+        "AjustesMenu", "AjustesHistorial", "AjustesLibreria"
     ]
     
     func sectionTitle(_ id: String) -> String {
         switch id {
+        case "General": return "General"
         case "TemaPrincipal": return "Temas"
         case "ColorPrincipal": return "Colores"
         case "SistemaArchivos": return "Sistema de archivos"
@@ -76,7 +77,6 @@ class MenuEstado: ObservableObject {
         case "AjustesMenu": return "Menu"
         case "AjustesHistorial": return "Historial"
         case "AjustesLibreria": return "Libreria"
-        case "AjustesVisualizacion": return "Visual"
         default: return ""
         }
     }

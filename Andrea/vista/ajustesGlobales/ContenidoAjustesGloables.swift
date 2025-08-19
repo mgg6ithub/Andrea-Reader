@@ -161,6 +161,11 @@ struct ContenidoAjustes: View {
 
                             Group {
                                 switch section {
+                                    
+                                case "General":
+                                    AjustesLibreria(isSection: selectedSection == section)
+                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
+                                    
                                 case "TemaPrincipal":
                                     AjustesTema(isSection: selectedSection == section)
                                     DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
@@ -188,9 +193,6 @@ struct ContenidoAjustes: View {
                                 case "AjustesLibreria":
                                     AjustesLibreria(isSection: selectedSection == section)
                                     DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
-                                    
-                                case "AjustesVisualizacion":
-                                    AjustesLibreria(isSection: selectedSection == section)
 
                                 default:
                                     EmptyView()

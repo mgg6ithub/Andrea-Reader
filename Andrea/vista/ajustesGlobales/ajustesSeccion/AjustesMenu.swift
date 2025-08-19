@@ -35,9 +35,6 @@ struct AjustesMenu: View {
             Text("Configura el menú superior a tu gusto: elige iconos, colores, tamaños y fondo.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            //MARK: --- TAMAÑO ---
-            AjustesBarraEstado(isSection: isSection)
-            
             DividerDentroSeccion(pH: 25, pV: 25)
             
             Text("Mostrar iconos")
