@@ -9,9 +9,9 @@ import SwiftUI
 
 extension AppEstado {
     static var preview: AppEstado {
-//        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
 //        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
-        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
+//        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
 //        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11
 //        let ap = AppEstado(screenWidth: 1024, screenHeight: 1366) //ipad Pro 12.92"
         ap.temaActual = .dark

@@ -73,8 +73,8 @@ struct AjustesTema: View {
                 
                 RectangleFormView<EnumTemas>(
                     titulo: "Sistema",
-                    icono: "yy",
-                    coloresIcono: [Color.white, Color.white],
+                    icono: "custom-yy",
+                    coloresIcono: [Color.white, Color.gray],
                     opcionSeleccionada: .sistema,
                     opcionActual: $ap.temaActual,
                     isCustomImage: true,

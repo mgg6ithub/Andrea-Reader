@@ -101,7 +101,7 @@ struct RectangleFormView<T: Equatable>: View {
                                         .font(.system(size: iconSize * 0.45))
                                         .symbolRenderingMode(.palette)
                                         .foregroundStyle( isSelected ? tema.colorContrario : tema.colorContrario.opacity(0.5), isSelected ? .gray : .gray.opacity(0.5))
-                                        .offset(x: 13.5, y: 11)
+                                        .offset(x: ap.dispositivoActual.esIPad ? 16.5 : 13.5, y: ap.dispositivoActual.esIPad ? 13.5 : 11.5)
                                 }
                                     
                             }

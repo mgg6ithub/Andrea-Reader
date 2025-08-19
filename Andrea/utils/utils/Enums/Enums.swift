@@ -45,6 +45,18 @@ enum EnumDispositivoActual: String, CaseIterable {
     }
 }
 
+extension EnumDispositivoActual {
+    var esIPad: Bool {
+        switch self {
+        case .ipadMini, .ipad, .ipadGen10, .ipad12:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+
 
 //MARK: - FILTROS DE ARCHIVOS NO DESEADOS
 enum EnumFiltroArchivos {
@@ -315,13 +327,13 @@ enum EnumTemas: String, CaseIterable {
     
     var lineaColor: Color {
         switch self {
-        case .light: return .gray.opacity(0.2)
-        case .dark: return .gray.opacity(0.2)
+        case .light: return .gray
+        case .dark: return .gray
         case .sistema: return .clear
         case .dayNight: return .clear
-        case .blue: return .blue.opacity(0.4)
-        case .green: return .black.opacity(0.4)
-        case .red: return .black.opacity(0.4)
+        case .blue: return .white.opacity(0.7)
+        case .green: return .black.opacity(0.5)
+        case .red: return .black.opacity(0.5)
         case .orange: return .white.opacity(0.7)
         }
     }

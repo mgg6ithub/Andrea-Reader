@@ -231,7 +231,7 @@ struct ContenidoAjustes: View {
                     selectedSection = target
                     // espera al siguiente ciclo para que todos los .id(section) estén montados
                     DispatchQueue.main.async {
-                        withAnimation(.interpolatingSpring(stiffness: 20, damping: 4)) {
+                        withAnimation(.interpolatingSpring(stiffness: 210, damping: 48)) {
                             if target == sections.first {
                                 proxy.scrollTo("top", anchor: .top)
                             } else {
