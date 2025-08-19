@@ -160,6 +160,7 @@ struct CuadriculaArchivo: View {
             
             // --- Titulo e informacion ---
             InformacionCuadricula(
+                coleccionVM: coleccionVM,
                 nombre: archivo.nombre,
                 tipo: archivo.fileType.rawValue,
                 tamanioMB: ManipulacionSizes().formatearSize(archivo.fileSize),

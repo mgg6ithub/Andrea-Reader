@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProgresoCuadricula: View, Equatable {
+    
     let progreso: Int
     let coleccionColor: Color
     let totalWidth: CGFloat     // ancho disponible para la barra
@@ -22,6 +23,7 @@ struct ProgresoCuadricula: View, Equatable {
             RoundedRectangle(cornerRadius: 3)
                 .fill(coleccionColor)
                 .frame(width: totalWidth * CGFloat(progreso) / 100.0, height: 3)
+                .animacionDesvanecer(coleccionColor)
         }
         .frame(height: 3)
         .padding(.horizontal, padding)

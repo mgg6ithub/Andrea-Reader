@@ -265,6 +265,7 @@ struct MenuCentro: View {
             .id(menuRefreshTrigger)
             .colorScheme(tema == .dark ? .dark : .light)
         }
+        .animacionDesvanecer(c1)
         .alignmentGuide(.firstTextBaseline) { d in d[.bottom] }
         .onAppear { syncIconColors() }
        .onChange(of: tema) { syncIconColors() }

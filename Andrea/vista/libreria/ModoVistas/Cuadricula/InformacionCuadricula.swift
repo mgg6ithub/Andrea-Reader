@@ -6,6 +6,7 @@ struct InformacionCuadricula: View, Equatable {
     
     @EnvironmentObject var ap: AppEstado
     
+    @ObservedObject var coleccionVM: ModeloColeccion
     let nombre: String
     let tipo: String
     let tamanioMB: String
@@ -47,17 +48,21 @@ struct InformacionCuadricula: View, Equatable {
             HStack(spacing: 0) {
                 if progreso > 0 {
                     HStack(spacing: 0) {
-                        Text("%")
-                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.55))
-                            .bold()
-                            .foregroundColor(.blue)
-                            .zIndex(3)
-                        
-                        Text("\(progreso)")
-                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.85))
-                            .bold()
-                            .foregroundColor(.blue)
-                            .zIndex(3)
+                        Group {
+                            Text("%")
+                                .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.55))
+                                .bold()
+                                .foregroundColor(coleccionVM.color)
+                                .zIndex(3)
+                            
+                            Text("\(progreso)")
+                                .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.85))
+                                .bold()
+                                .foregroundColor(coleccionVM.color)
+                                .zIndex(3)
+                        }
+//                        .animation(.easeInOut(duration: 0.45), value: coleccionVM.coleccion.color)
+                        .animacionDesvanecer(coleccionVM.coleccion.color)
                     }
                     Spacer()
                 }
@@ -89,7 +94,7 @@ struct InformacionCuadricula: View, Equatable {
             
             ProgresoCuadricula(
                 progreso: progreso,
-                coleccionColor: .blue,
+                coleccionColor: coleccionVM.color,
                 totalWidth: .infinity,
                 padding: 0
             )

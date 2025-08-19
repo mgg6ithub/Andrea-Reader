@@ -58,6 +58,7 @@ struct MenuDerecha: View {
             }
             
         }
+        .animacionDesvanecer(c1)
         .padding(0)
     }
     

@@ -105,6 +105,7 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
                 view.aparicionStiffness(show: $show)
             }
             .aparicionSuave(show: $show)
+            .animacionDesvanecer(color)
     }
 }
 

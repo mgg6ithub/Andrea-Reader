@@ -85,5 +85,6 @@ struct MenuIzquierda: View {
             
         }
         .padding(0)
+        .animacionDesvanecer(c1)
     }
 }

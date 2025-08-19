@@ -21,6 +21,7 @@
 		D45E70062DE7A7C4001F816A /* AndreaAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E70052DE7A7C4001F816A /* AndreaAppView.swift */; };
 		D45E700A2DE7A7F3001F816A /* SistemaArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E70092DE7A7F3001F816A /* SistemaArchivos.swift */; };
 		D45E700C2DE7A803001F816A /* MenuVista.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E700B2DE7A803001F816A /* MenuVista.swift */; };
+		D46BE97B2E54F72D0069BCC1 /* Animaciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46BE97A2E54F72D0069BCC1 /* Animaciones.swift */; };
 		D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */; };
 		D46E94352DEA287000ABD9EE /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46E94342DEA287000ABD9EE /* Toggle.swift */; };
 		D47035DB2E4288D0008906C9 /* AjustesHistorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47035DA2E4288D0008906C9 /* AjustesHistorial.swift */; };
@@ -143,6 +144,7 @@
 		D45E70052DE7A7C4001F816A /* AndreaAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AndreaAppView.swift; sourceTree = "<group>"; };
 		D45E70092DE7A7F3001F816A /* SistemaArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SistemaArchivos.swift; sourceTree = "<group>"; };
 		D45E700B2DE7A803001F816A /* MenuVista.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVista.swift; sourceTree = "<group>"; };
+		D46BE97A2E54F72D0069BCC1 /* Animaciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animaciones.swift; sourceTree = "<group>"; };
 		D46E94312DEA27E800ABD9EE /* AjustesMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesMenu.swift; sourceTree = "<group>"; };
 		D46E94342DEA287000ABD9EE /* Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toggle.swift; sourceTree = "<group>"; };
 		D47035DA2E4288D0008906C9 /* AjustesHistorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesHistorial.swift; sourceTree = "<group>"; };
@@ -576,6 +578,7 @@
 		D4BA32F42E0BE3EF00CF3219 /* animaciones */ = {
 			isa = PBXGroup;
 			children = (
+				D46BE97A2E54F72D0069BCC1 /* Animaciones.swift */,
 			);
 			path = animaciones;
 			sourceTree = "<group>";
@@ -835,6 +838,7 @@
 				D47139C12E0AE44200B5FA35 /* ListaVista.swift in Sources */,
 				D4DF317E2DEC77D1000D15CC /* PlaceholderCuadricula.swift in Sources */,
 				D4DEBBF02DE9CD7F00F06C30 /* AjustesTema.swift in Sources */,
+				D46BE97B2E54F72D0069BCC1 /* Animaciones.swift in Sources */,
 				D4B0BBA12E4C6A150073380E /* LectorComic.swift in Sources */,
 				D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */,
 				D4CF28E32E323CF3003B3ABC /* ModificarTamano.swift in Sources */,
