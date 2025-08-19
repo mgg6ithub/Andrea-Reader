@@ -36,6 +36,27 @@ struct MenuVista: View {
     private var colorFondo: Color { ap.temaResuelto.fondoMenus }
     let opacidad: CGFloat = 0.65
     
+    private var c2: Color {
+        if me.colorGris {
+            return .gray
+        } else {
+            return ap.temaResuelto.menuIconos
+        }
+    }
+
+//    private var c1: Color {
+//        if me.dobleColor {
+//            return ap.colorActual
+//        } else if me.colorGris {
+//            return .gray
+//        } else {
+//            return ap.temaResuelto.menuIconos
+//        }
+//    }
+
+    private var iconSize: CGFloat { me.iconSize }
+    private var iconFont: EnumFuenteIcono { me.fuente }
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             ZStack {
@@ -44,7 +65,7 @@ struct MenuVista: View {
                         (ap.sistemaArchivos == .tradicional && !me.iconoMenuLateral && !me.iconoFlechaAtras) ||
                         (ap.sistemaArchivos == .tradicional && !me.iconoMenuLateral && pc.getColeccionActual().coleccion.nombre == "HOME")
                     
-                    MenuIzquierda()
+                    MenuIzquierda(coleccionActualVM: pc.getColeccionActual(), c2: c2, iconSize: iconSize, iconFont: iconFont)
                         .fondoMenu(me.colorFondoMenu,
                            enabled: me.fondoMenu,          // ← solo si está activado
                            desactivar: desactivarFondo,     // ← desactivar en izquierda según condición
@@ -53,7 +74,7 @@ struct MenuVista: View {
                            isActive: me.seleccionMultiplePresionada)
                         .padding(0)
                     Spacer()
-                    MenuDerecha()
+                    MenuDerecha(coleccionActualVM: pc.getColeccionActual(), c2: c2, iconSize: iconSize, iconFont: iconFont)
                         .fondoMenu(me.colorFondoMenu,
                            enabled: me.fondoMenu,          // ← solo si está activado
                            desactivar: false,     // ← desactivar en izquierda según condición
@@ -64,7 +85,7 @@ struct MenuVista: View {
                 .padding(0)
                 
                 GeometryReader { geo in
-                    MenuCentro(coleccionActualVM: pc.getColeccionActual())
+                    MenuCentro(coleccionActualVM: pc.getColeccionActual(), c2: c2, iconSize: iconSize, iconFont: iconFont)
                         .fondoMenu(me.colorFondoMenu,
                            enabled: me.fondoMenu,          // ← solo si está activado
                            desactivar: false,     // ← desactivar en izquierda según condición

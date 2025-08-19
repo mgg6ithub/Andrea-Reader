@@ -9,25 +9,17 @@ struct MenuIzquierda: View {
     @EnvironmentObject var pc: PilaColecciones
     
     // --- PARAMETROS ---
-//    var c1: Color
-//    var c2: Color
-//    var iconSize: CGFloat
-//    var fuente: Font.Weight
+    @ObservedObject var coleccionActualVM: ModeloColeccion
+    var c2: Color
+    var iconSize: CGFloat
+    var iconFont: EnumFuenteIcono
     
     // --- ESTADO ---
     @State private var mostrarMenuLateral: Bool = false
     @State private var mostrarPopover = false
     
     private var const: Constantes { ap.constantes }
-    
-    private var c2: Color {
-        if me.colorGris {
-            return .gray
-        } else {
-            return ap.temaResuelto.menuIconos
-        }
-    }
-    
+   
     private var c1: Color {
         if me.dobleColor {
             return ap.colorActual
@@ -37,9 +29,6 @@ struct MenuIzquierda: View {
             return ap.temaResuelto.menuIconos
         }
     }
-    
-    private var iconSize: CGFloat { me.iconSize }
-    private var iconFont: EnumFuenteIcono { me.fuente }
     
     var body: some View {
         HStack {

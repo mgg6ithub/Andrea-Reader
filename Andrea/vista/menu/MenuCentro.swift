@@ -27,20 +27,16 @@ struct MenuCentro: View {
     @State private var cPrimario: Color = .clear
     @State private var cSecundario: Color = .clear
     
+    @ObservedObject var coleccionActualVM: ModeloColeccion
+    var c2: Color
+    var iconSize: CGFloat
+    var iconFont: EnumFuenteIcono
+    
+    
     // --- VARIABLES CALCULADAS ---
     private let sa: SistemaArchivos = SistemaArchivos.sa
     private var const: Constantes { ap.constantes }
     private var tema: EnumTemas { ap.temaResuelto }
-//    private var c2: Color { tema.menuIconos }
-//    private var iconFont.weight: Font.Weight { const.iconFont.weighteight }
-    
-    private var c2: Color {
-        if me.colorGris {
-            return .gray
-        } else {
-            return tema.menuIconos
-        }
-    }
     
     private var c1: Color {
         if me.dobleColor {
@@ -51,11 +47,6 @@ struct MenuCentro: View {
             return tema.menuIconos
         }
     }
-    
-    private var iconSize: CGFloat { me.iconSize }
-    private var iconFont: EnumFuenteIcono { me.fuente }
-    
-    @ObservedObject var coleccionActualVM: ModeloColeccion
     
     private var menuRefreshTrigger: UUID { coleccionActualVM.menuRefreshTrigger }
     private var iconoSM: String { coleccionActualVM.modoVista == .cuadricula ?  "custom.hand.grid" : "custom.hand.list"}
