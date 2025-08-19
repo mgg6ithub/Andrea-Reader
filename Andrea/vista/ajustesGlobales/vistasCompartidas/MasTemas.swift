@@ -27,12 +27,14 @@ struct MasTemas<T: Equatable>: View {
     var const: Constantes { ap.constantes }
     var isSelected: Bool { return opcionActual == opcionSeleccionada }
     
+    private var esOscuro: Bool { ap.temaActual == .dark || ap.temaActual == .orange }
+    
     var body: some View {
         VStack(spacing: 10) {
-            Text(tema.rawValue)
+            Text(tema.nombreTema)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.system(size: const.subTitleSize))
-                .foregroundColor(ap.temaResuelto.colorContrario)
+                .foregroundColor(isSelected ? ap.temaResuelto.secondaryText : ap.temaResuelto.secondaryText.opacity(0.15))
             
             Button(action: {
                 isBouncing.toggle()
@@ -55,7 +57,7 @@ struct MasTemas<T: Equatable>: View {
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(
                                     isSelected
-                                        ? (ap.temaActual == .dark ? Color.white : Color.black)
+                                        ? (esOscuro ? Color.white : Color.black)
                                         : Color.clear,
                                     lineWidth: 1.5
                                 )

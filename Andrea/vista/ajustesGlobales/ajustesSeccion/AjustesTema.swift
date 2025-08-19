@@ -40,12 +40,12 @@ struct AjustesTema: View {
             Text("Tema principal") //TITULO
                 .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("Los temas son combinaciones de colores que se aplican globalmente a toda la interfaz. Los temas claro y oscuro son los mas usados.")
+            Text("Los temas son combinaciones de colores que afectan a toda la interfaz. Puedes elegir entre opciones clásicas como claro y oscuro, o probar estilos más coloridos.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            Text("Información del tema seleccionado")
+            Text("Información del tema actual")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 0, pW: 0, b: true)
-                .padding(.bottom, 15)
+                .padding(.bottom, 8)
             
             Text(ap.temaActual.descripcionTema)
                 .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)

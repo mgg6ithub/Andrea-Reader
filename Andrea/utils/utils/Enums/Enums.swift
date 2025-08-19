@@ -256,16 +256,45 @@ enum EnumTemas: String, CaseIterable {
         }
     }
     
+    var nombreTema: String {
+        switch self {
+        case .light:
+            return "Claro"
+        case .dark:
+            return "Oscuro"
+        case .sistema:
+            return "Sistema"
+        case .dayNight:
+            return "Dia/Noche"
+        case .blue:
+            return "Océano"
+        case .green:
+            return "Esmeralda"
+        case .red:
+            return "Aurora"
+        case .orange:
+            return "Naraja oscuro"
+        }
+    }
+    
     var descripcionTema: String {
         switch self {
-        case .light:   return "El tema claro predeterminado."
-        case .dark:    return "El tema oscuro predeterminado."
-        case .sistema: return "Se adapta al sistema."
-        case .dayNight:return "Durante el día se aplicará el tema claro y de noche el oscuro."
-        case .blue:    return "Tema con gradiente en tonos azules."
-        case .green:   return "Tema con gradiente en tonos verdes y teal."
-        case .red:     return "Tema con gradiente en tonos púrpura y rojo."
-        case .orange:  return "Tema con gradiente en tonos naranjas cálidos."
+        case .light:
+            return "Un tema claro y luminoso, ideal para ambientes con buena iluminación."
+        case .dark:
+            return "Un tema oscuro que cuida la vista, ideal para la noche."
+        case .sistema:
+            return "Se adapta automáticamente al tema del dispositivo."
+        case .dayNight:
+            return "Cambia solo: claro durante el día y oscuro por la noche."
+        case .blue:
+            return "Un estilo moderno con un gradiente en tonos azules."
+        case .green:
+            return "Un tema fresco con matices verdes y turquesa."
+        case .red:
+            return "Un estilo intenso en tonos rojos y púrpura."
+        case .orange:
+            return "Un tema oscuro con matices anaranjados."
         }
     }
     

@@ -117,7 +117,7 @@ struct ContenidoAjustes: View {
                                 .aparicionStiffness(show: $show)
                         }
 
-                        Text("Aplica ajustes globales, personalizando la apariencia y funcionalidad de la aplicación. Ajusta el tema, los colores y modifica las opciones según tus preferencias.")
+                        Text("Configura la apariencia y el funcionamiento de la aplicación a tu gusto. Elige el tema, los colores y ajusta las opciones según tus preferencias.")
                             .font(.system(size: ap.constantes.titleSize))
                             .foregroundColor(ap.temaResuelto.colorContrario)
                             .multilineTextAlignment(.center)
