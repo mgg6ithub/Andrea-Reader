@@ -81,7 +81,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     //PROGRESO
     @Published var totalPaginas: Int? {
         didSet {
-            recalcularProgreso()
+            actualizarProgreso()
         }
     }
     
@@ -153,11 +153,12 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
         self.cargarPaginasAsync()
         
-        //--- PROGRESO DEL ARCHIVO ---
-        if let paginaConcreta = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "progreso") {
-            self.setCurrentPage(currentPage: paginaConcreta as! Int)
+        // --- PROGRESO DEL ARCHIVO ---
+        let pd = PersistenciaDatos()
+        if let paginaGuardada = pd.paginaLectura(para: self.url) {
+            self.setCurrentPage(currentPage: paginaGuardada)
         } else {
-            self.setCurrentPage(currentPage: 10)
+            self.setCurrentPage(currentPage: 0) // o la que quieras por defecto
         }
         
         //--- TIPO DE IMAGEN ---
@@ -233,15 +234,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     func getTotalPages() -> Int {
-        return self.totalPaginas ?? 20
+        return self.totalPaginas ?? 0
     }
     
     func setCurrentPage(currentPage: Int) {
-        self.paginaActual = currentPage
-        //al setear la pagina calculamos automaticamente el porcentaje
-        self.progreso = Int((Double(currentPage) / Double(getTotalPages())) * 100)
-        self.progresoEntero = Double(currentPage) / Double(getTotalPages())
-
+        withAnimation { paginaActual = max(0, currentPage)
+            actualizarProgreso()
+        }
+        PersistenciaDatos().setPaginaLectura(paginaActual, para: url)
     }
     
     func extractPageData(named nombre: String) -> Data? {
@@ -273,6 +273,20 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         let porcentaje = Int((Double(paginaActual) / Double(total)) * 100)
         progreso = min(max(porcentaje, 0), 100)
     }
+    
+    private func actualizarProgreso() {
+        guard let total = totalPaginas, total > 1 else {
+            progreso = 0
+            progresoEntero = 0
+            return
+        }
+        let frac = Double(min(paginaActual, total - 1)) / Double(total - 1)
+        progresoEntero = frac
+//        withAnimation {
+            progreso = Int(round(frac * 100))
+//        }
+    }
+
     
     public func completarLectura() {
         if self.progreso != 100 {

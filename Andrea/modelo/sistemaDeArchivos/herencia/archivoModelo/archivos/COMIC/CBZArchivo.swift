@@ -18,7 +18,8 @@ class CBZArchivo: Archivo, ProtocoloComic {
             }
 
             let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
-            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+//            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages) cuaidado al aplicar el filtro porque al contar las paginas de forma rapuda no se esta aplicando
+            return comicPages
 
         } catch {
 //            print("Error al abrir el archivo CBZ: \(error)")
@@ -161,7 +162,8 @@ class CBZArchivo: Archivo, ProtocoloComic {
             }
 
             let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
-            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+//            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+            return comicPages
 
         } catch {
 //            print("Error al abrir el archivo CBZ: \(error)")
@@ -185,6 +187,7 @@ class CBZArchivo: Archivo, ProtocoloComic {
             let imageCount = archive.filter { entry in
                 entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png")
             }.count
+            ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
             return imageCount
         } catch {
             return 0

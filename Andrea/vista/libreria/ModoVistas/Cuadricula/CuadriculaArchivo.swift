@@ -90,6 +90,7 @@ struct CuadriculaArchivo: View {
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
                                             .alignmentGuide(.bottom) { d in d[.bottom] }
+                                            .animation(.easeOut(duration: 0.6), value: archivo.progreso)
                                     }
                                 }
                                 

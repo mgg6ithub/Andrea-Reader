@@ -181,34 +181,53 @@ struct PersistenciaDatos {
     
 }
 
-extension UIColor {
-    func toHexString() -> String {
-        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        return String(format: "#%02X%02X%02X", Int(red*255), Int(green*255), Int(blue*255))
-    }
-}
+//MARK: --- PROGRESO DE LAS PAGINAS DE CADA ARCHIVO ---
 
-extension Color {
-    var toHexString: String {
-        UIColor(self).toHexString()
+extension PersistenciaDatos {
+    private var progressDictKey: String { "lectura.progresos" }
+
+    // Lee todo el diccionario (si no existe, devuelve vacío)
+    private func leerMapaProgreso() -> [String: Int] {
+        (UserDefaults.standard.dictionary(forKey: progressDictKey) as? [String: Int]) ?? [:]
     }
 
-    init(hex: String) {
-        let scanner = Scanner(string: hex)
-        _ = scanner.scanString("#")
+    // Escribe todo el diccionario
+    private func guardarMapaProgreso(_ mapa: [String: Int]) {
+        UserDefaults.standard.set(mapa, forKey: progressDictKey)
+    }
 
-        var rgb: UInt64 = 0
-        if scanner.scanHexInt64(&rgb) {
-            let r = Double((rgb >> 16) & 0xFF) / 255.0
-            let g = Double((rgb >> 8) & 0xFF) / 255.0
-            let b = Double(rgb & 0xFF) / 255.0
-            self.init(red: r, green: g, blue: b)
-        } else {
-            self = .blue // fallback color
+    // API pública
+    public func setPaginaLectura(_ pagina: Int, para url: URL) {
+        let k = obtenerKey(url)
+        var mapa = leerMapaProgreso()
+        mapa[k] = pagina
+        guardarMapaProgreso(mapa)
+    }
+
+    public func paginaLectura(para url: URL) -> Int? {
+        let k = obtenerKey(url)
+        return leerMapaProgreso()[k]
+    }
+
+    public func eliminarPaginaLectura(para url: URL) {
+        let k = obtenerKey(url)
+        var mapa = leerMapaProgreso()
+        mapa.removeValue(forKey: k)
+        guardarMapaProgreso(mapa)
+    }
+
+    // Si cambiaste/moviste el archivo, renombra su clave
+    public func actualizarPaginaLectura(origen: URL, destino: URL) {
+        let kOld = obtenerKey(origen)
+        let kNew = obtenerKey(destino)
+        var mapa = leerMapaProgreso()
+        if let v = mapa.removeValue(forKey: kOld) {
+            mapa[kNew] = v
+            guardarMapaProgreso(mapa)
         }
     }
 }
+
 
 
 

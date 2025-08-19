@@ -7,7 +7,7 @@ struct LectorComic: View {
 
     var comic: any ProtocoloComic
     
-    @State private var currentPageInternal: Int = 0
+    @Binding var paginaActual: Int
 
     @State private var currentScale: CGFloat = 1.0
     @State private var isZooming: Bool = false
@@ -24,33 +24,30 @@ struct LectorComic: View {
     
     @StateObject var viewSettings = ViewSettings()
     
-    init(comic: any ProtocoloComic){
-        
+    init(comic: any ProtocoloComic, paginaActual: Binding<Int>){
         self.comic = comic
+        self._paginaActual = paginaActual
         comic.comicPages = comic.loadComicPages(applyFilters: false)
         
         let sessionCache = ComicCache(comicFile: comic)
-        
         _sessionCache = StateObject(wrappedValue: sessionCache)
-        
     }
     
     var body: some View {
         ZStack {
-                //MARK: - PAGINADO (PAGINA A PAGINA)
+            //MARK: - PAGINADO (PAGINA A PAGINA)
+            SinglePage(
+                sessionCache: sessionCache,
+                pages: comic.comicPages,
+                comicFile: comic,
+                currentPage: $paginaActual
+            )
+            .environmentObject(viewSettings)
+            .onDisappear {
+                sessionCache.endCache()
+            }
                 
-                SinglePage(
-                    sessionCache: sessionCache,
-                    pages: comic.comicPages,
-                    comicFile: comic,
-                    currentPage: $currentPageInternal
-                )
-                .environmentObject(viewSettings)
-                .onDisappear {
-                    sessionCache.endCache()
-                }
-                
-                //MARK: - PAGINADO (PAGINA A PAGINA)
+            //MARK: - PAGINADO (PAGINA A PAGINA)
                 
 
         }

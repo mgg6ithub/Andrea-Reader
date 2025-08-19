@@ -133,7 +133,7 @@ extension View {
 }
 
 struct ContenedorLector: View {
-    var archivo: Archivo
+    @ObservedObject var archivo: Archivo    // <- así
     @State private var mostrarMenu = false
     @EnvironmentObject var ap: AppEstado // <- necesario
 
@@ -143,7 +143,7 @@ struct ContenedorLector: View {
             switch archivo.fileType {
             case .cbr, .cbz:
                 if let comic = archivo as? any ProtocoloComic {
-                    LectorComic(comic: comic)
+                    LectorComic(comic: comic, paginaActual: $archivo.paginaActual)
                 } else {
                     ArchivoIncompatibleView(archivo: archivo)
                 }
@@ -181,7 +181,10 @@ struct MenuLectura: View {
     var body: some View {
         VStack {
             HStack {
-                Button("Cerrar") { cerrar() } // ← ya no toca el menú
+                Button("Cerrar") {
+                    //antes de cerrar guardamos el progreso actualizando la pagina
+                    cerrar()
+                } // ← ya no toca el menú
                 Spacer()
                 Text("Progreso: \(archivo.progreso)%")
                 Spacer()

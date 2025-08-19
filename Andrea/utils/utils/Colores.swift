@@ -21,3 +21,33 @@ func colorsEqual(_ a: Color, _ b: Color, epsilon: CGFloat = 0.001) -> Bool {
            abs(aa.b - bb.b) < epsilon &&
            abs(aa.a - bb.a) < epsilon
 }
+
+
+extension UIColor {
+    func toHexString() -> String {
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return String(format: "#%02X%02X%02X", Int(red*255), Int(green*255), Int(blue*255))
+    }
+}
+
+extension Color {
+    var toHexString: String {
+        UIColor(self).toHexString()
+    }
+
+    init(hex: String) {
+        let scanner = Scanner(string: hex)
+        _ = scanner.scanString("#")
+
+        var rgb: UInt64 = 0
+        if scanner.scanHexInt64(&rgb) {
+            let r = Double((rgb >> 16) & 0xFF) / 255.0
+            let g = Double((rgb >> 8) & 0xFF) / 255.0
+            let b = Double(rgb & 0xFF) / 255.0
+            self.init(red: r, green: g, blue: b)
+        } else {
+            self = .blue // fallback color
+        }
+    }
+}

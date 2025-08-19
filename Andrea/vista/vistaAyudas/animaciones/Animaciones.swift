@@ -41,6 +41,6 @@ struct ProgressTextModifier1: AnimatableModifier {
     }
 
     func body(content: Content) -> some View {
-        Text("% \(Int(value))")
+        Text("\(Int(value))")
     }
 }
