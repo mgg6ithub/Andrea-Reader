@@ -62,18 +62,6 @@ struct MenuSeleccionMultipleAbajo: View {
                 }
                 .opacity(me.elementosSeleccionados.count > 0 ? 1.0 : 0.2)
                 .padding(.horizontal, constantes.horizontalPadding)
-                .confirmationDialog(
-                    "¿Estás seguro de que quieres borrar \(me.elementosSeleccionados.count)?",
-                    isPresented: $eliminarPresionado, // <- o el tuyo
-                    titleVisibility: .visible
-                ) {
-                    Button("Borrar", role: .destructive) {
-                        me.aplicarAccionPorElemento { elemento in
-                            sa.borrarElemento(elemento: elemento, vm: coleccionActualVM)
-                        }
-                    }
-                    Button("Cancelar", role: .cancel) {}
-                }
                 .sheet(item: $accionDocumento) { accion in
                     DocumentPicker(
                         onPick: { urls in
@@ -106,6 +94,18 @@ struct MenuSeleccionMultipleAbajo: View {
                 }
                 .foregroundColor(Color.red)
                 .fondoBoton(pH: 7, pV: 7, isActive: true, color: .red, borde: false)
+                .confirmationDialog(
+                    "¿Estás seguro de que quieres borrar \(me.elementosSeleccionados.count) elemento?",
+                    isPresented: $eliminarPresionado, // <- o el tuyo
+                    titleVisibility: .visible
+                ) {
+                    Button("Borrar", role: .destructive) {
+                        me.aplicarAccionPorElemento { elemento in
+                            sa.borrarElemento(elemento: elemento, vm: coleccionActualVM)
+                        }
+                    }
+                    Button("Cancelar", role: .cancel) {}
+                }
             }
             .padding(.horizontal, 10)
         }
