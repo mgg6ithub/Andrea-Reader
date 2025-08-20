@@ -46,6 +46,11 @@ extension Archivo {
 
 class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
+    // --- PROGRESO DEL ARCHIVO ---
+    let pd = PersistenciaDatos()
+    let cpe = ClavesPersistenciaElementos()
+    let p = ValoresElementoPredeterminados()
+    
     @Published var tipoMiniatura: EnumTipoMiniatura = .primeraPagina
     
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
@@ -155,19 +160,17 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
         self.cargarPaginasAsync()
         
-        // --- PROGRESO DEL ARCHIVO ---
-        let pd = PersistenciaDatos()
-        if let paginaGuardada = pd.paginaLectura(para: self.url) {
-            self.setCurrentPage(currentPage: paginaGuardada)
-        } else {
-            self.setCurrentPage(currentPage: 0) // o la que quieras por defecto
-        }
+        //entero
+        self.paginaActual = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.progresoElemento, default: p.progresoElemento)
+        
+        //enum
+        self.tipoMiniatura = pd.recuperarDatoArchivoEnum(elementoURL: self.url, key: cpe.miniaturaElemento, default: p.miniaturaElemento)
         
         //--- TIPO DE IMAGEN ---
-        if let tipoRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "tipoMiniatura") as? String,
-           let tipo = EnumTipoMiniatura(rawValue: tipoRaw) {
-            self.tipoMiniatura = tipo
-        }
+//        if let tipoRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "tipoMiniatura") as? String,
+//           let tipo = EnumTipoMiniatura(rawValue: tipoRaw) {
+//            self.tipoMiniatura = tipo
+//        }
         
     }
     
@@ -244,7 +247,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
             paginaActual = max(0, currentPage)
             actualizarProgreso()
         }
-        PersistenciaDatos().setPaginaLectura(paginaActual, para: url)
+        pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento)
     }
     
     func extractPageData(named nombre: String) -> Data? {

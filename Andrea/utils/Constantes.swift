@@ -62,6 +62,25 @@ struct ConstantesPorDefecto {
     //MARK: - --- IMAGENES ---
 }
 
+struct ClavesPersistenciaElementos {
+    
+    //PROGRESO DE UN ELEMENTO
+    public let progresoElemento: String = "progreso_archivo"
+    
+    //MINIATURA DE UN ELEMENTO
+    public let miniaturaElemento: String = "miniatura_archivo"
+    
+}
+
+struct ValoresElementoPredeterminados {
+    
+    //PROGRESO DE UN ELEMENTO
+    public let progresoElemento: Int = 0
+    
+    //MINIATURA DE UN ELEMENTO
+    public let miniaturaElemento: EnumTipoMiniatura = .primeraPagina
+    
+}
 
 struct ClavesPersistenciaAjustesGenerales {
     

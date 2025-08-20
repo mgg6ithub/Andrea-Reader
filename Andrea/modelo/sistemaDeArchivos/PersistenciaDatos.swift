@@ -2,6 +2,52 @@
 
 import SwiftUI
 
+//MARK: --- PROGRESO DE LAS PAGINAS DE CADA ARCHIVO ---
+
+extension PersistenciaDatos {
+    func convertirValor(_ valor: Any) -> Any? {
+        switch valor {
+        //datos basicos
+        case let v as Int: return v
+        case let v as Double: return v
+        case let v as Bool: return v
+        case let v as String: return v
+        case let v as CGFloat: return v
+        
+        //enums
+        case let v as EnumTipoMiniatura: return v.rawValue
+        case let v as EnumTipoMiniaturaColeccion: return v.rawValue
+        case let v as EnumDireccionAbanico: return v.rawValue
+        case let v as EnumModoVista: return v.rawValue
+        case let v as EnumOrdenaciones: return v.rawValue
+        case let v as EnumTemas: return v.rawValue
+        case let v as EnumTipoSistemaArchivos: return v.rawValue
+        case let v as EnumAjusteColor: return v.rawValue
+        case let v as EnumBarraEstado: return v.rawValue
+        case let v as EnumFuenteIcono: return v.rawValue
+        case let v as EnumFondoMenu: return v.rawValue
+        case let v as EnumEstiloHistorialColecciones: return v.rawValue
+        case let v as EnumPorcentajeEstilo: return v.rawValue
+        case let v as EnumTipoMiniatura: return v.rawValue
+            
+        //colores
+        case let v as Color: return v.toHexString
+            
+        //Arrays y diccinarios
+        case let v as [String:Int]:    return v
+        case let v as [String:Double]: return v
+        case let v as [String:Bool]:   return v
+        case let v as [String:String]: return v
+        case let v as [Int]:           return v
+        case let v as [Double]:        return v
+        case let v as [Bool]:          return v
+        case let v as [String]:        return v
+            
+        default: return nil
+        }
+    }
+}
+
 struct PersistenciaDatos {
     
     let mc = ManipulacionCadenas()
@@ -55,48 +101,6 @@ struct PersistenciaDatos {
         
         uds.set(dict, forKey: key)
     }
-    
-    private func convertirValor(_ valor: Any) -> Any? {
-        switch valor {
-        //datos basicos
-        case let v as Int: return v
-        case let v as Double: return v
-        case let v as Bool: return v
-        case let v as String: return v
-        case let v as CGFloat: return v
-        
-        //enums
-        case let v as EnumTipoMiniatura: return v.rawValue
-        case let v as EnumTipoMiniaturaColeccion: return v.rawValue
-        case let v as EnumDireccionAbanico: return v.rawValue
-        case let v as EnumModoVista: return v.rawValue
-        case let v as EnumOrdenaciones: return v.rawValue
-        case let v as EnumTemas: return v.rawValue
-        case let v as EnumTipoSistemaArchivos: return v.rawValue
-        case let v as EnumAjusteColor: return v.rawValue
-        case let v as EnumBarraEstado: return v.rawValue
-        case let v as EnumFuenteIcono: return v.rawValue
-        case let v as EnumFondoMenu: return v.rawValue
-        case let v as EnumEstiloHistorialColecciones: return v.rawValue
-        case let v as EnumPorcentajeEstilo: return v.rawValue
-            
-        //colores
-        case let v as Color: return v.toHexString
-            
-        //Arrays y diccinarios
-        case let v as [String:Int]:    return v
-        case let v as [String:Double]: return v
-        case let v as [String:Bool]:   return v
-        case let v as [String:String]: return v
-        case let v as [Int]:           return v
-        case let v as [Double]:        return v
-        case let v as [Bool]:          return v
-        case let v as [String]:        return v
-            
-        default: return nil
-        }
-    }
-
     
     //MARK:  --- COLECCION ---
     
@@ -179,56 +183,81 @@ struct PersistenciaDatos {
         }
         return def
     }
-    //MARK: - --- AJUSTES GENERALES ---
+    //MARK: - --- GUARDAR DICCINARIOS CON MUCHOS DATOS PERO UNA SOLA CLAVE EN UD (Para elementos) ---
+    // valor = Dato (int, string, bool, enum ...) que se guarda en ud
+    // elementURL = el elemento (coleccion o archivo) al que pertenece el valor se usara como k en el dict
+    // key = llave de ese diccinario donde se guardaran todos los datos
+    public func guardarDatoArchivo(valor: Any, elementoURL: URL, key: String) { // <- sirve para sobreescribir valors es decir actualizar
+        let k = self.obtenerKey(elementoURL)
+        if let convertido = self.convertirValor(valor) {
+            var mapa = obtenerMapa(key: key)
+            mapa[k] = convertido
+            guardarMapa(mapa: mapa, key: key)
+        }
+    }
+    
+    //elementoURL = el elemento del que se quiere recuperar el dato (clave del dict)
+    //key = clave del diccinario donde estara ese dato asociado a dicho elementoURL
+    public func recuperarDatoElemento<T>(elementoURL: URL, key: String, default def: T) -> T {
+        let k = self.obtenerKey(elementoURL)
+        return (self.obtenerMapa(key: key)[k] as? T) ?? def
+    }
+    
+    /// Recuperar un enum guardado como rawValue en el mapa
+    public func recuperarDatoArchivoEnum<E: RawRepresentable>(elementoURL: URL, key: String, default def: E) -> E where E.RawValue: Any {
+        let k = self.obtenerKey(elementoURL)
+        let mapa = self.obtenerMapa(key: key)
+        
+        if let raw = mapa[k] as? E.RawValue, let value = E(rawValue: raw) {
+            return value
+        }
+        return def
+    }
+
+    
+    //metodo para actualizar o borrar la clave en un diccinario pasando una key = String
+    //Si el valor esta vacio es para borrar ese dato de persistencia.
+    //Si se pasa un array con mas de un valor quiere decir que es para borrarlos
+    public func actualizarDatoArchivo(valor: Any?, anteriorURL: URL, nuevaURL: URL, keys: [String]) {
+        let oldk = self.obtenerKey(anteriorURL)
+        let newk = self.obtenerKey(nuevaURL)
+        
+        for dKey in keys {
+            var mapa = self.obtenerMapa(key: dKey)
+            
+            if let convertido = self.convertirValor(valor as Any) {
+                mapa[newk] = mapa[oldk] // <- actualizar nueva clave con el valor antigua
+            } else {
+                mapa.removeValue(forKey: oldk) // <- borrar entrada
+            }
+            
+            guardarMapa(mapa: mapa, key: dKey)
+        }
+        
+    }
+    
+//    public func actualizarDatoArchivo(valor: Any?, elementoURL: URL, key: String) {
+//        
+//    }
+
+    //metodo para actualizar o borrar varias claves en un diccinario pasando un array de keys = [String]
+    
+    private func obtenerMapa(key: String) -> [String : Any] {
+        if let mapa = uds.dictionary(forKey: key) {
+            return mapa
+        } else {
+            print("Error a la hora de obtener el mapa en persistencia para: ", key)
+            return [:]
+        }
+    }
+    
+    private func guardarMapa(mapa: [String : Any], key: String) {
+        uds.set(mapa, forKey: key)
+    }
     
 }
 
-//MARK: --- PROGRESO DE LAS PAGINAS DE CADA ARCHIVO ---
 
-extension PersistenciaDatos {
-    private var progressDictKey: String { "lectura.progresos" }
-
-    // Lee todo el diccionario (si no existe, devuelve vacío)
-    private func leerMapaProgreso() -> [String: Int] {
-        (UserDefaults.standard.dictionary(forKey: progressDictKey) as? [String: Int]) ?? [:]
-    }
-
-    // Escribe todo el diccionario
-    private func guardarMapaProgreso(_ mapa: [String: Int]) {
-        UserDefaults.standard.set(mapa, forKey: progressDictKey)
-    }
-
-    // API pública
-    public func setPaginaLectura(_ pagina: Int, para url: URL) {
-        let k = obtenerKey(url)
-        var mapa = leerMapaProgreso()
-        mapa[k] = pagina
-        guardarMapaProgreso(mapa)
-    }
-
-    public func paginaLectura(para url: URL) -> Int? {
-        let k = obtenerKey(url)
-        return leerMapaProgreso()[k]
-    }
-
-    public func eliminarPaginaLectura(para url: URL) {
-        let k = obtenerKey(url)
-        var mapa = leerMapaProgreso()
-        mapa.removeValue(forKey: k)
-        guardarMapaProgreso(mapa)
-    }
-
-    // Si cambiaste/moviste el archivo, renombra su clave
-    public func actualizarPaginaLectura(origen: URL, destino: URL) {
-        let kOld = obtenerKey(origen)
-        let kNew = obtenerKey(destino)
-        var mapa = leerMapaProgreso()
-        if let v = mapa.removeValue(forKey: kOld) {
-            mapa[kNew] = v
-            guardarMapaProgreso(mapa)
-        }
-    }
-}
 
 
 

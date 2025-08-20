@@ -172,10 +172,12 @@ enum EnumMiniaturasArchivos: String {
 }
 
 //ENUM TIPO DE MINIATURA
-enum EnumTipoMiniatura: String {
+enum EnumTipoMiniatura: String, CaseIterable {
     
     case imagenBase
     case primeraPagina
+    case aleatoria
+    case personaliza
     
 }
 

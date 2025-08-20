@@ -57,6 +57,8 @@ class ModeloMiniaturaArchivo: ObservableObject {
             self.miniatura = mm.imagenBase(tipoArchivo: archivo.fileType, color: color)
         case .primeraPagina:
             self.miniatura = mm.obtenerMiniatura(archivo: archivo) //Tiene que estar ya en cache si no fallara
+        default:
+            self.miniatura = mm.imagenBase(tipoArchivo: archivo.fileType, color: color)
         }
         
     }

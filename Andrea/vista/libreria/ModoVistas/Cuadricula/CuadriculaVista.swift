@@ -2,6 +2,9 @@ import SwiftUI
 
 struct CuadriculaVista: View {
     
+    let pd = PersistenciaDatos()
+    let cpe = ClavesPersistenciaElementos()
+    
     @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
@@ -71,19 +74,19 @@ struct CuadriculaVista: View {
                                     cambiarMiniaturaArchivo: { nuevoTipo in
                                     if let archivo = elemento as? Archivo {
                                             archivo.tipoMiniatura = nuevoTipo
-                                            PersistenciaDatos().guardarDatoElemento(url: archivo.url, atributo: "tipoMiniatura", valor: nuevoTipo)
+                                        PersistenciaDatos().guardarDatoArchivo(valor: nuevoTipo, elementoURL: archivo.url, key: cpe.miniaturaElemento)
                                         }
                                     },
                                     cambiarMiniaturaColeccion: { nuevoTipo in
                                         if let coleccion = elemento as? Coleccion {
                                             coleccion.tipoMiniatura = nuevoTipo
-                                            PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "tipoMiniatura", valor: nuevoTipo)
+                                            PersistenciaDatos().guardarDatoArchivo(valor: nuevoTipo, elementoURL: coleccion.url, key: cpe.miniaturaElemento)
                                         }
                                     },
                                     cambiarDireccionAbanico: { nuevaDireccion in
                                         if let coleccion = elemento as? Coleccion {
                                             coleccion.direccionAbanico = nuevaDireccion
-                                      
+                                            //FALTA POR HACER
                                             PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "direccionAbanico", valor: nuevaDireccion)
                                         }
                                     }
