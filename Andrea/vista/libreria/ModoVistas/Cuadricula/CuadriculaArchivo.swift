@@ -83,25 +83,21 @@ struct CuadriculaArchivo: View {
                                             .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.75))
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
-                                            .offset(y: 1.7)
+                                            .offset(y: 1.5)
                                         Color.clear
                                             .animatedProgressText1(progresoMostrado)
                                             .font(.system(size: ConstantesPorDefecto().subTitleSize * 1.1))
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
-                                            .alignmentGuide(.bottom) { d in d[.bottom] }
-//                                            .animation(.easeOut(duration: 0.6), value: archivo.progreso)
                                     }
-                                    .onAppear {
-                                        // inicializar
-                                        progresoMostrado = archivo.progreso
-                                    }
-                                    .onChange(of: ap.archivoEnLectura) { nuevo in
-                                        // ⚡️ sólo animar cuando vienes del lector
+                                    //NECESARIOS PARA ANIMACION DEL PROGRESO
+                                    .onAppear { progresoMostrado = archivo.progreso }
+                                    .onChange(of: ap.archivoEnLectura) {
                                         withAnimation(.easeOut(duration: 0.6)) {
                                             progresoMostrado = archivo.progreso
                                         }
                                     }
+                                    //NECESARIOS PARA ANIMACION DEL PROGRESO
                                 }
                                 
                                 // --- ICONOS DE LOS ESTADOS DE UN ARCHIVO ---
@@ -134,6 +130,11 @@ struct CuadriculaArchivo: View {
                                 Spacer()
                             }
                             .padding(.horizontal, archivo.tipoMiniatura == .imagenBase ? 13 : 10)
+                            .onChange(of: archivo.completado) {
+                                withAnimation(.easeOut(duration: 0.6)) {
+                                    progresoMostrado = archivo.progreso
+                                }
+                            }
                             
                             ProgresoCuadricula(
                                 progresoMostrado: $progresoMostrado,

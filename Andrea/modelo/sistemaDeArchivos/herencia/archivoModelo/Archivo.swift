@@ -115,6 +115,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     //MODELOS NECESARIOS
     private let sau = SistemaArchivosUtilidades.sau
     
+    @Published var completado: Bool = false
+    
     override init() {
         self.dirURL = URL(fileURLWithPath: "")
         self.dirName = ""
@@ -238,7 +240,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     func setCurrentPage(currentPage: Int) {
-        withAnimation { paginaActual = max(0, currentPage)
+        withAnimation { 
+            paginaActual = max(0, currentPage)
             actualizarProgreso()
         }
         PersistenciaDatos().setPaginaLectura(paginaActual, para: url)
@@ -287,12 +290,17 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
 
     
     public func completarLectura() {
-        if self.progreso != 100 {
-            withAnimation { self.progreso = 100 }
+        guard let total = totalPaginas, total > 0 else { return }
+        if progreso != 100 {
+            paginaActual = total - 1
+            completado = true
         } else {
-            withAnimation { self.progreso = 0 }
+            paginaActual = 0
+            completado = false
         }
-        PersistenciaDatos().guardarDatoElemento(url: self.url, atributo: "progreso", valor: self.progreso)
+        actualizarProgreso()
+        PersistenciaDatos().guardarDatoElemento(url: url, atributo: "progreso", valor: progreso)
     }
+
     
 }

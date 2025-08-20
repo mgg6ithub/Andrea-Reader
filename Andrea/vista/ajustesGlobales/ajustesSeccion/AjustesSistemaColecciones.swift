@@ -3,7 +3,7 @@
 import SwiftUI
 
 #Preview {
-    AjustesGlobales()
+    AjustesSistemaColecciones(isSection: true)
 //        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667))
 //        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852))
         .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
@@ -39,21 +39,51 @@ struct AjustesSistemaColecciones: View {
             CirculoActivoVista(isSection: isSection, nombre: "Escoge el sistema de archivos", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
             HStack(spacing: 0) {
-                RectangleFormView<EnumTipoSistemaArchivos>(
-                    titulo: "Tradicional",
-                    icono: "folder.fill",
-                    coloresIcono: [Color.black],
-                    opcionSeleccionada: .tradicional,
-                    opcionActual: $ap.sistemaArchivos
-                )
+//                RectangleFormView<EnumTipoSistemaArchivos>(
+//                    titulo: "Tradicional",
+//                    icono: "folder.fill",
+//                    coloresIcono: [Color.black],
+//                    opcionSeleccionada: .tradicional,
+//                    opcionActual: $ap.sistemaArchivos
+//                )
+//                
+//                RectangleFormView<EnumTipoSistemaArchivos>(
+//                    titulo: "Acceso rápido",
+//                    icono: "list.bullet.rectangle",
+//                    coloresIcono: [Color.black],
+//                    opcionSeleccionada: .arbol,
+//                    opcionActual: $ap.sistemaArchivos
+//                )
                 
-                RectangleFormView<EnumTipoSistemaArchivos>(
-                    titulo: "Acceso rápido",
-                    icono: "list.bullet.rectangle",
-                    coloresIcono: [Color.black],
-                    opcionSeleccionada: .arbol,
-                    opcionActual: $ap.sistemaArchivos
-                )
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .frame(width: const.cAnchoRect, height: const.cAlturaRect)
+                        .foregroundColor(ap.sistemaArchivos == .tradicional ? Color.gray.opacity(1.0) : Color.gray.opacity(0.3))
+                    //                        .shadow(color: esOscuro ? .black.opacity(0.225) : .black.opacity(0.225),
+                    //                                radius: ap.shadows ? 5 : 0,
+                    //                                x: 0,
+                    //                                y: ap.shadows ? 2 : 0)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(
+                                    ap.sistemaArchivos == .tradicional
+                                    ? (tema == .dark ? Color.white : Color.black)
+                                    : Color.clear,
+                                    lineWidth: 1.5
+                                )
+                        )
+                    
+                    ZStack {
+                        Image(systemName: "rectangle.fill")
+                            .font(.system(size: (ap.constantes.iconSize + 20) * 1.15))
+                            .scaleEffect(x: 1.1, y: 1.3, anchor: .center)
+                            .foregroundColor(ap.sistemaArchivos == .tradicional ? Color.gray.opacity(0.8) : Color.clear)
+                            .zIndex(0)
+                        
+                        
+                    }
+                }
+                
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
