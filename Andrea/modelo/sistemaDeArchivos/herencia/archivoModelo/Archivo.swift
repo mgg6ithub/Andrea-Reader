@@ -282,9 +282,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         }
         let frac = Double(min(paginaActual, total - 1)) / Double(total - 1)
         progresoEntero = frac
-//        withAnimation {
-            progreso = Int(round(frac * 100))
-//        }
+        progreso = Int(round(frac * 100))
     }
 
     

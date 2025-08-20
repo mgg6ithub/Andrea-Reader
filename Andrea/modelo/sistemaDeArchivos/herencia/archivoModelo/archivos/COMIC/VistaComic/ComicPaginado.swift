@@ -156,10 +156,10 @@ struct SinglePage: UIViewControllerRepresentable {
             parent.sessionCache.cleanupCache(keepingRange: parent.prefetchRange, imageViewCache: &fakeCache)
             parent.vcCache.cleanup(keepingRange: parent.prefetchRange, around: zoomVC.currentPage, totalPages: parent.pages.count)
             
-            print()
-            print("PAGINA ACTUAL", zoomVC.currentPage)
+//            print()
+//            print("PAGINA ACTUAL", zoomVC.currentPage)
             parent.sessionCache.printCacheInfo()
-            print()
+//            print()
         }
         
         /**
@@ -361,7 +361,7 @@ class ViewControllerCache {
     func printCacheInfo() {
         accessQueue.sync {
             let sortedPages = _cachedPages.sorted()
-            print("🎬 VCs cacheados (\(sortedPages.count)): \(sortedPages)")
+//            print("🎬 VCs cacheados (\(sortedPages.count)): \(sortedPages)")
         }
     }
 }

@@ -18,6 +18,7 @@ struct CuadriculaArchivo: View {
     @State private var idImagen = UUID()
     
     private let constantes = ConstantesPorDefecto()
+    @State private var progresoMostrado: Int = 0
     
     var body: some View {
         VStack(spacing: 0) {
@@ -83,14 +84,23 @@ struct CuadriculaArchivo: View {
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
                                             .offset(y: 1.7)
-//                                        Text("\(archivo.progreso)")
                                         Color.clear
-                                            .animatedProgressText1(archivo.progreso)
+                                            .animatedProgressText1(progresoMostrado)
                                             .font(.system(size: ConstantesPorDefecto().subTitleSize * 1.1))
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
                                             .alignmentGuide(.bottom) { d in d[.bottom] }
-                                            .animation(.easeOut(duration: 0.6), value: archivo.progreso)
+//                                            .animation(.easeOut(duration: 0.6), value: archivo.progreso)
+                                    }
+                                    .onAppear {
+                                        // inicializar
+                                        progresoMostrado = archivo.progreso
+                                    }
+                                    .onChange(of: ap.archivoEnLectura) { nuevo in
+                                        // ⚡️ sólo animar cuando vienes del lector
+                                        withAnimation(.easeOut(duration: 0.6)) {
+                                            progresoMostrado = archivo.progreso
+                                        }
                                     }
                                 }
                                 
@@ -126,7 +136,7 @@ struct CuadriculaArchivo: View {
                             .padding(.horizontal, archivo.tipoMiniatura == .imagenBase ? 13 : 10)
                             
                             ProgresoCuadricula(
-                                progreso: archivo.progreso,
+                                progresoMostrado: $progresoMostrado,
                                 coleccionColor: coleccionVM.color,
                                 totalWidth: width - 20,
                                 padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10

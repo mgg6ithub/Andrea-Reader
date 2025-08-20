@@ -23,7 +23,7 @@ class ComicCache: ObservableObject {
     public func printCacheInfo() {
         cacheAccessQueue.sync {
             let cachedPages = _cachekeys.map { $0.intValue }.sorted()
-            print("📄 Páginas en caché (\(_cachekeys.count) en total): \(cachedPages)")
+//            print("📄 Páginas en caché (\(_cachekeys.count) en total): \(cachedPages)")
         }
     }
     
