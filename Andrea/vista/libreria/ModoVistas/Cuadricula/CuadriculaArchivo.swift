@@ -1,5 +1,11 @@
 import SwiftUI
 
+//#Preview {
+//    CuadriculaArchivo(archivo: Archivo.preview, coleccionVM: ModeloColeccion(), width: 250, height: 350)
+//        .environmentObject(AppEstado.preview)
+//        .environmentObject(MenuEstado.preview) 
+//}
+
 struct CuadriculaArchivo: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -77,7 +83,7 @@ struct CuadriculaArchivo: View {
                         VStack(spacing: 3) {
                             Spacer()
                             HStack(alignment: .bottom, spacing: 2.5) {
-                                if archivo.progreso > 0 {
+                                if archivo.progreso > 0 && ap.porcentajeNumero {
                                     HStack(spacing: 0) {
                                         Text("%")
                                             .font(.system(size: ap.porcentajeNumeroSize * 0.75))
@@ -136,12 +142,14 @@ struct CuadriculaArchivo: View {
                                 }
                             }
                             
-                            ProgresoCuadricula(
-                                progresoMostrado: $progresoMostrado,
-                                coleccionColor: coleccionVM.color,
-                                totalWidth: width - 20,
-                                padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
-                            )
+                            if ap.porcentajeBarra && ap.porcentajeEstilo == .dentroCarta {
+                                ProgresoCuadricula(
+                                    progresoMostrado: $progresoMostrado,
+                                    coleccionColor: coleccionVM.color,
+                                    totalWidth: width - 20,
+                                    padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
+                                )
+                            }
                             
                         }
                         .padding(.bottom, 4.5)
@@ -171,7 +179,18 @@ struct CuadriculaArchivo: View {
         }
         .frame(width: width, height: height)
         .background(ap.temaResuelto.cardColorFixed)
-        .cornerRadius(15)
+        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))  // recorta carta
+        .if(ap.porcentajeBarra && ap.porcentajeEstilo == .contorno) { v in
+            v.overlay {
+                ProgresoContorno(
+                    progreso: $progresoMostrado,
+                    color: coleccionVM.color,
+                    lineWidth: 3,
+                    cornerRadius: 15,
+                    startAngle: -135
+                )
+            }
+        }
         .shadow(color: ap.temaResuelto == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.2), radius: 5, x: 0, y: 3)
         .onAppear {
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
