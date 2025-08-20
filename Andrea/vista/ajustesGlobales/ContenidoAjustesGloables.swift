@@ -48,6 +48,21 @@ extension View {
 }
 
 
+struct Recomendacion: View {
+    
+    let mensaje: String
+    let c: Color
+    
+    var body: some View {
+        (Text("Recomendado: ").bold() + Text(mensaje))
+            .font(.footnote)
+            .foregroundColor(c)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 5)
+    }
+}
+
+
 struct CirculoActivoVista: View {
     
     @EnvironmentObject var ap: AppEstado

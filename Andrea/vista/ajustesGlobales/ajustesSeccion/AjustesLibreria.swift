@@ -79,7 +79,7 @@ struct AjustesLibreria: View {
                             .padding(.top, 5)
                             .padding(.bottom, 15)
                         
-                        TogglePersonalizado(titulo: "Barra de progreso", descripcion: "Muestra una barra de progreso en la carta.", opcionBinding: $ap.porcentajeBarra, opcionTrue: "Deshabilitar porcentaje barra", opcionFalse: "Habilitar porcentaje barra", isInsideToggle: true, isDivider: false)
+                        TogglePersonalizado(titulo: "Barra de progreso", descripcion: "Muestra una barra de progreso en la carta.", opcionBinding: $ap.porcentajeBarra, opcionTrue: "Ocultar porcentaje barra", opcionFalse: "Mostrar porcentaje barra", isInsideToggle: true, isDivider: false)
                             .padding(.bottom, 10)
                         
                         if ap.porcentajeBarra {
@@ -96,8 +96,8 @@ struct AjustesLibreria: View {
                                                 if isOn { ap.porcentajeEstilo = .dentroCarta }
                                             }
                                         ),
-                                        opcionTrue: "Deshabilitar color",
-                                        opcionFalse: "Habilitar color",
+                                        opcionTrue: "Ocultar barra",
+                                        opcionFalse: "Mostrar barra",
                                         isInsideToggle: true,
                                         isDivider: false
                                     )
@@ -113,8 +113,8 @@ struct AjustesLibreria: View {
                                                 if isOn { ap.porcentajeEstilo = .contorno }
                                             }
                                         ),
-                                        opcionTrue: "Deshabilitar color",
-                                        opcionFalse: "Habilitar color",
+                                        opcionTrue: "Ocultar barra",
+                                        opcionFalse: "Mostrar barra",
                                         isInsideToggle: true,
                                         isDivider: false
                                     )
@@ -130,6 +130,33 @@ struct AjustesLibreria: View {
                 
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
+            DividerDentroSeccion(pH: 25, pV: 25)
+            
+            CirculoActivoVista(isSection: isSection, nombre: "Fondo de la carta", titleSize: const.descripcionAjustes, color: ap.colorActual)
+            
+            VStack(spacing: 0) {
+                TogglePersonalizado(titulo: "Fondo", descripcion: "Muestra u oculta el fondo de la carta para los archivos de la libreria.", opcionBinding: $ap.fondoCarta, opcionTrue: "Ocultar fondo", opcionFalse: "Mostrar fondo", isInsideToggle: true, isDivider: false)
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
+            DividerDentroSeccion(pH: 25, pV: 25)
+            
+            TituloInformacion(titulo: "Desplazamiento", isSection: isSection)
+            
+            Text("Controla la experiencia de desplazamiento en tu librería: guarda la posición entre colecciones, ajusta la velocidad e inercia y disfruta de una navegación más fluida y adaptada modificando animaciones.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
+            
+            CirculoActivoVista(isSection: isSection, nombre: "Guardar el desplazamiento", titleSize: const.descripcionAjustes, color: ap.colorActual)
+            
+            VStack(spacing: 0) {
+                TogglePersonalizado(titulo: "Autoguardado", opcionBinding: $ap.fondoCarta, opcionTrue: "Deshabilitar guardado", opcionFalse: "Habilitar guardado", isInsideToggle: true, isDivider: true)
+                
+                Text("Al activar esta opción, cada colección recordará el punto exacto hasta donde te desplazaste. Así, al volver a abrirla o reiniciar la aplicación, continuarás justo desde ese lugar. Si la desactivas, la colección se abrirá siempre desde el inicio.")
+                    .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)
+                
+                Recomendacion(mensaje: "Si tienes colecciones con muchos archivos.", c: tema.textColor)
+
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows, pV: false)
+
         }
     }
 }

@@ -178,10 +178,10 @@ struct AjustesSistemaColecciones: View {
             Group {
                 if esTradicional {
                     Text("El sistema de carpetas de toda la vida: organiza tus colecciones dentro de carpetas y subcarpetas. ")
-                    + Text("Recomendado para bibliotecas pequeñas.").bold()
+                    Recomendacion(mensaje: "Para bibliotecas pequeñas.", c: tema.textColor)
                 } else {
                     Text("Todas las colecciones aparecen en un menú lateral, sin jerarquías. Al entrar en una colección solo verás sus archivos. ")
-                    + Text("Recomendado para bibliotecas grandes.").bold()
+                    Recomendacion(mensaje: "Para bibliotecas grandes.", c: tema.textColor)
                 }
             }
             .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: 0, pW: 0)

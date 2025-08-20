@@ -123,6 +123,9 @@ struct ClavesPersistenciaAjustesGenerales {
     //fondo carta
     public let fondoCarta: String = "fondoCarta"
     
+    //desplazamiento
+    public let despAutoGurdado: String = "despAutoGurdado"
+    
     //MARK: - --- AJUSTES GENERALES ---
     
 }
@@ -186,6 +189,9 @@ struct AjustesGeneralesPredeterminados {
     
     //fondo carta
     public let fondoCarta: Bool = true
+    
+    //desplazamiento
+    public let despAutoGurdado: Bool = true
 }
 
 

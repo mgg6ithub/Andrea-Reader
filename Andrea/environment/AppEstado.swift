@@ -91,6 +91,9 @@ class AppEstado: ObservableObject {
     //fondo carta
     @Published var fondoCarta: Bool { didSet { pd.guardarAjusteGeneral(valor: fondoCarta, key: cpag.fondoCarta) } }
     
+    //desplazamiento
+    @Published var despAutoGurdado: Bool  { didSet { pd.guardarAjusteGeneral(valor: despAutoGurdado, key: cpag.despAutoGurdado) } }
+    
     // --- MAS INFORMACION DE UN ELEMENTO ---
     @Published var masInformacion: Bool = false
     @Published var elementoSeleccionado: (any ElementoSistemaArchivosProtocolo)? = nil
@@ -181,6 +184,9 @@ class AppEstado: ObservableObject {
         
         //fondo carta
         self.fondoCarta = pd.obtenerAjusteGeneral(key: cpag.fondoCarta, default: p.fondoCarta)
+        
+        //desplzamiento
+        self.despAutoGurdado = pd.obtenerAjusteGeneral(key: cpag.despAutoGurdado, default: p.despAutoGurdado)
     }
     
     func aplicarNuevoTema(_ tema: EnumTemas) {
