@@ -24,7 +24,7 @@ struct ListaVista: View {
                 .onAppear {
                     guard vm.isPerformingAutoScroll else { return }
                     DispatchQueue.main.async {
-                        proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                        if ap.despAutoGurdado { proxy.scrollTo(vm.scrollPosition, anchor: .top) }
                         vm.isPerformingAutoScroll = false
                     }
                 }
@@ -108,7 +108,7 @@ struct ListaVista: View {
                 guard vm.isPerformingAutoScroll else { return }
                 if vm.elementos.count > 0 {
                     DispatchQueue.main.async {
-                        proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                        if ap.despAutoGurdado { proxy.scrollTo(vm.scrollPosition, anchor: .top) }
                         vm.isPerformingAutoScroll = false
                     }
                 }
@@ -116,7 +116,7 @@ struct ListaVista: View {
             .onChange(of: vm.modoVista) {
                 vm.isPerformingAutoScroll = true
                 DispatchQueue.main.async {
-                    proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                    if ap.despAutoGurdado { proxy.scrollTo(vm.scrollPosition, anchor: .top) }
                 }
             }
             .modificarSizeExtension(

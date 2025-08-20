@@ -151,7 +151,7 @@ struct AjustesLibreria: View {
             CirculoActivoVista(isSection: isSection, nombre: "Guardar el desplazamiento", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Autoguardado", opcionBinding: $ap.fondoCarta, opcionTrue: "Deshabilitar guardado", opcionFalse: "Habilitar guardado", isInsideToggle: true, isDivider: true)
+                TogglePersonalizado(titulo: "Autoguardado", opcionBinding: $ap.despAutoGurdado, opcionTrue: "Deshabilitar guardado", opcionFalse: "Habilitar guardado", isInsideToggle: true, isDivider: true)
                 
                 Text("Al activar esta opción, cada colección recordará el punto exacto hasta donde te desplazaste. Así, al volver a abrirla o reiniciar la aplicación, continuarás justo desde ese lugar. Si la desactivas, la colección se abrirá siempre desde el inicio.")
                     .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CuadriculaVista: View {
     
-    @EnvironmentObject var appEstado: AppEstado
+    @EnvironmentObject var ap: AppEstado
     @EnvironmentObject var menuEstado: MenuEstado
     
     @ObservedObject var vm: ModeloColeccion
@@ -53,7 +53,7 @@ struct CuadriculaVista: View {
                         .onAppear {
                             guard vm.isPerformingAutoScroll else { return }
                             DispatchQueue.main.async {
-                                proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                                if ap.despAutoGurdado { proxy.scrollTo(vm.scrollPosition, anchor: .top) }
                                 vm.isPerformingAutoScroll = false
                             }
                         }
@@ -128,7 +128,7 @@ struct CuadriculaVista: View {
                             if let top = newValue
                                 .filter({ $0.minY >= 0 })
                                 .min(by: { $0.minY < $1.minY }) {
-                                vm.actualizarScroll(top.index)
+                                if ap.despAutoGurdado { vm.actualizarScroll(top.index) }
                             }
                         }
                         debounceWorkItem = workItem
@@ -138,7 +138,7 @@ struct CuadriculaVista: View {
                         guard vm.isPerformingAutoScroll else { return }
                         if vm.elementos.count > 0 {
                             DispatchQueue.main.async {
-                                proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                                if ap.despAutoGurdado { proxy.scrollTo(vm.scrollPosition, anchor: .top) }
                                 vm.isPerformingAutoScroll = false
                             }
                         }
@@ -146,7 +146,7 @@ struct CuadriculaVista: View {
                     .onChange(of: vm.modoVista) {
                         vm.isPerformingAutoScroll = true
                         DispatchQueue.main.async {
-                            proxy.scrollTo(vm.scrollPosition, anchor: .top)
+                            if ap.despAutoGurdado { proxy.scrollTo(vm.scrollPosition, anchor: .top) }
                         }
                     }
 
