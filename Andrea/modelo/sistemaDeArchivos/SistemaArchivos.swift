@@ -426,7 +426,6 @@ class SistemaArchivos: ObservableObject {
                 Task { @MainActor in
                     // --- LOG HISTORIAL ---
                     NotificacionesEstado.ne.crearLog(mensaje: "Archivo \(nombreArchivo) importado.", icono: "Archivo-creado", color: .green)
-                    
                     self.actualizarUISoloElemento(elementoURL: nuevoArchivoURL)
                 }
                 
@@ -481,6 +480,12 @@ class SistemaArchivos: ObservableObject {
         
         let coleccionActualVM = PilaColecciones.pilaColecciones.getColeccionActual()
 
+        print("Creando un nuevo archiov: ", elementoURL.lastPathComponent)
+        print("Archivo en la coleccion:")
+        for c in coleccionActualVM.elementos {
+            print(c.nombre)
+        }
+        
         // ✅ Actualizar UI en el hilo principal
         DispatchQueue.main.async {
             withAnimation(.easeOut(duration: 0.35)) {

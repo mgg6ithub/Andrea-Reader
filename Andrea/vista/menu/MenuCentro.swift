@@ -88,9 +88,9 @@ struct MenuCentro: View {
                         for url in urls {
                             sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.pilaColecciones.getColeccionActual().coleccion.url)
                         }
-                        print("Importados ahora se ordena")
-                        //Despues de importar aplicar ordenamiento automatico
-                        coleccionActualVM.ordenarElementos(modoOrdenacion: self.coleccionActualVM.ordenacion)
+//                        print("Importados ahora se ordena")
+//                        //Despues de importar aplicar ordenamiento automatico
+//                        coleccionActualVM.ordenarElementos(modoOrdenacion: self.coleccionActualVM.ordenacion)
                     },
                     onCancel: {
                         print("Cancelado")
