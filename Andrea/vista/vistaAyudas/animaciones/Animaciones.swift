@@ -44,3 +44,24 @@ struct ProgressTextModifier1: AnimatableModifier {
         Text("\(Int(value))")
     }
 }
+
+//MARK: --- vstack saliente ---
+
+extension View {
+    func animacionVStackSaliente(isExpanded: Bool, animaciones: Bool) -> some View {
+        self.scaleEffect(isExpanded ? 1 : 0.95)
+            .opacity(isExpanded ? 1 : 0)
+            .offset(y: isExpanded ? 0 : -5)
+            .transition(.asymmetric(
+                insertion: .scale(scale: 0.95).combined(with: .opacity).combined(with: .offset(y: -5)),
+                removal: .scale(scale: 0.95).combined(with: .opacity).combined(with: .offset(y: -5))
+            ))
+            .animation(
+                animaciones ?
+                    .interpolatingSpring(stiffness: 250, damping: 25) :
+                    .none,
+                value: isExpanded
+            )
+    }
+    
+}

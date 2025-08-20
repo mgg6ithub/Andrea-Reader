@@ -22,7 +22,7 @@ struct AjustesHistorial: View {
             Text("Un historial rapido para navegar y ubicarte entre las colecciones. Quitalo o modificalo a tu gusto.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: tema.secondaryText)
+            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             VStack(spacing: 0) {
                 TogglePersonalizado(titulo: "Historial de colecciones", descripcion: "Activa o desactiva el historial.", opcionBinding: $ap.historialColecciones, opcionTrue: "Deshabilitar historial", opcionFalse: "Habilitar historial", isInsideToggle: true, isDivider: ap.historialColecciones ? true : false)
@@ -77,7 +77,7 @@ struct AjustesHistorial: View {
                         max: 26,
                         recommended: AjustesGeneralesPredeterminados().historialSize,
                         trackColor: tema.colorContrario,     // base
-                        fillColor: .blue,                             // progreso
+                        fillColor: ap.colorActual,                             // progreso
                         markerColor: tema.colorContrario,    // muesca
                         textColor: tema.secondaryText        // “24 pt”
                     )

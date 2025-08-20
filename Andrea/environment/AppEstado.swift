@@ -77,6 +77,14 @@ class AppEstado: ObservableObject {
     @Published var historialSize: Double { didSet { pd.guardarAjusteGeneral(valor: historialSize, key: cpag.historialSize) } }
     
     // --- LIBRERIA ---
+    @Published var porcentaje: Bool { didSet { pd.guardarAjusteGeneral(valor: porcentaje, key: cpag.porcentaje) } }
+    
+    @Published var porcentajeNumero: Bool { didSet { pd.guardarAjusteGeneral(valor: porcentajeNumero, key: cpag.porcentajeNumero) } }
+    @Published var porcentajeNumeroSize: Double { didSet { pd.guardarAjusteGeneral(valor: porcentajeNumeroSize, key: cpag.porcentajeNumeroSize) } }
+    
+    @Published var porcentajeBarra: Bool { didSet { pd.guardarAjusteGeneral(valor: porcentajeBarra, key: cpag.porcentajeBarra) } }
+    
+    @Published var porcentajeEstilo: EnumPorcentajeEstilo { didSet { pd.guardarAjusteGeneral(valor: porcentajeBarra, key: cpag.porcentajeBarra) } }
     
     // --- MAS INFORMACION DE UN ELEMENTO ---
     @Published var masInformacion: Bool = false
@@ -154,6 +162,16 @@ class AppEstado: ObservableObject {
         self.historialEstilo = pd.obtenerAjusteGeneralEnum(key: cpag.historiaclColecciones, default: p.historialEstilo)
         self.historialSize = pd.obtenerAjusteGeneral(key: cpag.historialSize, default: p.historialSize)
         
+        
+        //LIBRERIA
+        self.porcentaje = pd.obtenerAjusteGeneral(key: cpag.porcentaje, default: p.porcentaje)
+        
+        self.porcentajeNumero = pd.obtenerAjusteGeneral(key: cpag.porcentajeNumero, default: p.porcentajeNumero)
+        self.porcentajeNumeroSize = pd.obtenerAjusteGeneral(key: cpag.porcentajeNumeroSize, default: p.porcentajeNumeroSize)
+        
+        self.porcentajeBarra = pd.obtenerAjusteGeneral(key: cpag.porcentajeBarra, default: p.porcentajeBarra)
+        
+        self.porcentajeEstilo = pd.obtenerAjusteGeneralEnum(key: cpag.porcentajeEstilo, default: p.porcentajeEstilo)
     }
     
     func aplicarNuevoTema(_ tema: EnumTemas) {

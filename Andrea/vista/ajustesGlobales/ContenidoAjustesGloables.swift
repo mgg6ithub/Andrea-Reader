@@ -192,7 +192,11 @@ struct ContenidoAjustes: View {
 
                                 case "AjustesLibreria":
                                     AjustesLibreria(isSection: selectedSection == section)
-                                    DividerPersonalizado(paddingHorizontal: 0).padding(.vertical, 30)
+                                    
+                                    VStack {
+                                        
+                                    }
+                                    .frame(height: 300)
 
                                 default:
                                     EmptyView()

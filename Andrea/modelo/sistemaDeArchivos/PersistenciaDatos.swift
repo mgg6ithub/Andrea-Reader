@@ -63,6 +63,7 @@ struct PersistenciaDatos {
         case let v as Double: return v
         case let v as Bool: return v
         case let v as String: return v
+        case let v as CGFloat: return v
         
         //enums
         case let v as EnumTipoMiniatura: return v.rawValue
@@ -77,6 +78,7 @@ struct PersistenciaDatos {
         case let v as EnumFuenteIcono: return v.rawValue
         case let v as EnumFondoMenu: return v.rawValue
         case let v as EnumEstiloHistorialColecciones: return v.rawValue
+        case let v as EnumPorcentajeEstilo: return v.rawValue
             
         //colores
         case let v as Color: return v.toHexString

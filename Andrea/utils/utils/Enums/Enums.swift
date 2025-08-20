@@ -190,6 +190,11 @@ enum EnumFondoMenu: String, CaseIterable {
     case metalico
 }
 
+enum EnumPorcentajeEstilo: String, CaseIterable {
+    case dentroCarta
+    case contorno
+}
+
 
 //MARK: - HISTORIAL
 enum EnumEstiloHistorialColecciones: String, CaseIterable {

@@ -1,5 +1,11 @@
 import SwiftUI
 
+#Preview {
+    AjustesLibreria(isSection: true)
+        .environmentObject(AppEstado.preview)
+        .environmentObject(MenuEstado.preview)
+}
+
 struct AjustesLibreria: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -11,23 +17,118 @@ struct AjustesLibreria: View {
     var paddingVertical: CGFloat { const.padding20 }
     var paddingHorizontal: CGFloat { const.padding40 }
     
-    private var esOscuro: Bool { ap.temaActual == .dark }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Text("Libreria") //TITULO
-                .capaTituloPrincipal(s: const.tituloAjustes, c: ap.temaActual.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
+                .capaTituloPrincipal(s: const.tituloAjustes, c: tema.tituloColor, pH: paddingVertical, pW: paddingHorizontal)
             
-            Text("Ajusta los libros y el comportamiento de la libreria.")
-                .capaDescripcion(s: const.descripcionAjustes, c: ap.temaActual.secondaryText, pH: paddingVertical, pW: 0)
+            Text("Define cómo se ven y se mueven tus libros. Personaliza las cartas, activa el porcentaje de lectura y afina el scroll para una experiencia fluida.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.temaActual.secondaryText)
+            TituloInformacion(titulo: "Porcentaje", isSection: isSection)
             
-            VStack(spacing: 0) {
+            Text("Cada archivo importado puede mostrar su progreso de lectura. Puedes desactivarlo o personalizar la forma en la que se ve.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
+            
+            CirculoActivoVista(isSection: isSection, nombre: "Progreso de lectura", titleSize: const.descripcionAjustes, color: ap.colorActual)
+            
+            VStack(alignment: .trailing, spacing: 0) {
+                TogglePersonalizado(titulo: "Porcentaje", descripcion: "Activa o desactiva el porcentaje.", opcionBinding: $ap.porcentaje, opcionTrue: "Ocultar progreso", opcionFalse: "Mostrar progreso", isInsideToggle: true, isDivider: ap.porcentaje ? true : false)
                 
-                TogglePersonalizado(titulo: "Icono izquierdo", descripcion: "Activa o desactiva el icono.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar icono", opcionFalse: "Habilitar icono", isInsideToggle: true, isDivider: true)
+                if ap.porcentaje {
+                    VStack(spacing: 0) {
+                        TogglePersonalizado(titulo: "Numero", descripcion: "Muestra el porcentaje como número sobre la portada.", opcionBinding: $ap.porcentajeNumero, opcionTrue: "Ocultar porcentaje numero", opcionFalse: "Mostrar porcentaje numero", isInsideToggle: true, isDivider: false)
                         
-                }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                        if ap.porcentajeNumero {
+                            VStack(alignment: .center, spacing: 0) {
+                                HStack {
+                                    Text("Tamaño del número")
+                                        .font(.headline)
+                                        .foregroundColor(tema.colorContrario)
+                                    Spacer()
+                                    Text("\(Int(ap.porcentajeNumeroSize)) pt")
+                                        .font(.subheadline)
+                                        .foregroundColor(tema.secondaryText)
+                                }
+                                
+                                IconSizeSlider(
+                                    value: $ap.porcentajeNumeroSize,
+                                    min: (ConstantesPorDefecto().subTitleSize - 5),
+                                    max: (ConstantesPorDefecto().subTitleSize + 5),
+                                    recommended: ConstantesPorDefecto().subTitleSize,
+                                    trackColor: tema.colorContrario,
+                                    fillColor: ap.colorActual,
+                                    markerColor: tema.colorContrario,
+                                    textColor: tema.secondaryText
+                                )
+                                
+                                Text("Utiliza la barra de desplazamiento para aumentar o disminuir el tamaño del numero del progreso.")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                            .padding(.top, 10)
+                            .animacionVStackSaliente(isExpanded: ap.porcentajeNumero, animaciones: ap.animaciones)
+                        }
+                        
+                        Rectangle()
+                            .fill(tema.lineaColor)
+                            .frame(height: 0.5)
+                            .padding(.top, 5)
+                            .padding(.bottom, 15)
+                        
+                        TogglePersonalizado(titulo: "Barra de progreso", descripcion: "Muestra una barra de progreso en la carta.", opcionBinding: $ap.porcentajeBarra, opcionTrue: "Deshabilitar porcentaje barra", opcionFalse: "Habilitar porcentaje barra", isInsideToggle: true, isDivider: false)
+                            .padding(.bottom, 10)
+                        
+                        if ap.porcentajeBarra {
+                            CirculoActivoVista(isSection: isSection, nombre: "Estilo de la barra", titleSize: const.descripcionAjustes, color: ap.colorActual)
+                            
+                            Group {
+                                VStack(spacing: 0) {
+                                    TogglePersonalizado(
+                                        titulo: "Dentro de la carta",
+                                        descripcion: "La barra se muestra en la parte inferior de la carta.",
+                                        opcionBinding: Binding(
+                                            get: { ap.porcentajeEstilo == .dentroCarta },
+                                            set: { isOn in
+                                                if isOn { ap.porcentajeEstilo = .dentroCarta }
+                                            }
+                                        ),
+                                        opcionTrue: "Deshabilitar color",
+                                        opcionFalse: "Habilitar color",
+                                        isInsideToggle: true,
+                                        isDivider: false
+                                    )
+                                }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                                
+                                VStack(spacing: 0) {
+                                    TogglePersonalizado(
+                                        titulo: "Contorno de la carta",
+                                        descripcion: "La barra progresa a lo largo del contorno de la carta (en cuadrícula y lista).",
+                                        opcionBinding: Binding(
+                                            get: { ap.porcentajeEstilo == .contorno },
+                                            set: { isOn in
+                                                if isOn { ap.porcentajeEstilo = .contorno }
+                                            }
+                                        ),
+                                        opcionTrue: "Deshabilitar color",
+                                        opcionFalse: "Habilitar color",
+                                        isInsideToggle: true,
+                                        isDivider: false
+                                    )
+                                }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+                            }.animacionVStackSaliente(isExpanded: ap.porcentajeBarra, animaciones: ap.animaciones)
+                            
+                        }
+                        
+                    }
+                    .padding(.leading, 30)
+                    .animacionVStackSaliente(isExpanded: ap.porcentaje, animaciones: ap.animaciones)
+                }
+                
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
             
         }
     }

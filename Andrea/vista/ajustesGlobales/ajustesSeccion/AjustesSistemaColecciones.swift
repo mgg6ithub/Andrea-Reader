@@ -39,41 +39,27 @@ struct AjustesSistemaColecciones: View {
             CirculoActivoVista(isSection: isSection, nombre: "Escoge el sistema de archivos", titleSize: const.descripcionAjustes, color: ap.colorActual)
                 
             HStack(spacing: 0) {
-//                RectangleFormView<EnumTipoSistemaArchivos>(
-//                    titulo: "Tradicional",
-//                    icono: "folder.fill",
-//                    coloresIcono: [Color.black],
-//                    opcionSeleccionada: .tradicional,
-//                    opcionActual: $ap.sistemaArchivos
-//                )
-//                
-//                RectangleFormView<EnumTipoSistemaArchivos>(
-//                    titulo: "Acceso rápido",
-//                    icono: "list.bullet.rectangle",
-//                    coloresIcono: [Color.black],
-//                    opcionSeleccionada: .arbol,
-//                    opcionActual: $ap.sistemaArchivos
-//                )
                 //ICONO sustituyendo a folder.fill
                 VStack {
+                    let esTradicional = ap.sistemaArchivos == .tradicional
                     Text("Tradicional")
                         .frame(maxWidth: .infinity, alignment: .center)
                         .font(.subheadline)
-                        .foregroundColor(ap.sistemaArchivos == .tradicional ? tema.textColor : tema.secondaryText.opacity(0.3))
+                        .foregroundColor(esTradicional ? tema.textColor : tema.secondaryText.opacity(0.3))
                     
                     Button(action: {
-                        ap.sistemaArchivos = .tradicional
+                        withAnimation { ap.sistemaArchivos = .tradicional }
                     }) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 15)
                                 .frame(width: const.cAnchoRect, height: const.cAlturaRect)
                                 .foregroundColor(
-                                    ap.sistemaArchivos == .tradicional ? Color.gray : Color.gray.opacity(0.3)
+                                    esTradicional ? Color.gray : Color.gray.opacity(0.3)
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 15)
                                         .stroke(
-                                            ap.sistemaArchivos == .tradicional
+                                            esTradicional
                                             ? (tema == .dark ? Color.white : Color.black)
                                             : Color.clear,
                                             lineWidth: 1.5
@@ -113,41 +99,41 @@ struct AjustesSistemaColecciones: View {
                                     )
                                     .offset(x: 14, y: 14)
                             }
+                            .opacity(esTradicional ? 1 : 0.3)
                             .offset(y: -9)
                         }
                     }
                 }
  
                 VStack {
-                    
+                    let esAR = ap.sistemaArchivos == .arbol
                     Text("Acceso rápido")
                         .frame(maxWidth: .infinity, alignment: .center)
                         .font(.subheadline)
-                        .foregroundColor(ap.sistemaArchivos == .arbol ? tema.textColor : tema.secondaryText.opacity(0.3))
+                        .foregroundColor(esAR ? tema.textColor : tema.secondaryText.opacity(0.3))
                     
                     Button(action: {
-                        ap.sistemaArchivos = .arbol
+                        withAnimation { ap.sistemaArchivos = .arbol }
                     }) {
                         //ICONO sustituyendo a list.bullet.rectangle
                         ZStack {
                             RoundedRectangle(cornerRadius: 15)
                                 .frame(width: const.cAnchoRect, height: const.cAlturaRect)
                                 .foregroundColor(
-                                    ap.sistemaArchivos == .arbol ? Color.gray : Color.gray.opacity(0.3)
+                                    esAR ? Color.gray : Color.gray.opacity(0.3)
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 15)
                                         .stroke(
-                                            ap.sistemaArchivos == .arbol
+                                            esAR
                                             ? (tema == .dark ? Color.white : Color.black)
                                             : Color.clear,
                                             lineWidth: 1.5
                                         )
                                 )
                             
-                            VStack(alignment: .center, spacing: 5) {
+                            VStack(alignment: .center, spacing: 7) {
                                 HStack(spacing: 2.5){
-                                    
                                     Image(systemName: "folder.fill")
                                         .font(.system(size: 16))
                                         .offset(y: -3)
@@ -156,11 +142,8 @@ struct AjustesSistemaColecciones: View {
                                         .frame(width: 50, height: 6)
                                 }
                                 .foregroundColor(Color(white: 0.1)) // gris claro
-                                .offset(x: -5)
                                 
                                 HStack(spacing: 2.5){
-                                
-                                    
                                     Image(systemName: "folder.fill")
                                         .font(.system(size: 16))
                                         .offset(y: -3)
@@ -169,10 +152,8 @@ struct AjustesSistemaColecciones: View {
                                         .frame(width: 50, height: 6)
                                 }
                                 .foregroundColor(Color(white: 0.2)) // gris claro
-                                .offset(x: -5)
                                 
                                 HStack(spacing: 2.5){
-                                    
                                     Image(systemName: "folder.fill")
                                         .font(.system(size: 16))
                                         .offset(y: -3)
@@ -181,12 +162,11 @@ struct AjustesSistemaColecciones: View {
                                         .frame(width: 50, height: 6)
                                 }
                                 .foregroundColor(Color(white: 0.3)) // gris claro
-                                .offset(x: -5)
                             }
+                            .opacity(esAR ? 1 : 0.3)
                         }
                     }
                 }
-
 
                 
             }

@@ -173,22 +173,12 @@ struct AjustesTema: View {
                         }
                     }            
                     .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
-                    .scaleEffect(isThemeExpanded ? 1 : 0.95)
-                    .opacity(isThemeExpanded ? 1 : 0)
-                    .offset(y: isThemeExpanded ? 0 : -5)
-                    .transition(.asymmetric(
-                        insertion: .scale(scale: 0.95).combined(with: .opacity).combined(with: .offset(y: -5)),
-                        removal: .scale(scale: 0.95).combined(with: .opacity).combined(with: .offset(y: -5))
-                    ))
-                    .animation(
-                        ap.animaciones ?
-                            .interpolatingSpring(stiffness: 250, damping: 25) :
-                            .none,
-                        value: isThemeExpanded
-                    )
+                    .animacionVStackSaliente(isExpanded: isThemeExpanded, animaciones: ap.animaciones)
                 }
             }
             
         }
     }
 }
+
+

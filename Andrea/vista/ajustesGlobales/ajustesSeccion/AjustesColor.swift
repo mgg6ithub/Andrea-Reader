@@ -127,8 +127,7 @@ struct AjustesColor: View {
                             .foregroundColor(tema.colorContrario)
                     }
                     .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows, pV: false)
-                    .transition(.opacity)  // Transición de opacidad cuando se muestra o esconde
-                    .animation(ap.animaciones ? .easeInOut(duration: 0.5) : .none, value: isColorExpanded)
+                    .animacionVStackSaliente(isExpanded: isColorExpanded, animaciones: ap.animaciones)
                 }
             }
             

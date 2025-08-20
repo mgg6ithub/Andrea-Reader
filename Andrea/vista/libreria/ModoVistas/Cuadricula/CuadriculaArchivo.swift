@@ -80,13 +80,13 @@ struct CuadriculaArchivo: View {
                                 if archivo.progreso > 0 {
                                     HStack(spacing: 0) {
                                         Text("%")
-                                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.75))
+                                            .font(.system(size: ap.porcentajeNumeroSize * 0.75))
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
                                             .offset(y: 1.5)
                                         Color.clear
                                             .animatedProgressText1(progresoMostrado)
-                                            .font(.system(size: ConstantesPorDefecto().subTitleSize * 1.1))
+                                            .font(.system(size: ap.porcentajeNumeroSize * 1.1))
                                             .bold()
                                             .foregroundColor(coleccionVM.color)
                                     }

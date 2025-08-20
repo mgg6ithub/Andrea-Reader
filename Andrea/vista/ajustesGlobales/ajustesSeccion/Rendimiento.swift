@@ -51,7 +51,7 @@ struct Rendimiento: View {
             CirculoActivoVista(isSection: isSection, nombre: "Modifica las animaciones", titleSize: const.descripcionAjustes, color: ap.colorActual)
             
             VStack(spacing: 0) {
-                TogglePersonalizado(titulo: "Animaciones", descripcion: "Activa o desactiva las animaciones de la interfaz.", opcionBinding: $ap.shadows, opcionTrue: "Deshabilitar animaciones", opcionFalse: "Habilitar animaciones", isInsideToggle: true, isDivider: true)
+                TogglePersonalizado(titulo: "Animaciones", descripcion: "Activa o desactiva las animaciones de la interfaz.", opcionBinding: $ap.animaciones, opcionTrue: "Deshabilitar animaciones", opcionFalse: "Habilitar animaciones", isInsideToggle: true, isDivider: true)
                 
                 Text("Las animaciones hacen la experiencia más atractiva, aunque pueden consumir más recursos y afectar al rendimiento.")
                     .capaDescripcion(s: const.descripcionAjustes * 0.8, c: tema.secondaryText, pH: 0, pW: 0)

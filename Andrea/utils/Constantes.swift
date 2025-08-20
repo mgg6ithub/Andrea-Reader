@@ -109,6 +109,15 @@ struct ClavesPersistenciaAjustesGenerales {
     public let historialEstilo: String = "historialEstilo"
     public let historialSize: String = "historialSize"
     
+    //LIBRERIA
+    public let porcentaje: String = "porcentaje"
+    
+    public let porcentajeNumero: String = "porcentajeNumero"
+    public let porcentajeNumeroSize: String = "porcentajeNumeroSize"
+    
+    public let porcentajeBarra: String = "porcentajeBarra"
+    
+    public let porcentajeEstilo: String = "porcentajeEstilo"
     
     //MARK: - --- AJUSTES GENERALES ---
     
@@ -160,6 +169,15 @@ struct AjustesGeneralesPredeterminados {
     public let historialEstilo: EnumEstiloHistorialColecciones = .basico
     public let historialSize: Double = 18.0
     
+    //LIBRERIA
+    public let porcentaje: Bool = true
+    
+    public let porcentajeNumero: Bool = true
+    public let porcentajeNumeroSize: Double = ConstantesPorDefecto().subTitleSize
+    
+    public let porcentajeBarra: Bool = true
+    
+    public let porcentajeEstilo: EnumPorcentajeEstilo = .dentroCarta
 }
 
 

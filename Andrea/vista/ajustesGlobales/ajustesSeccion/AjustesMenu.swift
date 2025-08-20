@@ -35,8 +35,6 @@ struct AjustesMenu: View {
             Text("Configura el menú superior a tu gusto: elige iconos, colores, tamaños y fondo.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
-            DividerDentroSeccion(pH: 25, pV: 25)
-            
             Text("Mostrar iconos")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 6, pW: 0, b: true)
             
@@ -127,7 +125,7 @@ struct AjustesMenu: View {
                     }
                 
                 if me.fondoMenu {
-                    VStack( alignment: .trailing, spacing: 0) {
+                    VStack(alignment: .trailing, spacing: 0) {
                         TogglePersonalizado(
                             titulo: "Transparente",
                             descripcion: "Apenas perceptible, perfecto para temas minimalistas.",
@@ -142,7 +140,6 @@ struct AjustesMenu: View {
                             isInsideToggle: true,
                             isDivider: true
                         )
-//                        .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                         
                         TogglePersonalizado(
                             titulo: "Líquido",
@@ -158,7 +155,6 @@ struct AjustesMenu: View {
                             isInsideToggle: true,
                             isDivider: true
                         )
-//                        .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                         
                         TogglePersonalizado(
                             titulo: "Metálico",
@@ -174,10 +170,10 @@ struct AjustesMenu: View {
                             isInsideToggle: true,
                             isDivider: false
                         )
-//                        .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                         
                     }
                     .padding(.leading, 30)
+                    .animacionVStackSaliente(isExpanded: me.fondoMenu, animaciones: ap.animaciones)
                 }
                 
             }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
@@ -217,7 +213,7 @@ struct AjustesMenu: View {
                         max: maxIcon,
                         recommended: recommended,
                         trackColor: tema.colorContrario,     // base
-                        fillColor: .blue,                             // progreso
+                        fillColor: ap.colorActual,                             // progreso
                         markerColor: tema.colorContrario,    // muesca
                         textColor: tema.secondaryText        // “24 pt”
                     )
