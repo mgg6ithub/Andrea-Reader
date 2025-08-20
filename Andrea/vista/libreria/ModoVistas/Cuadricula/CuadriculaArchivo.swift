@@ -182,7 +182,7 @@ struct CuadriculaArchivo: View {
             .padding(7)
         }
         .frame(width: width, height: height)
-        .background(ap.temaResuelto.cardColorFixed)
+        .background(ap.fondoCarta ?  ap.temaResuelto.cardColorFixed : .clear)
         .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))  // recorta carta
         .if(ap.porcentajeBarra && ap.porcentajeEstilo == .contorno && viewModel.miniatura != nil) { v in
             v.overlay {

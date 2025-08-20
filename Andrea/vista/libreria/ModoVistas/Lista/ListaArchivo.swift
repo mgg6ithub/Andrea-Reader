@@ -108,22 +108,22 @@ struct ListaArchivo: View {
         .padding(.vertical, 10 * escala)
         .padding(.horizontal, 5 * escala)
         .frame(height: coleccionVM.altura * escala)
-        .background(tema.cardColorFixed)
-        .cornerRadius(8, corners: [.topLeft, .bottomLeft])
+        .background(ap.fondoCarta ?  tema.cardColorFixed : .clear)
+        .clipShape(RoundedCorners1(tl: 8, tr: 0, bl: 8, br: 0))  
         //AQUI HAY QUE AGREGAR UN OVERLAY PARA EL PROGRESO DEL CONTORNO DE LA LISTA
         .if(ap.porcentajeBarra && ap.porcentajeEstilo == .contorno && viewModel.miniatura != nil) { v in
             v.overlay {
-                ProgresoContorno(
-                    progreso: $progresoMostrado,
+                ProgressStroke(
+                    progreso: $progresoMostrado,                          // tu estado animado
+                    shape: RoundedCorners1(tl: 8, tr: 0, bl: 8, br: 0),    // misma forma
                     color: coleccionVM.color,
                     lineWidth: 3,
-                    cornerRadius: 15,
-                    startAngle: -135
+                    showGuide: false
                 )
             }
         }
+        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
         .onAppear {
-            
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
             isVisible = true
         }

@@ -116,8 +116,11 @@ struct AjustesLibreria: View {
                                         opcionTrue: "Ocultar barra",
                                         opcionFalse: "Mostrar barra",
                                         isInsideToggle: true,
-                                        isDivider: false
+                                        isDivider: true
                                     )
+                                    
+                                    Recomendacion(mensaje: "Usarlo activando el fondo de las cartas.", c: tema.textColor)
+                                    
                                 }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
                             }.animacionVStackSaliente(isExpanded: ap.porcentajeBarra, animaciones: ap.animaciones)
                             
