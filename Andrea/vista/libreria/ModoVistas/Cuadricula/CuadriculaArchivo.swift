@@ -83,27 +83,29 @@ struct CuadriculaArchivo: View {
                         VStack(spacing: 3) {
                             Spacer()
                             HStack(alignment: .bottom, spacing: 2.5) {
-                                if archivo.progreso > 0 && ap.porcentajeNumero {
-                                    HStack(spacing: 0) {
-                                        Text("%")
-                                            .font(.system(size: ap.porcentajeNumeroSize * 0.75))
-                                            .bold()
-                                            .foregroundColor(coleccionVM.color)
-                                            .offset(y: 1.5)
-                                        Color.clear
-                                            .animatedProgressText1(progresoMostrado)
-                                            .font(.system(size: ap.porcentajeNumeroSize * 1.1))
-                                            .bold()
-                                            .foregroundColor(coleccionVM.color)
-                                    }
-                                    //NECESARIOS PARA ANIMACION DEL PROGRESO
-                                    .onAppear { progresoMostrado = archivo.progreso }
-                                    .onChange(of: ap.archivoEnLectura) {
-                                        withAnimation(.easeOut(duration: 0.6)) {
-                                            progresoMostrado = archivo.progreso
+                                if ap.porcentaje {
+                                    if archivo.progreso > 0 && ap.porcentajeNumero {
+                                        HStack(spacing: 0) {
+                                            Text("%")
+                                                .font(.system(size: ap.porcentajeNumeroSize * 0.75))
+                                                .bold()
+                                                .foregroundColor(coleccionVM.color)
+                                                .offset(y: 1.5)
+                                            Color.clear
+                                                .animatedProgressText1(progresoMostrado)
+                                                .font(.system(size: ap.porcentajeNumeroSize * 1.1))
+                                                .bold()
+                                                .foregroundColor(coleccionVM.color)
                                         }
+                                        //NECESARIOS PARA ANIMACION DEL PROGRESO
+                                        .onAppear { progresoMostrado = archivo.progreso }
+                                        .onChange(of: ap.archivoEnLectura) {
+                                            withAnimation(.easeOut(duration: 0.6)) {
+                                                progresoMostrado = archivo.progreso
+                                            }
+                                        }
+                                        //NECESARIOS PARA ANIMACION DEL PROGRESO
                                     }
-                                    //NECESARIOS PARA ANIMACION DEL PROGRESO
                                 }
                                 
                                 // --- ICONOS DE LOS ESTADOS DE UN ARCHIVO ---
@@ -142,13 +144,15 @@ struct CuadriculaArchivo: View {
                                 }
                             }
                             
-                            if ap.porcentajeBarra && ap.porcentajeEstilo == .dentroCarta {
-                                ProgresoCuadricula(
-                                    progresoMostrado: $progresoMostrado,
-                                    coleccionColor: coleccionVM.color,
-                                    totalWidth: width - 20,
-                                    padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
-                                )
+                            if ap.porcentaje {
+                                if ap.porcentajeBarra && ap.porcentajeEstilo == .dentroCarta {
+                                    ProgresoCuadricula(
+                                        progresoMostrado: $progresoMostrado,
+                                        coleccionColor: coleccionVM.color,
+                                        totalWidth: width - 20,
+                                        padding: archivo.tipoMiniatura == .imagenBase ? 13 : 10
+                                    )
+                                }
                             }
                             
                         }
@@ -180,7 +184,7 @@ struct CuadriculaArchivo: View {
         .frame(width: width, height: height)
         .background(ap.temaResuelto.cardColorFixed)
         .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))  // recorta carta
-        .if(ap.porcentajeBarra && ap.porcentajeEstilo == .contorno) { v in
+        .if(ap.porcentajeBarra && ap.porcentajeEstilo == .contorno && viewModel.miniatura != nil) { v in
             v.overlay {
                 ProgresoContorno(
                     progreso: $progresoMostrado,

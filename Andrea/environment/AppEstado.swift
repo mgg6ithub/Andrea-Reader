@@ -86,7 +86,7 @@ class AppEstado: ObservableObject {
     
     @Published var porcentajeBarra: Bool { didSet { pd.guardarAjusteGeneral(valor: porcentajeBarra, key: cpag.porcentajeBarra) } }
     
-    @Published var porcentajeEstilo: EnumPorcentajeEstilo { didSet { pd.guardarAjusteGeneral(valor: porcentajeBarra, key: cpag.porcentajeBarra) } }
+    @Published var porcentajeEstilo: EnumPorcentajeEstilo { didSet { pd.guardarAjusteGeneral(valor: porcentajeEstilo, key: cpag.porcentajeEstilo) } }
     
     //fondo carta
     @Published var fondoCarta: Bool { didSet { pd.guardarAjusteGeneral(valor: fondoCarta, key: cpag.fondoCarta) } }

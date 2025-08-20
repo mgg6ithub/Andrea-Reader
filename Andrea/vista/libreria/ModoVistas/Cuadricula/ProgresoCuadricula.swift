@@ -43,9 +43,9 @@ struct ProgresoContorno: View {
     var body: some View {
         ZStack {
             // Guía gris (inside)
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .inset(by: lineWidth / 2)
-                .stroke(Color.gray.opacity(0.25), lineWidth: lineWidth)
+//            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+//                .inset(by: lineWidth / 2)
+//                .stroke(Color.gray.opacity(0.25), lineWidth: lineWidth)
 
             // Progreso (inside + recortado)
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)

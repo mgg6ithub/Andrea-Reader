@@ -3,36 +3,56 @@ import SwiftUI
 
 struct ProgresoLista: View {
     
-    let archivo: Archivo
-    @ObservedObject var coleccionVM: ModeloColeccion
+    @EnvironmentObject var ap: AppEstado
     
-    var progreso: Int { archivo.progreso }
-    var progresoEntero: Double { archivo.progresoEntero }
+    @ObservedObject var archivo: Archivo
+    @ObservedObject var coleccionVM: ModeloColeccion
+    @Binding var progresoMostrado: Int
     
     var body: some View {
         HStack(spacing: 10) {
             
-            Color.clear
-                .animatedProgressText1(progreso)
-                .foregroundColor(coleccionVM.color.opacity(0.6))
-                .font(.system(size: ConstantesPorDefecto().subTitleSize))
-                .bold()
+            if archivo.progreso > 0 && ap.porcentajeNumero {
+                HStack(spacing: 0) {
+                    Text("%")
+                        .font(.system(size: ap.porcentajeNumeroSize * 0.75))
+                        .bold()
+                        .foregroundColor(coleccionVM.color)
+                        .offset(y: 1.5)
+                    Color.clear
+                        .animatedProgressText1(progresoMostrado)
+                        .font(.system(size: ap.porcentajeNumeroSize * 1.1))
+                        .bold()
+                        .foregroundColor(coleccionVM.color)
+                }
+                //NECESARIOS PARA ANIMACION DEL PROGRESO
+                .onAppear { progresoMostrado = archivo.progreso }
+                .onChange(of: ap.archivoEnLectura) {
+                    withAnimation(.easeOut(duration: 0.6)) {
+                        progresoMostrado = archivo.progreso
+                    }
+                }
+                //NECESARIOS PARA ANIMACION DEL PROGRESO
+            }
             
-            ZStack(alignment: .leading) {
-                
-                RoundedRectangle(cornerRadius: 3)
-                    .fill(progreso > 0 ? Color.gray.opacity(0.9) : Color.gray.opacity(0.4))
-                    .frame(height: 4)
-                    .padding(.horizontal, 10)
-                
-                ProgressView(value: 0.8)
-                    .progressViewStyle(LinearProgressViewStyle(tint: coleccionVM.color)) // Cambia el color si es necesario
-                    .frame(height: 5)
-                    .frame(maxWidth: .infinity) // Ajusta el ancho explícitamente
-                    .padding(.trailing, 10)
-            } //FIN ZSTACK PROGRESSVIEW
+            if ap.porcentajeBarra && ap.porcentajeEstilo == .dentroCarta {
+                GeometryReader { geo in
+                    let totalWidth = geo.size.width
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(progresoMostrado > 0 ? Color.gray.opacity(0.7) : Color.gray.opacity(0.3))
+                            .frame(height: 3)
+                        
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(coleccionVM.color)
+                            .frame(width: totalWidth * CGFloat(progresoMostrado) / 100.0, height: 3)
+                            .animacionDesvanecer(coleccionVM.color) // <- necesaria para cambiar de color con animacion
+                    } //FIN ZSTACK PROGRESSVIEW
+                }
+                .frame(height: 3)
+                .alignmentGuide(.firstTextBaseline) { d in d[.bottom] }
+            }
             
         }
-        
     }
 }

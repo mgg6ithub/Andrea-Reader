@@ -22,6 +22,8 @@ struct ListaArchivo: View {
         return 1 // fallback si no hay imagen
     }
     
+    @State private var progresoMostrado: Int = 0
+    
     var body: some View {
         HStack(spacing: 15) {
             let anchoMiniatura = coleccionVM.altura * escala
@@ -78,8 +80,9 @@ struct ListaArchivo: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Spacer()
-                   
-                    ProgresoLista(archivo: archivo, coleccionVM: coleccionVM)
+                    if ap.porcentaje {
+                        ProgresoLista(archivo: archivo, coleccionVM: coleccionVM, progresoMostrado: $progresoMostrado)
+                    }
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 8) {
@@ -89,11 +92,36 @@ struct ListaArchivo: View {
             }
             
         } //HStack principal
+        //PROGRESO
+        .onAppear { progresoMostrado = archivo.progreso }
+        .onChange(of: ap.archivoEnLectura) {
+            withAnimation(.easeOut(duration: 0.6)) {
+                progresoMostrado = archivo.progreso
+            }
+        }
+        .onChange(of: archivo.completado) {
+            withAnimation(.easeOut(duration: 0.6)) {
+                progresoMostrado = archivo.progreso
+            }
+        }
+        //PROGRESO
         .padding(.vertical, 10 * escala)
         .padding(.horizontal, 5 * escala)
         .frame(height: coleccionVM.altura * escala)
         .background(tema.cardColorFixed)
         .cornerRadius(8, corners: [.topLeft, .bottomLeft])
+        //AQUI HAY QUE AGREGAR UN OVERLAY PARA EL PROGRESO DEL CONTORNO DE LA LISTA
+        .if(ap.porcentajeBarra && ap.porcentajeEstilo == .contorno && viewModel.miniatura != nil) { v in
+            v.overlay {
+                ProgresoContorno(
+                    progreso: $progresoMostrado,
+                    color: coleccionVM.color,
+                    lineWidth: 3,
+                    cornerRadius: 15,
+                    startAngle: -135
+                )
+            }
+        }
         .onAppear {
             
             viewModel.loadThumbnail(color: coleccionVM.color, for: archivo)
