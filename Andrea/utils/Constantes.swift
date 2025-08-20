@@ -70,6 +70,15 @@ struct ClavesPersistenciaElementos {
     //MINIATURA DE UN ELEMENTO
     public let miniaturaElemento: String = "miniatura_archivo"
     
+    
+    //ARRAY DE CLAVES PARA PODER ACTUALIZAR EN PERSISTENCIA DEL TIRON
+    public var arrayClavesPersistenciaElementos: [String] {
+            [
+                progresoElemento, //pagina actual
+                miniaturaElemento //tipo de miniatura
+            ]
+        }
+    
 }
 
 struct ValoresElementoPredeterminados {

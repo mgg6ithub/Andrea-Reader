@@ -215,26 +215,56 @@ struct PersistenciaDatos {
     }
 
     
-    //metodo para actualizar o borrar la clave en un diccinario pasando una key = String
-    //Si el valor esta vacio es para borrar ese dato de persistencia.
-    //Si se pasa un array con mas de un valor quiere decir que es para borrarlos
-    public func actualizarDatoArchivo(valor: Any?, anteriorURL: URL, nuevaURL: URL, keys: [String]) {
-        let oldk = self.obtenerKey(anteriorURL)
-        let newk = self.obtenerKey(nuevaURL)
+    /// Actualizar la clave en varios diccionarios de persistencia (ej: al renombrar o mover un archivo)
+    public func actualizarDatoArchivo(origenURL: URL, destinoURL: URL, keys: [String]) {
+        let oldk = self.obtenerKey(origenURL)
+        let newk = self.obtenerKey(destinoURL)
         
-        for dKey in keys {
-            var mapa = self.obtenerMapa(key: dKey)
-            
-            if let convertido = self.convertirValor(valor as Any) {
-                mapa[newk] = mapa[oldk] // <- actualizar nueva clave con el valor antigua
+        for key in keys {
+            var mapa = self.obtenerMapa(key: key)
+            if let valor = mapa[oldk] {
+                mapa[newk] = valor
+                mapa.removeValue(forKey: oldk) // eliminar la antigua
+                guardarMapa(mapa: mapa, key: key)
+                print("🔄 Actualizado persistencia en '\(key)': \(oldk) → \(newk)")
             } else {
-                mapa.removeValue(forKey: oldk) // <- borrar entrada
+                print("⚠️ No se encontró valor para '\(oldk)' en '\(key)'")
             }
-            
-            guardarMapa(mapa: mapa, key: dKey)
         }
-        
     }
+    
+    // Duplicar datos de una clave (atributos asociados directamente a una URL)
+    /// No borra el origen, solo copia su valor a la nueva URL.
+    public func duplicarDatoElemento(origenURL: URL, destinoURL: URL, keys: [String]) {
+        let oldk = self.obtenerKey(origenURL)
+        let newk = self.obtenerKey(destinoURL)
+        
+        for key in keys {
+            var mapa = self.obtenerMapa(key: key)
+            if let valor = mapa[oldk] {
+                mapa[newk] = valor
+                guardarMapa(mapa: mapa, key: key)
+                print("📄 Duplicado en '\(key)': \(oldk) → \(newk)")
+            } else {
+                print("⚠️ No se encontró valor en '\(key)' para \(oldk)")
+            }
+        }
+    }
+
+
+    
+    //metodo para eliminar de persistencia
+    public func eliminarPersistenciaElemento(elementoURL: URL, keys: [String]) {
+        let k = self.obtenerKey(elementoURL)
+        
+        for key in keys {
+            var mapaParaEstaKey = self.obtenerMapa(key: key)
+            mapaParaEstaKey.removeValue(forKey: k)
+            print("Eliminado de persistencia: ", elementoURL.lastPathComponent)
+            self.guardarMapa(mapa: mapaParaEstaKey, key: key)
+        }
+    }
+    
     
 //    public func actualizarDatoArchivo(valor: Any?, elementoURL: URL, key: String) {
 //        

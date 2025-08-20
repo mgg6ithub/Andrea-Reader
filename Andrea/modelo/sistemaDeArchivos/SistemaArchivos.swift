@@ -5,6 +5,9 @@ import SwiftUI
 
 class SistemaArchivos: ObservableObject {
     
+    private let pd = PersistenciaDatos()
+    private let cpe = ClavesPersistenciaElementos()
+    
     // MARK: --- Instancia singleton totalmente segura, lazy, thread-safe ---
     static let sa: SistemaArchivos = SistemaArchivos()
 //    static var sa: SistemaArchivos = {
@@ -182,7 +185,8 @@ class SistemaArchivos: ObservableObject {
                 }
                 
                 // --- actualizar persistencia ---
-                PersistenciaDatos().actualizarClaveURL(origen: origenURL, destino: destinoURL)
+//                PersistenciaDatos().actualizarClaveURL(origen: origenURL, destino: destinoURL)
+                self.pd.actualizarDatoArchivo(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
                 
                 // --- LOG ---
                 DispatchQueue.main.async {
@@ -240,7 +244,7 @@ class SistemaArchivos: ObservableObject {
                 }
                 
                 // --- actualizar persistencia ---
-                PersistenciaDatos().actualizarClaveURL(origen: origenURL, destino: destinoURL)
+                self.pd.actualizarDatoArchivo(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
         
             } catch {
                 print("⚠️ Error al mover \(origenURL.lastPathComponent) a \(destinoURL.lastPathComponent)")
@@ -278,7 +282,8 @@ class SistemaArchivos: ObservableObject {
                     }
                     
                     //--- duplicar en persistencia ---
-                    PersistenciaDatos().duplicarDatosClave(origen: origenURL, destino: destinoURL)
+//                    PersistenciaDatos().duplicarDatosClave(origen: origenURL, destino: destinoURL)
+                    self.pd.duplicarDatoElemento(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
                 }
                 
             } catch {
@@ -312,7 +317,8 @@ class SistemaArchivos: ObservableObject {
             }
             
             //--- duplicar en persistencia ---
-            PersistenciaDatos().duplicarDatosClave(origen: origenURL, destino: duplicadaURL)
+//            PersistenciaDatos().duplicarDatosClave(origen: origenURL, destino: duplicadaURL)
+            self.pd.duplicarDatoElemento(origenURL: origenURL, destinoURL: duplicadaURL, keys: self.cpe.arrayClavesPersistenciaElementos)
             
         }
     }
@@ -362,7 +368,7 @@ class SistemaArchivos: ObservableObject {
                     }
                     
                     // --- ELIMINAR PERSISTENCIA ---
-                    PersistenciaDatos().eliminarDatos(url: url)
+                    self.pd.eliminarPersistenciaElemento(elementoURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
                     
                     // --- LOG ---
                     var tipo: String = ""
