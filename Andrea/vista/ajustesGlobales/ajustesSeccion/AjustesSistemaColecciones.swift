@@ -54,35 +54,140 @@ struct AjustesSistemaColecciones: View {
 //                    opcionSeleccionada: .arbol,
 //                    opcionActual: $ap.sistemaArchivos
 //                )
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .frame(width: const.cAnchoRect, height: const.cAlturaRect)
-                        .foregroundColor(ap.sistemaArchivos == .tradicional ? Color.gray.opacity(1.0) : Color.gray.opacity(0.3))
-                    //                        .shadow(color: esOscuro ? .black.opacity(0.225) : .black.opacity(0.225),
-                    //                                radius: ap.shadows ? 5 : 0,
-                    //                                x: 0,
-                    //                                y: ap.shadows ? 2 : 0)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(
-                                    ap.sistemaArchivos == .tradicional
-                                    ? (tema == .dark ? Color.white : Color.black)
-                                    : Color.clear,
-                                    lineWidth: 1.5
-                                )
-                        )
+                //ICONO sustituyendo a folder.fill
+                VStack {
+                    Text("Tradicional")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .font(.subheadline)
+                        .foregroundColor(ap.sistemaArchivos == .tradicional ? tema.textColor : tema.secondaryText.opacity(0.3))
                     
-                    ZStack {
-                        Image(systemName: "rectangle.fill")
-                            .font(.system(size: (ap.constantes.iconSize + 20) * 1.15))
-                            .scaleEffect(x: 1.1, y: 1.3, anchor: .center)
-                            .foregroundColor(ap.sistemaArchivos == .tradicional ? Color.gray.opacity(0.8) : Color.clear)
-                            .zIndex(0)
-                        
-                        
+                    Button(action: {
+                        ap.sistemaArchivos = .tradicional
+                    }) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 15)
+                                .frame(width: const.cAnchoRect, height: const.cAlturaRect)
+                                .foregroundColor(
+                                    ap.sistemaArchivos == .tradicional ? Color.gray : Color.gray.opacity(0.3)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .stroke(
+                                            ap.sistemaArchivos == .tradicional
+                                            ? (tema == .dark ? Color.white : Color.black)
+                                            : Color.clear,
+                                            lineWidth: 1.5
+                                        )
+                                )
+                            
+                            Group {
+                                // Capa trasera (más clara)
+                                Image(systemName: "folder.fill")
+                                    .font(.system(size: 52.5))
+                                    .foregroundColor(Color(white: 0.1)) // gris claro
+                                    .rotation3DEffect(
+                                        .degrees(7.5),
+                                        axis: (x: 0, y: 1, z: 0),
+                                        anchor: .center
+                                    )
+                                
+                                // Capa intermedia (gris medio)
+                                Image(systemName: "folder.fill")
+                                    .font(.system(size: 52.5))
+                                    .foregroundColor(Color(white: 0.2)) // gris más oscuro
+                                    .rotation3DEffect(
+                                        .degrees(7.5),
+                                        axis: (x: 0, y: 1, z: 0),
+                                        anchor: .center
+                                    )
+                                    .offset(x: 7, y: 7)
+                                
+                                // Capa delantera (negro puro)
+                                Image(systemName: "folder.fill")
+                                    .font(.system(size: 52.5))
+                                    .foregroundColor(Color(white: 0.3)) // casi negro sólido
+                                    .rotation3DEffect(
+                                        .degrees(7.5),
+                                        axis: (x: 0, y: 1, z: 0),
+                                        anchor: .center
+                                    )
+                                    .offset(x: 14, y: 14)
+                            }
+                            .offset(y: -9)
+                        }
                     }
                 }
+ 
+                VStack {
+                    
+                    Text("Acceso rápido")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .font(.subheadline)
+                        .foregroundColor(ap.sistemaArchivos == .arbol ? tema.textColor : tema.secondaryText.opacity(0.3))
+                    
+                    Button(action: {
+                        ap.sistemaArchivos = .arbol
+                    }) {
+                        //ICONO sustituyendo a list.bullet.rectangle
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 15)
+                                .frame(width: const.cAnchoRect, height: const.cAlturaRect)
+                                .foregroundColor(
+                                    ap.sistemaArchivos == .arbol ? Color.gray : Color.gray.opacity(0.3)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .stroke(
+                                            ap.sistemaArchivos == .arbol
+                                            ? (tema == .dark ? Color.white : Color.black)
+                                            : Color.clear,
+                                            lineWidth: 1.5
+                                        )
+                                )
+                            
+                            VStack(alignment: .center, spacing: 5) {
+                                HStack(spacing: 2.5){
+                                    
+                                    Image(systemName: "folder.fill")
+                                        .font(.system(size: 16))
+                                        .offset(y: -3)
+                                    
+                                    RoundedRectangle(cornerRadius: 2.5)
+                                        .frame(width: 50, height: 6)
+                                }
+                                .foregroundColor(Color(white: 0.1)) // gris claro
+                                .offset(x: -5)
+                                
+                                HStack(spacing: 2.5){
+                                
+                                    
+                                    Image(systemName: "folder.fill")
+                                        .font(.system(size: 16))
+                                        .offset(y: -3)
+                                    
+                                    RoundedRectangle(cornerRadius: 2.5)
+                                        .frame(width: 50, height: 6)
+                                }
+                                .foregroundColor(Color(white: 0.2)) // gris claro
+                                .offset(x: -5)
+                                
+                                HStack(spacing: 2.5){
+                                    
+                                    Image(systemName: "folder.fill")
+                                        .font(.system(size: 16))
+                                        .offset(y: -3)
+                                    
+                                    RoundedRectangle(cornerRadius: 2.5)
+                                        .frame(width: 50, height: 6)
+                                }
+                                .foregroundColor(Color(white: 0.3)) // gris claro
+                                .offset(x: -5)
+                            }
+                        }
+                    }
+                }
+
+
                 
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)

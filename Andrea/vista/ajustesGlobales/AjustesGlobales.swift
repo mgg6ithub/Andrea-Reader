@@ -84,14 +84,14 @@ struct AjustesGlobales: View {
                 if haHechoScroll {
                     ZStack {
                         Text("Tu aplicación, a tu manera.")
-                            .font(.system(size: ap.constantes.subTitleSize * 0.7, weight: .bold))
+                            .font(.system(size: ap.constantes.subTitleSize * 0.7))
                             .foregroundColor(tema.secondaryText)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .offset(y: -9)
                         
                         Rectangle()
                             .fill(ap.temaResuelto.lineaColor)
-                            .frame(height: 2.5)
+                            .frame(height: 2)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
                 }
