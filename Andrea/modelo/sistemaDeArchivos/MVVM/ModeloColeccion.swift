@@ -8,7 +8,7 @@ extension ModeloColeccion {
     func elementosParaMostrar(segun modo: EnumTipoSistemaArchivos) -> [ElementoSistemaArchivos] {
         if modo == .arbol {
             // En modo árbol solo mostramos archivos (y opcionalmente placeholders si los usas)
-            return elementos.filter { $0 is Archivo /* || $0 is ElementoPlaceholder */ }
+            return elementos.filter { $0 is Archivo || $0 is ElementoPlaceholder }
         } else {
             return elementos
         }
