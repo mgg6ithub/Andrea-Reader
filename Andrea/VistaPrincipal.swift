@@ -183,10 +183,10 @@ struct MenuLectura: View {
             HStack {
                 Button("Cerrar") {
                     //antes de cerrar guardamos el progreso actualizando la pagina
-                    print("terminando lectura")
+//                    print("terminando lectura")
                     archivo.estaLeyendose = false
                     
-                    print("Tiempo total de lectura: \(archivo.tiempoTotal)s")
+//                    print("Tiempo total de lectura: \(archivo.tiempoTotal)s")
                     
                     cerrar()
                 } // ← ya no toca el menú

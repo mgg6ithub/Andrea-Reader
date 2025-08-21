@@ -51,10 +51,6 @@ struct LectorComic: View {
                 
 
         }
-        .onAppear {
-            print("Empezar timer")
-            comic.estaLeyendose = true
-        }
         .ignoresSafeArea()
         .edgesIgnoringSafeArea(.all)
         

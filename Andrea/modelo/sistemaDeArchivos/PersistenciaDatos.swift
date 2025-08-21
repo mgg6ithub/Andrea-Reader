@@ -287,7 +287,7 @@ struct PersistenciaDatos {
         if let mapa = uds.dictionary(forKey: key) {
             return mapa
         } else {
-            print("Error a la hora de obtener el mapa en persistencia para: ", key)
+//            print("Error a la hora de obtener el mapa en persistencia para: ", key)
             return [:]
         }
     }

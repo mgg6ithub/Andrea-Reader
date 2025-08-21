@@ -67,13 +67,14 @@ struct MasInformacion: View {
                             GeometryReader { geo in
                                 MasInformacionArchivoTest(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta, escala: escala)
                                     .onAppear {
-                                        print("ANCHO DESDE PADRE")
-                                        print(geo.size.width)
+//                                        print("ANCHO DESDE PADRE")
+//                                        print(geo.size.width)
                                     }
                                 //                                .padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
                                     .onAppear {
                                         if !archivo.masInformacion {
-                                            archivo.inicializarValoresEstadisticos()
+//                                            archivo.inicializarValoresEstadisticos()
+                                            archivo.crearEstadisticas()
                                         }
                                     }
                             }

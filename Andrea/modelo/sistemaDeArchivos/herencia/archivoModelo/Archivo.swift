@@ -88,7 +88,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
         // PÁGINAS
         paginaVisitadaMasTiempo = (0, 0)
-        paginasRestantes = 0
+        paginasRestantes = 10
         paginaMasVisitada = (0,0)
         
         // DÍAS
@@ -161,20 +161,11 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     @Published var totalPaginas: Int? {
         didSet {
             actualizarProgreso()
+            self.paginasRestantes = calcularPaginasRestantes()
         }
     }
     
-    @Published var paginaActual: Int
-    {
-        didSet
-        {
-            pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento)
-            
-            if let total = self.totalPaginas {
-                self.paginasRestantes = total - paginaActual
-            }
-        }
-    }
+    @Published var paginaActual: Int { didSet { pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento) }} //<-guardar en persistencia la pagina actual}} //<-calculamos las paginas complementarias restantes
     
     @Published var paginasRestantes: Int = 0
     // --- PAGINAS ---
@@ -282,6 +273,13 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
     }
     
+    //METODO PARA INICIAR LAS ESTADISTICAS COMPLEMENTARIAS A PARTIR DE LAS PRIMARIAS QUE SE INICIALIZAN EN EL CONSTRUCTOR
+    public func crearEstadisticas() {
+        print("Creando estadisticas")
+        self.paginasRestantes = calcularPaginasRestantes()
+        print(paginasRestantes)
+    }
+    
     //MARK: - --- FUNCIONES GENERALES ---
     func viewContent() -> AnyView {
         return AnyView(ZStack{})
@@ -311,6 +309,12 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     func obtenerPrimeraPagina() -> String? {
         return "corrupted"
     }
+    
+    private func calcularPaginasRestantes() -> Int {
+        guard let total = totalPaginas else { return 0 }
+        return max(total - paginaActual, 0)
+    }
+    
     
     //MARK: - --- PROGRESO Y ESTADISTICAS ---
     func setCurrentPage(currentPage: Int) {
