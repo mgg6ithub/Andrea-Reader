@@ -29,7 +29,7 @@ extension Archivo {
         a.tiempoRestante = 0
         a.paginaVisitadaMasTiempo = (0, 0)
         a.paginasRestantes = 75
-        a.paginaMasVisitada = 10
+        a.paginaMasVisitada = (0,0)
         a.avanceDiario = 0
         a.diasTotalesLectura = 0
         a.diasConsecutivosLecutra = 0
@@ -89,7 +89,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         // PÁGINAS
         paginaVisitadaMasTiempo = (0, 0)
         paginasRestantes = 0
-        paginaMasVisitada = 0
+        paginaMasVisitada = (0,0)
         
         // DÍAS
         avanceDiario = 0
@@ -163,16 +163,42 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
             actualizarProgreso()
         }
     }
-    @Published var paginaActual: Int { didSet { pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento) }}
+    
+    @Published var paginaActual: Int
+    {
+        didSet
+        {
+            pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento)
+            
+            if let total = self.totalPaginas {
+                self.paginasRestantes = total - paginaActual
+            }
+        }
+    }
+    
     @Published var paginasRestantes: Int = 0
     // --- PAGINAS ---
     @Published var paginaVisitadaMasTiempo: (Int, TimeInterval) = (0,0)// <- Curiosidad
-    @Published var paginaMasVisitada: Int = 0         // <- Curiosidad
-    private var tiemposPorPagina: [Int: TimeInterval] = [:]  // tiempo acumulado por pagina
-    private var visitasPorPagina: [Int: Int] = [:]           // nº de veces abierta
+    @Published var paginaMasVisitada: (Int, Int) = (0,0)         // <- Curiosidad
+    @Published private var tiemposPorPagina: [Int: TimeInterval]
+    {
+        didSet 
+        {
+            recalcularTiempos()
+        }
+    }
+    
+    @Published private var visitasPorPagina: [Int: Int]         // nº de veces abierta
+    {
+        didSet
+        {
+            recalcularVisitas()
+        }
+    }
     
     @Published var progreso: Int = 0
     @Published var progresoEntero: Double = 0
+    @Published var progresoRestante: Int = 0
     
     // --- TIEMPOS ---
     private var timerCancellable: AnyCancellable?
@@ -218,6 +244,9 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.paginaActual = 0
         
         self.tiempoTotal = 0
+        
+        self.tiemposPorPagina = [:]
+        self.visitasPorPagina = [:]
         
         super.init()
     }
@@ -314,6 +343,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         let frac = Double(min(paginaActual, total - 1)) / Double(total - 1)
         progresoEntero = frac
         progreso = Int(round(frac * 100))
+        
+        self.progresoRestante = 100 - progreso
     }
     
     
@@ -390,14 +421,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     private func recalcularTiempos() {
         if let (pagina, value) = tiemposPorPagina.max(by: { $0.value < $1.value }) {
             paginaVisitadaMasTiempo = (pagina, value)
-            print("Pagina \(paginaVisitadaMasTiempo.0) visitada durante \(paginaVisitadaMasTiempo.1)")
+//            print("Pagina \(paginaVisitadaMasTiempo.0) visitada durante \(paginaVisitadaMasTiempo.1)")
         }
     }
 
     private func recalcularVisitas() {
-        if let (pagina, _) = visitasPorPagina.max(by: { $0.value < $1.value }) {
-            paginaMasVisitada = pagina
-            print("Pagina mas visitada: \(paginaMasVisitada)")
+        if let (pagina, value) = visitasPorPagina.max(by: { $0.value < $1.value }) {
+            paginaMasVisitada = (pagina, value)
+//            print("Pagina mas visitada: \(paginaMasVisitada)")
         }
     }
     
