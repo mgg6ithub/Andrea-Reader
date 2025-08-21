@@ -84,6 +84,10 @@
 		D4B0BBA32E4C6ADD0073380E /* ComicCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA22E4C6ADD0073380E /* ComicCache.swift */; };
 		D4B0BBA62E4C6B5B0073380E /* ProtocoloComic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA52E4C6B5B0073380E /* ProtocoloComic.swift */; };
 		D4B0BBA82E4C6D880073380E /* ComicPaginado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */; };
+		D4B0CCE52E574FB1000C69CF /* MasInformacionArchivoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE42E574FB1000C69CF /* MasInformacionArchivoTest.swift */; };
+		D4B0CCE82E5779FB000C69CF /* ProgresoCircular.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */; };
+		D4B0CCEA2E577AA9000C69CF /* ProgresoLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */; };
+		D4B0CCEC2E577BAF000C69CF /* ProgresoTiempo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */; };
 		D4B23FA02E45F4F200425DB8 /* ContenidoAjustesGloables.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */; };
 		D4B23FA22E45F54F00425DB8 /* IndicesAjustes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */; };
 		D4B23FA42E46056800425DB8 /* AyudaMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23FA32E46056800425DB8 /* AyudaMenu.swift */; };
@@ -207,6 +211,10 @@
 		D4B0BBA22E4C6ADD0073380E /* ComicCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicCache.swift; sourceTree = "<group>"; };
 		D4B0BBA52E4C6B5B0073380E /* ProtocoloComic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocoloComic.swift; sourceTree = "<group>"; };
 		D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicPaginado.swift; sourceTree = "<group>"; };
+		D4B0CCE42E574FB1000C69CF /* MasInformacionArchivoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacionArchivoTest.swift; sourceTree = "<group>"; };
+		D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCircular.swift; sourceTree = "<group>"; };
+		D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoLectura.swift; sourceTree = "<group>"; };
+		D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoTiempo.swift; sourceTree = "<group>"; };
 		D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContenidoAjustesGloables.swift; sourceTree = "<group>"; };
 		D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicesAjustes.swift; sourceTree = "<group>"; };
 		D4B23FA32E46056800425DB8 /* AyudaMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AyudaMenu.swift; sourceTree = "<group>"; };
@@ -430,10 +438,12 @@
 		D49F12F42E25348300C67FB8 /* MasInformacion */ = {
 			isa = PBXGroup;
 			children = (
+				D4B0CCE62E5779E5000C69CF /* AyudasMasInformacion */,
 				D49E26692E3A77BD009A0EDC /* MasInformacion.swift */,
 				D4924F242E468759000FD544 /* MasInformacionArchivo.swift */,
 				D49F12F52E25349500C67FB8 /* MasInformacionColeccion.swift */,
 				D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */,
+				D4B0CCE42E574FB1000C69CF /* MasInformacionArchivoTest.swift */,
 			);
 			path = MasInformacion;
 			sourceTree = "<group>";
@@ -563,6 +573,16 @@
 				D4B0BBA52E4C6B5B0073380E /* ProtocoloComic.swift */,
 			);
 			path = COMIC;
+			sourceTree = "<group>";
+		};
+		D4B0CCE62E5779E5000C69CF /* AyudasMasInformacion */ = {
+			isa = PBXGroup;
+			children = (
+				D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */,
+				D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */,
+				D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */,
+			);
+			path = AyudasMasInformacion;
 			sourceTree = "<group>";
 		};
 		D4B3C3B92E3A8E0B00CA6064 /* MenuSeleccionMultiple */ = {
@@ -825,6 +845,7 @@
 				D4B23FA02E45F4F200425DB8 /* ContenidoAjustesGloables.swift in Sources */,
 				D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */,
 				D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */,
+				D4B0CCEA2E577AA9000C69CF /* ProgresoLectura.swift in Sources */,
 				D48C58802E3BA855006D9C07 /* CabeceraMasInformacion.swift in Sources */,
 				D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */,
 				D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */,
@@ -849,13 +870,16 @@
 				D4DA1BD72E3BC9DE00529C47 /* Consejos.swift in Sources */,
 				D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */,
 				D4B0BBA62E4C6B5B0073380E /* ProtocoloComic.swift in Sources */,
+				D4B0CCE52E574FB1000C69CF /* MasInformacionArchivoTest.swift in Sources */,
 				D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */,
 				D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */,
 				D4B23FA62E4606CA00425DB8 /* ayudaHistorial.swift in Sources */,
 				D4D8CCF62E377CD600F7F18D /* ListaColeccionMenu.swift in Sources */,
 				D4DEBBF22DE9D8ED00F06C30 /* AjustesColor.swift in Sources */,
 				D4B3C3BB2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift in Sources */,
+				D4B0CCE82E5779FB000C69CF /* ProgresoCircular.swift in Sources */,
 				D49E266A2E3A77BD009A0EDC /* MasInformacion.swift in Sources */,
+				D4B0CCEC2E577BAF000C69CF /* ProgresoTiempo.swift in Sources */,
 				D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */,
 				D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */,
 				D4ACA2692E48D51800A367D9 /* ManipulacionFechas.swift in Sources */,

@@ -39,6 +39,7 @@ struct MasInformacionArchivo: View {
     
     var body: some View {
         
+//        Text("")
         VStack(alignment: .center, spacing: 0) {
             ScrollView(.vertical) {
                 VStack(alignment: .center, spacing: 0) {
@@ -342,6 +343,8 @@ struct EditableStarRating: View {
     
     var body: some View {
         HStack(spacing: 4) {
+            Spacer()
+            
             ForEach(1...maxRating, id: \.self) { index in
                 let starType = starImageType(for: index)
                 
@@ -360,6 +363,9 @@ struct EditableStarRating: View {
                         PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
                     }
             }
+            
+            Spacer()
+            
             Text(String(format: "%.1f", puntuacion))
                 .textoAdaptativo(t: ap.constantes.subTitleSize * 0.9, a: 0.6, l: 1, alig: .center, mW: 25)
         }
@@ -427,8 +433,8 @@ struct RectanguloDato: View {
     let icono: String
     let color: Color
     
-    var ancho: CGFloat { 120 }
-    var alto: CGFloat { 80 }
+    var ancho: CGFloat { 100 }
+    var alto: CGFloat { 60 }
      
     let opacidad: CGFloat = 0.1
     
@@ -442,7 +448,7 @@ struct RectanguloDato: View {
                 .zIndex(0)
             
             VStack(alignment: .center, spacing: 10) {
-                HStack(spacing: 10) {
+                HStack(spacing: 2.5) {
                     Image(systemName: icono)
                         .foregroundColor(color)
                     
@@ -1238,36 +1244,6 @@ struct ProgresoLecturaView: View {
         }
         .frame(height: 200)
     }
-}
-
-struct ProgresoCircular: View {
-    
-    var valor: Double // 0.0 a 1.0
-    var color: Color
-    
-    @State private var show: Bool = false
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(lineWidth: 8)
-                .opacity(0.2)
-                .foregroundColor(color)
-            
-            Circle()
-                .trim(from: 0.0, to: CGFloat(valor))
-                .stroke(style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                .foregroundColor(color)
-                .rotationEffect(.degrees(-90))
-                .animation(.easeOut, value: valor)
-            
-            Text("\(Int(valor * 100))%")
-                .font(.headline)
-        }
-        .aparicionStiffness(show: $show)
-        .frame(width: 60, height: 60)
-    }
-    
 }
 
 

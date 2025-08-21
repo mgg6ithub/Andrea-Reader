@@ -55,7 +55,7 @@ struct MasInformacion: View {
                 let cWSmall: CGFloat = cW * 0.8
                 let cHSmall: CGFloat = cH * 0.8
                 
-                let escala: CGFloat = pantallaCompleta ? 1.0 : 0.8
+                let escala: CGFloat = pantallaCompleta ? 1.0 : 1.0
                 
                 VStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .center, spacing: 0) {
@@ -63,14 +63,20 @@ struct MasInformacion: View {
                             .aparicionBlur(show: $show)
                         
                         if let archivo = elemento as? Archivo {
-                            MasInformacionArchivo(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta)
-                                .scaleEffect(escala)
-                                .padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
-                                .onAppear {
-                                    if !archivo.masInformacion {
-                                        archivo.inicializarValoresEstadisticos()
+//                            MasInformacionArchivo(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta)
+                            GeometryReader { geo in
+                                MasInformacionArchivoTest(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta, escala: escala)
+                                    .onAppear {
+                                        print("ANCHO DESDE PADRE")
+                                        print(geo.size.width)
                                     }
-                                }
+                                //                                .padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
+                                    .onAppear {
+                                        if !archivo.masInformacion {
+                                            archivo.inicializarValoresEstadisticos()
+                                        }
+                                    }
+                            }
                         }
                         
                         Spacer()
@@ -79,7 +85,6 @@ struct MasInformacion: View {
                         width: pantallaCompleta ? cW : cWSmall,
                         height: pantallaCompleta ? cH : cHSmall
                     ) // Altura dinámica
-//                    .background(Color(ap.temaActual == .dark ? UIColor.systemGray5 : UIColor.systemGray6))
                     .background(ap.temaResuelto.backgroundGradient)
                     .cornerRadius(pantallaCompleta ? 0 : 15)
                     .shadow(radius: !pantallaCompleta ? 10 : 0)
