@@ -88,6 +88,7 @@
 		D4B0CCEA2E577AA9000C69CF /* ProgresoLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */; };
 		D4B0CCEC2E577BAF000C69CF /* ProgresoTiempo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */; };
 		D4B159462E57D5F100942B91 /* GraficoVelocidad.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B159452E57D5F100942B91 /* GraficoVelocidad.swift */; };
+		D4B159482E57DC1A00942B91 /* Tiempo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B159472E57DC1A00942B91 /* Tiempo.swift */; };
 		D4B23FA02E45F4F200425DB8 /* ContenidoAjustesGloables.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */; };
 		D4B23FA22E45F54F00425DB8 /* IndicesAjustes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */; };
 		D4B23FA42E46056800425DB8 /* AyudaMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23FA32E46056800425DB8 /* AyudaMenu.swift */; };
@@ -215,6 +216,7 @@
 		D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoLectura.swift; sourceTree = "<group>"; };
 		D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoTiempo.swift; sourceTree = "<group>"; };
 		D4B159452E57D5F100942B91 /* GraficoVelocidad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraficoVelocidad.swift; sourceTree = "<group>"; };
+		D4B159472E57DC1A00942B91 /* Tiempo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tiempo.swift; sourceTree = "<group>"; };
 		D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContenidoAjustesGloables.swift; sourceTree = "<group>"; };
 		D4B23FA12E45F54F00425DB8 /* IndicesAjustes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicesAjustes.swift; sourceTree = "<group>"; };
 		D4B23FA32E46056800425DB8 /* AyudaMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AyudaMenu.swift; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 				D4BF0B242DEF4B2B00152333 /* Enums */,
 				D4ACA26A2E48EB8D00A367D9 /* ManipulacionSizes.swift */,
 				D4B88CAF2E5467A900E68D45 /* Colores.swift */,
+				D4B159472E57DC1A00942B91 /* Tiempo.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -854,6 +857,7 @@
 				D4ADDB772DE9B9990097A010 /* Constantes.swift in Sources */,
 				D4A0FF3D2DEB3FD300195018 /* LineaSeparadora.swift in Sources */,
 				D4CF28E52E323D3D003B3ABC /* Desplazamiento.swift in Sources */,
+				D4B159482E57DC1A00942B91 /* Tiempo.swift in Sources */,
 				D48589712DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift in Sources */,
 				D47139C12E0AE44200B5FA35 /* ListaVista.swift in Sources */,
 				D4DF317E2DEC77D1000D15CC /* PlaceholderCuadricula.swift in Sources */,

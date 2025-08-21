@@ -194,9 +194,10 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     private var timerCancellable: AnyCancellable?
     @Published var tiempoActual: TimeInterval = 0      // se actualiza en vivo
     @Published var tiempoTotal: TimeInterval { didSet { pd.guardarDatoArchivo(valor: Int(tiempoTotal), elementoURL: url, key: cpe.tiempoLecturaTotal) } } //guardamos el tiempo total al cambiarse
+    var tiempoRestante: TimeInterval = 0 // <- implicito en el progreso circular
     private var inicioPagina: Date? //<- calcular el tiempo
     var tiempoPorPagina: TimeInterval = 0 // <- grafica de barras o algo por el estilo moderno
-    var tiempoRestante: TimeInterval = 0 // <- implicito en el progreso circular
+
     
     // --- VELOCIDAD ---
     var velocidadLectura: Double?

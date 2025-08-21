@@ -43,3 +43,58 @@ struct ProgresoCircularTest: View {
     }
     
 }
+
+
+struct ProgresoCircularTestTiempo: View {
+    var tiempoTotal: TimeInterval
+    var tiempoRestante: TimeInterval
+    var color: Color
+    
+    @State private var animatedValor: Double = 0
+    
+    var body: some View {
+        let progreso = (tiempoTotal > 0 && (tiempoTotal + tiempoRestante) > 0)
+            ? min(tiempoTotal / (tiempoTotal + tiempoRestante), 1.0)
+            : 0
+        
+        ZStack {
+            Circle()
+                .stroke(lineWidth: 12)
+                .opacity(0.2)
+                .foregroundColor(.secondary)
+            
+            Circle()
+                .trim(from: 0.0, to: animatedValor)
+                .stroke(style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                .foregroundColor(color)
+                .rotationEffect(.degrees(-90))
+                .onAppear {
+                    animatedValor = progreso // arranca inicial
+                }
+                .onChange(of: progreso) { newValue in
+                    withAnimation(.easeInOut(duration: 1.1)) {
+                        animatedValor = newValue
+                    }
+                }
+
+            
+            VStack(spacing: 4) {
+                // Texto dinámico
+                Text(tiempoTotal.formattedTime())
+                    .font(.system(size: 14, weight: .bold))
+                    .multilineTextAlignment(.center)
+                Text("\(Int(progreso * 100))%")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .onAppear {
+            print("TIEMPO TOTAL: ", tiempoTotal)
+            print("TIEMPO res: ", tiempoRestante)
+            print("P: ", progreso)
+        }
+        .frame(width: 120, height: 120)
+    }
+}
+
+
