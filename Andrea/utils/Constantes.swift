@@ -75,11 +75,22 @@ struct ClavesPersistenciaElementos {
     //tiempo total de lectura
     public let tiempoLecturaTotal: String = "tiempoLecturaTotal"
     
+    //tiempos por pagina
+    public let tiemposPorPagina: String = "tiemposPorPagina"
+    
+    //visitas por pagina
+    public let visitasPorPagina: String = "VisitasPorPagina"
+    
+    
+    
     //ARRAY DE CLAVES PARA PODER ACTUALIZAR EN PERSISTENCIA DEL TIRON
     public var arrayClavesPersistenciaElementos: [String] {
             [
                 progresoElemento, //pagina actual
-                miniaturaElemento //tipo de miniatura
+                miniaturaElemento, //tipo de miniatura
+                tiempoLecturaTotal,
+                tiemposPorPagina,
+                visitasPorPagina
             ]
         }
     
@@ -96,6 +107,12 @@ struct ValoresElementoPredeterminados {
     //ESTADISTICAS
     //tiempo total de lectura
     public let tiempoLecturaTotal: TimeInterval = 0
+    
+    //tiempos por pagina
+    public let tiemposPorPagina: [String:TimeInterval] = [:]
+    
+    //visitas por pagina
+    public let visitasPorPagina: [String:Int] = [:]
     
 }
 //MARK: - --- PERSISTENCIA DATOS DE ELEMENTOS ---

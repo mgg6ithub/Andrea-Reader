@@ -38,6 +38,13 @@ extension PersistenciaDatos {
         case let v as TimeInterval: return Int(v)           // segundos redondeados
             
         //Arrays y diccinarios
+        // ✅ Diccionarios con claves Int -> claves String
+        case let v as [Int: Int]:
+            return Dictionary(uniqueKeysWithValues: v.map { (String($0.key), $0.value) })
+
+        case let v as [Int: TimeInterval]:
+            return Dictionary(uniqueKeysWithValues: v.map { (String($0.key), Int($0.value.rounded())) })
+
         case let v as [String:Int]:    return v
         case let v as [String:Double]: return v
         case let v as [String:Bool]:   return v
@@ -290,6 +297,44 @@ struct PersistenciaDatos {
     }
     
 }
+
+extension PersistenciaDatos {
+    func recuperarTiemposPorPagina(elementoURL: URL, key: String) -> [Int: TimeInterval] {
+        let k = obtenerKey(elementoURL)
+        let mapa = obtenerMapa(key: key)
+
+        guard let raw = mapa[k] as? [String: Any] ?? mapa[k] as? [String: Int] else {
+            return [:]
+        }
+
+        var result: [Int: TimeInterval] = [:]
+        for (ks, v) in raw {
+            guard let page = Int(ks) else { continue }
+            if let n = v as? Int {
+                result[page] = TimeInterval(n)
+            } else if let d = v as? Double {
+                result[page] = d
+            }
+        }
+        return result
+    }
+
+    func recuperarVisitasPorPagina(elementoURL: URL, key: String) -> [Int: Int] {
+        let k = obtenerKey(elementoURL)
+        let mapa = obtenerMapa(key: key)
+
+        guard let raw = mapa[k] as? [String: Int] else { return [:] }
+
+        var result: [Int: Int] = [:]
+        for (ks, v) in raw {
+            if let page = Int(ks) {
+                result[page] = v
+            }
+        }
+        return result
+    }
+}
+
 
 
 

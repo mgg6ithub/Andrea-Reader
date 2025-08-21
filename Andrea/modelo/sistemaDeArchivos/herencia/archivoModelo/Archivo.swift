@@ -106,12 +106,12 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
     }// --- PREVIEW ---
     
-    
-    // --- PROGRESO DEL ARCHIVO ---
+    //MARK: - --- CONSTANTES DE ESTRCUCTURAS ---
     let pd = PersistenciaDatos()
     let cpe = ClavesPersistenciaElementos()
     let p = ValoresElementoPredeterminados()
     
+    //MARK: - --- INFORMACION GENERALES ---
     @Published var tipoMiniatura: EnumTipoMiniatura = .primeraPagina
     
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
@@ -143,17 +143,10 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     var idioma: EnumIdiomas = .castellano
     var genero: String = ""
     
-    //MARK: - --- VARIABLES CALCULADAS ---
-    //PROGRESO
-    @Published var totalPaginas: Int? {
-        didSet {
-            actualizarProgreso()
-        }
-    }
+    //MARK: - --- VARIABLES CALCULADAS Y ESTADISTICAS ---
     
-    //TIEMPO
+    //NECESARIAS PARA SABER CUANDO SE INICIA LA LECTURA
     private var inicioLectura: Date?
-    
     var estaLeyendose: Bool = false {
         didSet {
             if estaLeyendose {
@@ -164,36 +157,41 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         }
     }
     
+    // --- PROGRESO Y PAGINAS ---
+    @Published var totalPaginas: Int? {
+        didSet {
+            actualizarProgreso()
+        }
+    }
+    @Published var paginaActual: Int { didSet { pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento) }}
+    @Published var paginasRestantes: Int = 0
+    // --- PAGINAS ---
+    @Published var paginaVisitadaMasTiempo: (Int, TimeInterval) = (0,0)// <- Curiosidad
+    @Published var paginaMasVisitada: Int = 0         // <- Curiosidad
+    private var tiemposPorPagina: [Int: TimeInterval] = [:]  // tiempo acumulado por pagina
+    private var visitasPorPagina: [Int: Int] = [:]           // nº de veces abierta
+    
     @Published var progreso: Int = 0
     @Published var progresoEntero: Double = 0
-    @Published var paginaActual: Int { didSet { pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento) }}
     
-    //TIEMPOS
+    // --- TIEMPOS ---
     private var timerCancellable: AnyCancellable?
     @Published var tiempoActual: TimeInterval = 0      // se actualiza en vivo
     @Published var tiempoTotal: TimeInterval { didSet { pd.guardarDatoArchivo(valor: Int(tiempoTotal), elementoURL: url, key: cpe.tiempoLecturaTotal) } } //guardamos el tiempo total al cambiarse
+    private var inicioPagina: Date? //<- calcular el tiempo
     var tiempoPorPagina: TimeInterval = 0 // <- grafica de barras o algo por el estilo moderno
     var tiempoRestante: TimeInterval = 0 // <- implicito en el progreso circular
     
-    //Paginas
-    private var inicioPagina: Date?
-    @Published var paginaVisitadaMasTiempo: (Int, TimeInterval) = (0,0)// <- Curiosidad
-    var paginasRestantes: Int?          // <- progresp circular
-    @Published var paginaMasVisitada: Int = 0         // <- Curiosidad
+    // --- VELOCIDAD ---
+    var velocidadLectura: Double?
+    var velocidadMax: Double?
+    var velocidadMin: Double?
     
-    private var tiemposPorPagina: [Int: TimeInterval] = [:]  // tiempo acumulado
-    private var visitasPorPagina: [Int: Int] = [:]           // nº de veces abierta
-    
-    //DIAS (ESTO ES MAS PARA ARCHIVOS GRANDES)
+    // --- AVANCES Y HABITOS ---
     var avanceDiario: Double?
     var diasTotalesLectura: Int?
     var diasConsecutivosLecutra: Int?
     var horaFrecuente: Date?
-    
-    //velocidad <- necesito un grafico
-    var velocidadLectura: Double?
-    var velocidadMax: Double?
-    var velocidadMin: Double?
     
     var masInformacion: Bool = false
     
@@ -244,6 +242,10 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.tipoMiniatura = pd.recuperarDatoArchivoEnum(elementoURL: fileURL, key: cpe.miniaturaElemento, default: p.miniaturaElemento)
         
         self.tiempoTotal = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.tiempoLecturaTotal, default: p.tiempoLecturaTotal)
+        
+        self.tiemposPorPagina = pd.recuperarTiemposPorPagina(elementoURL: fileURL, key: cpe.tiemposPorPagina)
+        
+        self.visitasPorPagina = pd.recuperarVisitasPorPagina(elementoURL: fileURL, key: cpe.visitasPorPagina)
         
         super.init(nombre: fileName, url: fileURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
@@ -332,6 +334,11 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     //MARK: - --- ESTADISTICAS ---
     func iniciarLectura() {
         guard inicioLectura == nil else { return }
+        
+//        print("AL ENTRAR DEL COMIC")
+//        self.imprimirDatos()
+//        print()
+        
         inicioLectura = Date()
         
         // Iniciar un timer cada segundo
@@ -362,8 +369,16 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         recalcularTiempos()
         recalcularVisitas()
         
+//        print("AL SALIR DEL COMIC")
+//        self.imprimirDatos()
+//        print()
+        
         //velocidad de lectura
         calcularVelocidadLectura()
+        
+        //persistencia
+        pd.guardarDatoArchivo(valor: tiemposPorPagina, elementoURL: url, key: cpe.tiemposPorPagina)
+        pd.guardarDatoArchivo(valor: visitasPorPagina, elementoURL: url, key: cpe.visitasPorPagina)
         
         // Parar el timer
         timerCancellable?.cancel()
@@ -388,12 +403,26 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //VELOCIDAD DE LECTURA: Paginas por minuto
     func calcularVelocidadLectura() {
-        guard let total = totalPaginas, total > 0 else { return }
-        let paginasLeidas = min(paginaActual, total)
-        guard paginasLeidas > 0, tiempoTotal > 0 else { return }
+        let totalTiempo = tiemposPorPagina.values.reduce(0, +) // segundos
+        let paginasContadas = tiemposPorPagina.keys.count      // páginas con tiempo real
         
-        velocidadLectura = Double(paginasLeidas) / (tiempoTotal / 60.0)
-        print("Velocidad de lectura: ", velocidadLectura)
+        guard paginasContadas > 0, totalTiempo > 0 else { return }
+        
+        // páginas por minuto
+        velocidadLectura = Double(paginasContadas) / (totalTiempo / 60.0)
+    }
+    
+    private func imprimirDatos() {
+        print("Tiempos por pagina")
+        for e in self.tiemposPorPagina {
+            print("Página \(e.key) -> \(e.value)s")
+        }
+        print()
+        print()
+        print("Visitas por pagina")
+        for e in self.visitasPorPagina {
+            print("Página \(e.key) -> \(e.value)v")
+        }
     }
     
 }
