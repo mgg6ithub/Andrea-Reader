@@ -2,10 +2,12 @@
 
 import SwiftUI
 
-struct ProgresoCircular: View {
-    var valor: Double // 0.0 a 1.0
+struct ProgresoCircularTest: View {
+    
+    var progreso: Int // 0.0 a 1.0
+    var progresoEntero: Double
     var color: Color
-
+    
     @State private var animatedValor: Double = 0
     
     var body: some View {
@@ -20,10 +22,10 @@ struct ProgresoCircular: View {
                 .stroke(style: StrokeStyle(lineWidth: 12, lineCap: .round))
                 .foregroundColor(color)
                 .rotationEffect(.degrees(-90))
-                .animation(.easeOut, value: valor)
+                .animation(.easeOut, value: progresoEntero)
                 .onAppear {
-                    withAnimation {
-                        animatedValor = valor
+                    withAnimation(.easeInOut(duration: 1.1)) {
+                        animatedValor = progresoEntero
                     }
                 }
             
@@ -32,10 +34,12 @@ struct ProgresoCircular: View {
                     .font(.system(size: 15))
                     .offset(y: -4)
                     .opacity(0.7)
-                Text("\(Int(valor * 100))")
-                        .font(.system(size: 25))
+                Color.clear
+                    .animatedProgressText1(Int(progreso))
+                    .font(.system(size: 25))
             }
         }
         .frame(width: 90, height: 90)
     }
+    
 }

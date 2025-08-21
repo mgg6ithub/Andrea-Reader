@@ -24,6 +24,8 @@ private struct PreviewMasInformacion: View {
 
 struct ProgresoLectura: View {
     
+    @ObservedObject var archivo: Archivo
+    
     var body: some View {
         HStack(alignment: .bottom, spacing: 30) {
             VStack(alignment: .leading, spacing: 0) {
@@ -33,7 +35,7 @@ struct ProgresoLectura: View {
                     .padding(.bottom, 20)
                 
                 VStack(alignment: .leading, spacing: 15) {
-                    ProgresoCircularTest(valor: 0.34, color: .green)
+                    ProgresoCircularTest(progreso: archivo.progreso, progresoEntero: archivo.progresoEntero, color: .green)
                     
                     VStack(alignment: .center, spacing: 0) {
                         HStack(spacing: 3) {
@@ -46,7 +48,7 @@ struct ProgresoLectura: View {
                         }
                         
                         HStack(alignment: .bottom, spacing: 1.5) {
-                            Text("15")
+                            Text("\(archivo.paginaActual)")
                                 .font(.system(size: 20))
                                 .foregroundColor(.green.opacity(0.65))
                             Text("Páginas")
@@ -68,7 +70,7 @@ struct ProgresoLectura: View {
                         }
                         
                         HStack(alignment: .bottom, spacing: 1.5) {
-                            Text("33")
+                            Text("\(archivo.paginasRestantes)")
                                 .font(.system(size: 20))
                                 .foregroundColor(.secondary.opacity(0.65))
                             Text("Páginas")
@@ -100,9 +102,12 @@ struct ReadingProgress: Identifiable {
 struct GraficoTest: View {
     let data: [ReadingProgress] = [
         ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 21))!, actual: 0,  ideal: 0),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 22))!, actual: 20, ideal: 25),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 23))!, actual: 35, ideal: 50),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 24))!, actual: 55, ideal: 75),
+        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 22))!, actual: 30, ideal: 15),
+        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 23))!, actual: 10, ideal: 30),
+        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 24))!, actual: 45, ideal: 45),
+        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 25))!, actual: 70, ideal: 60),
+        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 26))!, actual: 80, ideal: 75),
+        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 27))!, actual: 95, ideal: 95),
     ]
     
     var body: some View {

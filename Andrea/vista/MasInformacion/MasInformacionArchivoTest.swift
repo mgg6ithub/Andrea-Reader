@@ -38,16 +38,16 @@ struct MasInformacionArchivoTest: View {
     private var isSmall: Bool { ap.resolucionLogica == .small }
     
     var body: some View {
-        ScrollView(.vertical) {
+        ScrollView(.vertical, showsIndicators: false) {
             //cmabiar cuando es iphone a vertical
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Contenido(archivo: archivo)
+                    Contenido(archivo: archivo, vm: vm)
                 }
                 .padding(.bottom, 10)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    ProgresoLectura()
+                    ProgresoLectura(archivo: archivo)
                     
                     Rectangle()
                         .frame(height: 1)
@@ -55,7 +55,7 @@ struct MasInformacionArchivoTest: View {
                         .padding(.vertical, 20)
                         .padding(.horizontal, 10)
                     
-                    ProgresoTiempo()
+                    ProgresoTiempo(archivo: archivo)
                         .padding(.bottom, 15)
                 }
                 .overlay(
@@ -67,18 +67,7 @@ struct MasInformacionArchivoTest: View {
                     Text("hola")
                 }
                 .frame(height: 300)
-                
-                
-//                ProgresoTiempo()
             }
-//            .padding(.leading, 30)
-//            .padding(.vertical, 100)
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//            .overlay(
-//                RoundedRectangle(cornerRadius: 15)
-//                    .stroke(.gray.opacity(0.25), lineWidth: 1)
-//            )
-//            .padding(.top, 10)
             
         }
         .padding(.horizontal, 20)
@@ -89,9 +78,9 @@ struct Contenido: View {
     @EnvironmentObject var ap: AppEstado
     
     @ObservedObject var archivo: Archivo
-    
+    @ObservedObject var vm: ModeloColeccion
     var body: some View {
-        ImagenMiniatura(archivo: archivo)
+        ImagenMiniatura(archivo: archivo, vm: vm)
         //                        .frame(maxWidth: .infinity, alignment: .leading)
         Spacer()
         VStack(alignment: .center, spacing: 0) {
@@ -151,89 +140,169 @@ struct Contenido: View {
     }
 }
 
-
-struct ImagenMiniatura: View {
-    @EnvironmentObject var ap: AppEstado
-    @ObservedObject var archivo: Archivo
-
+struct RectanguloDato: View {
+    
+    let nombre: String
+    let dato: String
+    let icono: String
+    let color: Color
+    
+    var ancho: CGFloat { 100 }
+    var alto: CGFloat { 60 }
+     
+    let opacidad: CGFloat = 0.1
+    
     var body: some View {
-        Image("ojo")
-            .resizable()
-            .frame(width: 220, height: 340 * ap.constantes.scaleFactor)
-            .cornerRadius(15)
-            // Degradado abajo
-            .overlay(alignment: .bottom) {
-                LinearGradient(
-                    gradient: Gradient(stops: [
-                        .init(color: .black.opacity(0.85), location: 0.0),
-                        .init(color: .black.opacity(0.85), location: 0.7),
-                        .init(color: .clear,                location: 1.0)
-                    ]),
-                    startPoint: .bottom,
-                    endPoint: .top
-                )
-                .frame(height: 85)
-                .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))
-                .allowsHitTesting(false)
-            }
-            // Ojo + estrellas centrados y apilados
-            .overlay(alignment: .bottom) {
-                VStack(alignment: .center, spacing: 8) {
-                    Image("custom-eye")
-                        .renderingMode(.template)    // para tintar
-                        .foregroundColor(.gray)
-                        .padding(.top, 4)
-
-                    EditableStarRating(url: archivo.url, puntuacion: $archivo.puntuacion)
-                        .frame(maxWidth: .infinity, alignment: .center) // <-- fuerza ancho para centrar
+        ZStack(alignment: .center) {
+            
+            RoundedRectangle(cornerRadius: 10)
+                .fill(color.opacity(opacidad))
+                .frame(width: ancho, height: alto)
+                .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
+                .zIndex(0)
+            
+            VStack(alignment: .center, spacing: 10) {
+                HStack(spacing: 2.5) {
+                    Image(systemName: icono)
+                        .foregroundColor(color)
+                    
+                    Text(nombre)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                 }
-                .frame(maxWidth: .infinity)   // <-- ocupa todo el ancho del overlay
-                .padding(.horizontal, 12)
-                .padding(.bottom, 12)
-
+                .zIndex(1)
+                
+                Text(dato)
+                    .font(.subheadline)
+                    .bold()
             }
-            .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))
+            
+        }
     }
 }
 
 
-struct ProgresoCircularTest: View {
+struct ImagenMiniatura: View {
+    @EnvironmentObject var ap: AppEstado
+    @ObservedObject var archivo: Archivo
+    @ObservedObject var vm: ModeloColeccion
     
-    var valor: Double // 0.0 a 1.0
-    var color: Color
-    
-    @State private var animatedValor: Double = 0
-    
+    @StateObject private var viewModel = ModeloMiniaturaArchivo()
+
     var body: some View {
         ZStack {
-            Circle()
-                .stroke(lineWidth: 12)
-                .opacity(0.2)
-                .foregroundColor(.secondary)
-            
-            Circle()
-                .trim(from: 0.0, to: CGFloat(animatedValor))
-                .stroke(style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                .foregroundColor(color)
-                .rotationEffect(.degrees(-90))
-                .animation(.easeOut, value: valor)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 1.5)) {
-                        animatedValor = valor
+            if let img = viewModel.miniatura {
+                Image(uiImage: img)
+                    .resizable()
+                    .frame(width: 220, height: 340 * ap.constantes.scaleFactor)
+                    .cornerRadius(15)
+                    .overlay(alignment: .bottom) {
+                        LinearGradient(
+                            gradient: Gradient(stops: [
+                                .init(color: .black.opacity(0.85), location: 0.0),
+                                .init(color: .black.opacity(0.85), location: 0.7),
+                                .init(color: .clear,                location: 1.0)
+                            ]),
+                            startPoint: .bottom,
+                            endPoint: .top
+                        )
+                        .frame(height: 85)
+                        .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))
+                        .allowsHitTesting(false)
                     }
-                }
+                    // Ojo + estrellas centrados y apilados
+                    .overlay(alignment: .bottom) {
+                        VStack(alignment: .center, spacing: 8) {
+                            Image("custom-eye")
+                                .renderingMode(.template)    // para tintar
+                                .foregroundColor(.gray)
+                                .padding(.top, 4)
+
+                            EditableStarRating(url: archivo.url, puntuacion: $archivo.puntuacion)
+                                .frame(maxWidth: .infinity, alignment: .center) // <-- fuerza ancho para centrar
+                        }
+                        .frame(maxWidth: .infinity)   // <-- ocupa todo el ancho del overlay
+                        .padding(.horizontal, 12)
+                        .padding(.bottom, 12)
+
+                    }
+                    .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))
+            } else {
+                ProgressView()
+            }
+                
+        }
+        .onAppear {
+            viewModel.loadThumbnail(color: vm.color, for: archivo)
+        }
+        .onDisappear {
+            viewModel.unloadThumbnail(for: archivo)
+        }
+    }
+}
+
+struct EditableStarRating: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
+    let url: URL
+    @Binding var puntuacion: Double // permite valores como 3.5
+    let maxRating: Int = 5
+    private var iz: CGFloat { ap.constantes.iconSize }
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            Spacer()
             
-            HStack(alignment: .bottom, spacing: 1.5) {
-                Text("%")
-                    .font(.system(size: 15))
-                    .offset(y: -4)
-                    .opacity(0.7)
-                Color.clear
-                    .animatedProgressText1(Int(valor) * 100)
-                    .font(.system(size: 25))
+            ForEach(1...maxRating, id: \.self) { index in
+                let starType = starImageType(for: index)
+                
+                Image(systemName: starType)
+                    .font(.system(size: iz))
+                    .foregroundColor(.yellow)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            // Si ya está en media estrella, pasa a estrella completa; si está completa, baja a media
+                            if puntuacion == Double(index) {
+                                puntuacion = Double(index) - 0.5
+                            } else {
+                                puntuacion = Double(index)
+                            }
+                        }
+                        PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
+                    }
+            }
+            
+            Spacer()
+            
+            Text(String(format: "%.1f", puntuacion))
+                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.9, a: 0.6, l: 1, alig: .center, mW: 25)
+        }
+        .gesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { value in
+                    let totalWidth = CGFloat(maxRating) * (iz + 4) - 4
+                    let clampedX = min(max(value.location.x, 0), totalWidth)
+                    let rawStars = Double(clampedX / (totalWidth / CGFloat(maxRating)))
+                    
+                    // Redondear a media estrella
+                    let halfStep = (rawStars * 2).rounded() / 2
+                    puntuacion = min(Double(maxRating), max(0.5, halfStep))
+                }
+                .onEnded { _ in
+                    PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
+                }
+        )
+    }
+    
+    private func starImageType(for index: Int) -> String {
+            if puntuacion >= Double(index) {
+                return "star.fill"
+            } else if puntuacion >= Double(index) - 0.5 {
+                return "star.lefthalf.fill"
+            } else {
+                return "star"
             }
         }
-        .frame(width: 90, height: 90)
-    }
     
 }

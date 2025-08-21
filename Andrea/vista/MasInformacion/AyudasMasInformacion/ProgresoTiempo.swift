@@ -22,6 +22,8 @@ private struct PreviewMasInformacion2: View {
 
 struct ProgresoTiempo: View {
     
+    @ObservedObject var archivo: Archivo
+    
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
@@ -31,7 +33,7 @@ struct ProgresoTiempo: View {
                     .padding(.bottom, 20)
                 
                 VStack(alignment: .leading, spacing: 15) {
-                    ProgresoCircularTest(valor: 0.34, color: .blue)
+                    ProgresoCircularTest(progreso: Int(archivo.tiempoTotal) / 100, progresoEntero: Double(archivo.tiempoTotal) / 100, color: .blue)
                     
                     VStack(alignment: .center, spacing: 0) {
                         HStack(spacing: 3) {
@@ -44,7 +46,7 @@ struct ProgresoTiempo: View {
                         }
                         
                         HStack(alignment: .bottom, spacing: 1.5) {
-                            Text("8")
+                            Text("\(Int(archivo.tiempoTotal))")
                                 .font(.system(size: 20))
                                 .foregroundColor(.blue.opacity(0.65))
                             Text("Min")
@@ -52,6 +54,7 @@ struct ProgresoTiempo: View {
                                 .foregroundColor(.primary)
                                 .offset(y: -2)
                         }
+                        .offset(x: -16)
                         
                     }
                     
