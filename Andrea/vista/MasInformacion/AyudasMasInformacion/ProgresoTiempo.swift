@@ -1,6 +1,8 @@
 import SwiftUI
+import Charts
 
 #Preview {
+//    ProgresoTiempo(archivo: Archivo.preview)
     PreviewMasInformacion2()
 }
 
@@ -86,148 +88,132 @@ struct ProgresoTiempo: View {
             
             
             PageTimeChart()
-                .offset(y: 30)
         }
     }
 }
 
-import Charts
 
 struct PageTimeData: Identifiable {
     let id = UUID()
     let page: Int
-    let timeMinutes: Double
+    let percentage: Double
 }
 
 struct PageTimeChart: View {
     let data: [PageTimeData] = [
-        PageTimeData(page: 1, timeMinutes: 4.2),
-        PageTimeData(page: 2, timeMinutes: 3.8),
-        PageTimeData(page: 3, timeMinutes: 5.1),
-        PageTimeData(page: 4, timeMinutes: 7.2),
-        PageTimeData(page: 5, timeMinutes: 6.8),
-        PageTimeData(page: 6, timeMinutes: 8.5),
-        PageTimeData(page: 7, timeMinutes: 5.9),
-        PageTimeData(page: 8, timeMinutes: 9.2),
-        PageTimeData(page: 9, timeMinutes: 8.8),
-        PageTimeData(page: 10, timeMinutes: 7.1),
-        PageTimeData(page: 11, timeMinutes: 6.4),
-        PageTimeData(page: 12, timeMinutes: 5.8),
-        PageTimeData(page: 13, timeMinutes: 6.2),
-        PageTimeData(page: 14, timeMinutes: 4.9)
+        PageTimeData(page: 1, percentage: 4.2),
+        PageTimeData(page: 2, percentage: 3.8),
+        PageTimeData(page: 3, percentage: 6.5),
+        PageTimeData(page: 4, percentage: 6.2),
+        PageTimeData(page: 5, percentage: 7.1),
+        PageTimeData(page: 6, percentage: 6.9),
+        PageTimeData(page: 7, percentage: 7.5),
+        PageTimeData(page: 8, percentage: 7.4),
+        PageTimeData(page: 9, percentage: 6.8),
+        PageTimeData(page: 10, percentage: 5.9),
+        PageTimeData(page: 11, percentage: 6.1),
+        PageTimeData(page: 12, percentage: 6.0),
+        PageTimeData(page: 13, percentage: 6.7),
+        PageTimeData(page: 14, percentage: 5.2)
     ]
     
-    var averageTime: Double {
-        let total = data.reduce(0) { $0 + $1.timeMinutes }
-        return total / Double(data.count)
+    var average: Double {
+        data.map(\.percentage).reduce(0, +) / Double(data.count)
     }
     
+    // IDs de los 4 elementos más altos
+    var topFourPages: Set<UUID> {
+        let sorted = data.sorted { $0.percentage > $1.percentage }
+        return Set(sorted.prefix(4).map { $0.id })
+    }
+
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-//            Text("Página visitada más tiempo 8")
+        VStack(alignment: .leading, spacing: 12) {
+//            Text("Pagina visitada mas tiempo 8")
 //                .font(.headline)
-//                .foregroundColor(.primary)
 //                .padding(.horizontal)
             
-            Chart(data) { item in
-                BarMark(
-                    x: .value("Página", item.page),
-                    y: .value("Tiempo", item.timeMinutes)
-                )
-                .foregroundStyle(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            Color.blue.opacity(0.8),
-                            Color.blue.opacity(0.4)
-                        ]),
-                        startPoint: .top,
-                        endPoint: .bottom
+            Chart {
+                ForEach(data) { item in
+                    BarMark(
+                        x: .value("Página", String(item.page)),
+                        y: .value("Tiempo", item.percentage),
+                        width: 28
                     )
-                )
-                .cornerRadius(2)
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color.blue.opacity(0.5),
+                                Color.blue.opacity(0.05)
+                            ]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .cornerRadius(2)
+                    .annotation(position: .top) {
+                        // Línea arriba de cada barra
+                        Rectangle()
+                            .fill(Color.blue.opacity(0.8))
+                            .frame(width: 28, height: 3)
+                            .offset(y: 6)
+                    }
+                    // 👇 Aquí el truco: solo mostrar texto si está en el top 4
+                    .annotation(position: .top) {
+                        if topFourPages.contains(item.id) {
+                            Text("\(String(format: "%.1f", item.percentage))")
+                                .font(.caption2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.gray)
+                                .offset(y: -8) // lo sube un poco sobre la barra
+                        }
+                    }
+                }
+
+                // Línea de promedio
+                RuleMark(y: .value("Promedio", average))
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    .foregroundStyle(.black)
+                    .annotation(position: .overlay) {
+                        HStack {
+                            Spacer()
+                            Text("Avg \(String(format: "%.1f", average))%")
+                                .font(.caption2)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.black)
+                                .cornerRadius(4)
+                                .foregroundColor(.white)
+                                .padding(.trailing, 4) // 👈 pequeño margen dentro
+                        }
+                    }
             }
+
             .chartXAxis {
-                AxisMarks(values: .stride(by: 1)) { value in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0))
+                AxisMarks(values: data.map { String($0.page) }) { value in
+                    AxisGridLine(stroke: .init(lineWidth: 0))
                     AxisValueLabel {
-                        if let intValue = value.as(Int.self) {
-                            Text("\(intValue)")
-                                .font(.caption)
+                        if let page = value.as(String.self) {
+                            Text(page)
+                                .font(.caption2)
                                 .foregroundColor(.gray)
                         }
                     }
                 }
             }
             .chartYAxis {
-                AxisMarks { value in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, lineCap: .round))
-                        .foregroundStyle(.gray.opacity(0.3))
-                    AxisValueLabel {
-                        if let doubleValue = value.as(Double.self) {
-                            Text("\(Int(doubleValue))")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    AxisTick(stroke: StrokeStyle(lineWidth: 0))
+                AxisMarks(position: .leading) { _ in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0)) // sin grilla visible
                 }
             }
-            .chartYScale(domain: 0...10)
-            .overlay(
-                // Línea de promedio
-                Rectangle()
-                    .fill(.gray)
-                    .frame(width: 300, height: 1.5)
-                    .overlay(
-                        HStack(spacing: 0) {
-                            ForEach(0..<20, id: \.self) { _ in
-                                Rectangle()
-                                    .fill(.gray)
-                                    .frame(width: 4, height: 1)
-                                Rectangle()
-                                    .fill(.clear)
-                                    .frame(width: 2, height: 1)
-                            }
-                        }
-                    )
-                    .position(x: 250, y: CGFloat(260 - (averageTime * 21))) // Ajustar posición según el promedio
-                    .overlay(
-                        HStack {
-                            Text("Avg \(String(format: "%.1f", averageTime))%")
-                                .font(.caption)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .fill(.gray)
-                                )
-                            Spacer()
-                        }
-                        .position(x: 200, y: CGFloat(260 - (averageTime * 21)))
-                    )
-            )
-            .frame(width: 435, height: 210)
-//            .padding(.horizontal)
-            
-            // Etiqueta del eje X
-            HStack {
-                Spacer()
-                Text("Páginas")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .padding(.trailing, 40)
-            }
+            .frame(height: 220)
+            .padding(.horizontal, 40)
         }
     }
 }
 
-// Vista de prueba
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            PageTimeChart()
-        }
-        .padding()
-    }
-}
+
+
+
+

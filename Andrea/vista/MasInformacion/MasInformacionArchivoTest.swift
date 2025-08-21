@@ -47,15 +47,15 @@ struct MasInformacionArchivoTest: View {
                 .padding(.bottom, 10)
                     
                     VStack(alignment: .leading, spacing: 0) {
-                        if archivo.progreso == 0 && archivo.tiempoTotal == 0 {
+//                        if archivo.progreso == true && archivo.tiempoTotal == true {
                             
-                            HStack {
-                                Spacer()
-                                ImagenLibreriaVacia(imagen: "buhosf", texto: "Aun no has leido este comic! ¿A que esperas para hacerlo?", anchura: 200, altura: 200)
-                                Spacer()
-                            }
+//                            HStack {
+//                                Spacer()
+//                                ImagenLibreriaVacia(imagen: "buhosf", texto: "Aun no has leido este comic! ¿A que esperas para hacerlo?", anchura: 200, altura: 200)
+//                                Spacer()
+//                            }
 
-                        } else {
+//                        } else {
                             ProgresoLectura(archivo: archivo)
                             
                             Rectangle()
@@ -66,7 +66,7 @@ struct MasInformacionArchivoTest: View {
                             
                             ProgresoTiempo(archivo: archivo)
                                 .padding(.bottom, 15)
-                        }
+//                        }
                     }
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
