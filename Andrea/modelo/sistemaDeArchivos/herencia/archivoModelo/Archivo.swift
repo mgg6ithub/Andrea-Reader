@@ -274,10 +274,24 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //METODO PARA INICIAR LAS ESTADISTICAS COMPLEMENTARIAS A PARTIR DE LAS PRIMARIAS QUE SE INICIALIZAN EN EL CONSTRUCTOR
     public func crearEstadisticas() {
+        
         print("Creando estadisticas")
         self.paginasRestantes = calcularPaginasRestantes()
         self.progresoRestante = 100 - progreso
         print("Progreso restantes: ", progresoRestante)
+        
+        //velocidad de lectura
+        calcularVelocidadLectura()
+        print("VELOCIDAD: ", velocidadLectura)
+        
+        //tiempo restante
+        self.tiempoRestante = estimarTiempoRestante(velocidadPaginasPorMinuto: self.velocidadLectura)
+        
+        //Recalcular tiempos de paginas
+        recalcularTiempos()
+        recalcularVisitas()
+        print("Pagina visitada mas tiempo: ", self.paginaVisitadaMasTiempo)
+        print("Pagina mas vis: ", self.paginaMasVisitada)
     }
     
     //MARK: - --- FUNCIONES GENERALES ---
@@ -398,16 +412,9 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
             self.inicioPagina = nil
         }
         
-        //Recalcular tiempos de paginas
-        recalcularTiempos()
-        recalcularVisitas()
-        
 //        print("AL SALIR DEL COMIC")
 //        self.imprimirDatos()
 //        print()
-        
-        //velocidad de lectura
-        calcularVelocidadLectura()
         
         //persistencia
         pd.guardarDatoArchivo(valor: tiemposPorPagina, elementoURL: url, key: cpe.tiemposPorPagina)
@@ -444,6 +451,45 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         // páginas por minuto
         velocidadLectura = Double(paginasContadas) / (totalTiempo / 60.0)
     }
+    
+    /// Devuelve el tiempo restante estimado en segundos.
+    /// - Parameter v: velocidad en páginas por minuto. Si es nil usa histórico; si tampoco hay, usa proporcional al progreso.
+    func estimarTiempoRestante(velocidadPaginasPorMinuto v: Double? = nil) -> TimeInterval {
+        let total = totalPaginas ?? 0
+        guard total > 0 else { return 0 }
+
+        // Si paginaActual es índice 0-based y quieres "después de la actual":
+        let paginasDespuesDeLaActual = max(total - 1 - paginaActual, 0)
+
+        // Tiempo ya invertido en la página actual
+        let tiempoEnActual = inicioPagina.map { Date().timeIntervalSince($0) } ?? 0
+
+        // 1) Con velocidad explícita (pág/min)
+        if let v, v > 0 {
+            let segPorPag = 60.0 / v
+            let restanteActual = max(segPorPag - tiempoEnActual, 0)
+            return Double(paginasDespuesDeLaActual) * segPorPag + restanteActual
+        }
+
+        // 2) Con histórico (media de seg/página terminadas)
+        let tiempoLeido = tiemposPorPagina.values.reduce(0, +)
+        // Considera completas las páginas con registro + las anteriores a la actual
+        let paginasCompletas = max(tiemposPorPagina.count, min(paginaActual, total - 1))
+        if paginasCompletas > 0 {
+            let mediaSegPorPag = tiempoLeido / Double(paginasCompletas)
+            let restanteActual = max(mediaSegPorPag - tiempoEnActual, 0)
+            return Double(paginasDespuesDeLaActual) * mediaSegPorPag + restanteActual
+        }
+
+        // 3) Fallback proporcional al progreso (si tienes tiempoTotal para todo el libro)
+        if tiempoTotal > 0 && total > 1 {
+            let fracRestante = Double(paginasDespuesDeLaActual) / Double(total - 1)
+            return fracRestante * tiempoTotal
+        }
+
+        return 0
+    }
+
     
     private func imprimirDatos() {
         print("Tiempos por pagina")

@@ -49,7 +49,7 @@ struct ProgresoTiempo: View {
                             Text("\(Int(archivo.tiempoTotal))")
                                 .font(.system(size: 20))
                                 .foregroundColor(.blue.opacity(0.65))
-                            Text("Min")
+                            Text("s")
                                 .font(.system(size: 12.5))
                                 .foregroundColor(.primary)
                                 .offset(y: -2)
@@ -69,10 +69,10 @@ struct ProgresoTiempo: View {
                         }
                         
                         HStack(alignment: .bottom, spacing: 1.5) {
-                            Text("17")
+                            Text("\(Int(archivo.tiempoRestante))")
                                 .font(.system(size: 20))
                                 .foregroundColor(.secondary.opacity(0.65))
-                            Text("Min")
+                            Text("s")
                                 .font(.system(size: 12.5))
                                 .foregroundColor(.primary)
                                 .offset(y: -2)
