@@ -239,28 +239,40 @@ struct MiniaturaEinformacion: View {
 
     var body: some View {
         
-            if let img = viewModel.miniatura {
-                Image(uiImage: img)
-                    .resizable()
-                    .frame(width: 240 * ap.constantes.scaleFactor, height: 360 * ap.constantes.scaleFactor)
-                    .cornerRadius(18)
-                    .aparicionStiffness(show: $show1)
-            } else {
-                ProgressView()
+            ZStack(alignment: .bottom) {
+                
+                if let img = viewModel.miniatura {
+                    Image(uiImage: img)
+                        .resizable()
+                        .frame(width: 240 * ap.constantes.scaleFactor, height: 360 * ap.constantes.scaleFactor)
+                        .cornerRadius(18)
+                        .aparicionStiffness(show: $show1)
+                } else {
+                    ProgressView()
+                }
+            
+                EditableStarRating(url: archivo.url, puntuacion: $archivo.puntuacion)
+                    .background(.white, in: .capsule)
+                    .padding(.bottom, 20)
+                
+                Image("custom-eye")
+                    .background(.white, in: .capsule)
+                    .offset(x: 60, y: -200)
+                    .padding()
             }
             
             ZStack(alignment: .top) {
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.gray.opacity(opacidad))
+                    .fill(.clear)
                     .frame(height: isSmall ? 360 * 1.5 : 360)
                     .overlay(
-                            RoundedRectangle(cornerRadius: 25)
-                                .stroke(.black.opacity(0.6), lineWidth: 2) // borde gris oscuro
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.black.opacity(0.6), lineWidth: 1) // borde gris oscuro
                         )
                     .shadow(color: .black.opacity(0.225), radius: 10, x: 0, y: 5)
                     .zIndex(0)
                 
-                VStack(alignment: .center, spacing: 8) { // ahora leading
+                VStack(alignment: .center, spacing:	 8) { // ahora leading
                     if !isSmall {
                         HStack(alignment: .top, spacing: 15) { // alinear por arriba
                             TituloDescripcion(archivo: archivo, isSmall: isSmall)
@@ -395,8 +407,6 @@ struct TituloDescripcion: View {
             Text("por \(archivo.autor)")
                 .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.7, l: 1, c: .secondary, alig: .center)
             
-            // Sistema de puntuación
-            EditableStarRating(url: archivo.url, puntuacion: $archivo.puntuacion)
         }
         
         VStack(alignment: .leading, spacing: 8) {

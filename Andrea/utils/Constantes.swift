@@ -62,6 +62,7 @@ struct ConstantesPorDefecto {
     //MARK: - --- IMAGENES ---
 }
 
+//MARK: - --- PERSISTENCIA DATOS DE ELEMENTOS ---
 struct ClavesPersistenciaElementos {
     
     //PROGRESO DE UN ELEMENTO
@@ -70,6 +71,9 @@ struct ClavesPersistenciaElementos {
     //MINIATURA DE UN ELEMENTO
     public let miniaturaElemento: String = "miniatura_archivo"
     
+    //ESTADISTICAS
+    //tiempo total de lectura
+    public let tiempoLecturaTotal: String = "tiempoLecturaTotal"
     
     //ARRAY DE CLAVES PARA PODER ACTUALIZAR EN PERSISTENCIA DEL TIRON
     public var arrayClavesPersistenciaElementos: [String] {
@@ -89,7 +93,12 @@ struct ValoresElementoPredeterminados {
     //MINIATURA DE UN ELEMENTO
     public let miniaturaElemento: EnumTipoMiniatura = .primeraPagina
     
+    //ESTADISTICAS
+    //tiempo total de lectura
+    public let tiempoLecturaTotal: TimeInterval = 0
+    
 }
+//MARK: - --- PERSISTENCIA DATOS DE ELEMENTOS ---
 
 struct ClavesPersistenciaAjustesGenerales {
     

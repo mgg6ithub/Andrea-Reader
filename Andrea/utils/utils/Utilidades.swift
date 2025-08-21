@@ -66,7 +66,7 @@ struct Benchmark {
     init(_ label: String) {
         self.label = label
         self.startTime = CFAbsoluteTimeGetCurrent()
-//        print("⏱️ [\(label)] Inicio benchmark")
+        print("⏱️ [\(label)] Inicio benchmark")
     }
 
     func end() {

@@ -33,6 +33,10 @@ extension PersistenciaDatos {
         //colores
         case let v as Color: return v.toHexString
             
+        // fechas y tiempos
+        case let v as Date: return v.timeIntervalSince1970  // Double
+        case let v as TimeInterval: return Int(v)           // segundos redondeados
+            
         //Arrays y diccinarios
         case let v as [String:Int]:    return v
         case let v as [String:Double]: return v

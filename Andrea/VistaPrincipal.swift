@@ -183,8 +183,18 @@ struct MenuLectura: View {
             HStack {
                 Button("Cerrar") {
                     //antes de cerrar guardamos el progreso actualizando la pagina
+                    print("terminando lectura")
+                    archivo.estaLeyendose = false
+                    
+                    print("Tiempo total de lectura: \(archivo.tiempoTotal)s")
+                    
                     cerrar()
                 } // ← ya no toca el menú
+                
+                Spacer()
+                
+                Text("Tiempo: \(formatTime(archivo.tiempoActual))")
+                
                 Spacer()
                 Text("Progreso: \(archivo.progreso)%")
                 Spacer()
@@ -195,6 +205,18 @@ struct MenuLectura: View {
             Spacer()
         }
     }
+    
+    func formatTime(_ interval: TimeInterval) -> String {
+        let minutes = Int(interval) / 60
+        let seconds = Int(interval) % 60
+        if minutes > 0 {
+            return "\(minutes)m \(seconds)s"
+        } else {
+            return "\(seconds)s"
+        }
+        
+    }
+    
 }
 
 
