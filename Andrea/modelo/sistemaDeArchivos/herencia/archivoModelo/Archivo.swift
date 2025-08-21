@@ -161,7 +161,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     @Published var totalPaginas: Int? {
         didSet {
             actualizarProgreso()
-            self.paginasRestantes = calcularPaginasRestantes()
         }
     }
     
@@ -277,7 +276,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     public func crearEstadisticas() {
         print("Creando estadisticas")
         self.paginasRestantes = calcularPaginasRestantes()
-        print(paginasRestantes)
+        self.progresoRestante = 100 - progreso
+        print("Progreso restantes: ", progresoRestante)
     }
     
     //MARK: - --- FUNCIONES GENERALES ---
@@ -347,8 +347,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         let frac = Double(min(paginaActual, total - 1)) / Double(total - 1)
         progresoEntero = frac
         progreso = Int(round(frac * 100))
-        
-        self.progresoRestante = 100 - progreso
     }
     
     
