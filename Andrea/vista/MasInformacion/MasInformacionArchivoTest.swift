@@ -56,6 +56,7 @@ struct MasInformacionArchivoTest: View {
 //                            }
 
 //                        } else {
+                        
                             ProgresoLectura(archivo: archivo)
                             
                             Rectangle()

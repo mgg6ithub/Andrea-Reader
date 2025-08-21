@@ -22,72 +22,138 @@ private struct PreviewMasInformacion: View {
     }
 }
 
+struct Botones: View {
+    
+    @Binding var cambio: Bool
+    
+    var body: some View {
+        HStack{
+            Button(action: {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    cambio = true
+                }
+            }) {
+                HStack(spacing: 4) {
+                    Text("vel")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                }
+                .foregroundColor(cambio ? .white : .secondary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(cambio ? Color.gray : Color.clear)
+                )
+            }
+            
+            Button(action: {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    cambio = false
+                }
+            }) {
+                HStack(spacing: 4) {
+                    Text("pro")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                }
+                .foregroundColor(cambio ? .secondary : .white)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(cambio ? Color.clear : Color.gray)
+                )
+            }
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.ultraThinMaterial)
+                .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+        )
+    }
+}
+
 struct ProgresoLectura: View {
     
     @ObservedObject var archivo: Archivo
     
+    @State private var cambio: Bool = true
+    
     var body: some View {
         HStack(alignment: .bottom, spacing: 30) {
             VStack(alignment: .leading, spacing: 0) {
-                Text("Progreso lectura")
-                    .font(.system(size: 18))
-                    .bold()
-                    .padding(.bottom, 20)
-                
-                VStack(alignment: .leading, spacing: 15) {
-                    ProgresoCircularTest(progreso: archivo.progreso, progresoEntero: archivo.progresoEntero, color: .green)
-                    
-                    VStack(alignment: .center, spacing: 0) {
-                        HStack(spacing: 3) {
-                            RoundedRectangle(cornerRadius: 2.5)
-                                .fill(.green.opacity(0.65))
-                                .frame(width: 4, height: 12)
-                            Text("Completado")
-                                .font(.system(size: 15))
-                                .foregroundColor(.primary)
+                HStack {
+                    Text("Progreso lectura")
+                        .font(.system(size: 18))
+                        .bold()
+                        .padding(.top, 10)
+                    Spacer()
+                    Botones(cambio: $cambio)
+                        .padding(.trailing, 20)
+                }
+                HStack {
+                    VStack(alignment: .leading, spacing: 15) {
+                        ProgresoCircularTest(progreso: archivo.progreso, progresoEntero: archivo.progresoEntero, color: .green)
+                        
+                        VStack(alignment: .center, spacing: 0) {
+                            HStack(spacing: 3) {
+                                RoundedRectangle(cornerRadius: 2.5)
+                                    .fill(.green.opacity(0.65))
+                                    .frame(width: 4, height: 12)
+                                Text("Completado")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.primary)
+                            }
+                            
+                            HStack(alignment: .bottom, spacing: 1.5) {
+                                Text("\(archivo.paginaActual)")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.green.opacity(0.65))
+                                Text("Páginas")
+                                    .font(.system(size: 12.5))
+                                    .foregroundColor(.primary)
+                                    .offset(y: -2)
+                            }
+                            
                         }
                         
-                        HStack(alignment: .bottom, spacing: 1.5) {
-                            Text("\(archivo.paginaActual)")
-                                .font(.system(size: 20))
-                                .foregroundColor(.green.opacity(0.65))
-                            Text("Páginas")
-                                .font(.system(size: 12.5))
-                                .foregroundColor(.primary)
-                                .offset(y: -2)
+                        VStack(alignment: .center, spacing: 0) {
+                            HStack(spacing: 3) {
+                                RoundedRectangle(cornerRadius: 2.5)
+                                    .fill(.secondary.opacity(0.65))
+                                    .frame(width: 4, height: 12)
+                                Text("Todavía faltan")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.primary)
+                            }
+                            
+                            HStack(alignment: .bottom, spacing: 1.5) {
+                                Text("\(archivo.paginasRestantes)")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.secondary.opacity(0.65))
+                                Text("Páginas")
+                                    .font(.system(size: 12.5))
+                                    .foregroundColor(.primary)
+                                    .offset(y: -2)
+                            }
+                            
                         }
-                        
                     }
                     
-                    VStack(alignment: .center, spacing: 0) {
-                        HStack(spacing: 3) {
-                            RoundedRectangle(cornerRadius: 2.5)
-                                .fill(.secondary.opacity(0.65))
-                                .frame(width: 4, height: 12)
-                            Text("Todavía faltan")
-                                .font(.system(size: 15))
-                                .foregroundColor(.primary)
-                        }
-                        
-                        HStack(alignment: .bottom, spacing: 1.5) {
-                            Text("\(archivo.paginasRestantes)")
-                                .font(.system(size: 20))
-                                .foregroundColor(.secondary.opacity(0.65))
-                            Text("Páginas")
-                                .font(.system(size: 12.5))
-                                .foregroundColor(.primary)
-                                .offset(y: -2)
-                        }
-                        
+                    //GRAFICO
+                    if cambio {
+                        ReadingSpeedChart()
+                    } else if !cambio {
+                        Testtest()
+//                            .offset(y: 22)
                     }
                 }
                 
             }
             .padding(.leading, 20)
             
-            //GRAFICO
-            Testtest()
-                .offset(y: 22)
+
         }
     }
 }
