@@ -329,7 +329,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     
-    
     //MARK: - --- ESTADISTICAS ---
     func iniciarLectura() {
         guard inicioLectura == nil else { return }
@@ -352,9 +351,19 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         tiempoActual = 0
         inicioLectura = nil
         
+        // ⬇️ Muy importante: acumular tiempo en la página actual
+        if let inicioPagina = inicioPagina {
+            let tiempoLeido = Date().timeIntervalSince(inicioPagina)
+            tiemposPorPagina[paginaActual, default: 0] += tiempoLeido
+            self.inicioPagina = nil
+        }
+        
         //Recalcular tiempos de paginas
         recalcularTiempos()
         recalcularVisitas()
+        
+        //velocidad de lectura
+        calcularVelocidadLectura()
         
         // Parar el timer
         timerCancellable?.cancel()
@@ -375,6 +384,16 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
             paginaMasVisitada = pagina
             print("Pagina mas visitada: \(paginaMasVisitada)")
         }
+    }
+    
+    //VELOCIDAD DE LECTURA: Paginas por minuto
+    func calcularVelocidadLectura() {
+        guard let total = totalPaginas, total > 0 else { return }
+        let paginasLeidas = min(paginaActual, total)
+        guard paginasLeidas > 0, tiempoTotal > 0 else { return }
+        
+        velocidadLectura = Double(paginasLeidas) / (tiempoTotal / 60.0)
+        print("Velocidad de lectura: ", velocidadLectura)
     }
     
 }
