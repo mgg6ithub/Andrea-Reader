@@ -69,13 +69,11 @@ struct VistaPrincipal: View {
             if ap.masInformacion, let elementoSelecionado = ap.elementoSeleccionado {
                 MasInformacion(pantallaCompleta: $ap.pantallaCompleta, vm: pc.getColeccionActual(), elemento: elementoSelecionado)
                     .capaSuperior()
-                    .border(.red)
             }
             // --- VISTA PREVIA DE UN ELEMENTO ---
             if ap.vistaPrevia, let elementoSelecionado = ap.elementoSeleccionado {
                 CartaHolografica3D(vm: pc.getColeccionActual(), elemento: elementoSelecionado)
                     .ignoresSafeArea()
-                    .border(.red)
             }
             
         }

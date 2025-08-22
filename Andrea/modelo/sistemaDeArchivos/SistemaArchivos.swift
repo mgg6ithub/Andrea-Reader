@@ -176,17 +176,23 @@ class SistemaArchivos: ObservableObject {
                 if let archivo = elemento as? Archivo {
                     withAnimation { archivo.nombre = nuevoNombre }
                     archivo.url = destinoURL
+                    
+                    // --- actualizar persistencia ---
+                    self.pd.actualizarDatoArchivo(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
                 } else if let coleccion = elemento as? Coleccion {
                     withAnimation { coleccion.nombre = nuevoNombre }
                     coleccion.url = destinoURL
                     //--- si es una coleccion actualizamos el cache de colecciones del sa ---
                     let valor = self.cacheColecciones.removeValue(forKey: origenURL)
                     self.cacheColecciones[destinoURL] = valor
+                    
+                    // ✅ Persistencia: recursivo (colección y sus hijos)
+                    self.pd.actualizarDatoArchivoRecursivo(
+                        origenURL: origenURL,
+                        destinoURL: destinoURL,
+                        keys: self.cpe.arrayClavesPersistenciaElementos
+                    )
                 }
-                
-                // --- actualizar persistencia ---
-//                PersistenciaDatos().actualizarClaveURL(origen: origenURL, destino: destinoURL)
-                self.pd.actualizarDatoArchivo(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
                 
                 // --- LOG ---
                 DispatchQueue.main.async {
@@ -201,56 +207,74 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
-    // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
-    public func moverElemento(_ elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion, a nuevaURL: URL) throws {
-        fileQueue.sync {
-            
+    // MARK: – Método para mover elemento (protegido por fileQueue)
+    public func moverElemento(_ elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion, a nuevaURL: URL) {
+        fileQueue.async {
             let origenURL = elemento.url
             let destinoURL = nuevaURL.appendingPathComponent(origenURL.lastPathComponent)
-            
+
             do {
-                
                 try self.fm.moveItem(at: origenURL, to: destinoURL)
-                
-                //--- actualizar la vista ---
+
+                // --- actualizar la vista ---
                 let coleccionActual: Coleccion = vm.coleccion
-                
                 guard let coleccionDestino: Coleccion = self.cacheColecciones[nuevaURL]?.coleccion else {
-                    print("No se ha podido obtener la coleccion destino")
+                    print("⚠️ No se ha podido obtener la colección destino")
                     return
                 }
-                
-                DispatchQueue.main.async { withAnimation(.easeInOut(duration: 0.35)) { vm.elementos.removeAll(where: { $0.id == elemento.id }) } }
-                
-                if let _ = elemento as? Archivo {
+
+                DispatchQueue.main.async {
+                    withAnimation(.easeInOut(duration: 0.35)) {
+                        vm.elementos.removeAll(where: { $0.id == elemento.id })
+                    }
+                }
+
+                if let archivo = elemento as? Archivo {
+                    // --- ARCHIVO ---
                     coleccionActual.totalArchivos -= 1
                     coleccionDestino.totalArchivos += 1
-                } else if let coleccion = elemento as? Coleccion { // si es coleccion
+
+                    // ✅ Persistencia: sólo el archivo
+                    self.pd.actualizarDatoArchivo(
+                        origenURL: origenURL,
+                        destinoURL: destinoURL,
+                        keys: self.cpe.arrayClavesPersistenciaElementos
+                    )
+
+                    archivo.url = destinoURL
+
+                } else if let coleccion = elemento as? Coleccion {
+                    // --- COLECCION ---
                     coleccionActual.totalColecciones -= 1
                     coleccionDestino.totalColecciones += 1
-                    
-                    //--- actualizar cache colecciones ---
+
+                    // actualizar cache colecciones
                     coleccion.url = destinoURL
                     self.borrarColeccionDeCache(claveURL: origenURL)
-                    
+
                     let nuevaColeccionValor = ColeccionValor(coleccion: coleccion)
                     self.cacheColecciones[destinoURL] = nuevaColeccionValor
-                    
-                    // 2. Actualizar la colección padre
+
+                    // actualizar colección padre en cache
                     if let valorPadre = self.cacheColecciones[nuevaURL] {
                         valorPadre.subColecciones.insert(destinoURL)
                         valorPadre.listaElementos.append(coleccion)
                     }
+
+                    // ✅ Persistencia: recursivo (colección y sus hijos)
+                    self.pd.actualizarDatoArchivoRecursivo(
+                        origenURL: origenURL,
+                        destinoURL: destinoURL,
+                        keys: self.cpe.arrayClavesPersistenciaElementos
+                    )
                 }
-                
-                // --- actualizar persistencia ---
-                self.pd.actualizarDatoArchivo(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
-        
+
             } catch {
-                print("⚠️ Error al mover \(origenURL.lastPathComponent) a \(destinoURL.lastPathComponent)")
+                print("⚠️ Error al mover \(origenURL.lastPathComponent) a \(destinoURL.lastPathComponent): \(error)")
             }
         }
     }
+
     
     // MARK: – Ejemplo de método para mover/renombrar (protegido por fileQueue)
     public func copiarElemento(_ elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion, a nuevaURL: URL) throws {
@@ -362,13 +386,16 @@ class SistemaArchivos: ObservableObject {
                         if esDirectorio {
                             vm.coleccion.totalColecciones -= 1
                             self.borrarColeccionDeCache(claveURL: url)
+                            
+                            //--- PERSISTENCIA (BORRADO) ---
+                            self.pd.eliminarPersistenciaRecursiva(coleccionURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
                         } else {
                             vm.coleccion.totalArchivos -= 1
+                            
+                            // --- PERSISTENCIA (BORRADO) ---
+                            self.pd.eliminarPersistenciaElemento(elementoURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
                         }
                     }
-                    
-                    // --- ELIMINAR PERSISTENCIA ---
-                    self.pd.eliminarPersistenciaElemento(elementoURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
                     
                     // --- LOG ---
                     var tipo: String = ""

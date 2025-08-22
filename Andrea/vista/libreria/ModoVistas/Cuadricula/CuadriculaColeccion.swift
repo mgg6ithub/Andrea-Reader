@@ -17,6 +17,7 @@ struct CuadriculaColeccion: View {
     private var isSmall: Bool { ap.constantes.resLog == .small }
     private var cDinamico: Color { ap.temaResuelto.colorContrario }
     private var cSec: Color { ap.temaResuelto.secondaryText }
+    private var totalElementos: Int { coleccion.totalArchivos + coleccion.totalColecciones }
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -105,7 +106,7 @@ struct CuadriculaColeccion: View {
                             
                             Spacer()
                             
-                            Text("\(coleccion.totalArchivos) elementos")
+                            Text("\(totalElementos) elementos")
                                 .textoAdaptativo(t: ap.constantes.subTitleSize * 0.85, a: 0.6, l: 1, b: false, c: cSec, alig: .trailing, s: false)
                         }
                         .padding(.leading, 5)

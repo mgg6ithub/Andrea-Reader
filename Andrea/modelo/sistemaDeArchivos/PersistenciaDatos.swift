@@ -14,6 +14,56 @@ extension PersistenciaDatos {
     }
 }
 
+//MARK: --- BORRADO RECURSIVO EN PERSISTENCIA AL BORRAR UNA COLECCION (hay que borrar todo lo que tenga dentro) ---
+
+extension PersistenciaDatos {
+    func eliminarPersistenciaRecursiva(coleccionURL: URL, keys: [String]) {
+        let baseKey = obtenerKey(coleccionURL)   // ejemplo: "/documents/test"
+                
+        for key in keys {
+            var mapa = obtenerMapa(key: key)
+            
+            // Filtramos todas las sub-entradas que empiecen por la ruta base
+            let keysAEliminar = mapa.keys.filter { $0.hasPrefix(baseKey) }
+            
+            for k in keysAEliminar {
+                mapa.removeValue(forKey: k)
+                print("🗑️ Eliminado recursivamente de persistencia: \(k) en '\(key)'")
+            }
+            
+            guardarMapa(mapa: mapa, key: key)
+        }
+    }
+}
+
+//MARK: --- RNOMBRAR O MOVER UNA COLECCION RECURSIVAMENTE ---
+extension PersistenciaDatos {
+    /// Actualizar recursivamente todas las entradas de persistencia al renombrar/mover un directorio
+    public func actualizarDatoArchivoRecursivo(origenURL: URL, destinoURL: URL, keys: [String]) {
+        let oldk = obtenerKey(origenURL)   // Ejemplo: "/documents/test"
+        let newk = obtenerKey(destinoURL)  // Ejemplo: "/documents/test-renombrado"
+        
+        for key in keys {
+            var mapa = obtenerMapa(key: key)
+            
+            // Filtramos todas las claves que empiecen con la ruta original
+            let keysAActualizar = mapa.keys.filter { $0.hasPrefix(oldk) }
+            
+            for k in keysAActualizar {
+                // Creamos la nueva clave reemplazando el prefijo
+                let newChildKey = k.replacingOccurrences(of: oldk, with: newk)
+                mapa[newChildKey] = mapa[k]
+                mapa.removeValue(forKey: k)
+                
+                print("🔄 Actualizado persistencia en '\(key)': \(k) → \(newChildKey)")
+            }
+            
+            guardarMapa(mapa: mapa, key: key)
+        }
+    }
+}
+
+
 //MARK: --- CONVERTIDOR UNIVERSAL ---
 
 extension PersistenciaDatos {
@@ -379,6 +429,8 @@ extension PersistenciaDatos {
         return result
     }
 }
+
+
 
 
 
