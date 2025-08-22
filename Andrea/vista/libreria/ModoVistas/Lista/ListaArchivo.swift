@@ -24,6 +24,8 @@ struct ListaArchivo: View {
     
     @State private var progresoMostrado: Int = 0
     
+    private var sss: EstadisticasYProgresoLectura { archivo.estadisticas }
+    
     var body: some View {
         HStack(spacing: 15) {
             let anchoMiniatura = coleccionVM.altura * escala
@@ -93,15 +95,15 @@ struct ListaArchivo: View {
             
         } //HStack principal
         //PROGRESO
-        .onAppear { progresoMostrado = archivo.progreso }
+        .onAppear { progresoMostrado = sss.progreso }
         .onChange(of: ap.archivoEnLectura) {
             withAnimation(.easeOut(duration: 0.6)) {
-                progresoMostrado = archivo.progreso
+                progresoMostrado = sss.progreso
             }
         }
-        .onChange(of: archivo.completado) {
+        .onChange(of: sss.completado) {
             withAnimation(.easeOut(duration: 0.6)) {
-                progresoMostrado = archivo.progreso
+                progresoMostrado = sss.progreso
             }
         }
         //PROGRESO

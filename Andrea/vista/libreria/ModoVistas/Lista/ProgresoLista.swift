@@ -9,10 +9,12 @@ struct ProgresoLista: View {
     @ObservedObject var coleccionVM: ModeloColeccion
     @Binding var progresoMostrado: Int
     
+    private var sss: EstadisticasYProgresoLectura { archivo.estadisticas }
+    
     var body: some View {
         HStack(spacing: 10) {
             
-            if archivo.progreso > 0 && ap.porcentajeNumero {
+            if archivo.estadisticas.progreso > 0 && ap.porcentajeNumero {
                 HStack(spacing: 0) {
                     Text("%")
                         .font(.system(size: ap.porcentajeNumeroSize * 0.75))
@@ -26,10 +28,10 @@ struct ProgresoLista: View {
                         .foregroundColor(coleccionVM.color)
                 }
                 //NECESARIOS PARA ANIMACION DEL PROGRESO
-                .onAppear { progresoMostrado = archivo.progreso }
+                .onAppear { progresoMostrado = sss.progreso }
                 .onChange(of: ap.archivoEnLectura) {
                     withAnimation(.easeOut(duration: 0.6)) {
-                        progresoMostrado = archivo.progreso
+                        progresoMostrado = sss.progreso
                     }
                 }
                 //NECESARIOS PARA ANIMACION DEL PROGRESO

@@ -80,6 +80,8 @@ struct ProgresoLectura: View {
     
     @State private var cambio: Bool = true
     
+    private var sss: EstadisticasYProgresoLectura { archivo.estadisticas }
+    
     var body: some View {
         HStack(alignment: .bottom, spacing: 30) {
             VStack(alignment: .leading, spacing: 0) {
@@ -94,7 +96,7 @@ struct ProgresoLectura: View {
                 }
                 HStack {
                     VStack(alignment: .leading, spacing: 15) {
-                        ProgresoCircular(progreso: archivo.progreso, progresoDouble: archivo.progresoDouble, color: .green)
+                        ProgresoCircular(progreso: sss.progreso, progresoDouble: sss.progresoDouble, color: .green)
                         
                         VStack(alignment: .center, spacing: 0) {
                             HStack(spacing: 3) {
@@ -107,7 +109,7 @@ struct ProgresoLectura: View {
                             }
                             
                             HStack(alignment: .bottom, spacing: 1.5) {
-                                Text("\(archivo.paginaActual + 1)")
+                                Text("\(sss.paginaActual + 1)")
                                     .font(.system(size: 20))
                                     .foregroundColor(.green.opacity(0.65))
                                 Text("páginas")
@@ -129,7 +131,7 @@ struct ProgresoLectura: View {
                             }
                             
                             HStack(alignment: .bottom, spacing: 1.5) {
-                                Text("\(archivo.paginasRestantes)")
+                                Text("\(sss.paginasRestantes)")
                                     .font(.system(size: 20))
                                     .foregroundColor(.secondary.opacity(0.65))
                                 Text("páginas")

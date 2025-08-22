@@ -63,7 +63,7 @@ struct MasInformacion: View {
                             .aparicionBlur(show: $show)
                         
                         if let archivo = elemento as? Archivo {
-                            let _ = archivo.crearEstadisticas()
+                            let _ = archivo.estadisticas.crearEstadisticas()
                             GeometryReader { geo in
                                 MasInformacionArchivo(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta, escala: escala)
                                     //.padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)

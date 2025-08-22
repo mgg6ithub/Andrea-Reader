@@ -341,20 +341,16 @@ struct BotonCompletarLectura: View {
         Button(action: {
             archivo.estadisticas.completarLectura()
         }) {
-            let completado: Bool = archivo.progreso == 100
+            let c: Bool = archivo.estadisticas.progreso == 100
             Label {
-                Text(completado ? "Reiniciar lectura" : "Completar lectura")
+                Text(c ? "Reiniciar lectura" : "Completar lectura")
             } icon: {
-                Image(completado ? "custom-reiniciar" : "custom-completar")
+                Image(c ? "custom-reiniciar" : "custom-completar")
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(cDinamico, cGris)
             }
             .symbolRenderingMode(.palette)
             .foregroundStyle(cDinamico, cGris)
-            .onAppear {
-                print(completado)
-                print(archivo.progreso)
-            }
         }
     }
 }

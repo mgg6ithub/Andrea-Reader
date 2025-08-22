@@ -149,7 +149,7 @@ struct ContenedorLector: View {
             switch archivo.fileType {
             case .cbr, .cbz:
                 if let comic = archivo as? any ProtocoloComic {
-                    LectorComic(comic: comic, paginaActual: $archivo.paginaActual)
+                    LectorComic(comic: comic, paginaActual: $archivo.estadisticas.paginaActual)
                 } else {
                     ArchivoIncompatibleView(archivo: archivo)
                 }
@@ -184,25 +184,27 @@ struct MenuLectura: View {
     var archivo: Archivo
     var cerrar: () -> Void
     
+    private var sss: EstadisticasYProgresoLectura { archivo.estadisticas }
+    
     var body: some View {
         VStack {
             HStack {
                 Button("Cerrar") {
                     //antes de cerrar guardamos el progreso actualizando la pagina
 //                    print("terminando lectura")
-                    archivo.estaLeyendose = false
+                    archivo.leyendose = false
                     
-//                    print("Tiempo total de lectura: \(archivo.tiempoTotal)s")
+//                    print("Tiempo total de lectura: \(sss.tiempoTotal)s")
                     
                     cerrar()
                 } // ← ya no toca el menú
                 
                 Spacer()
                 
-                Text("Tiempo: \(formatTime(archivo.tiempoActual))")
+                Text("Tiempo: \(formatTime(sss.tiempoActual))")
                 
                 Spacer()
-                Text("Progreso: \(archivo.progreso)%")
+                Text("Progreso: \(sss.progreso)%")
                 Spacer()
                 Button("Opciones") { }
             }

@@ -36,7 +36,7 @@ struct ProgresoTiempo: View {
                 
                 VStack(alignment: .leading, spacing: 15) {
                     
-                    ProgresoCircular(progreso: archivo.progresoTiempoTotal, progresoDouble: archivo.progresoTiempoTotalDouble, color: .blue)
+                    ProgresoCircular(progreso: archivo.estadisticas.progresoTiempoTotal, progresoDouble: archivo.estadisticas.progresoTiempoTotalDouble, color: .blue)
                     
                     VStack(alignment: .center, spacing: 0) {
                         HStack(spacing: 3) {
@@ -48,7 +48,7 @@ struct ProgresoTiempo: View {
                                 .foregroundColor(.primary)
                         }
                         
-                        TiempoFormateado(tiempo: archivo.tiempoTotal, color: .blue.opacity(0.65))
+                        TiempoFormateado(tiempo: archivo.estadisticas.tiempoTotal, color: .blue.opacity(0.65))
                             .offset(x: -16)
                     }
 
@@ -62,7 +62,7 @@ struct ProgresoTiempo: View {
                                 .foregroundColor(.primary)
                         }
                         
-                        TiempoFormateado(tiempo: archivo.tiempoRestante, color: .secondary.opacity(0.65))
+                        TiempoFormateado(tiempo: archivo.estadisticas.tiempoRestante, color: .secondary.opacity(0.65))
                     }
 
                 }

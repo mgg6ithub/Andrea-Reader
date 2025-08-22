@@ -85,7 +85,7 @@ struct Algoritmos {
                 guard let a = $0 as? Archivo, let b = $1 as? Archivo else {
                     return false
                 }
-                return a.progreso > b.progreso
+                return a.estadisticas.progreso > b.estadisticas.progreso
             }
             
         case .fechaImportacion:
