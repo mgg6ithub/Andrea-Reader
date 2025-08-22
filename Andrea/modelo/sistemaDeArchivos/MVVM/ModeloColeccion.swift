@@ -24,6 +24,10 @@ extension ModeloColeccion {
 @MainActor
 class ModeloColeccion: ObservableObject {
     
+    private let pd = PersistenciaDatos()
+    private let cpe = ClavesPersistenciaElementos()
+    private let p = ValoresElementoPredeterminados()
+    
     let coleccion: Coleccion
 
     @Published var elementos: [ElementoSistemaArchivos] = []
@@ -104,11 +108,14 @@ class ModeloColeccion: ObservableObject {
         
         let datos = pd.obtenerAtributos(url: coleccion.url)
 
-        if let scroll = datos?["scrollPosition"] as? Int {
-            self.scrollPosition = scroll
-        } else {
-            self.scrollPosition = 0
-        }
+//        if let scroll = datos?["scrollPosition"] as? Int {
+//            self.scrollPosition = scroll
+//        } else {
+//            self.scrollPosition = 0
+//        }
+        
+        self.scrollPosition = pd.recuperarDatoElemento(elementoURL: self.coleccion.url, key: cpe.desplazamientoColeccion, default: p.desplazamientoColeccion)
+        
 
         self.color = coleccion.color
 
@@ -228,7 +235,8 @@ class ModeloColeccion: ObservableObject {
 
     func actualizarScroll(_ nuevo: Int) {
         scrollPosition = nuevo
-        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "scrollPosition", valor: nuevo)
+//        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "scrollPosition", valor: nuevo)
+        PersistenciaDatos().guardarDatoArchivo(valor: nuevo, elementoURL: self.coleccion.url, key: cpe.desplazamientoColeccion)
     }
     
     //MARK: --- METODO PARA CAMBIAR EL MODO DE VISTA DE LA COLECCION

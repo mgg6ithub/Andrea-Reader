@@ -74,8 +74,13 @@ struct ClavesPersistenciaElementos {
     public let favoritos: String = "favotiros"
     public let protegidos: String = "Protegidos"
     
+    //MARK: - --- SOLO COLECCIONES ---
     //COLOR (normalmente para el color de una coleccion)
     public let colorGuardado: String = "colorGuardado"
+    
+    public let desplazamientoColeccion: String = "desplazamientoColeccion"
+    
+    //MARK: - --- SOLO COLECCIONES ---
     
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: String = "progreso_archivo"
@@ -104,6 +109,7 @@ struct ClavesPersistenciaElementos {
                 protegidos,
                 
                 colorGuardado,
+                desplazamientoColeccion,
                 
                 progresoElemento, //pagina actual
                 miniaturaElemento, //tipo de miniatura
@@ -128,6 +134,7 @@ struct ValoresElementoPredeterminados {
     
     //COLOR
     public let colorGuardado: Color = .gray
+    public let desplazamientoColeccion: Int = 0
     
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: Int = 0
