@@ -93,38 +93,22 @@ class ModeloColeccion: ObservableObject {
     
     
     init(_ coleccion: Coleccion) {
+        
+        let url = coleccion.url
+        
         self.coleccion = coleccion
         
-        //Llamamos a la persistencia para obtener los datos de la coleccion
-        //DATOS
-        // - Color
-        // - posicion scroll
-        // - Ordenamiento
-        // - Tipo de vista
-        //    - Cuadricula
-        //    - Lista
-        
-        let pd = PersistenciaDatos()
-        
-        let datos = pd.obtenerAtributos(url: coleccion.url)
-
-//        if let scroll = datos?["scrollPosition"] as? Int {
-//            self.scrollPosition = scroll
-//        } else {
-//            self.scrollPosition = 0
-//        }
-        
-        self.scrollPosition = pd.recuperarDatoElemento(elementoURL: self.coleccion.url, key: cpe.desplazamientoColeccion, default: p.desplazamientoColeccion)
-        
+        self.scrollPosition = pd.recuperarDatoElemento(elementoURL: url, key: cpe.desplazamientoColeccion, default: p.desplazamientoColeccion)
 
         self.color = coleccion.color
 
-        if let tipoVistaRaw = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "tipoVista") as? String,
-           let modo = EnumModoVista(rawValue: tipoVistaRaw) {
-            self.modoVista = modo
-        } else {
-            self.modoVista = .cuadricula
-        }
+//        if let tipoVistaRaw = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "tipoVista") as? String,
+//           let modo = EnumModoVista(rawValue: tipoVistaRaw) {
+//            self.modoVista = modo
+//        } else {
+//            self.modoVista = .cuadricula
+//        }
+        self.modoVista = pd.recuperarDatoArchivoEnum(elementoURL: url, key: cpe.enumModoVista, default: p.enumModoVista)
         
         if let ordenacionString = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {
             self.ordenacion = ordenacion
@@ -132,7 +116,7 @@ class ModeloColeccion: ObservableObject {
             self.ordenacion = .nombre
         }
         
-        if let raw = pd .obtenerAtributoConcreto(url: coleccion.url, atributo: "esInvertido") {
+        if let raw = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "esInvertido") {
             if let boolVal = raw as? Bool {
                 self.esInvertido = boolVal
             }
@@ -245,7 +229,8 @@ class ModeloColeccion: ObservableObject {
 //        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.modoVista = modoVista }
         withAnimation(.easeInOut(duration: 0.3)) {  self.modoVista = modoVista }
 //        self.modoVista = modoVista
-        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "tipoVista", valor: modoVista)
+//        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "tipoVista", valor: modoVista)
+        pd.guardarDatoArchivo(valor: modoVista, elementoURL: self.coleccion.url, key: cpe.enumModoVista)
     }
 
     
