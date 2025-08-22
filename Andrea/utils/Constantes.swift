@@ -65,6 +65,9 @@ struct ConstantesPorDefecto {
 //MARK: - --- PERSISTENCIA DATOS DE ELEMENTOS ---
 struct ClavesPersistenciaElementos {
     
+    //Primera vez que se entra a leer el archivo
+    public let fechaPrimeraVezEntrado: String = "fechaPrimeraVezEntrado"
+    
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: String = "progreso_archivo"
     
@@ -82,10 +85,10 @@ struct ClavesPersistenciaElementos {
     public let visitasPorPagina: String = "VisitasPorPagina"
     
     
-    
     //ARRAY DE CLAVES PARA PODER ACTUALIZAR EN PERSISTENCIA DEL TIRON
     public var arrayClavesPersistenciaElementos: [String] {
             [
+                fechaPrimeraVezEntrado,
                 progresoElemento, //pagina actual
                 miniaturaElemento, //tipo de miniatura
                 tiempoLecturaTotal,
@@ -97,6 +100,9 @@ struct ClavesPersistenciaElementos {
 }
 
 struct ValoresElementoPredeterminados {
+    
+    //Primera vez que se entra a leer el archivo
+    public let fechaPrimeraVezEntrado: Date? = nil
     
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: Int = 0
@@ -113,6 +119,7 @@ struct ValoresElementoPredeterminados {
     
     //visitas por pagina
     public let visitasPorPagina: [String:Int] = [:]
+    
     
 }
 //MARK: - --- PERSISTENCIA DATOS DE ELEMENTOS ---

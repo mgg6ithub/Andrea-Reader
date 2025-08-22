@@ -4,6 +4,10 @@ import UniformTypeIdentifiers
 
 class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, ObservableObject {
     
+    private let pd = PersistenciaDatos()
+    let cpep = ClavesPersistenciaElementos()
+    let pp = ValoresElementoPredeterminados()
+    
     var id: UUID
     @Published var nombre: String
     var descripcion: String?
@@ -12,8 +16,8 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
     
     var fechaImportacion: Date
     var fechaModificacion: Date
-    var fechaPrimeraVez: Date?
-    var fechaUltimaVez: Date?
+    var fechaPrimeraVezEntrado: Date?
+    var fechaCompletado: Date?
     var vecesEntrado: Int = 0
     
     //Atributos avanzados
@@ -28,12 +32,13 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
         self.relativeURL = "something"
         self.fechaImportacion = Date()
         self.fechaModificacion = Date()
-        self.fechaPrimeraVez = nil
-        self.fechaUltimaVez = nil
+        self.fechaPrimeraVezEntrado = nil
+        self.fechaCompletado = nil
         self.favorito = false
         self.protegido = false
     }
     
+    //CONSTRCUTOR DE VERDAD
     init(nombre: String, url: URL, fechaImportacion: Date, fechaModificacion: Date, favortio: Bool, protegido: Bool) {
         
         self.id = UUID()
@@ -42,6 +47,7 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
         self.relativeURL = ManipulacionCadenas().relativizeURL(elementURL: url)
         self.fechaImportacion = fechaImportacion
         self.fechaModificacion = fechaModificacion
+        self.fechaPrimeraVezEntrado = pd.recuperarDatoElemento(elementoURL: url, key: cpep.fechaPrimeraVezEntrado, default: pp.fechaPrimeraVezEntrado)
         self.favorito = favortio
         self.protegido = protegido
         

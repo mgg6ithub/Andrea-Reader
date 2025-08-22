@@ -145,11 +145,25 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //MARK: - --- VARIABLES CALCULADAS Y ESTADISTICAS ---
     
+    //Solamente se guardara la primera vez que se lea con la fecha en persistencia
+    override var fechaPrimeraVezEntrado: Date? { didSet { pd.guardarDatoArchivo(valor: fechaPrimeraVezEntrado, elementoURL: url, key: cpe.fechaPrimeraVezEntrado) } }
+    
     //NECESARIAS PARA SABER CUANDO SE INICIA LA LECTURA
     private var inicioLectura: Date?
     var estaLeyendose: Bool = false {
         didSet {
             if estaLeyendose {
+                //Siempre que se vaya a iniciar la lectura...
+                //Comprobamos si es la primera vez
+                if self.fechaPrimeraVezEntrado == nil {
+                    print("Se entra por primera vez...")
+                    self.fechaPrimeraVezEntrado = Date() //Si es la primera agregamos la fecha en la que se entro.
+                }
+                
+                //Sumamos una entrada
+//                self.vecesEntrado += 1
+                
+                //Iniciamos la lectura
                 iniciarLectura()
             } else {
                 terminarLectura()
@@ -158,11 +172,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     // --- PROGRESO Y PAGINAS ---
-    @Published var totalPaginas: Int? {
-        didSet {
-            actualizarProgreso()
-        }
-    }
+    @Published var totalPaginas: Int? { didSet { actualizarProgreso() } }
     
     @Published var paginaActual: Int { didSet { pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento) }} //<-guardar en persistencia la pagina actual}} //<-calculamos las paginas complementarias restantes
     
@@ -170,21 +180,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     // --- PAGINAS ---
     @Published var paginaVisitadaMasTiempo: (Int, TimeInterval) = (0,0)// <- Curiosidad
     @Published var paginaMasVisitada: (Int, Int) = (0,0)         // <- Curiosidad
-    @Published private var tiemposPorPagina: [Int: TimeInterval]
-    {
-        didSet 
-        {
-            recalcularTiempos()
-        }
-    }
-    
-    @Published private var visitasPorPagina: [Int: Int]         // nº de veces abierta
-    {
-        didSet
-        {
-            recalcularVisitas()
-        }
-    }
+    @Published private var tiemposPorPagina: [Int: TimeInterval] { didSet { recalcularTiempos() } }
+    @Published private var visitasPorPagina: [Int: Int] { didSet { recalcularVisitas() } }
     
     @Published var progreso: Int = 0
     @Published var progresoDouble: Double = 0.0 //redondeado a dos decimales si el progreso es %53 -> 0.53
