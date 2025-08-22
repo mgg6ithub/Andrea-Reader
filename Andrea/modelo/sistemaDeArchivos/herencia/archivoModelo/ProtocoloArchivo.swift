@@ -1,14 +1,6 @@
 
 import SwiftUI
 
-//#Preview {
-//    MasInformacionArchivo()
-////        .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-////        .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-//        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180)) // Mock o real
-//}
-
-
 protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     
     //POSIBLE INFORMACION EXTRAIDA DEL ARCHIVO QUE SE IMPORTE
@@ -16,7 +8,6 @@ protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     var numeroDeLaColeccion: Int? { get }
     var nombreOriginal: String? { get set }
     
-    var totalPaginas: Int? { get set }
     var fileType: EnumTipoArchivos { get }
     var fileSize: Int { get }
     
@@ -25,8 +16,8 @@ protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
     
     func viewContent() -> AnyView
     
-    func getTotalPages() -> Int
-    func setCurrentPage(currentPage: Int) -> Void
+//    func getTotalPages() -> Int
+//    func setCurrentPage(currentPage: Int) -> Void
     
     func extractPageData(named: String) -> Data?
     

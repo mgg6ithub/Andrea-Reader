@@ -8,7 +8,7 @@ extension Archivo {
         
         // Datos de archivo
         a.nombre = "Archivo Demo"
-        a.totalPaginas = 120
+//        a.totalPaginas = 120
         a.paginaActual = 45
         a.fileSize = 1024 * 1024 * 5 // 5 MB
         a.fileExtension = "cbr"
@@ -59,7 +59,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         }
         return extractor()
     }
-    
     
     func inicializarValoresEstadisticos() {
         
@@ -113,6 +112,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //MARK: - --- INFORMACION GENERALES ---
     @Published var tipoMiniatura: EnumTipoMiniatura = .primeraPagina
+    
+    let estadisticas: EstadisticasYProgresoLectura
     
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
@@ -171,9 +172,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         }
     }
     
-    // --- PROGRESO Y PAGINAS ---
-    @Published var totalPaginas: Int? { didSet { actualizarProgreso() } }
-    
     @Published var paginaActual: Int { didSet { pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento) }} //<-guardar en persistencia la pagina actual}} //<-calculamos las paginas complementarias restantes
     
     @Published var paginasRestantes: Int = 0
@@ -222,6 +220,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.dirURL = URL(fileURLWithPath: "")
         self.dirName = ""
         self.dirColor = .gray
+        self.estadisticas = EstadisticasYProgresoLectura(url: dirURL)
         
         self.esColeccion = false
         self.fileType = .unknown
@@ -245,6 +244,9 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //CONSTRUCTOR DE VERDAD
     init(fileName: String, fileURL: URL, fechaImportacion: Date, fechaModificacion: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int, favorito: Bool, protegido: Bool) {
+        
+        self.estadisticas = EstadisticasYProgresoLectura(url: fileURL)
+        
         self.fileType = fileType
         self.fileExtension = fileExtension
         self.mimeType = sau.getMimeType(for: fileURL)
@@ -276,14 +278,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //METODO PARA INICIAR LAS ESTADISTICAS COMPLEMENTARIAS A PARTIR DE LAS PRIMARIAS QUE SE INICIALIZAN EN EL CONSTRUCTOR
     public func crearEstadisticas() {
-        self.paginasRestantes = calcularPaginasRestantes()
+//        self.paginasRestantes = calcularPaginasRestantes()
         self.progresoRestante = 100 - progreso
         
         //velocidad de lectura
         calcularVelocidadLectura()
         
         //tiempo restante
-        self.tiempoRestante = estimarTiempoRestante(velocidadPaginasPorMinuto: self.velocidadLectura)
+//        self.tiempoRestante = estimarTiempoRestante(velocidadPaginasPorMinuto: self.velocidadLectura)
         
         //Calculo del progreso del tiempo total
         var progresott = (tiempoTotal > 0 && (tiempoTotal + tiempoRestante) > 0)
@@ -308,9 +310,9 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         return AnyView(ZStack{})
     }
     
-    func getTotalPages() -> Int {
-        return self.totalPaginas ?? 0
-    }
+//    func getTotalPages() -> Int {
+//        return self.totalPaginas ?? 0
+//    }
     
     //MARK: - --- FUNCIONES POLIMORFICAS PARA SER OVRRIDEADAS ---
     func extractPageData(named nombre: String) -> Data? {
@@ -333,63 +335,63 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         return "corrupted"
     }
     
-    private func calcularPaginasRestantes() -> Int {
-        guard let total = totalPaginas else { return 0 }
-        return max(total - (paginaActual + 1), 0)
-    }
+//    private func calcularPaginasRestantes() -> Int {
+//        guard let total = totalPaginas else { return 0 }
+//        return max(total - (paginaActual + 1), 0)
+//    }
     
     
-    //MARK: - --- PROGRESO Y ESTADISTICAS ---
-    func setCurrentPage(currentPage: Int) {
-        
-        // 1. Guardar tiempo en la página actual
-        if let inicio = inicioPagina {
-            let tiempoLeido = Date().timeIntervalSince(inicio)
-            tiemposPorPagina[paginaActual, default: 0] += tiempoLeido
-        }
-        
-        paginaActual = max(0, currentPage) //<- asigna la pagina actual
-        withAnimation {
-            actualizarProgreso()
-        }
-        
-        // 3. Registrar visita
-       visitasPorPagina[paginaActual, default: 0] += 1
-       
-       // 4. Reiniciar inicio de cronómetro
-       inicioPagina = Date()
-        
-    }
+//    //MARK: - --- PROGRESO Y ESTADISTICAS ---
+//    func setCurrentPage(currentPage: Int) {
+//        
+//        // 1. Guardar tiempo en la página actual
+//        if let inicio = inicioPagina {
+//            let tiempoLeido = Date().timeIntervalSince(inicio)
+//            tiemposPorPagina[paginaActual, default: 0] += tiempoLeido
+//        }
+//        
+//        paginaActual = max(0, currentPage) //<- asigna la pagina actual
+//        withAnimation {
+//            actualizarProgreso()
+//        }
+//        
+//        // 3. Registrar visita
+//       visitasPorPagina[paginaActual, default: 0] += 1
+//       
+//       // 4. Reiniciar inicio de cronómetro
+//       inicioPagina = Date()
+//        
+//    }
     
-    private func actualizarProgreso() {
-        guard let total = totalPaginas, total > 0 else {
-            progreso = 0
-            progresoDouble = 0
-            return
-        }
-        if total == 1 {
-            progreso = 100
-            progresoDouble = 1.0
-            return
-        }
-        let frac = Double(min(paginaActual, total - 1)) / Double(total - 1)
-        progresoDouble = frac
-        progreso = Int(round(frac * 100))
-    }
+//    private func actualizarProgreso() {
+//        guard let total = totalPaginas, total > 0 else {
+//            progreso = 0
+//            progresoDouble = 0
+//            return
+//        }
+//        if total == 1 {
+//            progreso = 100
+//            progresoDouble = 1.0
+//            return
+//        }
+//        let frac = Double(min(paginaActual, total - 1)) / Double(total - 1)
+//        progresoDouble = frac
+//        progreso = Int(round(frac * 100))
+//    }
     
     
-    public func completarLectura() {
-        guard let total = totalPaginas, total > 0 else { return }
-        if progreso != 100 {
-            paginaActual = total - 1
-            completado = true
-        } else {
-            paginaActual = 0
-            completado = false
-        }
-        actualizarProgreso()
-        pd.guardarDatoElemento(url: url, atributo: "progreso", valor: progreso)
-    }
+//    public func completarLectura() {
+//        guard let total = totalPaginas, total > 0 else { return }
+//        if progreso != 100 {
+//            paginaActual = total - 1
+//            completado = true
+//        } else {
+//            paginaActual = 0
+//            completado = false
+//        }
+//        actualizarProgreso()
+//        pd.guardarDatoElemento(url: url, atributo: "progreso", valor: progreso)
+//    }
     
     
     //MARK: - --- ESTADISTICAS ---
@@ -468,41 +470,41 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     /// Devuelve el tiempo restante estimado en segundos.
     /// - Parameter v: velocidad en páginas por minuto. Si es nil usa histórico; si tampoco hay, usa proporcional al progreso.
-    func estimarTiempoRestante(velocidadPaginasPorMinuto v: Double? = nil) -> TimeInterval {
-        let total = totalPaginas ?? 0
-        guard total > 0 else { return 0 }
-
-        // Si paginaActual es índice 0-based y quieres "después de la actual":
-        let paginasDespuesDeLaActual = max(total - 1 - paginaActual, 0)
-
-        // Tiempo ya invertido en la página actual
-        let tiempoEnActual = inicioPagina.map { Date().timeIntervalSince($0) } ?? 0
-
-        // 1) Con velocidad explícita (pág/min)
-        if let v, v > 0 {
-            let segPorPag = 60.0 / v
-            let restanteActual = max(segPorPag - tiempoEnActual, 0)
-            return Double(paginasDespuesDeLaActual) * segPorPag + restanteActual
-        }
-
-        // 2) Con histórico (media de seg/página terminadas)
-        let tiempoLeido = tiemposPorPagina.values.reduce(0, +)
-        // Considera completas las páginas con registro + las anteriores a la actual
-        let paginasCompletas = max(tiemposPorPagina.count, min(paginaActual, total - 1))
-        if paginasCompletas > 0 {
-            let mediaSegPorPag = tiempoLeido / Double(paginasCompletas)
-            let restanteActual = max(mediaSegPorPag - tiempoEnActual, 0)
-            return Double(paginasDespuesDeLaActual) * mediaSegPorPag + restanteActual
-        }
-
-        // 3) Fallback proporcional al progreso (si tienes tiempoTotal para todo el libro)
-        if tiempoTotal > 0 && total > 1 {
-            let fracRestante = Double(paginasDespuesDeLaActual) / Double(total - 1)
-            return fracRestante * tiempoTotal
-        }
-
-        return 0
-    }
+//    func estimarTiempoRestante(velocidadPaginasPorMinuto v: Double? = nil) -> TimeInterval {
+//        let total = totalPaginas ?? 0
+//        guard total > 0 else { return 0 }
+//
+//        // Si paginaActual es índice 0-based y quieres "después de la actual":
+//        let paginasDespuesDeLaActual = max(total - 1 - paginaActual, 0)
+//
+//        // Tiempo ya invertido en la página actual
+//        let tiempoEnActual = inicioPagina.map { Date().timeIntervalSince($0) } ?? 0
+//
+//        // 1) Con velocidad explícita (pág/min)
+//        if let v, v > 0 {
+//            let segPorPag = 60.0 / v
+//            let restanteActual = max(segPorPag - tiempoEnActual, 0)
+//            return Double(paginasDespuesDeLaActual) * segPorPag + restanteActual
+//        }
+//
+//        // 2) Con histórico (media de seg/página terminadas)
+//        let tiempoLeido = tiemposPorPagina.values.reduce(0, +)
+//        // Considera completas las páginas con registro + las anteriores a la actual
+//        let paginasCompletas = max(tiemposPorPagina.count, min(paginaActual, total - 1))
+//        if paginasCompletas > 0 {
+//            let mediaSegPorPag = tiempoLeido / Double(paginasCompletas)
+//            let restanteActual = max(mediaSegPorPag - tiempoEnActual, 0)
+//            return Double(paginasDespuesDeLaActual) * mediaSegPorPag + restanteActual
+//        }
+//
+//        // 3) Fallback proporcional al progreso (si tienes tiempoTotal para todo el libro)
+//        if tiempoTotal > 0 && total > 1 {
+//            let fracRestante = Double(paginasDespuesDeLaActual) / Double(total - 1)
+//            return fracRestante * tiempoTotal
+//        }
+//
+//        return 0
+//    }
 
     
     private func imprimirDatos() {

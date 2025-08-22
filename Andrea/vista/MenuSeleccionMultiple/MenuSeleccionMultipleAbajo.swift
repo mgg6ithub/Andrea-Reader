@@ -34,7 +34,7 @@ struct MenuSeleccionMultipleAbajo: View {
                     AccionSeleccionMultiple(nombreBoton: "Completar") {
                         me.aplicarAccionPorElemento { elemento in
                             if let archivo = elemento as? Archivo {
-                                archivo.completarLectura()
+                                archivo.estadisticas.completarLectura()
                             }
                         }
                     }

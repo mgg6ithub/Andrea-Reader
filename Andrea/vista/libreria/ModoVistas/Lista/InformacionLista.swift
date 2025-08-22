@@ -16,6 +16,7 @@ struct InformacionLista: View {
     
     private var color: Color { ap.temaResuelto.secondaryText }
     
+    
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {
             
@@ -33,11 +34,12 @@ struct InformacionLista: View {
             
             Spacer()
             
-//            Text(archivo.totalPaginas != nil ? "\(archivo.totalPaginas) pages" : "—")
-//                .foregroundColor(.gray)
-//                .font(.subheadline)
-//                .lineLimit(1)
-//                .minimumScaleFactor(0.5)
+            Text("\(archivo.estadisticas.totalPaginas.map { "\($0) pages" } ?? "—")")
+                .font(.system(size: ConstantesPorDefecto().subTitleSize * 0.8))
+                .foregroundColor(.gray)
+                .font(.subheadline)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
 
         }
     }

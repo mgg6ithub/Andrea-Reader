@@ -144,7 +144,7 @@ struct SinglePage: UIViewControllerRepresentable {
             //ASIGNAMOS LA PAGINA ACTUAL
             parent.currentPage = zoomVC.currentPage
             parent.sessionCache.currentPage = zoomVC.currentPage
-            parent.comicFile.setCurrentPage(currentPage: zoomVC.currentPage)
+            parent.comicFile.estadisticas.setCurrentPage(currentPage: zoomVC.currentPage)
             
             //CARGA EN DIFERIDO DE IMAGENES
             parent.sessionCache.prefetchNearbyPages(currentPage: zoomVC.currentPage, range: parent.prefetchRange)
@@ -210,7 +210,7 @@ struct SinglePage: UIViewControllerRepresentable {
                     let newIndex = parent.currentPage + 1
                     parent.currentPage = newIndex
                     parent.sessionCache.currentPage = newIndex
-                    parent.comicFile.setCurrentPage(currentPage: newIndex)
+                    parent.comicFile.estadisticas.setCurrentPage(currentPage: newIndex)
                     
                     if let newVC = viewController(for: newIndex) {
                         pageVC.setViewControllers([newVC],

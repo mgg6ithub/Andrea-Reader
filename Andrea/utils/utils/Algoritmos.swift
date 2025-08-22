@@ -75,8 +75,8 @@ struct Algoritmos {
                 guard let a = $0 as? Archivo, let b = $1 as? Archivo else {
                     return false
                 }
-                let pagA = a.totalPaginas ?? -1
-                let pagB = b.totalPaginas ?? -1
+                let pagA = a.estadisticas.totalPaginas ?? -1
+                let pagB = b.estadisticas.totalPaginas ?? -1
                 return pagA > pagB
             }
 

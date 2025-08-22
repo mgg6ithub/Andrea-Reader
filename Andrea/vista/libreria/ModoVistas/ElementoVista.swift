@@ -339,7 +339,7 @@ struct BotonCompletarLectura: View {
     
     var body: some View {
         Button(action: {
-            archivo.completarLectura()
+            archivo.estadisticas.completarLectura()
         }) {
             let completado: Bool = archivo.progreso == 100
             Label {

@@ -64,7 +64,7 @@ class CBRArchivo: Archivo {
         Task {
             let total = contarPaginas()
             await MainActor.run {
-                self.totalPaginas = total
+                self.estadisticas.totalPaginas = total
             }
         }
     }

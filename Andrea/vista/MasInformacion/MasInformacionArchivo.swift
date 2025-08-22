@@ -141,7 +141,7 @@ struct Contenido: View {
             
             VStack(alignment: .center, spacing: 20) {
                 HStack(spacing: 0) {
-                    RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.totalPaginas ?? 0))", icono: "book.pages", color: .blue)
+                    RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.estadisticas.totalPaginas ?? 0))", icono: "book.pages", color: .blue)
                     Spacer()
                     RectanguloDato(nombre: "Tamaño", dato: ManipulacionSizes().formatearSize(archivo.fileSize), icono: "externaldrive", color: .red)
                     Spacer()
