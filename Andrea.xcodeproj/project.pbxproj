@@ -443,9 +443,9 @@
 			children = (
 				D4B0CCE62E5779E5000C69CF /* AyudasMasInformacion */,
 				D49E26692E3A77BD009A0EDC /* MasInformacion.swift */,
+				D4B0CCE42E574FB1000C69CF /* MasInformacionArchivoTest.swift */,
 				D49F12F52E25349500C67FB8 /* MasInformacionColeccion.swift */,
 				D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */,
-				D4B0CCE42E574FB1000C69CF /* MasInformacionArchivoTest.swift */,
 			);
 			path = MasInformacion;
 			sourceTree = "<group>";
@@ -687,6 +687,7 @@
 		D4DEBBED2DE9CD6000F06C30 /* ajustesSeccion */ = {
 			isa = PBXGroup;
 			children = (
+				D4B6DF252E54E35C00A46D0A /* General.swift */,
 				D4DEBBEF2DE9CD7F00F06C30 /* AjustesTema.swift */,
 				D4DEBBF12DE9D8ED00F06C30 /* AjustesColor.swift */,
 				D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */,
@@ -696,7 +697,6 @@
 				D47035DA2E4288D0008906C9 /* AjustesHistorial.swift */,
 				D45A822A2E4D0F5300B92262 /* AjustesLibreria.swift */,
 				D45A82282E4D0E3700B92262 /* AjustesVisualizacion.swift */,
-				D4B6DF252E54E35C00A46D0A /* General.swift */,
 			);
 			path = ajustesSeccion;
 			sourceTree = "<group>";

@@ -113,7 +113,7 @@ struct MenuCentro: View {
                     .capaIconos(iconSize: iconSize, c1: c1, c2: c2, fontW: iconFont.weight, ajuste: 1.05)
             }
 //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
-            .popoverTip(ConsejoCrearColeccion())
+//            .popoverTip(ConsejoCrearColeccion())
 //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
             .alert("Crear una nueva colección:", isPresented: $esNuevaColeccionPresionado) {
                 TextField("Nombre de colección", text: $nuevaColeccionNombre)

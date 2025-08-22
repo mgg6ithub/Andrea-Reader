@@ -24,7 +24,7 @@ struct CartaHolografica3D: View {
         
         ZStack {
             Color.black.opacity(0.85)
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.3), value: ap.vistaPrevia)
                 .onTapGesture {
                     withAnimation(.easeInOut(duration: 0.3)) { ap.vistaPrevia = false }

@@ -83,13 +83,6 @@ struct AndreaAppView: View {
         ZStack {
             temaResuelto.backgroundGradient.edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
-                
-                //Espacio vertical para respetar cuando no hay barra de estado. No habra espacio en seleccion multiple.
-                Color.clear
-                    .frame(height: (me.seleccionMultiplePresionada && me.barraEstado)
-                                    ? 0
-                                    : me.statusBarTopInsetBaseline)
-                
                 VistaPrincipal()
                     .environmentObject(ap)
                     .environmentObject(me)

@@ -20,7 +20,7 @@ private struct PreviewMasInformacion1: View {
     }
 }
 
-struct MasInformacionArchivoTest: View {
+struct MasInformacionArchivo: View {
     
     @EnvironmentObject var ap: AppEstado
     

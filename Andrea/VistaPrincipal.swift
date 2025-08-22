@@ -22,6 +22,12 @@ struct VistaPrincipal: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
+                //Espacio vertical para respetar cuando no hay barra de estado. No habra espacio en seleccion multiple.
+                Color.clear
+                    .frame(height: (me.seleccionMultiplePresionada && me.barraEstado)
+                                    ? 0
+                                    : me.statusBarTopInsetBaseline)
+                
                 barraSuperior()
                     .animation(.easeInOut(duration: 0.2), value: me.seleccionMultiplePresionada)
                 
@@ -63,11 +69,13 @@ struct VistaPrincipal: View {
             if ap.masInformacion, let elementoSelecionado = ap.elementoSeleccionado {
                 MasInformacion(pantallaCompleta: $ap.pantallaCompleta, vm: pc.getColeccionActual(), elemento: elementoSelecionado)
                     .capaSuperior()
+                    .border(.red)
             }
             // --- VISTA PREVIA DE UN ELEMENTO ---
             if ap.vistaPrevia, let elementoSelecionado = ap.elementoSeleccionado {
                 CartaHolografica3D(vm: pc.getColeccionActual(), elemento: elementoSelecionado)
-                    .capaSuperior()
+                    .ignoresSafeArea()
+                    .border(.red)
             }
             
         }
@@ -127,7 +135,7 @@ extension View {
 
 extension View {
     func capaSuperior() -> some View {
-        self.edgesIgnoringSafeArea(.all)
+        self.ignoresSafeArea()
             .zIndex(10)
     }
 }

@@ -39,7 +39,7 @@ struct MasInformacion: View {
         
         ZStack {
             Color.black.opacity(pantallaCompleta ? 0.9 : 0.65)
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.3), value: pantallaCompleta)
                 .onTapGesture {
                     if !pantallaCompleta {
@@ -63,10 +63,9 @@ struct MasInformacion: View {
                             .aparicionBlur(show: $show)
                         
                         if let archivo = elemento as? Archivo {
-                                let _ = archivo.crearEstadisticas()
-//                            MasInformacionArchivo(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta)
+                            let _ = archivo.crearEstadisticas()
                             GeometryReader { geo in
-                                MasInformacionArchivoTest(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta, escala: escala)
+                                MasInformacionArchivo(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta, escala: escala)
                                     //.padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
                             }
                         }
@@ -77,7 +76,7 @@ struct MasInformacion: View {
                         width: pantallaCompleta ? cW : cWSmall,
                         height: pantallaCompleta ? cH : cHSmall
                     ) // Altura dinámica
-                    .background(ap.temaResuelto.backgroundGradient)
+                    .background(ap.temaResuelto.backgroundGradient.ignoresSafeArea())
                     .cornerRadius(pantallaCompleta ? 0 : 15)
                     .shadow(radius: !pantallaCompleta ? 10 : 0)
                     .transition(.opacity.combined(with: .scale)) // Transición más suave
