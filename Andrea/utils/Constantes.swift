@@ -127,7 +127,7 @@ struct ValoresElementoPredeterminados {
     public let protegidos: Bool = false
     
     //COLOR
-    public let colorGuardado: Color = .purple
+    public let colorGuardado: Color = .gray
     
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: Int = 0

@@ -25,7 +25,9 @@ struct FabricaColeccion {
         let fechaModificacion = sau.getElementModificationDate(elementURL: url)
         
         //COLOR DE LA COLECCION
-        var color: Color = pd.recuperarDatoArchivoColor(elementoURL: url, key: cpe.colorGuardado, default: p.colorGuardado)
+        let color: Color = pd.recuperarDatoArchivoColor(elementoURL: url, key: cpe.colorGuardado, default: p.colorGuardado)
+        
+        print("Color recuperado: ", color)
         
         let archivosYcolecciones = SistemaArchivosUtilidades.sau.contarArchivosYSubdirectorios(url: url)
         let totalArchivos = archivosYcolecciones.0

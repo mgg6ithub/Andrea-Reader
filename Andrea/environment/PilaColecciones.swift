@@ -185,6 +185,9 @@ class PilaColecciones: ObservableObject {
      */
     public func meterColeccion(coleccion: Coleccion) {
         
+        print("Metiendo en la pila: ", coleccion.nombre)
+        print("Con el color: ", coleccion.color)
+        
         //SI la coleccion que se quiere meter es la actual no se hace nada.
         if colecciones.last?.coleccion == coleccion { return }
         
