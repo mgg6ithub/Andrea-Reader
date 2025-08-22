@@ -7,6 +7,10 @@ struct FactoryArchivo {
     
     func crearArchivo(fileName: String, fileURL: URL, destionationURL: URL?, currentDirectory: URL) -> Archivo {
         
+        let pd = PersistenciaDatos()
+        let cpe = ClavesPersistenciaElementos()
+        let p = ValoresElementoPredeterminados()
+        
         let fileType = sau.getFileType(fileURL: fileURL)
         let fileSize = sau.getFileSize(fileURL: fileURL)
         let fechaImportacion = sau.getElementCreationDate(elementURL: fileURL)
@@ -14,8 +18,10 @@ struct FactoryArchivo {
         
         var archivo: Archivo
         
-        let favorito = PersistenciaDatos().obtenerAtributoConcreto(url: fileURL, atributo: "favorito") as? Bool ?? false
-        let protegido = PersistenciaDatos().obtenerAtributoConcreto(url: fileURL, atributo: "protegido") as? Bool ?? false
+//        let favorito = PersistenciaDatos().obtenerAtributoConcreto(url: fileURL, atributo: "favorito") as? Bool ?? false
+//        let protegido = PersistenciaDatos().obtenerAtributoConcreto(url: fileURL, atributo: "protegido") as? Bool ?? false
+        let favorito = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.favoritos, default: p.favoritos)
+        let protegido = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.protegidos, default: p.protegidos)
         
         switch(fileType) {
             

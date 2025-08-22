@@ -68,6 +68,10 @@ struct ClavesPersistenciaElementos {
     //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: String = "fechaPrimeraVezEntrado"
     
+    public let favoritos: String = "favotiros"
+    
+    public let protegidos: String = "Protegidos"
+    
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: String = "progreso_archivo"
     
@@ -88,6 +92,8 @@ struct ClavesPersistenciaElementos {
     //ARRAY DE CLAVES PARA PODER ACTUALIZAR EN PERSISTENCIA DEL TIRON
     public var arrayClavesPersistenciaElementos: [String] {
             [
+                favoritos,
+                protegidos,
                 fechaPrimeraVezEntrado,
                 progresoElemento, //pagina actual
                 miniaturaElemento, //tipo de miniatura
@@ -103,6 +109,10 @@ struct ValoresElementoPredeterminados {
     
     //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: Date? = nil
+    
+    public let favoritos: Bool = false
+    
+    public let protegidos: Bool = false
     
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: Int = 0

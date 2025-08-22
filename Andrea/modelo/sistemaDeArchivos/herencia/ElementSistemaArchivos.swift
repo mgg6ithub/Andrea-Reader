@@ -4,9 +4,9 @@ import UniformTypeIdentifiers
 
 class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, ObservableObject {
     
-    private let pd = PersistenciaDatos()
-    let cpep = ClavesPersistenciaElementos()
-    let pp = ValoresElementoPredeterminados()
+    private let persistencia = PersistenciaDatos()
+    let claves = ClavesPersistenciaElementos()
+    let valoresPre = ValoresElementoPredeterminados()
     
     var id: UUID
     @Published var nombre: String
@@ -47,7 +47,9 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
         self.relativeURL = ManipulacionCadenas().relativizeURL(elementURL: url)
         self.fechaImportacion = fechaImportacion
         self.fechaModificacion = fechaModificacion
-        self.fechaPrimeraVezEntrado = pd.recuperarDatoElemento(elementoURL: url, key: cpep.fechaPrimeraVezEntrado, default: pp.fechaPrimeraVezEntrado)
+        
+        self.fechaPrimeraVezEntrado = persistencia.recuperarDatoElemento(elementoURL: url, key: claves.fechaPrimeraVezEntrado, default: valoresPre.fechaPrimeraVezEntrado)
+        
         self.favorito = favortio
         self.protegido = protegido
         
@@ -75,12 +77,14 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
     
     public func cambiarEstadoFavorito() {
         withAnimation { self.favorito.toggle() }
-        PersistenciaDatos().guardarDatoElemento(url: self.url, atributo: "favorito", valor: self.favorito)
+//        PersistenciaDatos().guardarDatoElemento(url: self.url, atributo: "favorito", valor: self.favorito)
+        persistencia.guardarDatoArchivo(valor: favorito, elementoURL: url, key: claves.favoritos)
     }
     
     public func cambiarEstadoProtegido() {
         withAnimation { self.protegido.toggle() }
-        PersistenciaDatos().guardarDatoElemento(url: self.url, atributo: "protegido", valor: self.protegido)
+//        PersistenciaDatos().guardarDatoElemento(url: self.url, atributo: "protegido", valor: self.protegido)
+        persistencia.guardarDatoArchivo(valor: protegido, elementoURL: url, key: claves.protegidos)
     }
     
 }
