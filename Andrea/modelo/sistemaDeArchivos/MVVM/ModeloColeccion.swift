@@ -75,8 +75,7 @@ class ModeloColeccion: ObservableObject {
     init() {
             // Colección mínima para poder inicializar
         self.coleccion = Coleccion(directoryName: "TEST", directoryURL: URL(fileURLWithPath: ""), fechaImportacion: Date(), fechaModificacion: Date(), favorito: true, protegido: true)
-            
-//            self.tipoSA = nil
+
             self.elementos = []
             self.isLoading = false
             self.color = .gray
@@ -99,49 +98,16 @@ class ModeloColeccion: ObservableObject {
         self.coleccion = coleccion
         
         self.scrollPosition = pd.recuperarDatoElemento(elementoURL: url, key: cpe.desplazamientoColeccion, default: p.desplazamientoColeccion)
-
         self.color = coleccion.color
-
-//        if let tipoVistaRaw = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "tipoVista") as? String,
-//           let modo = EnumModoVista(rawValue: tipoVistaRaw) {
-//            self.modoVista = modo
-//        } else {
-//            self.modoVista = .cuadricula
-//        }
         self.modoVista = pd.recuperarDatoArchivoEnum(elementoURL: url, key: cpe.enumModoVista, default: p.enumModoVista)
-        
-        if let ordenacionString = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "ordenacion") as? String, let ordenacion = EnumOrdenaciones(rawValue: ordenacionString) {
-            self.ordenacion = ordenacion
-        } else {
-            self.ordenacion = .nombre
-        }
-        
-        if let raw = pd.obtenerAtributoConcreto(url: coleccion.url, atributo: "esInvertido") {
-            if let boolVal = raw as? Bool {
-                self.esInvertido = boolVal
-            }
-            else if let strVal = raw as? String, let parsed = Bool(strVal) {
-                self.esInvertido = parsed
-            } else {
-                self.esInvertido = false
-            }
-        } else {
-            self.esInvertido = false
-        }
+        self.ordenacion = pd.recuperarDatoArchivoEnum(elementoURL: url, key: cpe.enumModoOrdenacion, default: p.enumModoOrdenacion)
+        self.esInvertido = pd.recuperarDatoElemento(elementoURL: url, key: cpe.esInvertido, default: p.esInvertido)
         
         switch self.modoVista {
         case .cuadricula:
-            if let columnasGuardadas = pd.obtenerAtributoVista(coleccion: coleccion, modo: .cuadricula, atributo: "columnas") as? Int {
-                self.columnas = columnasGuardadas
-            } else {
-                self.columnas = 4 // valor por defecto
-            }
+            self.columnas = pd.recuperarDatoElemento(elementoURL: url, key: cpe.columnas, default: p.columnas)
         case .lista:
-            if let altura = pd.obtenerAtributoVista(coleccion: coleccion, modo: .lista, atributo: "altura") as? CGFloat {
-                self.altura = altura
-            } else {
-                self.altura = 180 // valor por defecto
-            }
+            self.altura = pd.recuperarDatoElemento(elementoURL: url, key: cpe.altura, default: p.altura)
         default:
             break
         }
@@ -219,17 +185,13 @@ class ModeloColeccion: ObservableObject {
 
     func actualizarScroll(_ nuevo: Int) {
         scrollPosition = nuevo
-//        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "scrollPosition", valor: nuevo)
         PersistenciaDatos().guardarDatoArchivo(valor: nuevo, elementoURL: self.coleccion.url, key: cpe.desplazamientoColeccion)
     }
     
     //MARK: --- METODO PARA CAMBIAR EL MODO DE VISTA DE LA COLECCION
     
     func cambiarModoVista(modoVista: EnumModoVista) {
-//        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.modoVista = modoVista }
         withAnimation(.easeInOut(duration: 0.3)) {  self.modoVista = modoVista }
-//        self.modoVista = modoVista
-//        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "tipoVista", valor: modoVista)
         pd.guardarDatoArchivo(valor: modoVista, elementoURL: self.coleccion.url, key: cpe.enumModoVista)
     }
 
@@ -242,7 +204,7 @@ class ModeloColeccion: ObservableObject {
         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { self.elementos = tempElementos }
         
         //guardamos en persistencia el modo de ordenacion
-        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "ordenacion", valor: modoOrdenacion)
+        pd.guardarDatoArchivo(valor: modoOrdenacion, elementoURL: self.coleccion.url, key: cpe.enumModoOrdenacion)
     }
     
     //MARK: --- INVERTIR ORDENACION ACTUAL ---
@@ -250,7 +212,8 @@ class ModeloColeccion: ObservableObject {
     func invertir() {
         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.esInvertido.toggle() }
         self.ordenarElementos(modoOrdenacion: self.ordenacion)
-        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "esInvertido", valor: esInvertido)
+//        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "esInvertido", valor: esInvertido)
+        pd.guardarDatoArchivo(valor: esInvertido, elementoURL: self.coleccion.url, key: cpe.esInvertido)
     }
     
     //Si esta invertido lo quitamos

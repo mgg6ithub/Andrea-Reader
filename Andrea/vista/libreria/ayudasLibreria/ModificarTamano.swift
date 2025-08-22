@@ -43,6 +43,10 @@ struct ModificarSize<Value: Numeric & Comparable>: ViewModifier {
                                 // Zoom out (alejar) => más columnas
                                 newValue = currentDouble + stepDouble
                             }
+                            //--- PERSISTENCIA ---
+                            if let convertedBack = fromDouble(newValue) { value = convertedBack }
+                            PersistenciaDatos().guardarDatoArchivo(valor: value, elementoURL: coleccion.url, key: ClavesPersistenciaElementos().columnas)
+                            
                         default:
                             if delta > 1.1, currentDouble + stepDouble <= maxDouble {
                                 // Zoom in (acercar) => más tamaño
@@ -51,19 +55,13 @@ struct ModificarSize<Value: Numeric & Comparable>: ViewModifier {
                                 // Zoom out (alejar) => menos tamaño
                                 newValue = currentDouble - stepDouble
                             }
+                            
+                            //--- PERSISTENCIA ---
+                            if let convertedBack = fromDouble(newValue) { value = convertedBack }
+                            PersistenciaDatos().guardarDatoArchivo(valor: value, elementoURL: coleccion.url, key: ClavesPersistenciaElementos().altura)
+                            
                         }
-
-                        if let convertedBack = fromDouble(newValue) {
-                            value = convertedBack
-                        }
-
-                        PersistenciaDatos().guardarAtributoVista(
-                            coleccion: coleccion,
-                            modo: modoVista,
-                            atributo: atributo,
-                            valor: value
-                        )
-
+                        
                         lastMagnification = 1.0
                         currentMagnification = 1.0
 
