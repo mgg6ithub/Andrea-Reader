@@ -112,8 +112,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //MARK: - --- INFORMACION GENERALES ---
     @Published var tipoMiniatura: EnumTipoMiniatura = .primeraPagina
-    
-    @Published var estadisticas: EstadisticasYProgresoLectura
+    @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     
     //ATRIBUTOS DEL DIRECTORIO AL QUE PERTENECE
     var dirURL: URL = URL(fileURLWithPath: "")
@@ -146,8 +145,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //MODELOS NECESARIOS
     private let sau = SistemaArchivosUtilidades.sau
-    
-
     
     override init() {
         self.dirURL = URL(fileURLWithPath: "")

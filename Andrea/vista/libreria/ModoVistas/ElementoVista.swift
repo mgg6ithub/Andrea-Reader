@@ -229,7 +229,7 @@ struct ContextMenuContenido: View {
         
         //--- ESTADO DEL ARCHIVO ---
         Section {
-            if let archivo = elemento as? Archivo { BotonCompletarLectura(archivo: archivo) }
+            if let archivo = elemento as? Archivo { BotonCompletarLectura(estadisticas: archivo.estadisticas) }
             if let elementoConcreto = elemento as? ElementoSistemaArchivos { BotonFavorito(elemento: elementoConcreto) }
             if let elementoConcreto = elemento as? ElementoSistemaArchivos { BotonProteccion(elemento: elementoConcreto) }
         }
@@ -331,7 +331,7 @@ struct ContextMenuContenido: View {
 
 struct BotonCompletarLectura: View {
     
-    @ObservedObject var archivo: Archivo
+    @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     @EnvironmentObject var ap: AppEstado
     
     var cDinamico: Color { ap.temaActual.colorContrario }
@@ -339,9 +339,9 @@ struct BotonCompletarLectura: View {
     
     var body: some View {
         Button(action: {
-            archivo.estadisticas.completarLectura()
+            estadisticas.completarLectura()
         }) {
-            let c: Bool = archivo.estadisticas.progreso == 100
+            let c: Bool = estadisticas.progreso == 100
             Label {
                 Text(c ? "Reiniciar lectura" : "Completar lectura")
             } icon: {

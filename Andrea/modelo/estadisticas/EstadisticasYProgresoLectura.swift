@@ -13,7 +13,6 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     // --- PROGRESO Y PAGINAS ---
     @Published var totalPaginas: Int? { didSet { actualizarProgreso() } }
     
-
     private var inicioLectura: Date?
     @Published var paginaActual: Int { didSet { pd.guardarDatoArchivo(valor: paginaActual, elementoURL: self.url, key: cpe.progresoElemento) }} //<-guardar en persistencia la pagina actual}} //<-calculamos las paginas complementarias restantes
     
@@ -30,7 +29,6 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     
     @Published var progresoTiempoTotal: Int = 0
     @Published var progresoTiempoTotalDouble: Double = 0.0
-    
     
     // --- TIEMPOS ---
     private var timerCancellable: AnyCancellable?
@@ -123,7 +121,6 @@ final class EstadisticasYProgresoLectura: ObservableObject {
             completado = false
         }
         actualizarProgreso()
-        pd.guardarDatoElemento(url: url, atributo: "progreso", valor: progreso)
     }
     
     

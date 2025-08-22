@@ -94,7 +94,7 @@ struct CuadriculaVista: View {
                                     if let placeholder = elemento as? ElementoPlaceholder {
                                         PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
                                     } else if let archivo = elemento as? Archivo {
-                                        CuadriculaArchivo(archivo: archivo, coleccionVM: vm, width: itemWidth, height: itemHeight)
+                                        CuadriculaArchivo(archivo: archivo, estadisticas: archivo.estadisticas, coleccionVM: vm, width: itemWidth, height: itemHeight)
                                             .contentShape(ContentShapeKinds.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
                                     } else if let coleccion = elemento as? Coleccion {
                                         CuadriculaColeccion(coleccion: coleccion, width: itemWidth, height: itemHeight)

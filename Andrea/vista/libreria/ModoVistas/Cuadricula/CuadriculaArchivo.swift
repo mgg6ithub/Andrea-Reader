@@ -12,6 +12,7 @@ struct CuadriculaArchivo: View {
     @EnvironmentObject var me: MenuEstado
     
     @ObservedObject var archivo: Archivo
+    @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     @StateObject private var viewModel = ModeloMiniaturaArchivo()
     @ObservedObject var coleccionVM: ModeloColeccion
 
@@ -25,8 +26,6 @@ struct CuadriculaArchivo: View {
     
     private let constantes = ConstantesPorDefecto()
     @State private var progresoMostrado: Int = 0
-    
-    private var sss: EstadisticasYProgresoLectura { archivo.estadisticas }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -86,7 +85,7 @@ struct CuadriculaArchivo: View {
                             Spacer()
                             HStack(alignment: .bottom, spacing: 2.5) {
                                 if ap.porcentaje {
-                                    if sss.progreso > 0 && ap.porcentajeNumero {
+                                    if estadisticas.progreso > 0 && ap.porcentajeNumero {
                                         HStack(spacing: 0) {
                                             Text("%")
                                                 .font(.system(size: ap.porcentajeNumeroSize * 0.75))
@@ -100,10 +99,10 @@ struct CuadriculaArchivo: View {
                                                 .foregroundColor(coleccionVM.color)
                                         }
                                         //NECESARIOS PARA ANIMACION DEL PROGRESO
-                                        .onAppear { progresoMostrado = archivo.estadisticas.progreso }
+                                        .onAppear { progresoMostrado = estadisticas.progreso }
                                         .onChange(of: ap.archivoEnLectura) {
                                             withAnimation(.easeOut(duration: 0.6)) {
-                                                progresoMostrado = archivo.estadisticas.progreso
+                                                progresoMostrado = estadisticas.progreso
                                             }
                                         }
                                         //NECESARIOS PARA ANIMACION DEL PROGRESO
@@ -140,9 +139,9 @@ struct CuadriculaArchivo: View {
                                 Spacer()
                             }
                             .padding(.horizontal, archivo.tipoMiniatura == .imagenBase ? 13 : 10)
-                            .onChange(of: sss.completado) {
+                            .onChange(of: estadisticas.completado) {
                                 withAnimation(.easeOut(duration: 0.6)) {
-                                    progresoMostrado = sss.progreso
+                                    progresoMostrado = estadisticas.progreso
                                 }
                             }
                             
@@ -174,8 +173,8 @@ struct CuadriculaArchivo: View {
                 nombre: archivo.nombre,
                 tipo: archivo.fileType.rawValue,
                 tamanioMB: ManipulacionSizes().formatearSize(archivo.fileSize),
-                totalPaginas: archivo.estadisticas.totalPaginas,
-                progreso: archivo.estadisticas.progreso,
+                totalPaginas: estadisticas.totalPaginas,
+                progreso: estadisticas.progreso,
                 coleccionColor: coleccionVM.color,
                 maxWidth: width
             )
