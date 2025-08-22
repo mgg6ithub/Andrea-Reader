@@ -48,19 +48,10 @@ struct ProgresoTiempo: View {
                                 .foregroundColor(.primary)
                         }
                         
-                        HStack(alignment: .bottom, spacing: 1.5) {
-                            Text("\(Int(archivo.tiempoTotal))")
-                                .font(.system(size: 20))
-                                .foregroundColor(.blue.opacity(0.65))
-                            Text("s")
-                                .font(.system(size: 12.5))
-                                .foregroundColor(.primary)
-                                .offset(y: -2)
-                        }
-                        .offset(x: -16)
-                        
+                        TiempoFormateado(tiempo: archivo.tiempoTotal, color: .blue.opacity(0.65))
+                            .offset(x: -16)
                     }
-                    
+
                     VStack(alignment: .center, spacing: 0) {
                         HStack(spacing: 3) {
                             RoundedRectangle(cornerRadius: 2.5)
@@ -71,17 +62,9 @@ struct ProgresoTiempo: View {
                                 .foregroundColor(.primary)
                         }
                         
-                        HStack(alignment: .bottom, spacing: 1.5) {
-                            Text("\(Int(archivo.tiempoRestante))")
-                                .font(.system(size: 20))
-                                .foregroundColor(.secondary.opacity(0.65))
-                            Text("s")
-                                .font(.system(size: 12.5))
-                                .foregroundColor(.primary)
-                                .offset(y: -2)
-                        }
-                        
+                        TiempoFormateado(tiempo: archivo.tiempoRestante, color: .secondary.opacity(0.65))
                     }
+
                 }
                 
             }

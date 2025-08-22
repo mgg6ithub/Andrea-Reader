@@ -107,13 +107,13 @@ struct ProgresoLectura: View {
                             }
                             
                             HStack(alignment: .bottom, spacing: 1.5) {
-                                Text("\(archivo.paginaActual)")
+                                Text("\(archivo.paginaActual + 1)")
                                     .font(.system(size: 20))
                                     .foregroundColor(.green.opacity(0.65))
-                                Text("Páginas")
+                                Text("páginas")
                                     .font(.system(size: 12.5))
                                     .foregroundColor(.primary)
-                                    .offset(y: -2)
+                                    .offset(y: -3.5)
                             }
                             
                         }
@@ -132,10 +132,10 @@ struct ProgresoLectura: View {
                                 Text("\(archivo.paginasRestantes)")
                                     .font(.system(size: 20))
                                     .foregroundColor(.secondary.opacity(0.65))
-                                Text("Páginas")
+                                Text("páginas")
                                     .font(.system(size: 12.5))
                                     .foregroundColor(.primary)
-                                    .offset(y: -2)
+                                    .offset(y: -3.5)
                             }
                             
                         }

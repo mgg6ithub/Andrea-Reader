@@ -294,9 +294,15 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.tiempoRestante = estimarTiempoRestante(velocidadPaginasPorMinuto: self.velocidadLectura)
         print("VARRIABLE TIEMPO RESTANTE \(self.tiempoRestante) -> \(type(of: self.tiempoRestante))")
         
-        let progresott = (tiempoTotal > 0 && (tiempoTotal + tiempoRestante) > 0)
+        //Calculo del progreso del tiempo total
+        var progresott = (tiempoTotal > 0 && (tiempoTotal + tiempoRestante) > 0)
             ? min(tiempoTotal / (tiempoTotal + tiempoRestante), 1.0)
             : 0
+        //Si hemos completado la lectura el progreso del tiempo total es 100 y no queda tiempo
+        if self.progreso == 100 {
+            progresott = 1.0
+            self.tiempoRestante = 0
+        }
         
         self.progresoTiempoTotal = Int((progresott * 100).rounded())
         print("PROGRESO TIEMPO TOTAL  INT \(self.progresoTiempoTotal) -> \(type(of: self.progresoTiempoTotal))")
@@ -344,7 +350,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     private func calcularPaginasRestantes() -> Int {
         guard let total = totalPaginas else { return 0 }
-        return max(total - paginaActual, 0)
+        return max(total - (paginaActual + 1), 0)
     }
     
     
@@ -371,9 +377,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     private func actualizarProgreso() {
-        guard let total = totalPaginas, total > 1 else {
+        guard let total = totalPaginas, total > 0 else {
             progreso = 0
             progresoDouble = 0
+            return
+        }
+        if total == 1 {
+            progreso = 100
+            progresoDouble = 1.0
             return
         }
         let frac = Double(min(paginaActual, total - 1)) / Double(total - 1)
