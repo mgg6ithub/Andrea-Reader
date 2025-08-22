@@ -37,7 +37,7 @@ struct MasInformacionArchivo: View {
     
     private var isSmall: Bool { ap.resolucionLogica == .small }
     
-    @State private var masInfoPresionado: Bool = false
+    @State private var masInfoPresionado: Bool = true
     
     var body: some View {
         ScrollViewReader { proxy in

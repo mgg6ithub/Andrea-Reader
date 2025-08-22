@@ -20,14 +20,16 @@ struct FabricaColeccion {
         } else {
             fechaImportacion = Date()
             pd.guardarDatoArchivo(valor: fechaImportacion, elementoURL: url, key: cpe.fechaImportacion)
-            print("FECHA IMPORTACION: ", fechaImportacion)
+            
+//            let formatter = Fechas().formatDate1(fechaImportacion)
+            
+            print("Fecha crada: ", Fechas().formatDate1(fechaImportacion))
         }
+        
         let fechaModificacion = sau.getElementModificationDate(elementURL: url)
         
         //COLOR DE LA COLECCION
-        let color: Color = pd.recuperarDatoArchivoColor(elementoURL: url, key: cpe.colorGuardado, default: p.colorGuardado)
-        
-        print("Color recuperado: ", color)
+        let color: Color = pd.recuperarDatoElemento(elementoURL: url, key: cpe.colorGuardado, default: p.colorGuardado)
         
         let archivosYcolecciones = SistemaArchivosUtilidades.sau.contarArchivosYSubdirectorios(url: url)
         let totalArchivos = archivosYcolecciones.0

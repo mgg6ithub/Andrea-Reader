@@ -44,8 +44,6 @@ class Coleccion: ElementoSistemaArchivos {
     //--- CONSTRUCTOR ---
     init(directoryName: String, directoryURL: URL, fechaImportacion: Date, fechaModificacion: Date, color: Color, totalArchivos: Int, totalColecciones: Int, favorito: Bool, protegido: Bool) {
         
-        print("Creando coloeccio con color: ", color)
-        
         self.color = color
         self.totalArchivos = totalArchivos
         self.totalColecciones = totalColecciones

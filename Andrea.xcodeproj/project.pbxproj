@@ -68,7 +68,6 @@
 		D4A6C7292DEA21C200E7451F /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6C7282DEA21C200E7451F /* Enums.swift */; };
 		D4A888432E26F9EC00C64974 /* PlaceholderLista.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A888422E26F9EC00C64974 /* PlaceholderLista.swift */; };
 		D4AA438D2E3A22CC0033EF63 /* VistaMostrarEnArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AA438C2E3A22CC0033EF63 /* VistaMostrarEnArchivos.swift */; };
-		D4ACA2692E48D51800A367D9 /* ManipulacionFechas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ACA2682E48D51800A367D9 /* ManipulacionFechas.swift */; };
 		D4ACA26B2E48EB8D00A367D9 /* ManipulacionSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ACA26A2E48EB8D00A367D9 /* ManipulacionSizes.swift */; };
 		D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ACC9B12E1AB8C4006778AE /* ModeloMiniatura.swift */; };
 		D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADDB742DE9B6A50097A010 /* SideMenu.swift */; };
@@ -95,6 +94,7 @@
 		D4B23FA62E4606CA00425DB8 /* ayudaHistorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23FA52E4606CA00425DB8 /* ayudaHistorial.swift */; };
 		D4B3C3BB2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */; };
 		D4B3C3BD2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */; };
+		D4B408FB2E58BE440076B9B4 /* Fechas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B408FA2E58BE440076B9B4 /* Fechas.swift */; };
 		D4B6DF262E54E35C00A46D0A /* General.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6DF252E54E35C00A46D0A /* General.swift */; };
 		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
 		D4B88CB02E5467A900E68D45 /* Colores.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B88CAF2E5467A900E68D45 /* Colores.swift */; };
@@ -197,7 +197,6 @@
 		D4A6C7282DEA21C200E7451F /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		D4A888422E26F9EC00C64974 /* PlaceholderLista.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderLista.swift; sourceTree = "<group>"; };
 		D4AA438C2E3A22CC0033EF63 /* VistaMostrarEnArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VistaMostrarEnArchivos.swift; sourceTree = "<group>"; };
-		D4ACA2682E48D51800A367D9 /* ManipulacionFechas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManipulacionFechas.swift; sourceTree = "<group>"; };
 		D4ACA26A2E48EB8D00A367D9 /* ManipulacionSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManipulacionSizes.swift; sourceTree = "<group>"; };
 		D4ACC9B12E1AB8C4006778AE /* ModeloMiniatura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloMiniatura.swift; sourceTree = "<group>"; };
 		D4ADDB742DE9B6A50097A010 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
@@ -224,6 +223,7 @@
 		D4B23FA52E4606CA00425DB8 /* ayudaHistorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ayudaHistorial.swift; sourceTree = "<group>"; };
 		D4B3C3BA2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSeleccionMultipleArriba.swift; sourceTree = "<group>"; };
 		D4B3C3BC2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSeleccionMultipleAbajo.swift; sourceTree = "<group>"; };
+		D4B408FA2E58BE440076B9B4 /* Fechas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fechas.swift; sourceTree = "<group>"; };
 		D4B6DF252E54E35C00A46D0A /* General.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = General.swift; sourceTree = "<group>"; };
 		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
 		D4B88CAF2E5467A900E68D45 /* Colores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colores.swift; sourceTree = "<group>"; };
@@ -385,11 +385,11 @@
 				D485896B2DEB9DF10074DB8E /* Utilidades.swift */,
 				D4BF4B1B2E168D1400224C71 /* Algoritmos.swift */,
 				D485896E2DEB9E4E0074DB8E /* ManipulacionCadenas.swift */,
-				D4ACA2682E48D51800A367D9 /* ManipulacionFechas.swift */,
 				D4BF0B242DEF4B2B00152333 /* Enums */,
 				D4ACA26A2E48EB8D00A367D9 /* ManipulacionSizes.swift */,
 				D4B88CAF2E5467A900E68D45 /* Colores.swift */,
 				D4B159472E57DC1A00942B91 /* Tiempo.swift */,
+				D4B408FA2E58BE440076B9B4 /* Fechas.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -828,6 +828,7 @@
 				D45E6FFA2DE7A772001F816A /* VistaPrincipal.swift in Sources */,
 				D4A65E022E27EBB500729A57 /* ArrastreManual.swift in Sources */,
 				D45E700C2DE7A803001F816A /* MenuVista.swift in Sources */,
+				D4B408FB2E58BE440076B9B4 /* Fechas.swift in Sources */,
 				D4BF0B1F2DEF493500152333 /* FabricaArchivo.swift in Sources */,
 				D49F12F62E25349500C67FB8 /* MasInformacionColeccion.swift in Sources */,
 				D49E266D2E3A7C4A009A0EDC /* AyudaCambiarPortada.swift in Sources */,
@@ -888,7 +889,6 @@
 				D4B0CCEC2E577BAF000C69CF /* ProgresoTiempo.swift in Sources */,
 				D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */,
 				D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */,
-				D4ACA2692E48D51800A367D9 /* ManipulacionFechas.swift in Sources */,
 				D4CF28E72E323E29003B3ABC /* ModeloMiniaturaArchivo.swift in Sources */,
 				D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */,
 				D424A40B2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift in Sources */,

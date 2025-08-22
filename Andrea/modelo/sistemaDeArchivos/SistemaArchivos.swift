@@ -485,12 +485,6 @@ class SistemaArchivos: ObservableObject {
         let elemento: ElementoSistemaArchivos = self.crearInstancia(elementoURL: elementoURL)
         
         let coleccionActualVM = PilaColecciones.pilaColecciones.getColeccionActual()
-
-        print("Creando un nuevo archiov: ", elementoURL.lastPathComponent)
-        print("Archivo en la coleccion:")
-        for c in coleccionActualVM.elementos {
-            print(c.nombre)
-        }
         
         // ✅ Actualizar UI en el hilo principal
         DispatchQueue.main.async {

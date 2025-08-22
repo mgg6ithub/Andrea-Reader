@@ -90,7 +90,7 @@ class ModeloColeccion: ObservableObject {
             self.isPerformingAutoScroll = false
         }
     
-    
+    //CONSTRUCTOR DE VERDAD
     init(_ coleccion: Coleccion) {
         
         let url = coleccion.url
@@ -212,7 +212,6 @@ class ModeloColeccion: ObservableObject {
     func invertir() {
         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {  self.esInvertido.toggle() }
         self.ordenarElementos(modoOrdenacion: self.ordenacion)
-//        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "esInvertido", valor: esInvertido)
         pd.guardarDatoArchivo(valor: esInvertido, elementoURL: self.coleccion.url, key: cpe.esInvertido)
     }
     

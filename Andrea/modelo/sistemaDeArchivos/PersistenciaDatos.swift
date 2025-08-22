@@ -2,6 +2,7 @@
 
 import SwiftUI
 
+
 //MARK: --- BORRA TODOS LOS DATOS PERSISTENTES REINICIANDO UD ---
 
 extension PersistenciaDatos {
@@ -225,8 +226,26 @@ struct PersistenciaDatos {
     //key = clave del diccinario donde estara ese dato asociado a dicho elementoURL
     public func recuperarDatoElemento<T>(elementoURL: URL, key: String, default def: T) -> T {
         let k = self.obtenerKey(elementoURL)
-        return (self.obtenerMapa(key: key)[k] as? T) ?? def
+        let valor = self.obtenerMapa(key: key)[k]
+
+        // Caso especial: Date
+        if T.self == Date.self, let timestamp = valor as? Double {
+            return Date(timeIntervalSince1970: timestamp) as! T
+        }
+
+        // Caso especial: Date?
+        if T.self == Date?.self, let timestamp = valor as? Double {
+            return (Date(timeIntervalSince1970: timestamp) as Date?) as! T
+        }
+
+        // Caso especial: Color
+        if T.self == Color.self, let hex = valor as? String {
+            return Color(hex: hex) as! T
+        }
+
+        return (valor as? T) ?? def
     }
+
     
     /// Recuperar un enum guardado como rawValue en el mapa
     public func recuperarDatoArchivoEnum<E: RawRepresentable>(elementoURL: URL, key: String, default def: E) -> E where E.RawValue: Any {
@@ -239,16 +258,17 @@ struct PersistenciaDatos {
         return def
     }
     
+    
     /// Recuperar un color desde persistencia
-    public func recuperarDatoArchivoColor(elementoURL: URL, key: String, default def: Color) -> Color {
-        let k = self.obtenerKey(elementoURL)
-        let mapa = self.obtenerMapa(key: key)
-
-        if let hex = mapa[k] as? String {
-            return Color(hex: hex)
-        }
-        return def
-    }
+//    public func recuperarDatoArchivoColor(elementoURL: URL, key: String, default def: Color) -> Color {
+//        let k = self.obtenerKey(elementoURL)
+//        let mapa = self.obtenerMapa(key: key)
+//
+//        if let hex = mapa[k] as? String {
+//            return Color(hex: hex)
+//        }
+//        return def
+//    }
 
     
     /// Actualizar la clave en varios diccionarios de persistencia (ej: al renombrar o mover un archivo)

@@ -276,20 +276,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     
     //METODO PARA INICIAR LAS ESTADISTICAS COMPLEMENTARIAS A PARTIR DE LAS PRIMARIAS QUE SE INICIALIZAN EN EL CONSTRUCTOR
     public func crearEstadisticas() {
-        
-//        print("Creando estadisticas")
         self.paginasRestantes = calcularPaginasRestantes()
         self.progresoRestante = 100 - progreso
-//        print("Progreso restantes: ", progresoRestante)
         
         //velocidad de lectura
         calcularVelocidadLectura()
-//        print("VELOCIDAD: ", velocidadLectura)
         
         //tiempo restante
-        print("VARRIABLE TIEMPO TOTAL \(self.tiempoTotal) -> \(type(of: self.tiempoTotal))")
         self.tiempoRestante = estimarTiempoRestante(velocidadPaginasPorMinuto: self.velocidadLectura)
-        print("VARRIABLE TIEMPO RESTANTE \(self.tiempoRestante) -> \(type(of: self.tiempoRestante))")
         
         //Calculo del progreso del tiempo total
         var progresott = (tiempoTotal > 0 && (tiempoTotal + tiempoRestante) > 0)
@@ -301,18 +295,12 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
             self.tiempoRestante = 0
         }
         
-        self.progresoTiempoTotal = Int((progresott * 100).rounded())
-        print("PROGRESO TIEMPO TOTAL  INT \(self.progresoTiempoTotal) -> \(type(of: self.progresoTiempoTotal))")
-        
-        self.progresoTiempoTotalDouble = (progresott * 100).rounded() / 100
-        print("PROGRESO TIEMPO TOTAL REDONDEADO \(self.progresoTiempoTotalDouble) -> \(type(of: self.progresoTiempoTotalDouble))")
-        
+        self.progresoTiempoTotal = Int((progresott * 100).rounded()) // <- progreso del tiempo total
+        self.progresoTiempoTotalDouble = (progresott * 100).rounded() / 100 // <- lo mismo pero en double
 
         //Recalcular tiempos de paginas
         recalcularTiempos()
         recalcularVisitas()
-//        print("Pagina visitada mas tiempo: ", self.paginaVisitadaMasTiempo)
-//        print("Pagina mas vis: ", self.paginaMasVisitada)
     }
     
     //MARK: - --- FUNCIONES GENERALES ---
