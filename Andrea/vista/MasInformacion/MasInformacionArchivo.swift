@@ -37,52 +37,67 @@ struct MasInformacionArchivo: View {
     
     private var isSmall: Bool { ap.resolucionLogica == .small }
     
+    @State private var masInfoPresionado: Bool = false
+    
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            //cmabiar cuando es iphone a vertical
-            VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    Contenido(archivo: archivo, vm: vm)
-                }
-                .padding(.bottom, 10)
+        ScrollViewReader { proxy in
+            ScrollView(.vertical, showsIndicators: false) {
+                //IMAGEN + DATOS
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        Contenido(archivo: archivo, vm: vm)
+                    }
+                    .padding(.bottom, 10)
                     
+                    //ESTADISTICAS
                     VStack(alignment: .leading, spacing: 0) {
-//                        if archivo.progreso == true && archivo.tiempoTotal == true {
-                            
-//                            HStack {
-//                                Spacer()
-//                                ImagenLibreriaVacia(imagen: "buhosf", texto: "Aun no has leido este comic! ¿A que esperas para hacerlo?", anchura: 200, altura: 200)
-//                                Spacer()
-//                            }
-
-//                        } else {
+                        //                        if archivo.progreso == true && archivo.tiempoTotal == true {
                         
-                            ProgresoLectura(archivo: archivo)
-                            
-                            Rectangle()
-                                .frame(height: 1)
-                                .foregroundColor(.gray.opacity(0.25))
-                                .padding(.vertical, 20)
-                                .padding(.horizontal, 10)
-                            
-                            ProgresoTiempo(archivo: archivo)
-                                .padding(.bottom, 15)
-//                        }
+                        //                            HStack {
+                        //                                Spacer()
+                        //                                ImagenLibreriaVacia(imagen: "buhosf", texto: "Aun no has leido este comic! ¿A que esperas para hacerlo?", anchura: 200, altura: 200)
+                        //                                Spacer()
+                        //                            }
+                        
+                        //                        } else {
+                        
+                        ProgresoLectura(archivo: archivo)
+                        
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(.gray.opacity(0.25))
+                            .padding(.vertical, 20)
+                            .padding(.horizontal, 10)
+                        
+                        ProgresoTiempo(archivo: archivo)
+                            .padding(.bottom, 15)
+                        //                        }
                     }
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
                             .stroke(.gray.opacity(0.25), lineWidth: 1)
                     )
-
-                
-                VStack {
-                    Text("hola")
+                    
+                    //INFORMACION AVANZADA
+                    InformacionAvanzada(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(.gray.opacity(0.25), lineWidth: 1)
+                        )
+                        .padding(.top, 10)
+                        .id("informacionAvanzada")
                 }
-                .frame(height: 300)
+                
             }
-            
+            .padding(.horizontal, 20)
+            .onChange(of: masInfoPresionado) { nuevoValor in
+                if nuevoValor {
+                    withAnimation {
+                        proxy.scrollTo("informacionAvanzada", anchor: .bottom)
+                    }
+                }
+            }
         }
-        .padding(.horizontal, 20)
     }
 }
 

@@ -83,7 +83,7 @@
 		D4B0BBA32E4C6ADD0073380E /* ComicCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA22E4C6ADD0073380E /* ComicCache.swift */; };
 		D4B0BBA62E4C6B5B0073380E /* ProtocoloComic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA52E4C6B5B0073380E /* ProtocoloComic.swift */; };
 		D4B0BBA82E4C6D880073380E /* ComicPaginado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */; };
-		D4B0CCE52E574FB1000C69CF /* MasInformacionArchivoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE42E574FB1000C69CF /* MasInformacionArchivoTest.swift */; };
+		D4B0CCE52E574FB1000C69CF /* MasInformacionArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE42E574FB1000C69CF /* MasInformacionArchivo.swift */; };
 		D4B0CCE82E5779FB000C69CF /* ProgresoCircular.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */; };
 		D4B0CCEA2E577AA9000C69CF /* ProgresoLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */; };
 		D4B0CCEC2E577BAF000C69CF /* ProgresoTiempo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */; };
@@ -99,6 +99,7 @@
 		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
 		D4B88CB02E5467A900E68D45 /* Colores.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B88CAF2E5467A900E68D45 /* Colores.swift */; };
 		D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8B3882E1324B200585A6D /* ThumbnailService.swift */; };
+		D4B921912E5871C500305A09 /* InformacionAvanzada.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B921902E5871C500305A09 /* InformacionAvanzada.swift */; };
 		D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */; };
 		D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */; };
 		D4BF0B1F2DEF493500152333 /* FabricaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B1E2DEF493500152333 /* FabricaArchivo.swift */; };
@@ -211,7 +212,7 @@
 		D4B0BBA22E4C6ADD0073380E /* ComicCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicCache.swift; sourceTree = "<group>"; };
 		D4B0BBA52E4C6B5B0073380E /* ProtocoloComic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocoloComic.swift; sourceTree = "<group>"; };
 		D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicPaginado.swift; sourceTree = "<group>"; };
-		D4B0CCE42E574FB1000C69CF /* MasInformacionArchivoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacionArchivoTest.swift; sourceTree = "<group>"; };
+		D4B0CCE42E574FB1000C69CF /* MasInformacionArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacionArchivo.swift; sourceTree = "<group>"; };
 		D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCircular.swift; sourceTree = "<group>"; };
 		D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoLectura.swift; sourceTree = "<group>"; };
 		D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoTiempo.swift; sourceTree = "<group>"; };
@@ -227,6 +228,7 @@
 		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
 		D4B88CAF2E5467A900E68D45 /* Colores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colores.swift; sourceTree = "<group>"; };
 		D4B8B3882E1324B200585A6D /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
+		D4B921902E5871C500305A09 /* InformacionAvanzada.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformacionAvanzada.swift; sourceTree = "<group>"; };
 		D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformacionCuadricula.swift; sourceTree = "<group>"; };
 		D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCuadricula.swift; sourceTree = "<group>"; };
 		D4BF0B1E2DEF493500152333 /* FabricaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabricaArchivo.swift; sourceTree = "<group>"; };
@@ -443,7 +445,7 @@
 			children = (
 				D4B0CCE62E5779E5000C69CF /* AyudasMasInformacion */,
 				D49E26692E3A77BD009A0EDC /* MasInformacion.swift */,
-				D4B0CCE42E574FB1000C69CF /* MasInformacionArchivoTest.swift */,
+				D4B0CCE42E574FB1000C69CF /* MasInformacionArchivo.swift */,
 				D49F12F52E25349500C67FB8 /* MasInformacionColeccion.swift */,
 				D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */,
 			);
@@ -584,6 +586,7 @@
 				D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */,
 				D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */,
 				D4B159452E57D5F100942B91 /* GraficoVelocidad.swift */,
+				D4B921902E5871C500305A09 /* InformacionAvanzada.swift */,
 			);
 			path = AyudasMasInformacion;
 			sourceTree = "<group>";
@@ -873,7 +876,7 @@
 				D4DA1BD72E3BC9DE00529C47 /* Consejos.swift in Sources */,
 				D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */,
 				D4B0BBA62E4C6B5B0073380E /* ProtocoloComic.swift in Sources */,
-				D4B0CCE52E574FB1000C69CF /* MasInformacionArchivoTest.swift in Sources */,
+				D4B0CCE52E574FB1000C69CF /* MasInformacionArchivo.swift in Sources */,
 				D49D7D032E26D77D00E0A93B /* ListaColeccion.swift in Sources */,
 				D4AECEBB2DEE33620032917F /* PilaColecciones.swift in Sources */,
 				D4B23FA62E4606CA00425DB8 /* ayudaHistorial.swift in Sources */,
@@ -896,6 +899,7 @@
 				D4A6C7272DEA216400E7451F /* RectangleFormView.swift in Sources */,
 				D4B23FA22E45F54F00425DB8 /* IndicesAjustes.swift in Sources */,
 				D47139C72E0AE76500B5FA35 /* CuadriculaArchivo.swift in Sources */,
+				D4B921912E5871C500305A09 /* InformacionAvanzada.swift in Sources */,
 				D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */,
 				D4BF0B212DEF494000152333 /* FabricaColeccion.swift in Sources */,
 				D4A2704A2E4CA2B300ECEF2F /* VistaGeneral.swift in Sources */,
