@@ -187,14 +187,18 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     @Published var progreso: Int = 0
-    @Published var progresoEntero: Double = 0
+    @Published var progresoDouble: Double = 0.0 //redondeado a dos decimales si el progreso es %53 -> 0.53
     @Published var progresoRestante: Int = 0
+    
+    @Published var progresoTiempoTotal: Int = 0
+    @Published var progresoTiempoTotalDouble: Double = 0.0
+    
     
     // --- TIEMPOS ---
     private var timerCancellable: AnyCancellable?
     @Published var tiempoActual: TimeInterval = 0      // se actualiza en vivo
     @Published var tiempoTotal: TimeInterval { didSet { pd.guardarDatoArchivo(valor: Int(tiempoTotal), elementoURL: url, key: cpe.tiempoLecturaTotal) } } //guardamos el tiempo total al cambiarse
-    var tiempoRestante: TimeInterval = 0 // <- implicito en el progreso circular
+    @Published var tiempoRestante: TimeInterval = 0 // <- implicito en el progreso circular
     private var inicioPagina: Date? //<- calcular el tiempo
     var tiempoPorPagina: TimeInterval = 0 // <- grafica de barras o algo por el estilo moderno
 
@@ -276,23 +280,36 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     //METODO PARA INICIAR LAS ESTADISTICAS COMPLEMENTARIAS A PARTIR DE LAS PRIMARIAS QUE SE INICIALIZAN EN EL CONSTRUCTOR
     public func crearEstadisticas() {
         
-        print("Creando estadisticas")
+//        print("Creando estadisticas")
         self.paginasRestantes = calcularPaginasRestantes()
         self.progresoRestante = 100 - progreso
-        print("Progreso restantes: ", progresoRestante)
+//        print("Progreso restantes: ", progresoRestante)
         
         //velocidad de lectura
         calcularVelocidadLectura()
-        print("VELOCIDAD: ", velocidadLectura)
+//        print("VELOCIDAD: ", velocidadLectura)
         
         //tiempo restante
+        print("VARRIABLE TIEMPO TOTAL \(self.tiempoTotal) -> \(type(of: self.tiempoTotal))")
         self.tiempoRestante = estimarTiempoRestante(velocidadPaginasPorMinuto: self.velocidadLectura)
+        print("VARRIABLE TIEMPO RESTANTE \(self.tiempoRestante) -> \(type(of: self.tiempoRestante))")
         
+        let progresott = (tiempoTotal > 0 && (tiempoTotal + tiempoRestante) > 0)
+            ? min(tiempoTotal / (tiempoTotal + tiempoRestante), 1.0)
+            : 0
+        
+        self.progresoTiempoTotal = Int((progresott * 100).rounded())
+        print("PROGRESO TIEMPO TOTAL  INT \(self.progresoTiempoTotal) -> \(type(of: self.progresoTiempoTotal))")
+        
+        self.progresoTiempoTotalDouble = (progresott * 100).rounded() / 100
+        print("PROGRESO TIEMPO TOTAL REDONDEADO \(self.progresoTiempoTotalDouble) -> \(type(of: self.progresoTiempoTotalDouble))")
+        
+
         //Recalcular tiempos de paginas
         recalcularTiempos()
         recalcularVisitas()
-        print("Pagina visitada mas tiempo: ", self.paginaVisitadaMasTiempo)
-        print("Pagina mas vis: ", self.paginaMasVisitada)
+//        print("Pagina visitada mas tiempo: ", self.paginaVisitadaMasTiempo)
+//        print("Pagina mas vis: ", self.paginaMasVisitada)
     }
     
     //MARK: - --- FUNCIONES GENERALES ---
@@ -356,11 +373,11 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     private func actualizarProgreso() {
         guard let total = totalPaginas, total > 1 else {
             progreso = 0
-            progresoEntero = 0
+            progresoDouble = 0
             return
         }
         let frac = Double(min(paginaActual, total - 1)) / Double(total - 1)
-        progresoEntero = frac
+        progresoDouble = frac
         progreso = Int(round(frac * 100))
     }
     

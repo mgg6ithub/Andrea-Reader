@@ -63,20 +63,11 @@ struct MasInformacion: View {
                             .aparicionBlur(show: $show)
                         
                         if let archivo = elemento as? Archivo {
+                                let _ = archivo.crearEstadisticas()
 //                            MasInformacionArchivo(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta)
                             GeometryReader { geo in
                                 MasInformacionArchivoTest(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta, escala: escala)
-                                    .onAppear {
-//                                        print("ANCHO DESDE PADRE")
-//                                        print(geo.size.width)
-                                    }
-                                //                                .padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
-                                    .onAppear {
-                                        if !archivo.masInformacion {
-//                                            archivo.inicializarValoresEstadisticos()
-                                            archivo.crearEstadisticas()
-                                        }
-                                    }
+                                    //.padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
                             }
                         }
                         

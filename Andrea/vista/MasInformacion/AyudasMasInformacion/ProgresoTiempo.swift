@@ -36,11 +36,7 @@ struct ProgresoTiempo: View {
                 
                 VStack(alignment: .leading, spacing: 15) {
                     
-                    ProgresoCircularTestTiempo(
-                        tiempoTotal: archivo.tiempoTotal,
-                        tiempoRestante: archivo.tiempoRestante,
-                        color: .blue
-                    )
+                    ProgresoCircular(progreso: archivo.progresoTiempoTotal, progresoDouble: archivo.progresoTiempoTotalDouble, color: .blue)
                     
                     VStack(alignment: .center, spacing: 0) {
                         HStack(spacing: 3) {

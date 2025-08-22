@@ -94,7 +94,7 @@ struct ProgresoLectura: View {
                 }
                 HStack {
                     VStack(alignment: .leading, spacing: 15) {
-                        ProgresoCircularTest(progreso: archivo.progreso, progresoEntero: archivo.progresoEntero, color: .green)
+                        ProgresoCircular(progreso: archivo.progreso, progresoDouble: archivo.progresoDouble, color: .green)
                         
                         VStack(alignment: .center, spacing: 0) {
                             HStack(spacing: 3) {
