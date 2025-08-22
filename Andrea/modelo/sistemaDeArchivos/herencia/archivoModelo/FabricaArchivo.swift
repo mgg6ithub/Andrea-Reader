@@ -10,25 +10,33 @@ struct FactoryArchivo {
         let pd = PersistenciaDatos()
         let cpe = ClavesPersistenciaElementos()
         let p = ValoresElementoPredeterminados()
+        let url = fileURL
         
-        let fileType = sau.getFileType(fileURL: fileURL)
-        let fileSize = sau.getFileSize(fileURL: fileURL)
-        let fechaImportacion = sau.getElementCreationDate(elementURL: fileURL)
-        let fechaModificacion = sau.getElementModificationDate(elementURL: fileURL)
+        let fileType = sau.getFileType(fileURL: url)
+        let fileSize = sau.getFileSize(fileURL: url)
+        
+        var fechaImportacion: Date
+        if let guardada = pd.recuperarDatoElemento(elementoURL: url, key: cpe.fechaImportacion, default: p.fechaImportacion) {
+            fechaImportacion = guardada
+        } else {
+            fechaImportacion = Date()
+            pd.guardarDatoArchivo(valor: fechaImportacion, elementoURL: url, key: cpe.fechaImportacion)
+            print("FECHA IMPORTACION: ", fechaImportacion)
+        }
+        
+        let fechaModificacion = sau.getElementModificationDate(elementURL: url)
         
         var archivo: Archivo
         
-//        let favorito = PersistenciaDatos().obtenerAtributoConcreto(url: fileURL, atributo: "favorito") as? Bool ?? false
-//        let protegido = PersistenciaDatos().obtenerAtributoConcreto(url: fileURL, atributo: "protegido") as? Bool ?? false
-        let favorito = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.favoritos, default: p.favoritos)
-        let protegido = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.protegidos, default: p.protegidos)
+        let favorito = pd.recuperarDatoElemento(elementoURL: url, key: cpe.favoritos, default: p.favoritos)
+        let protegido = pd.recuperarDatoElemento(elementoURL: url, key: cpe.protegidos, default: p.protegidos)
         
         switch(fileType) {
             
         case .txt:
             archivo = TXTArchivo(
                 fileName: fileName,
-                fileURL: fileURL,
+                fileURL: url,
                 fechaImportacion: fechaImportacion,
                 fechaModificacion: fechaModificacion,
                 fileType: fileType,
@@ -41,7 +49,7 @@ struct FactoryArchivo {
         case .cbr:
             archivo = CBRArchivo(
                 fileName: fileName,
-                fileURL: fileURL,
+                fileURL: url,
                 fechaImportacion: fechaImportacion,
                 fechaModificacion: fechaModificacion,
                 fileType: fileType,
@@ -54,7 +62,7 @@ struct FactoryArchivo {
         case .cbz:
             archivo = CBZArchivo(
                 fileName: fileName,
-                fileURL: fileURL,
+                fileURL: url,
                 fechaImportacion: fechaImportacion,
                 fechaModificacion: fechaModificacion,
                 fileType: fileType,

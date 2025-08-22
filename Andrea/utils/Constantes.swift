@@ -65,12 +65,17 @@ struct ConstantesPorDefecto {
 //MARK: - --- PERSISTENCIA DATOS DE ELEMENTOS ---
 struct ClavesPersistenciaElementos {
     
+    //fecha importacion
+    public let fechaImportacion: String = "fechaImportacion"
+    
     //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: String = "fechaPrimeraVezEntrado"
     
     public let favoritos: String = "favotiros"
-    
     public let protegidos: String = "Protegidos"
+    
+    //COLOR (normalmente para el color de una coleccion)
+    public let colorGuardado: String = "colorGuardado"
     
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: String = "progreso_archivo"
@@ -92,14 +97,20 @@ struct ClavesPersistenciaElementos {
     //ARRAY DE CLAVES PARA PODER ACTUALIZAR EN PERSISTENCIA DEL TIRON
     public var arrayClavesPersistenciaElementos: [String] {
             [
+                fechaImportacion,
+                fechaPrimeraVezEntrado,
+                
                 favoritos,
                 protegidos,
-                fechaPrimeraVezEntrado,
+                
+                colorGuardado,
+                
                 progresoElemento, //pagina actual
                 miniaturaElemento, //tipo de miniatura
                 tiempoLecturaTotal,
                 tiemposPorPagina,
                 visitasPorPagina
+                
             ]
         }
     
@@ -107,12 +118,16 @@ struct ClavesPersistenciaElementos {
 
 struct ValoresElementoPredeterminados {
     
+    public let fechaImportacion: Date? = nil
+    
     //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: Date? = nil
     
     public let favoritos: Bool = false
-    
     public let protegidos: Bool = false
+    
+    //COLOR
+    public let colorGuardado: Color = .purple
     
     //PROGRESO DE UN ELEMENTO
     public let progresoElemento: Int = 0

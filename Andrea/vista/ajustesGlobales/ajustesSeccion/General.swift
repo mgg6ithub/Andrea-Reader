@@ -18,6 +18,7 @@ struct General: View {
     var paddingHorizontal: CGFloat { const.padding40 }
     
     private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -29,6 +30,24 @@ struct General: View {
             
             //MARK: --- TAMAÑO ---
             AjustesBarraEstado(isSection: isSection)
+            
+            Button(action: {
+                PersistenciaDatos().reiniciarPersistencia()
+            }) {
+                Text("REINICIAR PERSISTENCIA")
+                    .foregroundColor(.red)
+            }
+            .padding(15) // margen interno
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.red.opacity(0.2))
+            )
+            .shadow(
+                color: esOscuro ? .black.opacity(0.6) : .black.opacity(0.225),
+                radius: ap.shadows ? 10 : 0, x: 0, y: ap.shadows ? 5 : 0
+            )
+            .padding(.bottom, 15)
+            .padding(.top, 15)
             
 //            CirculoActivoVista(isSection: isSection, nombre: "Selecciona un tema", titleSize: const.descripcionAjustes, color: ap.temaActual.secondaryText)
             

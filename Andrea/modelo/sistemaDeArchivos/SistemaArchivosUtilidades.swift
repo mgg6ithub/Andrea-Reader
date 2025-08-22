@@ -132,7 +132,7 @@ class SistemaArchivosUtilidades {
     }
     
     
-    public func getElementCreationDate(elementURL: URL) -> Date {
+    public func obtenerFechaImportacionSistema(elementURL: URL) -> Date {
         do {
             if let creationDate = try fm.attributesOfItem(atPath: elementURL.path)[.creationDate] as? Date {
                 return creationDate

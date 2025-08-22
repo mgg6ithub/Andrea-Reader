@@ -33,7 +33,7 @@ class Coleccion: ElementoSistemaArchivos {
     //--- CONSTRUCTOR DUMMY ---
     init(directoryName: String, directoryURL: URL, fechaImportacion: Date, fechaModificacion: Date, favorito: Bool, protegido: Bool) {
         
-        self.color = .gray
+        self.color = ValoresElementoPredeterminados().colorGuardado
         self.totalArchivos = 0
         self.totalColecciones = 0
         

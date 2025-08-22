@@ -2,7 +2,18 @@
 
 import SwiftUI
 
-//MARK: --- PROGRESO DE LAS PAGINAS DE CADA ARCHIVO ---
+//MARK: --- BORRA TODOS LOS DATOS PERSISTENTES REINICIANDO UD ---
+
+extension PersistenciaDatos {
+    public func reiniciarPersistencia() {
+        let domain = Bundle.main.bundleIdentifier!
+        UserDefaults.standard.removePersistentDomain(forName: domain)
+        UserDefaults.standard.synchronize()
+        print("⚠️ Se ha reiniciado toda la persistencia de la app (UserDefaults limpiado).")
+    }
+}
+
+//MARK: --- CONVERTIDOR UNIVERSAL ---
 
 extension PersistenciaDatos {
     func convertirValor(_ valor: Any) -> Any? {
@@ -58,6 +69,8 @@ extension PersistenciaDatos {
         }
     }
 }
+
+//MARK: --- ESTRCUTURA PARA CENTRALIZAR EL ACCESO A UD ---
 
 struct PersistenciaDatos {
     
@@ -194,6 +207,7 @@ struct PersistenciaDatos {
         }
         return def
     }
+    
     //MARK: - --- GUARDAR DICCINARIOS CON MUCHOS DATOS PERO UNA SOLA CLAVE EN UD (Para elementos) ---
     // valor = Dato (int, string, bool, enum ...) que se guarda en ud
     // elementURL = el elemento (coleccion o archivo) al que pertenece el valor se usara como k en el dict
@@ -221,6 +235,17 @@ struct PersistenciaDatos {
         
         if let raw = mapa[k] as? E.RawValue, let value = E(rawValue: raw) {
             return value
+        }
+        return def
+    }
+    
+    /// Recuperar un color desde persistencia
+    public func recuperarDatoArchivoColor(elementoURL: URL, key: String, default def: Color) -> Color {
+        let k = self.obtenerKey(elementoURL)
+        let mapa = self.obtenerMapa(key: key)
+
+        if let hex = mapa[k] as? String {
+            return Color(hex: hex)
         }
         return def
     }

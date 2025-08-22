@@ -65,25 +65,17 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
         return lhs.id == rhs.id
     }
     
-    
-//    func handleTap(elementModel: ElementModel) -> AnyView? {
-//        print("Handling tap")
-//        return nil
-//    }
-    
     func getConcreteInstance() -> Self {
         return self
     }
     
     public func cambiarEstadoFavorito() {
         withAnimation { self.favorito.toggle() }
-//        PersistenciaDatos().guardarDatoElemento(url: self.url, atributo: "favorito", valor: self.favorito)
         persistencia.guardarDatoArchivo(valor: favorito, elementoURL: url, key: claves.favoritos)
     }
     
     public func cambiarEstadoProtegido() {
         withAnimation { self.protegido.toggle() }
-//        PersistenciaDatos().guardarDatoElemento(url: self.url, atributo: "protegido", valor: self.protegido)
         persistencia.guardarDatoArchivo(valor: protegido, elementoURL: url, key: claves.protegidos)
     }
     

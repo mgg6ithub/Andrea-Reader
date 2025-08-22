@@ -8,25 +8,33 @@ struct FabricaColeccion {
     
     func crearColeccion(coleccionNombre: String, coleccionURL: URL) -> Coleccion {
         
-        let fechaImportacion = sau.getElementCreationDate(elementURL: coleccionURL)
-        let fechaModificacion = sau.getElementModificationDate(elementURL: coleccionURL)
+        let pd = PersistenciaDatos()
+        let cpe = ClavesPersistenciaElementos()
+        let p = ValoresElementoPredeterminados()
+        let url = coleccionURL
         
-        var color: Color
-        
-        if let colorString = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "color") as? String {
-           color = Color(hex: colorString)
+        //FECHA IMPROTACION/CREACION
+        var fechaImportacion: Date
+        if let guardada = pd.recuperarDatoElemento(elementoURL: url, key: cpe.fechaImportacion, default: p.fechaImportacion) {
+            fechaImportacion = guardada
         } else {
-            color = .gray
+            fechaImportacion = Date()
+            pd.guardarDatoArchivo(valor: fechaImportacion, elementoURL: url, key: cpe.fechaImportacion)
+            print("FECHA IMPORTACION: ", fechaImportacion)
         }
+        let fechaModificacion = sau.getElementModificationDate(elementURL: url)
         
-        let archivosYcolecciones = SistemaArchivosUtilidades.sau.contarArchivosYSubdirectorios(url: coleccionURL)
+        //COLOR DE LA COLECCION
+        var color: Color = pd.recuperarDatoArchivoColor(elementoURL: url, key: cpe.colorGuardado, default: p.colorGuardado)
+        
+        let archivosYcolecciones = SistemaArchivosUtilidades.sau.contarArchivosYSubdirectorios(url: url)
         let totalArchivos = archivosYcolecciones.0
         let totalColecciones = archivosYcolecciones.1
         
-        let favorito = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "favorito") as? Bool ?? false
-        let protegido = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "protegido") as? Bool ?? false
+        let favorito = pd.recuperarDatoElemento(elementoURL: url, key: cpe.favoritos, default: p.favoritos)
+        let protegido = pd.recuperarDatoElemento(elementoURL: url, key: cpe.protegidos, default: p.protegidos)
         
-        let coleccion = Coleccion(directoryName: coleccionNombre, directoryURL: coleccionURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, color: color, totalArchivos: totalArchivos, totalColecciones: totalColecciones, favorito: favorito, protegido: protegido)
+        let coleccion = Coleccion(directoryName: coleccionNombre, directoryURL: url, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, color: color, totalArchivos: totalArchivos, totalColecciones: totalColecciones, favorito: favorito, protegido: protegido)
         
         return coleccion
     

@@ -20,7 +20,8 @@ struct MasInformacionColeccion: View {
                     withAnimation(.spring(duration: 0.25)) { coleccionVM.coleccion.color = colorTemporal }
                     
                     // --- PERSISTENCIA ---
-                    PersistenciaDatos().guardarDatoElemento(url: coleccionVM.coleccion.url, atributo: "color", valor: colorTemporal)
+//                    PersistenciaDatos().guardarDatoElemento(url: coleccionVM.coleccion.url, atributo: "color", valor: colorTemporal)
+                    PersistenciaDatos().guardarDatoArchivo(valor: colorTemporal, elementoURL: coleccionVM.coleccion.url, key: ClavesPersistenciaElementos().colorGuardado)
                 }
             
             RoundedRectangle(cornerRadius: 10)
