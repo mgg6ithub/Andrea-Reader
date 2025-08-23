@@ -100,7 +100,10 @@ struct ClavesPersistenciaElementos {
     public let tiemposPorPagina: String = "tiemposPorPagina"
     
     //visitas por pagina
-    public let visitasPorPagina: String = "VisitasPorPagina"
+    public let visitasPorPagina: String = "visitasPorPagina"
+    
+    //sesiones lectura
+    public let sesionesLecturas: String = "sesionesLecturas"
     
     
     //ARRAY DE CLAVES PARA PODER ACTUALIZAR EN PERSISTENCIA DEL TIRON
@@ -124,7 +127,8 @@ struct ClavesPersistenciaElementos {
                 miniaturaElemento, //tipo de miniatura
                 tiempoLecturaTotal,
                 tiemposPorPagina,
-                visitasPorPagina
+                visitasPorPagina,
+                sesionesLecturas
                 
             ]
         }
@@ -165,6 +169,9 @@ struct ValoresElementoPredeterminados {
     
     //visitas por pagina
     public let visitasPorPagina: [String:Int] = [:]
+    
+    //sesiones
+    public let sesionesLecturas: [SesionDeLectura] = []
     
     
 }

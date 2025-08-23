@@ -20,7 +20,7 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     
     //SESIONES DE LECTURA
     private var sesionActual: SesionDeLectura?
-    @Published var sesionesLectura: [SesionDeLectura] = [] {didSet {/*persistencia*/ }}
+    @Published var sesionesLectura: [SesionDeLectura] = [] {didSet { pd.guardarSesiones(self.sesionesLectura, for: url, key: cpe.sesionesLecturas) }}
     private var contadorSesiones: Int { (sesionesLectura.map { $0.numeroSesion }.max() ?? 0) + 1 }
     
     @Published var paginasRestantes: Int = 0
@@ -107,97 +107,99 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         self.tiemposPorPagina = pd.recuperarTiemposPorPagina(elementoURL: url, key: cpe.tiemposPorPagina)
         self.visitasPorPagina = pd.recuperarVisitasPorPagina(elementoURL: url, key: cpe.visitasPorPagina)
         
+        self.sesionesLectura = pd.recuperarSesiones(for: url, key: cpe.sesionesLecturas)
+        
         // TEST
         // Día 1 - hace 1 día desde hoy
-        let dia1 = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+//        let dia1 = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+//
+//        let s1 = SesionDeLectura(
+//            numeroSesion: 1,
+//            inicio: Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: dia1)!,
+//            fin: Calendar.current.date(bySettingHour: 10, minute: 0, second: 0, of: dia1)!,
+//            paginaInicio: 0,
+//            paginaFin: 12,
+//            paginasLeidas: 12,
+//            velocidadLectura: 2.5
+//        )
+//
+//        let s2 = SesionDeLectura(
+//            numeroSesion: 2,
+//            inicio: Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: dia1)!,
+//            fin: Calendar.current.date(bySettingHour: 18, minute: 0, second: 0, of: dia1)!,
+//            paginaInicio: 12,
+//            paginaFin: 22,
+//            paginasLeidas: 10,
+//            velocidadLectura: 1.8
+//        )
+//
+//        // ➕ Nueva sesión Día 1
+//        let s3 = SesionDeLectura(
+//            numeroSesion: 3,
+//            inicio: Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: dia1)!,
+//            fin: Calendar.current.date(bySettingHour: 22, minute: 30, second: 0, of: dia1)!,
+//            paginaInicio: 22,
+//            paginaFin: 30,
+//            paginasLeidas: 8,
+//            velocidadLectura: 1.6
+//        )
+//
+//
+//        // Día 2 - hoy
+//        let dia2 = Date()
+//
+//        let s4 = SesionDeLectura(
+//            numeroSesion: 4,
+//            inicio: Calendar.current.date(bySettingHour: 9, minute: 30, second: 0, of: dia2)!,
+//            fin: Calendar.current.date(bySettingHour: 10, minute: 15, second: 0, of: dia2)!,
+//            paginaInicio: 22,
+//            paginaFin: 40,
+//            paginasLeidas: 18,
+//            velocidadLectura: 3.2
+//        )
+//
+//        let s5 = SesionDeLectura(
+//            numeroSesion: 5,
+//            inicio: Calendar.current.date(bySettingHour: 15, minute: 0, second: 0, of: dia2)!,
+//            fin: Calendar.current.date(bySettingHour: 15, minute: 45, second: 0, of: dia2)!,
+//            paginaInicio: 40,
+//            paginaFin: 50,
+//            paginasLeidas: 10,
+//            velocidadLectura: 2.0
+//        )
+//
+//        let s6 = SesionDeLectura(
+//            numeroSesion: 6,
+//            inicio: Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: dia2)!,
+//            fin: Calendar.current.date(bySettingHour: 21, minute: 30, second: 0, of: dia2)!,
+//            paginaInicio: 50,
+//            paginaFin: 65,
+//            paginasLeidas: 15,
+//            velocidadLectura: 7.0
+//        )
+//
+//        // ➕ Nuevas sesiones Día 2
+//        let s7 = SesionDeLectura(
+//            numeroSesion: 7,
+//            inicio: Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: dia2)!,
+//            fin: Calendar.current.date(bySettingHour: 22, minute: 30, second: 0, of: dia2)!,
+//            paginaInicio: 65,
+//            paginaFin: 75,
+//            paginasLeidas: 10,
+//            velocidadLectura: 2.8
+//        )
+//
+//        let s8 = SesionDeLectura(
+//            numeroSesion: 8,
+//            inicio: Calendar.current.date(bySettingHour: 23, minute: 30, second: 0, of: dia2)!,
+//            fin: Calendar.current.date(bySettingHour: 23, minute: 45, second: 0, of: dia2)!,
+//            paginaInicio: 75,
+//            paginaFin: 90,
+//            paginasLeidas: 15,
+//            velocidadLectura: 3.5
+//        )
 
-        let s1 = SesionDeLectura(
-            numeroSesion: 1,
-            inicio: Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: dia1)!,
-            fin: Calendar.current.date(bySettingHour: 10, minute: 0, second: 0, of: dia1)!,
-            paginaInicio: 0,
-            paginaFin: 12,
-            paginasLeidas: 12,
-            velocidadLectura: 2.5
-        )
-
-        let s2 = SesionDeLectura(
-            numeroSesion: 2,
-            inicio: Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: dia1)!,
-            fin: Calendar.current.date(bySettingHour: 18, minute: 0, second: 0, of: dia1)!,
-            paginaInicio: 12,
-            paginaFin: 22,
-            paginasLeidas: 10,
-            velocidadLectura: 1.8
-        )
-
-        // ➕ Nueva sesión Día 1
-        let s3 = SesionDeLectura(
-            numeroSesion: 3,
-            inicio: Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: dia1)!,
-            fin: Calendar.current.date(bySettingHour: 22, minute: 30, second: 0, of: dia1)!,
-            paginaInicio: 22,
-            paginaFin: 30,
-            paginasLeidas: 8,
-            velocidadLectura: 1.6
-        )
-
-
-        // Día 2 - hoy
-        let dia2 = Date()
-
-        let s4 = SesionDeLectura(
-            numeroSesion: 4,
-            inicio: Calendar.current.date(bySettingHour: 9, minute: 30, second: 0, of: dia2)!,
-            fin: Calendar.current.date(bySettingHour: 10, minute: 15, second: 0, of: dia2)!,
-            paginaInicio: 22,
-            paginaFin: 40,
-            paginasLeidas: 18,
-            velocidadLectura: 3.2
-        )
-
-        let s5 = SesionDeLectura(
-            numeroSesion: 5,
-            inicio: Calendar.current.date(bySettingHour: 15, minute: 0, second: 0, of: dia2)!,
-            fin: Calendar.current.date(bySettingHour: 15, minute: 45, second: 0, of: dia2)!,
-            paginaInicio: 40,
-            paginaFin: 50,
-            paginasLeidas: 10,
-            velocidadLectura: 2.0
-        )
-
-        let s6 = SesionDeLectura(
-            numeroSesion: 6,
-            inicio: Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: dia2)!,
-            fin: Calendar.current.date(bySettingHour: 21, minute: 30, second: 0, of: dia2)!,
-            paginaInicio: 50,
-            paginaFin: 65,
-            paginasLeidas: 15,
-            velocidadLectura: 7.0
-        )
-
-        // ➕ Nuevas sesiones Día 2
-        let s7 = SesionDeLectura(
-            numeroSesion: 7,
-            inicio: Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: dia2)!,
-            fin: Calendar.current.date(bySettingHour: 22, minute: 30, second: 0, of: dia2)!,
-            paginaInicio: 65,
-            paginaFin: 75,
-            paginasLeidas: 10,
-            velocidadLectura: 2.8
-        )
-
-        let s8 = SesionDeLectura(
-            numeroSesion: 8,
-            inicio: Calendar.current.date(bySettingHour: 23, minute: 30, second: 0, of: dia2)!,
-            fin: Calendar.current.date(bySettingHour: 23, minute: 45, second: 0, of: dia2)!,
-            paginaInicio: 75,
-            paginaFin: 90,
-            paginasLeidas: 15,
-            velocidadLectura: 3.5
-        )
-
-        self.sesionesLectura.append(contentsOf: [s1, s2, s3, s4, s5, s6, s7, s8])
+//        self.sesionesLectura.append(contentsOf: [s1, s2, s3, s4, s5, s6, s7, s8])
 
     }
     
@@ -432,10 +434,8 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     
 }
 
-
-struct SesionDeLectura {
-    
-    let id = UUID()
+struct SesionDeLectura: Codable, Identifiable {
+    let id: UUID
     let numeroSesion: Int
     let inicio: Date
     var fin: Date?
@@ -443,5 +443,16 @@ struct SesionDeLectura {
     var paginaFin: Int
     var paginasLeidas: Int
     var velocidadLectura: Double
-    
+
+    init(numeroSesion: Int, inicio: Date, fin: Date? = nil,
+         paginaInicio: Int, paginaFin: Int, paginasLeidas: Int, velocidadLectura: Double) {
+        self.id = UUID()
+        self.numeroSesion = numeroSesion
+        self.inicio = inicio
+        self.fin = fin
+        self.paginaInicio = paginaInicio
+        self.paginaFin = paginaFin
+        self.paginasLeidas = paginasLeidas
+        self.velocidadLectura = velocidadLectura
+    }
 }
