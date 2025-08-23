@@ -145,7 +145,7 @@ struct ProgresoLectura: View {
                     
                     //GRAFICO
                     if cambio {
-                        ReadingSpeedChart()
+                        ReadingSpeedChart(estadisticas: sss)
                     } else if !cambio {
                         Testtest()
 //                            .offset(y: 22)
