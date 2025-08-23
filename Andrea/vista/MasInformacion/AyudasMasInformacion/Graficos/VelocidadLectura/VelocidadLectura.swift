@@ -14,39 +14,48 @@ struct InformacionVelocidadGrafico: View {
                 
                 HStack(spacing: 15) {
                     HStack {
-                        VStack {
+//                        VStack {
                             Image(systemName: "clock")
                                 .foregroundColor(.gray)
-                            Text("med:")
-                                .font(.caption2)
-                        }
+//                            Text("med:")
+//                                .font(.caption2)
+//                        }
                         
-                        Text("2.3 p/m")
+                        Text(String(format: "%.2f", estadisticas.velocidadSesionMed))
                             .font(.subheadline)
+                        
+                        Text("p/m")
+                            .font(.caption2)
                     }
                     
                     HStack {
-                        VStack {
+//                        VStack {
                             Image(systemName: "arrow.up")
                                 .foregroundColor(.green)
-                            Text("max:")
-                                .font(.caption2)
-                        }
+//                            Text("max:")
+//                                .font(.caption2)
+//                        }
                         
-                        Text("4.0 p/m")
+                        Text(String(format: "%.2f", estadisticas.velocidadSesionMax))
                             .font(.subheadline)
+                        
+                        Text("p/m")
+                            .font(.caption2)
                     }
                     
                     HStack {
-                        VStack {
+//                        VStack {
                             Image(systemName: "arrow.down")
                                 .foregroundColor(.red)
-                            Text("min:")
-                                .font(.caption2)
-                        }
+//                            Text("min:")
+//                                .font(.caption2)
+//                        }
                         
-                        Text("1.2 p/m")
+                        Text(String(format: "%.2f", estadisticas.velocidadSesionMin))
                             .font(.subheadline)
+                        
+                        Text("p/m")
+                            .font(.caption2)
                     }
                     
                 }

@@ -50,6 +50,11 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     var velocidadMax: Double?
     var velocidadMin: Double?
     
+    //--- VELOCIDAD SESIONES ---
+    var velocidadSesionMed: Double = 0
+    var velocidadSesionMax: Double = 0
+    var velocidadSesionMin: Double = 0
+    
     // --- AVANCES Y HABITOS ---
     var avanceDiario: Double?
     var diasTotalesLectura: Int?
@@ -88,7 +93,7 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         recalcularVisitas()
         
         //calcular velocidad lectura media de las sesiones, max y min
-        
+        calcularVelocidadesPorSesion()
         
     }
     
@@ -335,7 +340,7 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     }
     
     /// Devuelve el tiempo restante estimado en segundos.
-    func estimarTiempoRestante(velocidadPaginasPorMinuto v: Double? = nil) -> TimeInterval {
+    private func estimarTiempoRestante(velocidadPaginasPorMinuto v: Double? = nil) -> TimeInterval {
         let total = totalPaginas ?? 0
         guard total > 0 else { return 0 }
 
@@ -369,6 +374,27 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         }
 
         return 0
+    }
+    
+    private func calcularVelocidadesPorSesion() {
+        
+        var sMedCount: Double = 0
+        var vMax: Double = 0
+        var vMin: Double = 0
+        
+        for s in self.sesionesLectura {
+            let sv = s.velocidadLectura
+            
+            sMedCount += sv
+            if sv > vMax { vMax = sv }
+            if vMin == 0 { vMin = sv }
+            if sv < vMin { vMin = sv }
+        }
+        
+        self.velocidadSesionMed = sMedCount / Double(self.sesionesLectura.count)
+        self.velocidadSesionMax = vMax
+        self.velocidadSesionMin = vMin
+        
     }
 
     
