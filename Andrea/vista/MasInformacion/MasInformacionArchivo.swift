@@ -71,7 +71,7 @@ struct MasInformacionArchivo: View {
                         
                             EstadisticaProgresoTiempo(archivo: archivo)
                             .padding(.bottom, 15)
-                                                }
+                        }
                     }
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)

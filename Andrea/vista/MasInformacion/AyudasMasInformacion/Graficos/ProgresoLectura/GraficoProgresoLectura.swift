@@ -12,7 +12,6 @@ struct InformacionProgresoGrafico: View {
                 
                 HStack(spacing: 15) {
                     HStack {
-                        
                         Rectangle()
                             .fill(.green)
                             .frame(width: 25, height: 2)

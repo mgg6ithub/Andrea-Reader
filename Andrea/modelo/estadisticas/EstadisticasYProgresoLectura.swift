@@ -27,8 +27,8 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     // --- PAGINAS ---
     @Published var paginaVisitadaMasTiempo: (Int, TimeInterval) = (0,0)// <- Curiosidad
     @Published var paginaMasVisitada: (Int, Int) = (0,0)         // <- Curiosidad
-    @Published private var tiemposPorPagina: [Int: TimeInterval] { didSet { recalcularTiempos() } }
-    @Published private var visitasPorPagina: [Int: Int] { didSet { recalcularVisitas() } }
+    @Published var tiemposPorPagina: [Int: TimeInterval] { didSet { recalcularTiempos() } }
+    @Published var visitasPorPagina: [Int: Int] { didSet { recalcularVisitas() } }
     
     @Published var progreso: Int = 0
     @Published var progresoDouble: Double = 0.0 //redondeado a dos decimales si el progreso es %53 -> 0.53

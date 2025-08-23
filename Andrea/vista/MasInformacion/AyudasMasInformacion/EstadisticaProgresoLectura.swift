@@ -25,6 +25,8 @@ private struct PreviewMasInformacion: View {
 struct Botones: View {
     
     @Binding var cambio: Bool
+    let tituloVerdad: String
+    let tituloFalso: String
     
     var body: some View {
         HStack{
@@ -34,7 +36,7 @@ struct Botones: View {
                 }
             }) {
                 HStack(spacing: 4) {
-                    Text("vel")
+                    Text(tituloVerdad)
                         .font(.caption)
                         .fontWeight(.medium)
                 }
@@ -53,7 +55,7 @@ struct Botones: View {
                 }
             }) {
                 HStack(spacing: 4) {
-                    Text("pro")
+                    Text(tituloFalso)
                         .font(.caption)
                         .fontWeight(.medium)
                 }
@@ -91,7 +93,7 @@ struct EstadisticasProgresoLectura: View {
                         .bold()
                         .padding(.top, 10)
                     Spacer()
-                    Botones(cambio: $cambio)
+                    Botones(cambio: $cambio, tituloVerdad: "velocidad", tituloFalso: "progreso")
                         .padding(.trailing, 20)
                 }
                 HStack {
