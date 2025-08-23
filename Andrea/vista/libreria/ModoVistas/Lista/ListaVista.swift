@@ -56,7 +56,7 @@ struct ListaVista: View {
                             if let placeholder = elemento as? ElementoPlaceholder {
                                 PlaceholderLista(placeholder: placeholder, coleccionVM: vm)
                             } else if let archivo = elemento as? Archivo {
-                                ListaArchivo(archivo: archivo, coleccionVM: vm)
+                                ListaArchivo(archivo: archivo, estadisticas: archivo.estadisticas, coleccionVM: vm)
                                     .contentShape(ContentShapeKinds.contextMenuPreview, RoundedCorner(radius: 8, corners: [.topLeft, .bottomLeft]))
                             } else if let coleccion = elemento as? Coleccion {
                                 ListaColeccion(coleccion: coleccion, coleccionVM: vm)

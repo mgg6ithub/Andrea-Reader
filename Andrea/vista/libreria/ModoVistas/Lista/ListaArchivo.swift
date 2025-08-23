@@ -8,6 +8,7 @@ struct ListaArchivo: View {
     @EnvironmentObject var me: MenuEstado
     
     @ObservedObject var archivo: Archivo
+    @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     @StateObject private var viewModel = ModeloMiniaturaArchivo()
     @ObservedObject var coleccionVM: ModeloColeccion
     @State private var isVisible = false
@@ -23,8 +24,6 @@ struct ListaArchivo: View {
     }
     
     @State private var progresoMostrado: Int = 0
-    
-    private var sss: EstadisticasYProgresoLectura { archivo.estadisticas }
     
     var body: some View {
         HStack(spacing: 15) {
@@ -83,7 +82,7 @@ struct ListaArchivo: View {
                     
                     Spacer()
                     if ap.porcentaje {
-                        ProgresoLista(archivo: archivo, coleccionVM: coleccionVM, progresoMostrado: $progresoMostrado)
+                        ProgresoLista(estadisticas: estadisticas, coleccionVM: coleccionVM, progresoMostrado: $progresoMostrado)
                     }
                 }
                 Spacer()
@@ -95,15 +94,15 @@ struct ListaArchivo: View {
             
         } //HStack principal
         //PROGRESO
-        .onAppear { progresoMostrado = sss.progreso }
+        .onAppear { progresoMostrado = estadisticas.progreso }
         .onChange(of: ap.archivoEnLectura) {
             withAnimation(.easeOut(duration: 0.6)) {
-                progresoMostrado = sss.progreso
+                progresoMostrado = estadisticas.progreso
             }
         }
-        .onChange(of: sss.completado) {
+        .onChange(of: estadisticas.completado) {
             withAnimation(.easeOut(duration: 0.6)) {
-                progresoMostrado = sss.progreso
+                progresoMostrado = estadisticas.progreso
             }
         }
         //PROGRESO
