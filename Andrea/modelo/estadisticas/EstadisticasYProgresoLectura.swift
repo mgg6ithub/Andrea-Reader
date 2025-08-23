@@ -86,6 +86,10 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         //Recalcular tiempos de paginas
         recalcularTiempos()
         recalcularVisitas()
+        
+        //calcular velocidad lectura media de las sesiones, max y min
+        
+        
     }
     
     //CONSTRUCTOR DE VERDAD

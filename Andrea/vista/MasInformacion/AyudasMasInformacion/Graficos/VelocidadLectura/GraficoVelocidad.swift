@@ -17,7 +17,7 @@ struct ReadingSpeedData: Identifiable {
     let speed: Double
 }
 
-struct ReadingSpeedChart: View {
+struct GraficoVelocidadLectura: View {
     // Datos de ejemplo
     @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     @State private var verTodo: Bool = false
@@ -30,7 +30,7 @@ struct ReadingSpeedChart: View {
         
         ZStack(alignment: .leading) {
             Button(action: {
-                withAnimation {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                     verTodo.toggle()
                 }
             }) {
@@ -151,7 +151,6 @@ struct ReadingSpeedChart: View {
                 }
             }
             .frame(height: 200)
-            .padding()
         }
     }
 }

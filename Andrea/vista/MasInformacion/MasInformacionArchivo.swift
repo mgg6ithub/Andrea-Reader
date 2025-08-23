@@ -61,7 +61,7 @@ struct MasInformacionArchivo: View {
 
                         } else {
                         
-                        ProgresoLectura(archivo: archivo)
+                        EstadisticasProgresoLectura(archivo: archivo)
                         
                         Rectangle()
                             .frame(height: 1)
@@ -69,7 +69,7 @@ struct MasInformacionArchivo: View {
                             .padding(.vertical, 20)
                             .padding(.horizontal, 10)
                         
-                        ProgresoTiempo(archivo: archivo)
+                            EstadisticaProgresoTiempo(archivo: archivo)
                             .padding(.bottom, 15)
                                                 }
                     }

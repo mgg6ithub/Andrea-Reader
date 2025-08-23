@@ -59,6 +59,8 @@
 		D49E266A2E3A77BD009A0EDC /* MasInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E26692E3A77BD009A0EDC /* MasInformacion.swift */; };
 		D49E266D2E3A7C4A009A0EDC /* AyudaCambiarPortada.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E266C2E3A7C4A009A0EDC /* AyudaCambiarPortada.swift */; };
 		D49F12F62E25349500C67FB8 /* MasInformacionColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F12F52E25349500C67FB8 /* MasInformacionColeccion.swift */; };
+		D4A02A762E59CD86000C5F32 /* GraficoProgresoLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A02A752E59CD86000C5F32 /* GraficoProgresoLectura.swift */; };
+		D4A02A7A2E59CE37000C5F32 /* VelocidadLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A02A792E59CE37000C5F32 /* VelocidadLectura.swift */; };
 		D4A0FF3D2DEB3FD300195018 /* LineaSeparadora.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */; };
 		D4A0FF3F2DEB6F1500195018 /* MasTemas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */; };
 		D4A270482E4C93EE00ECEF2F /* CheckerEncimaDelElemento.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A270472E4C93EE00ECEF2F /* CheckerEncimaDelElemento.swift */; };
@@ -85,8 +87,8 @@
 		D4B0BBA82E4C6D880073380E /* ComicPaginado.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */; };
 		D4B0CCE52E574FB1000C69CF /* MasInformacionArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE42E574FB1000C69CF /* MasInformacionArchivo.swift */; };
 		D4B0CCE82E5779FB000C69CF /* ProgresoCircular.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */; };
-		D4B0CCEA2E577AA9000C69CF /* ProgresoLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */; };
-		D4B0CCEC2E577BAF000C69CF /* ProgresoTiempo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */; };
+		D4B0CCEA2E577AA9000C69CF /* EstadisticaProgresoLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCE92E577AA9000C69CF /* EstadisticaProgresoLectura.swift */; };
+		D4B0CCEC2E577BAF000C69CF /* EstadisticaProgresoTiempo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B0CCEB2E577BAF000C69CF /* EstadisticaProgresoTiempo.swift */; };
 		D4B159462E57D5F100942B91 /* GraficoVelocidad.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B159452E57D5F100942B91 /* GraficoVelocidad.swift */; };
 		D4B159482E57DC1A00942B91 /* Tiempo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B159472E57DC1A00942B91 /* Tiempo.swift */; };
 		D4B23FA02E45F4F200425DB8 /* ContenidoAjustesGloables.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */; };
@@ -189,6 +191,8 @@
 		D49E26692E3A77BD009A0EDC /* MasInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacion.swift; sourceTree = "<group>"; };
 		D49E266C2E3A7C4A009A0EDC /* AyudaCambiarPortada.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AyudaCambiarPortada.swift; sourceTree = "<group>"; };
 		D49F12F52E25349500C67FB8 /* MasInformacionColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacionColeccion.swift; sourceTree = "<group>"; };
+		D4A02A752E59CD86000C5F32 /* GraficoProgresoLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraficoProgresoLectura.swift; sourceTree = "<group>"; };
+		D4A02A792E59CE37000C5F32 /* VelocidadLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VelocidadLectura.swift; sourceTree = "<group>"; };
 		D4A0FF3C2DEB3FD200195018 /* LineaSeparadora.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineaSeparadora.swift; sourceTree = "<group>"; };
 		D4A0FF3E2DEB6F1500195018 /* MasTemas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasTemas.swift; sourceTree = "<group>"; };
 		D4A270472E4C93EE00ECEF2F /* CheckerEncimaDelElemento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckerEncimaDelElemento.swift; sourceTree = "<group>"; };
@@ -215,8 +219,8 @@
 		D4B0BBA72E4C6D880073380E /* ComicPaginado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicPaginado.swift; sourceTree = "<group>"; };
 		D4B0CCE42E574FB1000C69CF /* MasInformacionArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacionArchivo.swift; sourceTree = "<group>"; };
 		D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCircular.swift; sourceTree = "<group>"; };
-		D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoLectura.swift; sourceTree = "<group>"; };
-		D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoTiempo.swift; sourceTree = "<group>"; };
+		D4B0CCE92E577AA9000C69CF /* EstadisticaProgresoLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstadisticaProgresoLectura.swift; sourceTree = "<group>"; };
+		D4B0CCEB2E577BAF000C69CF /* EstadisticaProgresoTiempo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstadisticaProgresoTiempo.swift; sourceTree = "<group>"; };
 		D4B159452E57D5F100942B91 /* GraficoVelocidad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraficoVelocidad.swift; sourceTree = "<group>"; };
 		D4B159472E57DC1A00942B91 /* Tiempo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tiempo.swift; sourceTree = "<group>"; };
 		D4B23F9F2E45F4F200425DB8 /* ContenidoAjustesGloables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContenidoAjustesGloables.swift; sourceTree = "<group>"; };
@@ -463,6 +467,33 @@
 			path = MasInformacion;
 			sourceTree = "<group>";
 		};
+		D4A02A742E59CD67000C5F32 /* ProgresoLectura */ = {
+			isa = PBXGroup;
+			children = (
+				D4A02A752E59CD86000C5F32 /* GraficoProgresoLectura.swift */,
+			);
+			path = ProgresoLectura;
+			sourceTree = "<group>";
+		};
+		D4A02A772E59CE0A000C5F32 /* Graficos */ = {
+			isa = PBXGroup;
+			children = (
+				D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */,
+				D4A02A782E59CE18000C5F32 /* VelocidadLectura */,
+				D4A02A742E59CD67000C5F32 /* ProgresoLectura */,
+			);
+			path = Graficos;
+			sourceTree = "<group>";
+		};
+		D4A02A782E59CE18000C5F32 /* VelocidadLectura */ = {
+			isa = PBXGroup;
+			children = (
+				D4A02A792E59CE37000C5F32 /* VelocidadLectura.swift */,
+				D4B159452E57D5F100942B91 /* GraficoVelocidad.swift */,
+			);
+			path = VelocidadLectura;
+			sourceTree = "<group>";
+		};
 		D4AA438B2E3A22B00033EF63 /* UtilidadesSistemaArchivos */ = {
 			isa = PBXGroup;
 			children = (
@@ -594,10 +625,9 @@
 		D4B0CCE62E5779E5000C69CF /* AyudasMasInformacion */ = {
 			isa = PBXGroup;
 			children = (
-				D4B0CCE72E5779FB000C69CF /* ProgresoCircular.swift */,
-				D4B0CCE92E577AA9000C69CF /* ProgresoLectura.swift */,
-				D4B0CCEB2E577BAF000C69CF /* ProgresoTiempo.swift */,
-				D4B159452E57D5F100942B91 /* GraficoVelocidad.swift */,
+				D4A02A772E59CE0A000C5F32 /* Graficos */,
+				D4B0CCE92E577AA9000C69CF /* EstadisticaProgresoLectura.swift */,
+				D4B0CCEB2E577BAF000C69CF /* EstadisticaProgresoTiempo.swift */,
 				D4B921902E5871C500305A09 /* InformacionAvanzada.swift */,
 			);
 			path = AyudasMasInformacion;
@@ -863,7 +893,7 @@
 				D4B23FA02E45F4F200425DB8 /* ContenidoAjustesGloables.swift in Sources */,
 				D45E6FF82DE7A772001F816A /* AndreaApp.swift in Sources */,
 				D4ADDB822DE9C0530097A010 /* MenuEstado.swift in Sources */,
-				D4B0CCEA2E577AA9000C69CF /* ProgresoLectura.swift in Sources */,
+				D4B0CCEA2E577AA9000C69CF /* EstadisticaProgresoLectura.swift in Sources */,
 				D48C58802E3BA855006D9C07 /* CabeceraMasInformacion.swift in Sources */,
 				D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */,
 				D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */,
@@ -884,6 +914,7 @@
 				D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */,
 				D4CF28E32E323CF3003B3ABC /* ModificarTamano.swift in Sources */,
 				D480E76E2E42236900C8BBCC /* TogglePersonalizado.swift in Sources */,
+				D4A02A762E59CD86000C5F32 /* GraficoProgresoLectura.swift in Sources */,
 				D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */,
 				D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */,
 				D480E76C2E42216300C8BBCC /* Rendimiento.swift in Sources */,
@@ -899,7 +930,7 @@
 				D4B3C3BB2E3A8E3B00CA6064 /* MenuSeleccionMultipleArriba.swift in Sources */,
 				D4B0CCE82E5779FB000C69CF /* ProgresoCircular.swift in Sources */,
 				D49E266A2E3A77BD009A0EDC /* MasInformacion.swift in Sources */,
-				D4B0CCEC2E577BAF000C69CF /* ProgresoTiempo.swift in Sources */,
+				D4B0CCEC2E577BAF000C69CF /* EstadisticaProgresoTiempo.swift in Sources */,
 				D4ADDB752DE9B6A50097A010 /* SideMenu.swift in Sources */,
 				D4ACC9B22E1AB8C4006778AE /* ModeloMiniatura.swift in Sources */,
 				D4CF28E72E323E29003B3ABC /* ModeloMiniaturaArchivo.swift in Sources */,
@@ -942,6 +973,7 @@
 				D47139C92E0AE77000B5FA35 /* CuadriculaColeccion.swift in Sources */,
 				D49D7D052E26DAC100E0A93B /* ProgresoLista.swift in Sources */,
 				D4A0FF3F2DEB6F1500195018 /* MasTemas.swift in Sources */,
+				D4A02A7A2E59CE37000C5F32 /* VelocidadLectura.swift in Sources */,
 				D49DE7502E0D348F002FDB7A /* ImagenArchivoModelo.swift in Sources */,
 				D47035DB2E4288D0008906C9 /* AjustesHistorial.swift in Sources */,
 				D4DEBBEC2DE9CCD500F06C30 /* AjustesGlobales.swift in Sources */,

@@ -22,7 +22,7 @@ private struct PreviewMasInformacion2: View {
 }
 
 
-struct ProgresoTiempo: View {
+struct EstadisticaProgresoTiempo: View {
     
     @ObservedObject var archivo: Archivo
     
