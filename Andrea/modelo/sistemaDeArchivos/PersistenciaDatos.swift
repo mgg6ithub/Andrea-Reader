@@ -66,27 +66,28 @@ extension PersistenciaDatos {
 //MARK: --- SESIONES DE LECTURA ---
 extension PersistenciaDatos {
     func guardarSesiones(_ sesiones: [SesionDeLectura], for url: URL, key: String) {
-            do {
-                let data = try JSONEncoder().encode(sesiones)
-                uds.set(data, forKey: "\(url.absoluteString)_\(key)")
-            } catch {
-                print("Error guardando sesiones: \(error)")
-            }
+        do {
+            let data = try JSONEncoder().encode(sesiones)
+            let key = obtenerKey(url)
+            uds.set(data, forKey: key)
+        } catch {
+            print("Error guardando sesiones: \(error)")
         }
-        
-        func recuperarSesiones(for url: URL, key: String) -> [SesionDeLectura] {
-            let p = ValoresElementoPredeterminados()
-            guard let data = uds.data(forKey: "\(url.absoluteString)_\(key)") else {
-                return p.sesionesLecturas // 👉 aquí devuelve vacío si no hay nada guardado
-            }
-            do {
-                return try JSONDecoder().decode([SesionDeLectura].self, from: data)
-            } catch {
-                print("Error recuperando sesiones: \(error)")
-                return p.sesionesLecturas // 👉 y también vacío si hubo un error de decodificación
-            }
+    }
+    
+    func recuperarSesiones(for url: URL, key: String) -> [SesionDeLectura] {
+        let p = ValoresElementoPredeterminados()
+        let key = obtenerKey(url)
+        guard let data = uds.data(forKey: key) else {
+            return p.sesionesLecturas // 👉 aquí devuelve vacío si no hay nada guardado
         }
-
+        do {
+            return try JSONDecoder().decode([SesionDeLectura].self, from: data)
+        } catch {
+            print("Error recuperando sesiones: \(error)")
+            return p.sesionesLecturas // 👉 y también vacío si hubo un error de decodificación
+        }
+    }
 }
 
 

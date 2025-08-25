@@ -1,7 +1,72 @@
 import SwiftUI
 import Unrar
 
-class CBRArchivo: Archivo {
+class CBRArchivo: Archivo, ProtocoloComic {
+    var comicPages: [String] = []
+    
+    func loadComicPages(applyFilters: Bool) -> [String] {
+        do {
+            let archive = try Archive(path: self.url.path)
+            let entries = try archive.entries()
+            // Filtra solo las imágenes dentro del archivo CBZ
+            let comicImages = entries.compactMap { entry in
+
+                if entry.fileName.lowercased().hasSuffix(".jpg") || entry.fileName.lowercased().hasSuffix(".png") {
+                    return entry.fileName
+                }
+
+                return nil
+            }
+
+            let comicPages = Utilidades().simpleSorting(contentFiles: comicImages)
+//            return ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+            return comicPages
+
+        } catch {
+//            print("Error al abrir el archivo CBZ: \(error)")
+            return []
+        }
+    }
+    
+    func loadImage(named imageName: String) -> UIImage? {
+        do {
+            let archive = try Archive(path: self.url.path)  // Abre el archivo .cbr (RAR)
+            let entries = try archive.entries()
+            
+            if let entry = entries.first(where: { $0.fileName == imageName }) {
+                
+                let extractedData = try archive.extract(entry)
+                
+                let uiImage = UIImage(data: extractedData)  // Convierte los datos a UIImage
+                let imageJPEG = self.convertToJPEG(image: uiImage!, quality: 1.0)
+                return imageJPEG
+            }
+
+            
+        } catch {
+            print("Error a la hora de cargar el archivo CBR ", self.nombre)
+            return nil
+        }
+        return nil
+    }
+    
+    func loadImageBackGround(named imageName: String, completion: @escaping (UIImage?) -> Void) {
+        
+    }
+    
+    func getImageDimensions() -> [Int : (width: Int, height: Int)] {
+        var dimensionsDict: [Int: (width: Int, height: Int)] = [:]
+        return dimensionsDict
+    }
+    
+    func invertirPaginas() {
+        
+    }
+    
+    func invertirPaginaActual() {
+        
+    }
+    
     
     override init(fileName: String, fileURL: URL, fechaImportacion: Date, fechaModificacion: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int, favorito: Bool, protegido: Bool) {
         

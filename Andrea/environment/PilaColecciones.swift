@@ -63,17 +63,22 @@ class PilaColecciones: ObservableObject {
       Siempre asegura que la colección HOME esté al principio de la pila.
      */
     public func cargarPila() {
+        
+        //Siempre metemos documents por defecto para que la pila no este vacia
+        let cache = sa.cacheColecciones
+        self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
+        if let home = cache[self.homeURL] {
+            self.colecciones.append(ModeloColeccion(home.coleccion))
+        }
+        
+        //Comprobamos que existen las colecciones recuperadas
         let homeURLStripped = self.homeURL.deletingLastPathComponent()
-//        if let pilaGuardada = UserDefaults.standard.array(forKey: ConstantesPorDefecto().pilaColeccionesClave) as? [String] {
         if let pilaGuardada = PersistenciaDatos().obtenerAjusteGeneral(key: ClavesPersistenciaAjustesGenerales().pilaGuardada, default: AjustesGeneralesPredeterminados().pilaGuardada) {
             
             let coleccionesGuardadas: [URL] = pilaGuardada.compactMap { col in
                 let absolutaURL = homeURLStripped.appendingPathComponent(col)
                 return ManipulacionCadenas().agregarPrivate(absolutaURL)
             }
-            
-            //Comprobamos que existen las colecciones recuperadas
-            let cache = sa.cacheColecciones
 
             var vistaModelos = coleccionesGuardadas.compactMap { url in
                 if FileManager.default.fileExists(atPath: url.path),
@@ -81,21 +86,6 @@ class PilaColecciones: ObservableObject {
                     return ModeloColeccion(coleccion)
                 } else {
                     return nil
-                }
-            }
-            
-            self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL) // <- necesario si no falla
-            
-            if let home = cache[self.homeURL]?.coleccion {
-                let homeVM = ModeloColeccion(home)
-                
-                // Evita duplicarla si ya estaba
-                if !vistaModelos.contains(where: { $0.coleccion.url == home.url }) {
-                    vistaModelos.insert(homeVM, at: 0)
-                } else {
-                    // O si ya estaba, la mueves al principio
-                    vistaModelos.removeAll(where: { $0.coleccion.url == home.url })
-                    vistaModelos.insert(homeVM, at: 0)
                 }
             }
 
@@ -124,8 +114,9 @@ class PilaColecciones: ObservableObject {
                 .replacingOccurrences(of: homeURLStripped, with: "")
                 .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         }
-        
-//        UserDefaults.standard.set(rutasRelativas, forKey: ConstantesPorDefecto().pilaColeccionesClave)
+        print()
+        print("PILA que se guarda en persistencia: ", rutasRelativas)
+        print()
         PersistenciaDatos().guardarAjusteGeneral(valor: rutasRelativas, key: ClavesPersistenciaAjustesGenerales().pilaGuardada)
     }
     
@@ -150,6 +141,13 @@ class PilaColecciones: ObservableObject {
 
         // 2. Asigna la nueva VM
         coleccionActualVM = nuevaVM
+        
+        print("Colecciones en la pila: ")
+        for c in colecciones {
+            print(c.coleccion.nombre)
+        }
+        print()
+        
         
         //MARK: --- CONSEJO PARA CREAR UNA COLECCION ---
         if let coleccionActual: Coleccion = coleccionActualVM?.coleccion {
@@ -269,8 +267,16 @@ class PilaColecciones: ObservableObject {
      */
     public func conservarSoloHome() {
         
+        print("Sacando todas las colecciones")
+        
+        for c in self.colecciones {
+            print(c.coleccion.nombre)
+        }
+        
         guard !colecciones.isEmpty else { return }
         guard let home = colecciones.first else { return }
+        
+        print("Coleccion HOME: ", home)
         
         withAnimation(.easeInOut(duration: 0.15)) {
             colecciones = [home]

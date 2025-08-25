@@ -62,54 +62,54 @@ class CBZArchivo: Archivo, ProtocoloComic {
     }
     
     func getImageDimensions() -> [Int: (width: Int, height: Int)] {
-                var dimensionsDict: [Int: (width: Int, height: Int)] = [:] // Índice -> (ancho, alto)
+        var dimensionsDict: [Int: (width: Int, height: Int)] = [:] // Índice -> (ancho, alto)
 
-                guard let archive = Archive(url: self.url, accessMode: .read) else {
-                    print("Error al abrir el archivo CBZ")
-                    return [:]
-                }
+        guard let archive = Archive(url: self.url, accessMode: .read) else {
+            print("Error al abrir el archivo CBZ")
+            return [:]
+        }
 
-                // Filtrar solo imágenes .jpg y .png
-                let comicImages = archive.compactMap { entry in
-                    if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
-                        return entry
-                    }
-                    return nil
-                }
-                .prefix(5)
-                
-                // Iterar sobre las imágenes y obtener las dimensiones
-                comicImages.enumerated().forEach { (index, entry) in
-                    if let dimensions = getDimensions(from: archive, entry: entry) {
-                        dimensionsDict[index] = dimensions
-                    }
-                }
-
-                return dimensionsDict
+        // Filtrar solo imágenes .jpg y .png
+        let comicImages = archive.compactMap { entry in
+            if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
+                return entry
             }
-
-            func getDimensions(from archive: Archive, entry: Entry) -> (width: Int, height: Int)? {
-                do {
-                    var extractedData = Data()
-                    _ = try archive.extract(entry, consumer: { data in
-                        extractedData.append(data)
-                        return // Extraer solo primeros 4096 bytes
-                    })
-
-                    guard let imageSource = CGImageSourceCreateWithData(extractedData as CFData, nil),
-                          let properties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? [CFString: Any],
-                          let width = properties[kCGImagePropertyPixelWidth] as? Int,
-                          let height = properties[kCGImagePropertyPixelHeight] as? Int else {
-                        return nil
-                    }
-                    print("Dim. \(width) x \(height)")
-                    return (width, height)
-
-                } catch {
-                    print("Error obteniendo dimensiones de \(entry.path): \(error)")
-                    return nil
-                }
+            return nil
+        }
+        .prefix(5)
+        
+        // Iterar sobre las imágenes y obtener las dimensiones
+        comicImages.enumerated().forEach { (index, entry) in
+            if let dimensions = getDimensions(from: archive, entry: entry) {
+                dimensionsDict[index] = dimensions
             }
+        }
+
+        return dimensionsDict
+    }
+
+    func getDimensions(from archive: Archive, entry: Entry) -> (width: Int, height: Int)? {
+        do {
+            var extractedData = Data()
+            _ = try archive.extract(entry, consumer: { data in
+                extractedData.append(data)
+                return // Extraer solo primeros 4096 bytes
+            })
+
+            guard let imageSource = CGImageSourceCreateWithData(extractedData as CFData, nil),
+                  let properties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? [CFString: Any],
+                  let width = properties[kCGImagePropertyPixelWidth] as? Int,
+                  let height = properties[kCGImagePropertyPixelHeight] as? Int else {
+                return nil
+            }
+            print("Dim. \(width) x \(height)")
+            return (width, height)
+
+        } catch {
+            print("Error obteniendo dimensiones de \(entry.path): \(error)")
+            return nil
+        }
+    }
     
     func invertirPaginas() {
         
