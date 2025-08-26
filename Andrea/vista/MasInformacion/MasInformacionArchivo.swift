@@ -112,11 +112,11 @@ struct Contenido: View {
         Spacer()
         VStack(alignment: .center, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                Text("Poison ivy")
+                Text(vm.coleccion.nombre)
                     .font(.system(size: 45))
                     .bold()
                 
-                if archivo.autor != nil {
+                if archivo.autor != "" {
                     HStack(spacing: 5) {
                         Text("por")
                             .font(.footnote)
