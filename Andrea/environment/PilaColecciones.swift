@@ -142,13 +142,6 @@ class PilaColecciones: ObservableObject {
         // 2. Asigna la nueva VM
         coleccionActualVM = nuevaVM
         
-        print("Colecciones en la pila: ")
-        for c in colecciones {
-            print(c.coleccion.nombre)
-        }
-        print()
-        
-        
         //MARK: --- CONSEJO PARA CREAR UNA COLECCION ---
         if let coleccionActual: Coleccion = coleccionActualVM?.coleccion {
             if coleccionActual.nombre == "HOME" {

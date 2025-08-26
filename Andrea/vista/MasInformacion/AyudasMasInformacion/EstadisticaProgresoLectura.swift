@@ -3,24 +3,24 @@
 import SwiftUI
 import Charts
 
-#Preview {
-    PreviewMasInformacion()
-}
-
-private struct PreviewMasInformacion: View {
-    @State private var pantallaCompleta = false
-    
-    var body: some View {
-        MasInformacion(
-            pantallaCompleta: $pantallaCompleta,
-            vm: ModeloColeccion(),
-            elemento: Archivo.preview
-        )
-//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-    }
-}
+//#Preview {
+//    PreviewMasInformacion()
+//}
+//
+//private struct PreviewMasInformacion: View {
+//    @State private var pantallaCompleta = false
+//    
+//    var body: some View {
+//        MasInformacion(
+//            pantallaCompleta: $pantallaCompleta,
+//            vm: ModeloColeccion(),
+//            elemento: Archivo.preview
+//        )
+////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+////                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//    }
+//}
 
 struct Botones: View {
     
@@ -149,7 +149,7 @@ struct EstadisticasProgresoLectura: View {
                     if cambio {
                         InformacionVelocidadGrafico(estadisticas: sss)
                     } else if !cambio {
-                        InformacionProgresoGrafico()
+                        InformacionProgresoGrafico(estadisticas: sss)
                     }
                 }
                 

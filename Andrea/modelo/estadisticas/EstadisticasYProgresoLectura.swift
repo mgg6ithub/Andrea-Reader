@@ -109,6 +109,10 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         
         self.sesionesLectura = pd.recuperarSesiones(for: url, key: cpe.sesionesLecturas)
         
+        print("SESIONES DE LECTURA: ", self.url.lastPathComponent)
+        print(self.sesionesLectura)
+        print()
+        
         // TEST
         // Día 1 - hace 1 día desde hoy
 //        let dia1 = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
@@ -376,6 +380,26 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         }
 
         return 0
+    }
+    
+    func progresoRealEnFecha(_ fecha: Date) -> Double {
+        let paginasLeidas = sesionesLectura
+            .filter { $0.inicio <= fecha }
+            .reduce(0) { $0 + $1.paginasLeidas }
+        guard let total = totalPaginas else { return 0.0 }
+        return (Double(paginasLeidas) / Double(total)) * 100
+    }
+    
+    func progresoIdealEnFecha(_ fecha: Date) -> Double {
+        guard let primera = sesionesLectura.first?.inicio,
+              let ultima   = sesionesLectura.last?.inicio else { return 0 }
+        
+        let totalIntervalo = ultima.timeIntervalSince(primera)
+        let transcurrido   = fecha.timeIntervalSince(primera)
+        
+        if totalIntervalo <= 0 { return 0 }
+        
+        return (transcurrido / totalIntervalo) * 100
     }
     
     private func calcularVelocidadesPorSesion() {

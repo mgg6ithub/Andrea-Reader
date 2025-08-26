@@ -1,24 +1,24 @@
 
 import SwiftUI
 
-#Preview {
-    PreviewMasInformacion1()
-}
-//
-private struct PreviewMasInformacion1: View {
-    @State private var pantallaCompleta = false
-    
-    var body: some View {
-        MasInformacion(
-            pantallaCompleta: $pantallaCompleta,
-            vm: ModeloColeccion(),
-            elemento: Archivo.preview
-        )
-//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-    }
-}
+//#Preview {
+//    PreviewMasInformacion1()
+//}
+////
+//private struct PreviewMasInformacion1: View {
+//    @State private var pantallaCompleta = false
+//    
+//    var body: some View {
+//        MasInformacion(
+//            pantallaCompleta: $pantallaCompleta,
+//            vm: ModeloColeccion(),
+//            elemento: Archivo.preview
+//        )
+////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+////                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//    }
+//}
 
 struct MasInformacionArchivo: View {
     

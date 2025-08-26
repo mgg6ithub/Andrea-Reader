@@ -1,25 +1,25 @@
 import SwiftUI
 import Charts
 
-#Preview {
-//    ProgresoTiempo(archivo: Archivo.preview)
-    PreviewMasInformacion2()
-}
+//#Preview {
+////    ProgresoTiempo(archivo: Archivo.preview)
+//    PreviewMasInformacion2()
+//}
 
-private struct PreviewMasInformacion2: View {
-    @State private var pantallaCompleta = false
-    
-    var body: some View {
-        MasInformacion(
-            pantallaCompleta: $pantallaCompleta,
-            vm: ModeloColeccion(),
-            elemento: Archivo.preview
-        )
-//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-    }
-}
+//private struct PreviewMasInformacion2: View {
+//    @State private var pantallaCompleta = false
+//    
+//    var body: some View {
+//        MasInformacion(
+//            pantallaCompleta: $pantallaCompleta,
+//            vm: ModeloColeccion(),
+//            elemento: Archivo.preview
+//        )
+////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+////                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//    }
+//}
 
 
 struct EstadisticaProgresoTiempo: View {

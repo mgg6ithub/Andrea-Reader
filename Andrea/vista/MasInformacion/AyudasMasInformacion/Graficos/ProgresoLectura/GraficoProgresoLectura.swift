@@ -4,6 +4,9 @@ import Charts
 
 // Vista de prueba
 struct InformacionProgresoGrafico: View {
+    
+    @ObservedObject var estadisticas: EstadisticasYProgresoLectura
+    
     var body: some View {
         VStack(alignment: .center) {
             
@@ -55,7 +58,7 @@ struct InformacionProgresoGrafico: View {
             }
             .frame(height: 50)
             
-            GraficoProgreso()
+            GraficoProgreso(estadisticas: estadisticas)
         }
     }
 }
@@ -69,34 +72,33 @@ struct ReadingProgress: Identifiable {
 }
 
 struct GraficoProgreso: View {
-    let data: [ReadingProgress] = [
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 21))!, actual: 0,  ideal: 0),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 22))!, actual: 30, ideal: 15),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 23))!, actual: 10, ideal: 30),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 24))!, actual: 45, ideal: 45),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 25))!, actual: 70, ideal: 60),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 26))!, actual: 80, ideal: 75),
-        ReadingProgress(date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 27))!, actual: 95, ideal: 95),
-    ]
+    @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     
     var body: some View {
+        // Transformar tus sesiones a progreso
+        let data: [ReadingProgress] = estadisticas.sesionesLectura.map { sesion in
+            let actual = estadisticas.progresoRealEnFecha(sesion.inicio)   // 🔹 función en tu modelo
+            let ideal  = estadisticas.progresoIdealEnFecha(sesion.inicio)  // 🔹 función en tu modelo
+            return ReadingProgress(date: sesion.inicio, actual: actual, ideal: ideal)
+        }
+        
         Chart {
-            // Línea progreso real (roja continua)
+            // Línea progreso real
             ForEach(data) { item in
                 LineMark(
                     x: .value("Fecha", item.date),
-                    y: .value("Progreso", item.actual),
+                    y: .value("Progreso", min(max(item.actual, 0), 100)), // 👈 limitar valores
                     series: .value("Tipo", "Actual")
                 )
             }
             .foregroundStyle(.green)
             .lineStyle(StrokeStyle(lineWidth: 2))
             
-            // Línea progreso ideal (gris discontinua)
+            // Línea progreso ideal
             ForEach(data) { item in
                 LineMark(
                     x: .value("Fecha", item.date),
-                    y: .value("Progreso", item.ideal),
+                    y: .value("Progreso", min(max(item.ideal, 0), 100)), // 👈 limitar valores
                     series: .value("Tipo", "Ideal")
                 )
             }
@@ -116,7 +118,6 @@ struct GraficoProgreso: View {
                 }
             }
         }
-
         .chartYAxis {
             AxisMarks { value in
                 AxisGridLine()
@@ -129,8 +130,12 @@ struct GraficoProgreso: View {
                 }
             }
         }
-        // Invertir el eje Y para que 0% esté arriba como en tu imagen
-        .chartYScale(domain: 0...100)
+        .chartYScale(domain: 0...100)   // 🔹 siempre de 0 a 100
+        .chartXScale(domain: [
+            data.first?.date ?? Date(),
+            data.last?.date ?? Date()
+        ]) // 🔹 ajusta el rango X
         .frame(height: 200)
     }
 }
+

@@ -78,6 +78,7 @@ extension PersistenciaDatos {
     func recuperarSesiones(for url: URL, key: String) -> [SesionDeLectura] {
         let p = ValoresElementoPredeterminados()
         let key = obtenerKey(url)
+        print("KEY: ", key)
         guard let data = uds.data(forKey: key) else {
             return p.sesionesLecturas // 👉 aquí devuelve vacío si no hay nada guardado
         }
