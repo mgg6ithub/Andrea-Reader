@@ -33,7 +33,6 @@ struct ListaArchivo: View {
             }) {
                 ZStack {
                     CheckerEncimaDelElemento(elementoURL: archivo.url, topPadding: false)
-                    
                     if let img = viewModel.miniatura {
                         Image(uiImage: img)
                             .resizable()

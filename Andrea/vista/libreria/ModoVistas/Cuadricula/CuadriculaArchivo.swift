@@ -37,7 +37,6 @@ struct CuadriculaArchivo: View {
             }) {
                 ZStack {
                     CheckerEncimaDelElemento(elementoURL: archivo.url, topPadding: true)
-                    
                     ZStack {
                         if let img = viewModel.miniatura {
                             Image(uiImage: img)
@@ -98,14 +97,6 @@ struct CuadriculaArchivo: View {
                                                 .bold()
                                                 .foregroundColor(coleccionVM.color)
                                         }
-                                        //NECESARIOS PARA ANIMACION DEL PROGRESO
-                                        .onAppear { progresoMostrado = estadisticas.progreso }
-                                        .onChange(of: ap.archivoEnLectura) {
-                                            withAnimation(.easeOut(duration: 0.6)) {
-                                                progresoMostrado = estadisticas.progreso
-                                            }
-                                        }
-                                        //NECESARIOS PARA ANIMACION DEL PROGRESO
                                     }
                                 }
                                 
@@ -138,6 +129,14 @@ struct CuadriculaArchivo: View {
                                 
                                 Spacer()
                             }
+                            //NECESARIOS PARA ANIMACION DEL PROGRESO
+                            .onAppear { progresoMostrado = estadisticas.progreso }
+                            .onChange(of: ap.archivoEnLectura) {
+                                withAnimation(.easeOut(duration: 0.6)) {
+                                    progresoMostrado = estadisticas.progreso
+                                }
+                            }
+                            //NECESARIOS PARA ANIMACION DEL PROGRESO
                             .padding(.horizontal, archivo.tipoMiniatura == .imagenBase ? 13 : 10)
                             .onChange(of: estadisticas.completado) {
                                 withAnimation(.easeOut(duration: 0.6)) {
