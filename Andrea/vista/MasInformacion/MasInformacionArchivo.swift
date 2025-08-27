@@ -71,8 +71,8 @@ struct MasInformacionArchivo: View {
 //                            .padding(.vertical, 20)
 //                            .padding(.horizontal, 10)
                         
-                        MenuNavegacion()
-                                .padding(.vertical, 10)
+                            MenuNavegacion(estadisticas: archivo.estadisticas)
+                                .padding(.vertical, 15)
                             
 //                            EstadisticaProgresoTiempo(archivo: archivo)
 //                            .padding(.bottom, 15)
@@ -109,6 +109,8 @@ struct MasInformacionArchivo: View {
 struct MenuNavegacion: View {
     @State private var seleccion: Seccion = .progreso
     
+    @ObservedObject var estadisticas: EstadisticasYProgresoLectura
+    
     enum Seccion: String, CaseIterable, Identifiable {
         case progreso = "Progreso"
         case velocidad = "Velocidad"
@@ -133,17 +135,20 @@ struct MenuNavegacion: View {
             // Aquí el contenido según la selección
             switch seleccion {
             case .progreso:
-                Text("Vista: Progreso")
+                GraficoProgreso(estadisticas: estadisticas)
+                    .padding(.leading, 20)
             case .velocidad:
-                Text("Vista: Velocidad")
+                GraficoVelocidadLectura(estadisticas: estadisticas)
+                    .padding(.leading, 20)
             case .masVistas:
-                Text("Vista: Página más vistas")
+                GraficoPaginasMasVisitadas(estadisticas: estadisticas)
             case .masTiempo:
-                Text("Vista: Páginas vistas más tiempo")
+                GraficoTiempoPorPagina(estadisticas: estadisticas)
             }
             
             Spacer()
         }
+        .padding(.horizontal, 20)
     }
 }
 

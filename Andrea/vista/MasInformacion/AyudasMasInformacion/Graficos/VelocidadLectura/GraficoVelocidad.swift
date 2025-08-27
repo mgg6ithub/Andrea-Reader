@@ -20,10 +20,26 @@ struct ReadingSpeedData: Identifiable {
 struct GraficoVelocidadLectura: View {
     // Datos de ejemplo
     @ObservedObject var estadisticas: EstadisticasYProgresoLectura
-    @Binding var verTodo: Bool
+    @State var verTodo: Bool = false
     
     var body: some View {
         let data = estadisticas.sesionesLectura.map { $0.toReadingSpeedData }
+        
+//        Button(action: {
+//            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+//                verTodo.toggle()
+//            }
+//        }) {
+//            Text("Ver todo")
+//                .font(.footnote)
+//        }
+//        .zIndex(1)
+//        .padding(5) // margen interno
+//        .background(
+//            RoundedRectangle(cornerRadius: 5)
+//                .fill(Color.gray.opacity(0.2))
+//        )
+//        .padding(.trailing, 15)
         
         // Encontrar el punto con el valor más alto
         let maxSpeedItem = data.max(by: { $0.speed < $1.speed })

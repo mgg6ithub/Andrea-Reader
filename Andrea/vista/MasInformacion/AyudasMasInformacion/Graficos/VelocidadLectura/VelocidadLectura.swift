@@ -68,7 +68,7 @@ struct InformacionVelocidadGrafico: View {
             }
             .frame(height: 50)
             
-            GraficoVelocidadLectura(estadisticas: estadisticas, verTodo: $verTodo)
+//            GraficoVelocidadLectura(estadisticas: estadisticas, verTodo: $verTodo)
         }
     }
 }

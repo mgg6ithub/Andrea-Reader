@@ -28,12 +28,12 @@ struct ProgresoCircular: View {
                 .trim(from: 0.0, to: CGFloat(animatedValor))
                 .stroke(color, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .animation(.interpolatingSpring(stiffness: 80, damping: 10), value: animatedValor)
                 .shadow(color: color.opacity(0.3), radius: 3, x: 0, y: 0)
             
-            // Texto central
+            // Texto central animado
             VStack(spacing: 2) {
-                Text("\(progreso)%")
+                Color.clear
+                    .animatedProgressText1(Int(animatedValor * 100)) // 👈 pasamos Double
                     .font(.system(size: 24, weight: .semibold, design: .rounded))
                     .monospacedDigit()
                     .foregroundColor(color)
@@ -45,12 +45,12 @@ struct ProgresoCircular: View {
         }
         .frame(width: 90, height: 90)
         .onAppear {
-            withAnimation {
+            withAnimation(.easeInOut(duration: 1.1)) {
                 animatedValor = progresoDouble
             }
         }
         .onChange(of: progresoDouble) { newVal in
-            withAnimation {
+            withAnimation(.easeInOut(duration: 1.1)) {
                 animatedValor = newVal
             }
         }
@@ -81,7 +81,7 @@ struct TiempoCircular: View {
                 .rotationEffect(.degrees(-90))
                 .animation(.easeOut, value: tiempoTotalProgresoDouble)
                 .onAppear {
-                    animatedValor = tiempoTotalProgresoDouble // arranca inicial
+                    withAnimation { animatedValor = tiempoTotalProgresoDouble } // arranca inicial
                 }
 //                .onChange(of: progreso) { newValue in
 //                    withAnimation(.easeInOut(duration: 1.1)) {

@@ -129,6 +129,7 @@ struct EstadisticasProgresoLectura: View {
                 VStack(alignment: .center, spacing: 15) {
                     ProgresoCircular(titulo: "tiempo", progreso: sss.progresoTiempoTotal, progresoDouble: sss.progresoTiempoTotalDouble, color: .blue)
                     
+                    
                     VStack(alignment: .center, spacing: 7) {
                         Text("Tiempo total")
                             .font(.system(size: const.titleSize * 0.75))
