@@ -42,7 +42,7 @@ struct EstadisticaProgresoTiempo: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 15) {
                         
-                        ProgresoCircular(progreso: archivo.estadisticas.progresoTiempoTotal, progresoDouble: archivo.estadisticas.progresoTiempoTotalDouble, color: .blue)
+//                        ProgresoCircular(progreso: archivo.estadisticas.progresoTiempoTotal, progresoDouble: archivo.estadisticas.progresoTiempoTotalDouble, color: .blue)
                         
                         VStack(alignment: .center, spacing: 0) {
                             HStack(spacing: 3) {

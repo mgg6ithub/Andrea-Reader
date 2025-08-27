@@ -76,87 +76,100 @@ struct Botones: View {
     }
 }
 
+#Preview {
+    EstadisticasProgresoLectura(archivo: Archivo.preview)
+}
+ 
 struct EstadisticasProgresoLectura: View {
+    
+    @EnvironmentObject var ap: AppEstado
     
     @ObservedObject var archivo: Archivo
     
     @State private var cambio: Bool = true
     
     private var sss: EstadisticasYProgresoLectura { archivo.estadisticas }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var const: Constantes { ap.constantes }
     
     var body: some View {
-        HStack(alignment: .bottom, spacing: 30) {
-            VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    Text("Progreso lectura")
-                        .font(.system(size: 18))
-                        .bold()
-                        .padding(.top, 10)
-                    Spacer()
-                    Botones(cambio: $cambio, tituloVerdad: "velocidad", tituloFalso: "progreso")
-                        .padding(.trailing, 20)
-                }
-                HStack {
-                    VStack(alignment: .leading, spacing: 15) {
-                        ProgresoCircular(progreso: sss.progreso, progresoDouble: sss.progresoDouble, color: .green)
+        VStack(alignment: .center, spacing: 0) {
+//                HStack {
+//                    Text("Progreso lectura")
+//                        .font(.system(size: 18))
+//                        .bold()
+//                        .padding(.top, 10)
+//                    Spacer()
+//                    Botones(cambio: $cambio, tituloVerdad: "velocidad", tituloFalso: "progreso")
+//                        .padding(.trailing, 20)
+//                }
+            HStack(alignment: .top, spacing: 20) {
+                
+//                Spacer()
+                
+                VStack(alignment: .center, spacing: 15) {
+                    ProgresoCircular(titulo: "progreso", progreso: sss.progreso, progresoDouble: sss.progresoDouble, color: .green)
+                    
+                    VStack(alignment: .center, spacing: 7) {
+                        Text("Completado")
+                            .font(.system(size: const.titleSize * 0.75))
+                            .foregroundColor(tema.tituloColor)
                         
-                        VStack(alignment: .center, spacing: 0) {
-                            HStack(spacing: 3) {
-                                RoundedRectangle(cornerRadius: 2.5)
-                                    .fill(.green.opacity(0.65))
-                                    .frame(width: 4, height: 12)
-                                Text("Completado")
-                                    .font(.system(size: 15))
-                                    .foregroundColor(.primary)
-                            }
-                            
-                            HStack(alignment: .bottom, spacing: 1.5) {
-                                Text("\(sss.paginaActual + 1)")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.green.opacity(0.65))
-                                Text("páginas")
-                                    .font(.system(size: 12.5))
-                                    .foregroundColor(.primary)
-                                    .offset(y: -3.5)
-                            }
-                            
-                        }
-                        
-                        VStack(alignment: .center, spacing: 0) {
-                            HStack(spacing: 3) {
-                                RoundedRectangle(cornerRadius: 2.5)
-                                    .fill(.secondary.opacity(0.65))
-                                    .frame(width: 4, height: 12)
-                                Text("Todavía faltan")
-                                    .font(.system(size: 15))
-                                    .foregroundColor(.primary)
-                            }
-                            
-                            HStack(alignment: .bottom, spacing: 1.5) {
-                                Text("\(sss.paginasRestantes)")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(.secondary.opacity(0.65))
-                                Text("páginas")
-                                    .font(.system(size: 12.5))
-                                    .foregroundColor(.primary)
-                                    .offset(y: -3.5)
-                            }
-                            
+                        if let tot = sss.totalPaginas {
+                            Text("\(sss.paginaActual)" + "/" + "\(tot) páginas")
+                                .font(.system(size: const.subTitleSize * 0.7))
+                                .foregroundColor(tema.secondaryText)
                         }
                     }
                     
-                    //GRAFICO
-                    if cambio {
-                        InformacionVelocidadGrafico(estadisticas: sss)
-                    } else if !cambio {
-                        InformacionProgresoGrafico(estadisticas: sss)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .center, spacing: 15) {
+                    ProgresoCircular(titulo: "tiempo", progreso: sss.progresoTiempoTotal, progresoDouble: sss.progresoTiempoTotalDouble, color: .blue)
+                    
+                    VStack(alignment: .center, spacing: 7) {
+                        Text("Tiempo total")
+                            .font(.system(size: const.titleSize * 0.75))
+                            .foregroundColor(tema.tituloColor)
+                            
+                        Text(sss.tiempoTotal.formatted())
+                            .font(.system(size: const.subTitleSize * 0.7))
+                            .foregroundColor(tema.secondaryText)
+                        
+//                        Text("Tiempo restante")
+//                            .font(.system(size: const.titleSize * 0.75))
+//                            .foregroundColor(tema.tituloColor)
+//                            
+//                        Text(sss.tiempoRestante.formatted())
+//                            .font(.system(size: const.subTitleSize * 0.7))
+//                            .foregroundColor(tema.secondaryText)
+                    }
+                    
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .center, spacing: 15) {
+                    ProgresoCircular(titulo: "tamaño", progreso: 6, progresoDouble: 0.06, color: .red)
+                    
+                    VStack(alignment: .center, spacing: 7) {
+                        Text("Almacenamiento")
+                            .font(.system(size: const.titleSize * 0.75))
+                            .foregroundColor(tema.tituloColor)
+                        
+                        Text("Ocupa \(ManipulacionSizes().formatearSize(archivo.fileSize))" + " de " + "2 GB")
+                            .font(.system(size: const.subTitleSize * 0.7))
+                            .foregroundColor(tema.secondaryText)
                     }
                 }
                 
+//                Spacer()
             }
-            .padding(.leading, 20)
             
-
+            
+            
         }
     }
 }

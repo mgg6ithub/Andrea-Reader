@@ -50,7 +50,7 @@ struct MasInformacionArchivo: View {
                     .padding(.bottom, 10)
                     
                     //ESTADISTICAS
-                    VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .center, spacing: 0) {
                         if archivo.fechaPrimeraVezEntrado == nil {
 
                             HStack {
@@ -62,15 +62,20 @@ struct MasInformacionArchivo: View {
                         } else {
                         
                         EstadisticasProgresoLectura(archivo: archivo)
+                                .padding(.top, 30)
+                        .padding(.horizontal, 45)
                         
-                        Rectangle()
-                            .frame(height: 1)
-                            .foregroundColor(.gray.opacity(0.25))
-                            .padding(.vertical, 20)
-                            .padding(.horizontal, 10)
+//                        Rectangle()
+//                            .frame(height: 1)
+//                            .foregroundColor(.gray.opacity(0.25))
+//                            .padding(.vertical, 20)
+//                            .padding(.horizontal, 10)
                         
-                            EstadisticaProgresoTiempo(archivo: archivo)
-                            .padding(.bottom, 15)
+                        MenuNavegacion()
+                                .padding(.vertical, 10)
+                            
+//                            EstadisticaProgresoTiempo(archivo: archivo)
+//                            .padding(.bottom, 15)
                         }
                     }
                     .overlay(
@@ -79,13 +84,13 @@ struct MasInformacionArchivo: View {
                     )
                     
                     //INFORMACION AVANZADA
-                    InformacionAvanzada(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(.gray.opacity(0.25), lineWidth: 1)
-                        )
-                        .padding(.top, 10)
-                        .id("informacionAvanzada")
+//                    InformacionAvanzada(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 15)
+//                                .stroke(.gray.opacity(0.25), lineWidth: 1)
+//                        )
+//                        .padding(.top, 10)
+//                        .id("informacionAvanzada")
                 }
                 
             }
@@ -97,6 +102,47 @@ struct MasInformacionArchivo: View {
                     }
                 }
             }
+        }
+    }
+}
+
+struct MenuNavegacion: View {
+    @State private var seleccion: Seccion = .progreso
+    
+    enum Seccion: String, CaseIterable, Identifiable {
+        case progreso = "Progreso"
+        case velocidad = "Velocidad"
+        case masVistas = "Página más vistas"
+        case masTiempo = "Tiempo en páginas"
+        
+        var id: String { rawValue }
+    }
+    
+    var body: some View {
+        VStack {
+            Picker("Sección", selection: $seleccion) {
+                ForEach(Seccion.allCases) { seccion in
+                    Text(seccion.rawValue).tag(seccion)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding()
+            
+            Spacer()
+            
+            // Aquí el contenido según la selección
+            switch seleccion {
+            case .progreso:
+                Text("Vista: Progreso")
+            case .velocidad:
+                Text("Vista: Velocidad")
+            case .masVistas:
+                Text("Vista: Página más vistas")
+            case .masTiempo:
+                Text("Vista: Páginas vistas más tiempo")
+            }
+            
+            Spacer()
         }
     }
 }

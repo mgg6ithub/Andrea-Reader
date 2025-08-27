@@ -24,6 +24,12 @@ extension TimeInterval {
         
         return parts
     }
+    
+    func formatted() -> String {
+        components()
+            .map { "\($0.valor)\($0.unidad)" }
+            .joined(separator: " ")
+    }
 }
 
 
@@ -47,5 +53,6 @@ struct TiempoFormateado: View {
         }
     }
 }
+
 
 
