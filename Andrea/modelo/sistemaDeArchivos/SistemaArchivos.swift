@@ -179,6 +179,7 @@ class SistemaArchivos: ObservableObject {
                     
                     // --- actualizar persistencia ---
                     self.pd.actualizarDatoArchivo(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
+                    self.pd.actualizarSesiones(origenURL: origenURL, destinoURL: destinoURL)
                 } else if let coleccion = elemento as? Coleccion {
                     withAnimation { coleccion.nombre = nuevoNombre }
                     coleccion.url = destinoURL
@@ -240,6 +241,7 @@ class SistemaArchivos: ObservableObject {
                         destinoURL: destinoURL,
                         keys: self.cpe.arrayClavesPersistenciaElementos
                     )
+                    self.pd.actualizarSesiones(origenURL: origenURL, destinoURL: destinoURL)
 
                     archivo.url = destinoURL
 
@@ -293,6 +295,8 @@ class SistemaArchivos: ObservableObject {
                 
                 if let _ = elemento as? Archivo {
                     coleccionDestino.totalArchivos += 1
+                    self.pd.duplicarDatoElemento(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
+                    self.pd.duplicarSesiones(origenURL: origenURL, destinoURL: destinoURL)
                 } else if let coleccion = elemento as? Coleccion {
                     coleccionDestino.totalArchivos += 1
                     
@@ -306,7 +310,6 @@ class SistemaArchivos: ObservableObject {
                     }
                     
                     //--- duplicar en persistencia ---
-//                    PersistenciaDatos().duplicarDatosClave(origen: origenURL, destino: destinoURL)
                     self.pd.duplicarDatoElemento(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
                 }
                 
@@ -319,6 +322,8 @@ class SistemaArchivos: ObservableObject {
     //MARK: --- DUPLICACION RAPIDA DE UN ELEMENTO EN LA MISMA COLECCION ---
     public func duplicarElemento(_ elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion) throws {
         fileQueue.sync {
+            
+            guard let _ = elemento as? Archivo else { return } //Solamente se puede duplicar un archivo.
             
             let origenURL = elemento.url
             let nombreOrigen = origenURL.deletingPathExtension().lastPathComponent + "(1)" + "." + origenURL.pathExtension
@@ -341,9 +346,8 @@ class SistemaArchivos: ObservableObject {
             }
             
             //--- duplicar en persistencia ---
-//            PersistenciaDatos().duplicarDatosClave(origen: origenURL, destino: duplicadaURL)
             self.pd.duplicarDatoElemento(origenURL: origenURL, destinoURL: duplicadaURL, keys: self.cpe.arrayClavesPersistenciaElementos)
-            
+            self.pd.duplicarSesiones(origenURL: origenURL, destinoURL: duplicadaURL)
         }
     }
     
@@ -389,6 +393,7 @@ class SistemaArchivos: ObservableObject {
                             
                             //--- PERSISTENCIA (BORRADO) ---
                             self.pd.eliminarPersistenciaRecursiva(coleccionURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
+                            self.pd.eliminarSesiones(elementoURL: url)
                         } else {
                             vm.coleccion.totalArchivos -= 1
                             

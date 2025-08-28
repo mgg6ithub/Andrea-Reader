@@ -466,7 +466,6 @@
 				D49E26692E3A77BD009A0EDC /* MasInformacion.swift */,
 				D4B0CCE42E574FB1000C69CF /* MasInformacionArchivo.swift */,
 				D49F12F52E25349500C67FB8 /* MasInformacionColeccion.swift */,
-				D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */,
 			);
 			path = MasInformacion;
 			sourceTree = "<group>";
@@ -639,6 +638,7 @@
 		D4B0CCE62E5779E5000C69CF /* AyudasMasInformacion */ = {
 			isa = PBXGroup;
 			children = (
+				D48C587F2E3BA855006D9C07 /* CabeceraMasInformacion.swift */,
 				D4A02A772E59CE0A000C5F32 /* Graficos */,
 				D4B0CCE92E577AA9000C69CF /* EstadisticaProgresoLectura.swift */,
 				D4B0CCEB2E577BAF000C69CF /* EstadisticaProgresoTiempo.swift */,

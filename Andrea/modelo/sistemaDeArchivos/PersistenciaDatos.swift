@@ -89,6 +89,42 @@ extension PersistenciaDatos {
             return p.sesionesLecturas // 👉 y también vacío si hubo un error de decodificación
         }
     }
+    
+    // MARK: - Actualizar sesiones (al renombrar/mover un archivo)
+    public func actualizarSesiones(origenURL: URL, destinoURL: URL) {
+        let oldKey = obtenerKey(origenURL)
+        let newKey = obtenerKey(destinoURL)
+        
+        if let data = uds.data(forKey: oldKey) {
+            uds.set(data, forKey: newKey)    // Copiar a la nueva clave
+            uds.removeObject(forKey: oldKey) // Borrar la vieja
+            print("🔄 Actualizadas sesiones: \(oldKey) → \(newKey)")
+        } else {
+            print("⚠️ No se encontraron sesiones para: \(oldKey)")
+        }
+    }
+    
+    public func duplicarSesiones(origenURL: URL, destinoURL: URL) {
+        let oldKey = obtenerKey(origenURL)
+        let newKey = obtenerKey(destinoURL)
+        
+        if let data = uds.data(forKey: oldKey) {
+            uds.set(data, forKey: newKey) // copia tal cual
+            print("📄 Duplicadas sesiones: \(oldKey) → \(newKey)")
+        } else {
+            print("⚠️ No se encontraron sesiones para: \(oldKey)")
+        }
+    }
+
+    
+    public func eliminarSesiones(elementoURL: URL) {
+        let key = obtenerKey(elementoURL)
+        uds.removeObject(forKey: key)
+        print("🗑️ Eliminadas sesiones para: \(elementoURL.lastPathComponent)")
+    }
+
+
+    
 }
 
 
@@ -356,6 +392,11 @@ struct PersistenciaDatos {
         
         for key in keys {
             var mapa = self.obtenerMapa(key: key)
+            
+//            print("Mapa para: ", origenURL.lastPathComponent)
+//            print(mapa)
+//            print()
+            
             if let valor = mapa[oldk] {
                 mapa[newk] = valor
                 mapa.removeValue(forKey: oldk) // eliminar la antigua

@@ -64,6 +64,11 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     var masInformacion: Bool = false
     @Published var completado: Bool = false
     
+    //TIEMPOS MEJORA ESTADISTICAS REALES
+    private let tiempoMinimoLectura: TimeInterval = 2.0   // Sesiones cortas
+    private let tiempoMinimoPagina: TimeInterval = 2.0    // Páginas rápidas
+    private var lecturaValidada = false                   // Marca si la sesión es válida
+    
     //METODO PARA INICIAR LAS ESTADISTICAS COMPLEMENTARIAS A PARTIR DE LAS PRIMARIAS QUE SE INICIALIZAN EN EL CONSTRUCTOR
     public func crearEstadisticas() {
         self.paginasRestantes = calcularPaginasRestantes()
@@ -209,23 +214,21 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     
     //actualizacion de la pagina actual <- muy importante
     public func setCurrentPage(currentPage: Int) {
-        // 1. Guardar tiempo en la página actual
+        // 1. Guardar tiempo de la página anterior
         if let inicio = inicioPaginaFecha {
-            let tiempoLeido = Date().timeIntervalSince(inicio)
-            tiemposPorPagina[paginaActual, default: 0] += tiempoLeido
+            _ = registrarTiempoSiValido(pagina: paginaActual, desde: inicio)
         }
         
-        paginaActual = max(0, currentPage) //<- asigna la pagina actual
+        // 2. Actualizar página actual
+        paginaActual = max(0, currentPage)
         withAnimation {
             actualizarProgreso()
         }
         
-        // 3. Registrar visita
-       visitasPorPagina[paginaActual, default: 0] += 1
-       
-       // 4. Reiniciar inicio de cronómetro
-       inicioPaginaFecha = Date()
+        // 3. Reiniciar cronómetro
+        inicioPaginaFecha = Date()
     }
+
     
     public func completarLectura() {
         guard let total = totalPaginas, total > 0 else { return }
@@ -256,63 +259,95 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         progreso = Int(round(frac * 100))
     }
     
+    /// Registra el tiempo y la visita de una página si supera el umbral mínimo
+    @discardableResult
+    private func registrarTiempoSiValido(pagina: Int, desde inicio: Date) -> Bool {
+        let tiempoLeido = Date().timeIntervalSince(inicio)
+        if tiempoLeido >= tiempoMinimoPagina {
+            tiemposPorPagina[pagina, default: 0] += tiempoLeido
+            visitasPorPagina[pagina, default: 0] += 1
+            return true
+        } else {
+            print("⚠️ Página \(pagina) ignorada (solo \(tiempoLeido)s)")
+            return false
+        }
+    }
+
+    
     //MARK: - --- ESTADISTICAS ---
     func iniciarLectura() {
         guard inicioLectura == nil else { return }
-
-        //Iniciamos la sesion actual
-        sesionActual = SesionDeLectura(numeroSesion: contadorSesiones, inicio: Date(), fin: nil, paginaInicio: 0, paginaFin: paginaActual, paginasLeidas: 0, velocidadLectura: 0.0)
         
         inicioLectura = Date()
+        lecturaValidada = false
         
-        // Iniciar un timer cada segundo
+        sesionActual = SesionDeLectura(
+            numeroSesion: contadorSesiones,
+            inicio: Date(),
+            fin: nil,
+            paginaInicio: paginaActual,
+            paginaFin: paginaActual,
+            paginasLeidas: 0,
+            velocidadLectura: 0.0
+        )
+        
+        // Validar sesión solo si pasa el umbral
+        DispatchQueue.main.asyncAfter(deadline: .now() + tiempoMinimoLectura) { [weak self] in
+            guard let self = self, self.inicioLectura != nil else { return }
+            self.lecturaValidada = true
+        }
+        
+        // Timer de visualización (igual que antes)
         timerCancellable = Timer.publish(every: 1, on: RunLoop.main, in: .common)
             .autoconnect()
-            .sink { [weak self] (_: Date) in   // 👈 aclarar que el valor emitido es Date
+            .sink { [weak self] (_: Date) in
                 guard let self = self, let inicio = self.inicioLectura else { return }
                 self.tiempoActual = Date().timeIntervalSince(inicio)
             }
     }
+
     
     func terminarLectura() {
         guard let inicio = inicioLectura else { return }
         
         let sesion = Date().timeIntervalSince(inicio)
-        tiempoTotal += sesion
-        tiempoActual = 0
         inicioLectura = nil
+        tiempoActual = 0
         
-        // ⬇️ Muy importante: acumular tiempo en la página actual
+        timerCancellable?.cancel()
+        timerCancellable = nil
+        
+        // ⚠️ Descartar sesión demasiado corta
+        guard lecturaValidada else {
+            print("⚠️ Sesión descartada por ser demasiado corta (\(sesion)s)")
+            sesionActual = nil
+            return
+        }
+        
+        tiempoTotal += sesion
+        
+        // ⬇️ Usar función utilitaria para registrar la última página
         if let inicioPaginaFecha = inicioPaginaFecha {
-            let tiempoLeido = Date().timeIntervalSince(inicioPaginaFecha)
-            tiemposPorPagina[paginaActual, default: 0] += tiempoLeido
+            _ = registrarTiempoSiValido(pagina: paginaActual, desde: inicioPaginaFecha)
             self.inicioPaginaFecha = nil
         }
         
-        //Calcular la sesion de lectura terminada
         if var sesion = sesionActual {
             sesion.fin = Date()
             sesion.paginaFin = paginaActual
             sesion.paginasLeidas = max(1, paginaActual - sesion.paginaInicio)
-
-            // Calcula velocidad solo para esta sesión (no uses la global opcional)
+            
             let duracionMinutos = sesion.fin!.timeIntervalSince(sesion.inicio) / 60
             sesion.velocidadLectura = Double(sesion.paginasLeidas) / duracionMinutos
-
-            sesionesLectura.append(sesion)   // 👉 muy importante: guardamos la sesión en la lista
-            sesionActual = nil                // ya está cerrada
+            
+            sesionesLectura.append(sesion)
+            sesionActual = nil
         }
         
-//        imprimirSesionesLectura()
-        
-        //persistencia
         pd.guardarDatoArchivo(valor: tiemposPorPagina, elementoURL: url, key: cpe.tiemposPorPagina)
         pd.guardarDatoArchivo(valor: visitasPorPagina, elementoURL: url, key: cpe.visitasPorPagina)
-        
-        // Parar el timer
-        timerCancellable?.cancel()
-        timerCancellable = nil
     }
+
     
     
     private func calcularPaginasRestantes() -> Int {

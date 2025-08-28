@@ -59,7 +59,6 @@ struct MasInformacion: View {
                 VStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .center, spacing: 0) {
                         CabeceraMasInformacion(elemento: elemento, pantallaCompleta: $pantallaCompleta)
-//                            .aparicionBlur(show: $show)
                             .padding(.bottom, 5)
                         
                         if let archivo = elemento as? Archivo {

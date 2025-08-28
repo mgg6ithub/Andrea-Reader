@@ -36,7 +36,6 @@ struct CabeceraMasInformacion: View {
     @FocusState private var isTextFieldFocused: Bool
     @State private var tituloElemento: String = ""
     
-    
     init(elemento: ElementoSistemaArchivos, pantallaCompleta: Binding<Bool>) {
         self.elemento = elemento
         _pantallaCompleta = pantallaCompleta
@@ -69,8 +68,6 @@ struct CabeceraMasInformacion: View {
                     .foregroundColor(ap.temaResuelto.tituloColor)
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.never)
-                    .frame(minWidth: 0)
-                    .fixedSize()
                     .focused($isTextFieldFocused)
                     .overlay(
                         Rectangle()
@@ -79,6 +76,9 @@ struct CabeceraMasInformacion: View {
                             .offset(y: 6),
                         alignment: .bottom
                     )
+                    .frame(maxWidth: .infinity) // ocupa el espacio libre
+                    .lineLimit(1)               // ❗️muy importante: que no se vaya a varias líneas
+                    .truncationMode(.tail)      // corta con "…" al final si se pasa
                     .submitLabel(.done)
                     .onSubmit {
                         elemento.nombre = tituloElemento
