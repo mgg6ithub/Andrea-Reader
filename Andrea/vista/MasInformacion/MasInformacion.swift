@@ -31,7 +31,7 @@ struct MasInformacion: View {
     @EnvironmentObject var ap: AppEstado
     @Binding var pantallaCompleta: Bool
     @ObservedObject var vm: ModeloColeccion
-    let elemento: any ElementoSistemaArchivosProtocolo
+    @ObservedObject var elemento: ElementoSistemaArchivos
     
     @State private var show: Bool = true
     
@@ -48,7 +48,6 @@ struct MasInformacion: View {
                 }
             
             GeometryReader { geometry in
-                
                 let cW: CGFloat = geometry.size.width
                 let cH: CGFloat = geometry.size.height
                 
@@ -59,8 +58,9 @@ struct MasInformacion: View {
                 
                 VStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .center, spacing: 0) {
-                        CabeceraMasInformacion(nombre: elemento.nombre, pantallaCompleta: $pantallaCompleta)
+                        CabeceraMasInformacion(elemento: elemento, pantallaCompleta: $pantallaCompleta)
                             .aparicionBlur(show: $show)
+                            .padding(.bottom, 15)
                         
                         if let archivo = elemento as? Archivo {
                             let _ = archivo.estadisticas.crearEstadisticas()

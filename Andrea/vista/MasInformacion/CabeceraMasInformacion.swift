@@ -25,8 +25,7 @@ import SwiftUI
 struct CabeceraMasInformacion: View {
     
     @EnvironmentObject var ap: AppEstado
-    
-    let nombre: String
+    @ObservedObject var elemento: ElementoSistemaArchivos
     @Binding var pantallaCompleta: Bool
     
     var cDinamico: Color { ap.temaActual.colorContrario }
@@ -34,6 +33,16 @@ struct CabeceraMasInformacion: View {
     private let constantes = ConstantesPorDefecto()
     
     @State private var isPressed: Bool = false
+    @State private var isTitleEditing: Bool = false
+    @FocusState private var isTextFieldFocused: Bool
+    @State private var tituloElemento: String = ""
+    
+    
+    init(elemento: ElementoSistemaArchivos, pantallaCompleta: Binding<Bool>) {
+        self.elemento = elemento
+        _pantallaCompleta = pantallaCompleta
+        _tituloElemento = State(initialValue: elemento.nombre ?? "")
+    }
     
     var body: some View {
         HStack(spacing: 0) {
@@ -50,13 +59,58 @@ struct CabeceraMasInformacion: View {
             }
             
             Spacer()
-                                    
-            Text(nombre)
-                .font(.system(size: ap.constantes.titleSize * 1.45))
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .padding()
+            
+            if isTitleEditing {
+                TextField("", text: $tituloElemento)
+                    .bold()
+                    .font(.system(size: ap.constantes.titleSize * 1.45))
+                    .foregroundColor(ap.temaResuelto.tituloColor)
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.never)
+                    .frame(minWidth: 0)
+                    .fixedSize()
+                    .focused($isTextFieldFocused)
+                    .overlay(
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(ap.temaResuelto.tituloColor)
+                            .offset(y: 6),
+                        alignment: .bottom
+                    )
+                    .submitLabel(.done)
+                    .onSubmit {
+                        elemento.nombre = tituloElemento
+                        withAnimation {
+                            isTitleEditing = false
+                        }
+                        print("Nuevo autor: \(tituloElemento)")
+                    }
+                    .onAppear {
+                        // en cuanto aparezca el campo de texto, enfocar
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                            isTextFieldFocused = true
+                        }
+                    }
+
+            } else {
+                HStack {
+                    Text(tituloElemento.isEmpty ? "desconocido" : tituloElemento)
+                        .font(.system(size: ap.constantes.titleSize * 1.45))
+                        .foregroundColor(ap.temaResuelto.tituloColor)
+                        .bold()
+                        .multilineTextAlignment(.leading)
+                    Image(systemName: "pencil")
+                        .font(.system(size: ap.constantes.iconSize * 0.5))
+                        .foregroundColor(ap.temaResuelto.secondaryText)
+                }
+                .frame(height: 40, alignment: .topLeading)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation {
+                        isTitleEditing = true
+                    }
+                }
+            }
             
             Spacer()
             

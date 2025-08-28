@@ -159,7 +159,9 @@ struct Contenido: View {
     @ObservedObject var vm: ModeloColeccion
     
     @State private var isEditingAutor = false
+    @FocusState private var isEditingAutorFocused: Bool
     @State private var isEditingDescripcion = false
+    @FocusState private var isEditingDescriptionFocused: Bool
     @State private var autorTexto: String = ""
     @State private var descripcionTexto: String = ""
     @State private var mostrarDescripcionCompleta: Bool = false
@@ -185,6 +187,7 @@ struct Contenido: View {
                     Image(systemName: "text.page.fill")
                         .foregroundColor(vm.color)
                     Text("Archivo")
+                        .bold()
                         .font(.system(size: titleS))
                         .foregroundColor(tema.tituloColor)
                     
@@ -194,57 +197,85 @@ struct Contenido: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Autor")
-                        .underline()
-                        .font(.system(size: subTitleS))
-                        .foregroundColor(tema.secondaryText)
+                    HStack(spacing: 2) {
+                        Text("Autor")
+                            .underline()
+                            .font(.system(size: subTitleS))
+                            .foregroundColor(tema.secondaryText)
+                        
+                        Image(systemName: "pencil")
+                            .font(.system(size: const.iconSize * 0.5))
+                            .foregroundColor(tema.secondaryText)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture { withAnimation {isEditingAutor.toggle()} }
                     
                     if isEditingAutor {
                         TextField("Introduce un autor", text: $autorTexto)
                             .font(.system(size: titleS))
                             .foregroundColor(tema.tituloColor)
                             .textFieldStyle(.roundedBorder)
+                            .focused($isEditingAutorFocused)
                             .submitLabel(.done)
                             .onSubmit {
                                 archivo.autor = autorTexto
                                 withAnimation { isEditingAutor = false }
                                 print("Nuevo autor: \(autorTexto)")
                             }
+                            .onAppear {
+                                // en cuanto aparezca el campo de texto, enfocar
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                    isEditingAutorFocused = true
+                                }
+                            }
+                            .frame(height: 40)
                     } else {
-                        HStack {
+                        ZStack {
                             Text(autorTexto.isEmpty ? "desconocido" : autorTexto)
                                 .font(.system(size: titleS))
                                 .foregroundColor(tema.tituloColor)
                                 .bold()
                                 .multilineTextAlignment(.leading)
-                            Spacer()
-                            Image(systemName: "pencil")
-                                .foregroundColor(.secondary)
                         }
                         .frame(height: 40, alignment: .topLeading)
                         .contentShape(Rectangle())
-                        .onTapGesture { isEditingAutor = true }
+                        .onTapGesture { withAnimation {isEditingAutor.toggle()} }
                     }
 
                 }
                 
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Descripción")
-                        .underline()
-                        .font(.system(size: subTitleS))
-                        .foregroundColor(tema.secondaryText)
+                    HStack(spacing: 2) {
+                        Text("Descripción")
+                            .underline()
+                            .font(.system(size: subTitleS))
+                            .foregroundColor(tema.secondaryText)
+                        
+                        Image(systemName: "pencil")
+                            .font(.system(size: const.iconSize * 0.5))
+                            .foregroundColor(tema.secondaryText)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                     
                     if isEditingDescripcion {
                         ZStack(alignment: .topLeading) {
                             TextEditor(text: $descripcionTexto)
-                                .font(.system(size: 16))
+                                .bold()
+                                .font(.system(size: titleS))
                                 .frame(height: 100)
+                                .focused($isEditingDescriptionFocused)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(Color.secondary.opacity(0.4), lineWidth: 0.5)
                                 )
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                        isEditingDescriptionFocused = true
+                                    }
+                                }
                         }
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
@@ -261,19 +292,17 @@ struct Contenido: View {
                     } else {
                         HStack(alignment: .top) {
                             Text(descripcionTexto.isEmpty ? "sin descripción" : descripcionTexto)
+                                .bold()
                                 .font(.system(size: titleS))
                                 .foregroundColor(tema.tituloColor)
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(5)
                                 .truncationMode(.tail)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
-                            
-                            Image(systemName: "pencil")
-                                .foregroundColor(.secondary)
                         }
                         .frame(height: 100, alignment: .topLeading)
                         .contentShape(Rectangle())
-                        .onTapGesture { isEditingDescripcion = true }
+                        .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                     }
                     
                     // 👇 Ellipsis botón debajo del área
