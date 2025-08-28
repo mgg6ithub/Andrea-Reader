@@ -53,7 +53,6 @@ struct CabeceraMasInformacion: View {
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(cDinamico, Color.red)
                     .symbolEffect(.bounce, value: isPressed)
-                
             }
             .frame(width: ap.constantes.iconSize * 1.3,
                    height: ap.constantes.iconSize * 1.3) // 👈 fuerza el tamaño al del icono
@@ -61,60 +60,63 @@ struct CabeceraMasInformacion: View {
             
             Spacer()
             
-            if isTitleEditing {
-                TextField("", text: $tituloElemento)
-                    .bold()
-                    .font(.system(size: ap.constantes.titleSize * 1.45))
-                    .foregroundColor(ap.temaResuelto.tituloColor)
-                    .disableAutocorrection(true)
-                    .textInputAutocapitalization(.never)
-                    .focused($isTextFieldFocused)
-                    .overlay(
-                        Rectangle()
-                            .frame(height: 1)
-                            .foregroundColor(ap.temaResuelto.tituloColor)
-                            .offset(y: 6),
-                        alignment: .bottom
-                    )
-                    .frame(maxWidth: .infinity) // ocupa el espacio libre
-                    .lineLimit(1)               // ❗️muy importante: que no se vaya a varias líneas
-                    .truncationMode(.tail)      // corta con "…" al final si se pasa
-                    .submitLabel(.done)
-                    .onSubmit {
-                        elemento.nombre = tituloElemento
-                        
-                        //Rename (persistencia)
-                        SistemaArchivos.sa.renombrarElemento(elemento: elemento, nuevoNombre: tituloElemento)
-                        
-                        withAnimation { isTitleEditing = false }
-                        print("Nuevo autor: \(tituloElemento)")
-                    }
-                    .onAppear {
-                        // en cuanto aparezca el campo de texto, enfocar
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                            isTextFieldFocused = true
-                        }
-                    }
-
-            } else {
-                HStack {
-                    Text(tituloElemento.isEmpty ? "desconocido" : tituloElemento)
+            ZStack {
+                if isTitleEditing {
+                    TextField("", text: $tituloElemento)
+                        .bold()
                         .font(.system(size: ap.constantes.titleSize * 1.45))
                         .foregroundColor(ap.temaResuelto.tituloColor)
-                        .bold()
-                        .multilineTextAlignment(.leading)
-                    Image(systemName: "pencil")
-                        .font(.system(size: ap.constantes.iconSize * 0.5))
-                        .foregroundColor(ap.temaResuelto.secondaryText)
-                }
-                .frame(height: 40, alignment: .topLeading)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    withAnimation {
-                        isTitleEditing = true
+                        .disableAutocorrection(true)
+                        .textInputAutocapitalization(.never)
+                        .focused($isTextFieldFocused)
+                        .overlay(
+                            Rectangle()
+                                .frame(height: 1)
+                                .foregroundColor(ap.temaResuelto.tituloColor)
+                                .offset(y: 6),
+                            alignment: .bottom
+                        )
+                        .frame(maxWidth: .infinity) // ocupa el espacio libre
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .submitLabel(.done)
+                        .onSubmit {
+                            elemento.nombre = tituloElemento
+                            
+                            //Rename (persistencia)
+                            SistemaArchivos.sa.renombrarElemento(elemento: elemento, nuevoNombre: tituloElemento)
+                            
+                            withAnimation { isTitleEditing = false }
+                            print("Nuevo autor: \(tituloElemento)")
+                        }
+                        .onAppear {
+                            // en cuanto aparezca el campo de texto, enfocar
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                isTextFieldFocused = true
+                            }
+                        }
+
+                } else {
+                    HStack {
+                        Text(tituloElemento.isEmpty ? "desconocido" : tituloElemento)
+                            .font(.system(size: ap.constantes.titleSize * 1.45))
+                            .foregroundColor(ap.temaResuelto.tituloColor)
+                            .bold()
+                            .multilineTextAlignment(.leading)
+                        Image(systemName: "pencil")
+                            .font(.system(size: ap.constantes.iconSize * 0.5))
+                            .foregroundColor(ap.temaResuelto.secondaryText)
+                    }
+                    .frame(height: 40, alignment: .topLeading)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation {
+                            isTitleEditing = true
+                        }
                     }
                 }
             }
+            .padding(.horizontal, 15)
             
             Spacer()
             

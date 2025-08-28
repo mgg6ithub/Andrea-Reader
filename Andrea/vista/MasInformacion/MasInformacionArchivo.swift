@@ -53,7 +53,7 @@ struct MasInformacionArchivo: View {
                     
                     //ESTADISTICAS
                     VStack(alignment: .center, spacing: 0) {
-                        if archivo.fechaPrimeraVezEntrado == nil {
+                        if archivo.fechaPrimeraVezEntrado == nil || archivo.estadisticas.paginaActual == 0 {
                             HStack {
                                 Spacer()
                                 ImagenLibreriaVacia(imagen: "buhosf", texto: "Aun no has leido este comic! ¿A que esperas para hacerlo?", anchura: 200, altura: 200)
@@ -63,7 +63,7 @@ struct MasInformacionArchivo: View {
                         } else {
                         
                         EstadisticasProgresoLectura(archivo: archivo)
-                                .padding(.top, 15)
+                                .padding(.top, 20)
                                 .padding(.horizontal, 45)
                         
                         MenuNavegacion(estadisticas: archivo.estadisticas)
@@ -124,16 +124,26 @@ struct MenuNavegacion: View {
             }
             .pickerStyle(.segmented)
             .padding(.top, 5)
-            .padding(.bottom, 20)
+            .padding(.bottom, 15)
             
             Spacer()
             
             // Aquí el contenido según la selección
             switch seleccion {
             case .progreso:
-                GraficoProgreso(estadisticas: estadisticas)
+                VStack(alignment: .center, spacing: 15) {
+                    //GRAFICO
+//                    LeyendaGraficoProgreso() //leyenda
+                    GraficoProgresoLectura(estadisticas: estadisticas) //grafico
+                    
+                    //INFOMRMACION
+                    
+                }
             case .velocidad:
                 VStack(alignment: .leading, spacing: 20) {
+                    
+//                    LeyendaGraficoVelocidad(vMax: estadisticas.velocidadSesionMax)
+                    
                     GraficoVelocidadLectura(estadisticas: estadisticas, verTodo: $verTodo)
                     
                     Button(action: {
@@ -207,7 +217,6 @@ struct Contenido: View {
                     
                     EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
                 }
-                .border(.red)
                 
                 Spacer()
                 

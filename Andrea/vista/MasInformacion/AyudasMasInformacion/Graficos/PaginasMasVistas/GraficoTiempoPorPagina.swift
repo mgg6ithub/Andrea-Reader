@@ -66,7 +66,7 @@ struct GraficoTiempoPorPagina: View {
                     .annotation(position: .top) {
                         // Línea arriba de cada barra
                         Rectangle()
-                            .fill(Color.blue.opacity(0.8))
+                            .fill(Color.blue)
                             .frame(width: 28, height: 3)
                             .offset(y: 6)
                     }

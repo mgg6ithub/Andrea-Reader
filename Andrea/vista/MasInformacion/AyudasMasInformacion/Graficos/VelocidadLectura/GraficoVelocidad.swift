@@ -5,6 +5,16 @@ import Charts
 //    ReadingSpeedChart()
 //}
 
+struct LeyendaGraficoVelocidad: View {
+    
+    let vMax: Double
+    
+    var body: some View {
+        Text("Velocidad máxima: \(vMax)")
+            .font(.system(size: 14))
+    }
+}
+
 extension SesionDeLectura {
     var toReadingSpeedData: ReadingSpeedData {
         ReadingSpeedData(date: inicio, speed: velocidadLectura)
@@ -104,63 +114,113 @@ struct GraficoVelocidadLectura: View {
                     x: .value("Fecha", maxItem.date),
                     y: .value("Velocidad", maxItem.speed)
                 )
-                .foregroundStyle(.white)
+                .foregroundStyle(.green)
                 .symbolSize(30)
             }
         }
         .zIndex(0)
         .chartXAxis {
-            AxisMarks(values: estadisticas.sesionesLectura.map { $0.inicio }) { value in
-                if let date = value.as(Date.self) {
-                    let hour = Calendar.current.component(.hour, from: date)
-                    let isNewDay = value.index == 0 || {
-                        if value.index > 0 {
-                            let previousDate = estadisticas.sesionesLectura[value.index - 1].inicio
-                            return !Calendar.current.isDate(date, inSameDayAs: previousDate)
-                        }
-                        return false
-                    }()
-                    
-                    let prevDate: Date? = value.index > 0
-                        ? estadisticas.sesionesLectura[value.index - 1].inicio
-                        : nil
-                    
-                    let isNewHour = esNuevaHora(actual: date, respectoA: prevDate)
-                    
-                    AxisValueLabel {
-                        VStack(alignment: .leading) {
-                            if verTodo {
-                                HStack(spacing: 1) {
+            if verTodo {
+                AxisMarks(values: estadisticas.sesionesLectura.map { $0.inicio }) { value in
+                    if let date = value.as(Date.self) {
+                        let hour = Calendar.current.component(.hour, from: date)
+                        let isNewDay = value.index == 0 || {
+                            if value.index > 0 {
+                                let previousDate = estadisticas.sesionesLectura[value.index - 1].inicio
+                                return !Calendar.current.isDate(date, inSameDayAs: previousDate)
+                            }
+                            return false
+                        }()
+                        
+                        let prevDate: Date? = value.index > 0
+                            ? estadisticas.sesionesLectura[value.index - 1].inicio
+                            : nil
+                        
+                        let isNewHour = esNuevaHora(actual: date, respectoA: prevDate)
+                        
+                        AxisValueLabel {
+                            VStack(alignment: .leading) {
+//                                HStack(spacing: 1) {
                                     Text(date, format: .dateTime.hour().minute()) // 👈 "10:05"
-                                    .font(.caption2)
-                                }
-                            }
-                            
-                            if !verTodo {
-                                if isNewHour {
-                                    Text("\(date)h", format: .dateTime.hour())
                                         .font(.caption2)
+//                                }
+                                
+                                if isNewDay {
+                                    Text(date, format: .dateTime.month().day())
+//                                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+//                                    AxisTick(stroke: StrokeStyle(lineWidth: 0.5))
                                 }
                             }
-                            
-                            if isNewDay {
-                                Text(date, format: .dateTime.month().day())
-                            }
+                        }
+                        
+                        if isNewDay {
+                            AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                            AxisTick(stroke: StrokeStyle(lineWidth: 0.5))
+                        } else {
+                            AxisGridLine()
+                            AxisTick()
                         }
                     }
-                    
-                    if isNewDay {
-                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                        AxisTick(stroke: StrokeStyle(lineWidth: 0.5))
-                    } else {
-                        AxisGridLine()
-                        AxisTick()
+                }
+            } else {
+                AxisMarks(values: estadisticas.sesionesLectura.map { $0.inicio }) { value in
+                    if let date = value.as(Date.self) {
+                        let hour = Calendar.current.component(.hour, from: date)
+                        let isNewDay = value.index == 0 || {
+                            if value.index > 0 {
+                                let previousDate = estadisticas.sesionesLectura[value.index - 1].inicio
+                                return !Calendar.current.isDate(date, inSameDayAs: previousDate)
+                            }
+                            return false
+                        }()
+                        
+                        let prevDate: Date? = value.index > 0
+                            ? estadisticas.sesionesLectura[value.index - 1].inicio
+                            : nil
+                        
+                        let isNewHour = esNuevaHora(actual: date, respectoA: prevDate)
+                        
+                        AxisValueLabel {
+                            VStack(alignment: .leading) {
+                                if isNewHour {
+                                    Text(date, format: .dateTime.hour())
+                                        .font(.caption2)
+                                }
+                                
+                                if isNewDay {
+                                    Text(date, format: .dateTime.month().day())
+                                }
+                            }
+                        }
+                        
+                        if isNewDay {
+                            AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                            AxisTick(stroke: StrokeStyle(lineWidth: 0.5))
+                        } else if isNewHour {
+                            AxisGridLine()
+                            AxisTick()
+                        }
+                        
                     }
                 }
             }
         }
         .chartXAxisLabel(position: .bottom, alignment: .center) {
-            Text("Tiempo")
+            HStack(spacing: 3) {
+                Text("Tiempo")
+                    .font(.system(size: 16))
+                
+                if verTodo {
+                    Text("(día:h:m)")
+                        .font(.system(size: 12))
+                        .opacity(0.8)
+                } else {
+                    Text("(día:h)")
+                        .font(.system(size: 12))
+                        .opacity(0.8)
+                }
+                
+            }
         }
         .if(verTodo) { v in
             v.chartScrollableAxes(.horizontal)
@@ -176,8 +236,15 @@ struct GraficoVelocidadLectura: View {
             }
         }
         .chartYAxisLabel(position: .leading, alignment: .center) {
-            Text("Velocidad")
-                .rotationEffect(.degrees(180))
+            HStack(spacing: 3) {
+                Text("Velocidad")
+                    .font(.system(size: 16))
+                
+                Text("(páginas/minuto)")
+                    .font(.system(size: 12))
+                    .opacity(0.8)
+            }
+            .rotationEffect(.degrees(180))
         }
         .frame(height: 220)
     }

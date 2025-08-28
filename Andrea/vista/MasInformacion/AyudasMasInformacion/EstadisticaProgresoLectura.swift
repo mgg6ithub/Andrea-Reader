@@ -110,15 +110,23 @@ struct EstadisticasProgresoLectura: View {
                 VStack(alignment: .center, spacing: 15) {
                     ProgresoCircular(titulo: "progreso", progreso: sss.progreso, progresoDouble: sss.progresoDouble, color: .green)
                     
-                    VStack(alignment: .center, spacing: 7) {
+                    VStack(alignment: .center, spacing: 4) {
                         Text("Completado")
                             .font(.system(size: const.titleSize * 0.75))
                             .foregroundColor(tema.tituloColor)
                         
                         if let tot = sss.totalPaginas {
-                            Text("\(sss.paginaActual)" + "/" + "\(tot) páginas")
-                                .font(.system(size: const.subTitleSize * 0.7))
-                                .foregroundColor(tema.secondaryText)
+                            
+                            HStack(alignment: .bottom, spacing: 2) {
+                                
+                                Text("\(sss.paginaActual + 1)" + "/" + "\(tot)")
+                                    .font(.system(size: const.subTitleSize * 0.75))
+                                    .foregroundColor(tema.secondaryText)
+                                
+                                Text("páginas")
+                                    .font(.system(size: const.subTitleSize * 0.65))
+                                    .foregroundColor(tema.secondaryText.opacity(0.8))
+                            }
                         }
                     }
                     
@@ -130,19 +138,33 @@ struct EstadisticasProgresoLectura: View {
                     ProgresoCircular(titulo: "tiempo", progreso: sss.progresoTiempoTotal, progresoDouble: sss.progresoTiempoTotalDouble, color: .blue)
                     
                     
-                    VStack(alignment: .center, spacing: 7) {
+                    VStack(alignment: .center, spacing: 4) {
                         Text("Tiempo de lectura")
                             .font(.system(size: const.titleSize * 0.75))
                             .foregroundColor(tema.tituloColor)
                             
                         VStack(alignment: .leading, spacing: 0) {
-                            Text("total: \(sss.tiempoTotal.formatted())")
-                                .font(.system(size: const.subTitleSize * 0.7))
-                                .foregroundColor(tema.secondaryText)
+                            HStack(alignment: .bottom, spacing: 2) {
+                                Text("Total")
+                                    .font(.system(size: const.subTitleSize * 0.65))
+                                    .foregroundColor(tema.secondaryText.opacity(0.8))
+                                
+                                Text("\(sss.tiempoTotal.formatted())")
+                                    .font(.system(size: const.subTitleSize * 0.75))
+                                    .foregroundColor(tema.secondaryText)
+                            }
+                            
+                            HStack(alignment: .bottom, spacing: 2) {
+                                Text("Falta")
+                                    .font(.system(size: const.subTitleSize * 0.65))
+                                    .foregroundColor(tema.secondaryText.opacity(0.8))
+                                
+                                Text("\(sss.tiempoRestante.formatted())")
+                                    .font(.system(size: const.subTitleSize * 0.75))
+                                    .foregroundColor(tema.secondaryText)
+                            }
                                  
-                             Text("restante: \(sss.tiempoRestante.formatted())")
-                                 .font(.system(size: const.subTitleSize * 0.7))
-                                 .foregroundColor(tema.secondaryText)
+                             
                         }
                     
                     }
@@ -154,14 +176,29 @@ struct EstadisticasProgresoLectura: View {
                 VStack(alignment: .center, spacing: 15) {
                     ProgresoCircular(titulo: "tamaño", progreso: 6, progresoDouble: 0.06, color: .red)
                     
-                    VStack(alignment: .center, spacing: 7) {
+                    VStack(alignment: .center, spacing: 4) {
                         Text("Almacenamiento")
                             .font(.system(size: const.titleSize * 0.75))
                             .foregroundColor(tema.tituloColor)
                         
-                        Text("Ocupa \(ManipulacionSizes().formatearSize(archivo.fileSize))" + " de " + "2 GB")
-                            .font(.system(size: const.subTitleSize * 0.7))
-                            .foregroundColor(tema.secondaryText)
+                        HStack(alignment: .bottom, spacing: 2) {
+                            Text("Ocupa")
+                                .font(.system(size: const.subTitleSize * 0.65))
+                                .foregroundColor(tema.secondaryText.opacity(0.8))
+                            
+                            Text("\(ManipulacionSizes().formatearSize(archivo.fileSize))")
+                                .font(.system(size: const.subTitleSize * 0.75))
+                                .foregroundColor(tema.secondaryText)
+                            
+                            Text("de")
+                                .font(.system(size: const.subTitleSize * 0.65))
+                                .foregroundColor(tema.secondaryText.opacity(0.8))
+                            
+                            Text("2 GB")
+                                .font(.system(size: const.subTitleSize * 0.75))
+                                .foregroundColor(tema.secondaryText)
+                            
+                        }
                     }
                 }
                 

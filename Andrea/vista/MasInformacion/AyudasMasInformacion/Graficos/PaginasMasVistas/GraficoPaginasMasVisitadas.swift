@@ -60,6 +60,13 @@ struct GraficoPaginasMasVisitadas: View {
                     )
                     .cornerRadius(2)
                     .annotation(position: .top) {
+                        // Línea arriba de cada barra
+                        Rectangle()
+                            .fill(Color.blue)
+                            .frame(width: 28, height: 3)
+                            .offset(y: 6)
+                    }
+                    .annotation(position: .top) {
                         if topFivePages.contains(item.page) {
                             Text("\(item.count)")
                                 .font(.caption2)
