@@ -2,25 +2,24 @@
 
 import SwiftUI
 
-//#Preview {
-//    PreviewMasInformacion()
-//}
+#Preview {
+    PreviewMasInformacion1()
+}
 //
-//private struct PreviewMasInformacion: View {
-//    @State private var pantallaCompleta = false
-//
-//    private let archivo = Archivo()
-//
-//    var body: some View {
-//        MasInformacion(
-//            pantallaCompleta: $pantallaCompleta,
-//            elemento: archivo
-//        )
-////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+private struct PreviewMasInformacion1: View {
+    @State private var pantallaCompleta = false
+    
+    var body: some View {
+        MasInformacion(
+            pantallaCompleta: $pantallaCompleta,
+            vm: ModeloColeccion(),
+            elemento: Archivo.preview
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
 //                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-////        .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-//    }
-//}
+                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+    }
+}
 
 struct CabeceraMasInformacion: View {
     
@@ -28,7 +27,7 @@ struct CabeceraMasInformacion: View {
     @ObservedObject var elemento: ElementoSistemaArchivos
     @Binding var pantallaCompleta: Bool
     
-    var cDinamico: Color { ap.temaActual.colorContrario }
+    var cDinamico: Color { ap.temaResuelto.colorContrario }
     var padding: CGFloat { pantallaCompleta ? 20 : 10 }
     private let constantes = ConstantesPorDefecto()
     
@@ -51,12 +50,15 @@ struct CabeceraMasInformacion: View {
                 withAnimation(.easeInOut(duration: 0.25)) { ap.masInformacion = false }
             }) {
                 Image(systemName: "xmark.square.fill")
-                    .font(.system(size: ap.constantes.iconSize * 1.5))
+                    .font(.system(size: ap.constantes.iconSize * 1.3))
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(cDinamico, Color.red)
-                    .padding(padding)
                     .symbolEffect(.bounce, value: isPressed)
+                
             }
+            .frame(width: ap.constantes.iconSize * 1.3,
+                   height: ap.constantes.iconSize * 1.3) // 👈 fuerza el tamaño al del icono
+            .contentShape(Rectangle())
             
             Spacer()
             
@@ -137,13 +139,14 @@ struct CabeceraMasInformacion: View {
                         .animation(nil, value: pantallaCompleta)
                     
                 }
-                .padding(9)
+                .padding(4 * ap.constantes.scaleFactor)
                 .background(pantallaCompleta ? Color.red : Color(UIColor.systemGray3))
-                .cornerRadius(10)
+                .cornerRadius(4)
                 
             }
         }
-        .padding(.horizontal, padding)
-        .padding(.top, padding)
+        .padding(.horizontal, 15)
+        .padding(.top, 5)
+        .padding(.vertical, 15)
     }
 }

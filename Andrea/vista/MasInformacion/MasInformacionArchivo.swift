@@ -1,24 +1,24 @@
 
 import SwiftUI
 
-#Preview {
-    PreviewMasInformacion1()
-}
-//
-private struct PreviewMasInformacion1: View {
-    @State private var pantallaCompleta = false
-    
-    var body: some View {
-        MasInformacion(
-            pantallaCompleta: $pantallaCompleta,
-            vm: ModeloColeccion(),
-            elemento: Archivo.preview
-        )
-//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-    }
-}
+//#Preview {
+//    PreviewMasInformacion1()
+//}
+////
+//private struct PreviewMasInformacion1: View {
+//    @State private var pantallaCompleta = false
+//    
+//    var body: some View {
+//        MasInformacion(
+//            pantallaCompleta: $pantallaCompleta,
+//            vm: ModeloColeccion(),
+//            elemento: Archivo.preview
+//        )
+////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+////                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+//    }
+//}
 
 struct MasInformacionArchivo: View {
     
@@ -36,6 +36,7 @@ struct MasInformacionArchivo: View {
     private let opacidad: CGFloat = 0.15
     
     private var isSmall: Bool { ap.resolucionLogica == .small }
+    private var padding: CGFloat { pantallaCompleta ? 20 : 10 }
     
     @State private var masInfoPresionado: Bool = true
     
@@ -65,14 +66,8 @@ struct MasInformacionArchivo: View {
                                 .padding(.top, 30)
                                 .padding(.horizontal, 45)
                         
-//                        Rectangle()
-//                            .frame(height: 1)
-//                            .foregroundColor(.gray.opacity(0.25))
-//                            .padding(.vertical, 20)
-//                            .padding(.horizontal, 10)
-                        
-                            MenuNavegacion(estadisticas: archivo.estadisticas)
-                                .padding(.vertical, 15)
+                        MenuNavegacion(estadisticas: archivo.estadisticas)
+                            .padding(.vertical, 15)
                             
 //                            EstadisticaProgresoTiempo(archivo: archivo)
 //                            .padding(.bottom, 15)
@@ -84,17 +79,17 @@ struct MasInformacionArchivo: View {
                     )
                     
                     //INFORMACION AVANZADA
-//                    InformacionAvanzada(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 15)
-//                                .stroke(.gray.opacity(0.25), lineWidth: 1)
-//                        )
-//                        .padding(.top, 10)
-//                        .id("informacionAvanzada")
+                    InformacionAvanzada(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(.gray.opacity(0.25), lineWidth: 1)
+                        )
+                        .padding(.top, 10)
+                        .id("informacionAvanzada")
                 }
                 
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 15)
             .onChange(of: masInfoPresionado) { nuevoValor in
                 if nuevoValor {
                     withAnimation {
@@ -187,10 +182,11 @@ struct Contenido: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .bottom, spacing: 2) {
                     Image(systemName: "text.page.fill")
+                        .font(.system(size: titleS * 1.2))
                         .foregroundColor(vm.color)
                     Text("Archivo")
                         .bold()
-                        .font(.system(size: titleS))
+                        .font(.system(size: titleS * 1.2))
                         .foregroundColor(tema.tituloColor)
                     
                     Spacer()

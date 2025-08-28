@@ -59,15 +59,14 @@ struct MasInformacion: View {
                 VStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .center, spacing: 0) {
                         CabeceraMasInformacion(elemento: elemento, pantallaCompleta: $pantallaCompleta)
-                            .aparicionBlur(show: $show)
-                            .padding(.bottom, 15)
+//                            .aparicionBlur(show: $show)
+                            .padding(.bottom, 5)
                         
                         if let archivo = elemento as? Archivo {
                             let _ = archivo.estadisticas.crearEstadisticas()
                             let _ = archivo.cargarDatosMasInformacion()
                             GeometryReader { geo in
                                 MasInformacionArchivo(vm: vm, archivo: archivo, pantallaCompleta: $pantallaCompleta, escala: escala)
-                                    //.padding(.vertical, pantallaCompleta ? 0 : ap.resolucionLogica == .small ? -80 : -100)
                             }
                         }
                         
