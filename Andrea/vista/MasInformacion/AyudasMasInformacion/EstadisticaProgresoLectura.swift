@@ -131,21 +131,20 @@ struct EstadisticasProgresoLectura: View {
                     
                     
                     VStack(alignment: .center, spacing: 7) {
-                        Text("Tiempo total")
+                        Text("Tiempo de lectura")
                             .font(.system(size: const.titleSize * 0.75))
                             .foregroundColor(tema.tituloColor)
                             
-                        Text(sss.tiempoTotal.formatted())
-                            .font(.system(size: const.subTitleSize * 0.7))
-                            .foregroundColor(tema.secondaryText)
-                        
-//                        Text("Tiempo restante")
-//                            .font(.system(size: const.titleSize * 0.75))
-//                            .foregroundColor(tema.tituloColor)
-//                            
-//                        Text(sss.tiempoRestante.formatted())
-//                            .font(.system(size: const.subTitleSize * 0.7))
-//                            .foregroundColor(tema.secondaryText)
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("total: \(sss.tiempoTotal.formatted())")
+                                .font(.system(size: const.subTitleSize * 0.7))
+                                .foregroundColor(tema.secondaryText)
+                                 
+                             Text("restante: \(sss.tiempoRestante.formatted())")
+                                 .font(.system(size: const.subTitleSize * 0.7))
+                                 .foregroundColor(tema.secondaryText)
+                        }
+                    
                     }
                     
                 }

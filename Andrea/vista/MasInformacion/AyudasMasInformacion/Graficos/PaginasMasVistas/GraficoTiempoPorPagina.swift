@@ -29,7 +29,7 @@ struct GraficoTiempoPorPagina: View {
     
     /// Datos ya transformados a `PageTimeData`
     var data: [PageTimeData] {
-        estadisticas.topPaginasConMasTiempo(limit: 14)
+        estadisticas.topPaginasConMasTiempo(limit: 16)
     }
     
     var average: Double {

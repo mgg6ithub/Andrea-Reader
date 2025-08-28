@@ -149,6 +149,35 @@ extension Color {
     static let fixedBlack = Color(red: 0/255, green: 0/255, blue: 0/255)
     static let fixedWhite = Color(red: 255/255, green: 255/255, blue: 255/255)
     
+    func shade(by percentage: Double) -> Color {
+        let uiColor = UIColor(self)
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        uiColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        return Color(
+            red: Double(max(min(r * (1 - percentage), 1), 0)),
+            green: Double(max(min(g * (1 - percentage), 1), 0)),
+            blue: Double(max(min(b * (1 - percentage), 1), 0)),
+            opacity: Double(a)
+        )
+    }
+    
+
+    func tones() -> (light: Color, base: Color, dark: Color) {
+        let uiColor = UIColor(self)
+        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        uiColor.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+        
+        // Jugamos con brillo para variar
+        let light = Color(hue: h, saturation: s * 0.8, brightness: min(b * 1.2, 1), opacity: Double(a))
+        let base  = Color(hue: h, saturation: s, brightness: b, opacity: Double(a))
+        let dark  = Color(hue: h, saturation: s * 1.1, brightness: max(b * 0.7, 0), opacity: Double(a))
+        
+        return (light, base, dark)
+    }
+
+
+    
 }
 
 // MARK: - FUENTES

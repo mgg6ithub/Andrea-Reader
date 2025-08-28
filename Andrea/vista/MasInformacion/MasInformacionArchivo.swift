@@ -1,24 +1,24 @@
 
 import SwiftUI
 
-//#Preview {
-//    PreviewMasInformacion1()
-//}
-////
-//private struct PreviewMasInformacion1: View {
-//    @State private var pantallaCompleta = false
-//    
-//    var body: some View {
-//        MasInformacion(
-//            pantallaCompleta: $pantallaCompleta,
-//            vm: ModeloColeccion(),
-//            elemento: Archivo.preview
-//        )
-////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-////                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-//    }
-//}
+#Preview {
+    PreviewMasInformacion1()
+}
+//
+private struct PreviewMasInformacion1: View {
+    @State private var pantallaCompleta = false
+    
+    var body: some View {
+        MasInformacion(
+            pantallaCompleta: $pantallaCompleta,
+            vm: ModeloColeccion(),
+            elemento: Archivo.preview
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+    }
+}
 
 struct MasInformacionArchivo: View {
     
@@ -63,7 +63,7 @@ struct MasInformacionArchivo: View {
                         
                         EstadisticasProgresoLectura(archivo: archivo)
                                 .padding(.top, 30)
-                        .padding(.horizontal, 45)
+                                .padding(.horizontal, 45)
                         
 //                        Rectangle()
 //                            .frame(height: 1)
@@ -136,10 +136,10 @@ struct MenuNavegacion: View {
             switch seleccion {
             case .progreso:
                 GraficoProgreso(estadisticas: estadisticas)
-                    .padding(.leading, 20)
+                    .padding(.horizontal, 20)
             case .velocidad:
                 GraficoVelocidadLectura(estadisticas: estadisticas)
-                    .padding(.leading, 20)
+                    .padding(.horizontal, 20)
             case .masVistas:
                 GraficoPaginasMasVisitadas(estadisticas: estadisticas)
             case .masTiempo:
@@ -157,54 +157,156 @@ struct Contenido: View {
     
     @ObservedObject var archivo: Archivo
     @ObservedObject var vm: ModeloColeccion
+    
+    @State private var isEditingAutor = false
+    @State private var isEditingDescripcion = false
+    @State private var autorTexto: String = ""
+    @State private var descripcionTexto: String = ""
+    @State private var mostrarDescripcionCompleta: Bool = false
+    
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var const: Constantes { ap.constantes }
+    private var titleS: CGFloat { const.titleSize * 0.75 }
+    private var subTitleS: CGFloat { const.subTitleSize * 0.75 }
+    
+    init(archivo: Archivo, vm: ModeloColeccion) {
+        self.archivo = archivo
+        self.vm = vm
+        _autorTexto = State(initialValue: archivo.autor ?? "")
+        _descripcionTexto = State(initialValue: archivo.descripcion ?? "")
+    }
+    
     var body: some View {
         ImagenMiniatura(archivo: archivo, vm: vm)
-        //                        .frame(maxWidth: .infinity, alignment: .leading)
         Spacer()
         VStack(alignment: .center, spacing: 0) {
-            VStack(alignment: .leading, spacing: 0) {
-                Text(vm.coleccion.nombre)
-                    .font(.system(size: 45))
-                    .bold()
-                
-                if archivo.autor != "" {
-                    HStack(spacing: 5) {
-                        Text("por")
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                        
-                        Text("Andrea Olivares")
-                            .font(.system(size: 15))
-                            .bold()
-                    }
-                    .padding(.leading, 15)
-                    .padding(.vertical, 10)
+            VStack(alignment: .leading, spacing: 15) {
+                HStack(alignment: .bottom, spacing: 2) {
+                    Image(systemName: "text.page.fill")
+                        .foregroundColor(vm.color)
+                    Text("Archivo")
+                        .font(.system(size: titleS))
+                        .foregroundColor(tema.tituloColor)
+                    
+                    Spacer()
+                    
+                    EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
                 }
                 
-                Text("Esto es una descripcion sinmas algo de texto pero no decir nada algo mas de texto si si valo bien algo mas algo mas otra frase mas voty a cenar")
-                    .font(.system(size: 15))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Autor")
+                        .underline()
+                        .font(.system(size: subTitleS))
+                        .foregroundColor(tema.secondaryText)
+                    
+                    if isEditingAutor {
+                        TextField("Introduce un autor", text: $autorTexto)
+                            .font(.system(size: titleS))
+                            .foregroundColor(tema.tituloColor)
+                            .textFieldStyle(.roundedBorder)
+                            .submitLabel(.done)
+                            .onSubmit {
+                                archivo.autor = autorTexto
+                                withAnimation { isEditingAutor = false }
+                                print("Nuevo autor: \(autorTexto)")
+                            }
+                    } else {
+                        HStack {
+                            Text(autorTexto.isEmpty ? "desconocido" : autorTexto)
+                                .font(.system(size: titleS))
+                                .foregroundColor(tema.tituloColor)
+                                .bold()
+                                .multilineTextAlignment(.leading)
+                            Spacer()
+                            Image(systemName: "pencil")
+                                .foregroundColor(.secondary)
+                        }
+                        .frame(height: 40, alignment: .topLeading)
+                        .contentShape(Rectangle())
+                        .onTapGesture { isEditingAutor = true }
+                    }
+
+                }
+                
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Descripción")
+                        .underline()
+                        .font(.system(size: subTitleS))
+                        .foregroundColor(tema.secondaryText)
+                    
+                    if isEditingDescripcion {
+                        ZStack(alignment: .topLeading) {
+                            TextEditor(text: $descripcionTexto)
+                                .font(.system(size: 16))
+                                .frame(height: 100)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.secondary.opacity(0.4), lineWidth: 0.5)
+                                )
+                        }
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer() // empuja a la derecha
+                                Button("Aceptar") {
+                                    archivo.descripcion = descripcionTexto
+                                    withAnimation { isEditingDescripcion = false }
+                                    print("Nueva descripción: \(descripcionTexto)")
+                                }
+                            }
+                        }
+
+
+                    } else {
+                        HStack(alignment: .top) {
+                            Text(descripcionTexto.isEmpty ? "sin descripción" : descripcionTexto)
+                                .font(.system(size: titleS))
+                                .foregroundColor(tema.tituloColor)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(5)
+                                .truncationMode(.tail)
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                            
+                            Image(systemName: "pencil")
+                                .foregroundColor(.secondary)
+                        }
+                        .frame(height: 100, alignment: .topLeading)
+                        .contentShape(Rectangle())
+                        .onTapGesture { isEditingDescripcion = true }
+                    }
+                    
+                    // 👇 Ellipsis botón debajo del área
+                    ZStack {
+                        if !isEditingDescripcion, descripcionTexto.count > 214 {
+                            Button("Leer más…") {
+                                mostrarDescripcionCompleta.toggle()
+                            }
+                            .font(.system(size: 14))
+                            .foregroundColor(tema.tituloColor)
+                            .buttonStyle(.plain)
+                            .popover(isPresented: $mostrarDescripcionCompleta) {
+                                ScrollView {
+                                    Text(descripcionTexto)
+                                        .font(.system(size: 16))
+                                        .padding()
+                                }
+                                .frame(width: 330, height: 350)
+                            }
+                        }
+                    }
+                    .frame(height: 20)
+                }
+
             }
             
-            Rectangle()
-                .frame(height: 1)
-                .foregroundColor(.gray.opacity(0.25))
-                .padding(.vertical, 20)
-            
             VStack(alignment: .center, spacing: 20) {
-                HStack(spacing: 0) {
-                    RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.estadisticas.totalPaginas ?? 0))", icono: "book.pages", color: .blue)
+                HStack(alignment: .bottom, spacing: 0) {
+                    RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileExtension))", icono: "books.vertical", color: vm.color)
                     Spacer()
-                    RectanguloDato(nombre: "Tamaño", dato: ManipulacionSizes().formatearSize(archivo.fileSize), icono: "externaldrive", color: .red)
+                    RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.estadisticas.totalPaginas ?? 0))", icono: "book.pages", color: vm.color)
                     Spacer()
-                    RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileExtension))", icono: "books.vertical", color: .purple)
-                }
-                
-                HStack(spacing: 0) {
-                    RectanguloDato(nombre: "Género", dato: "Fantasía", icono: "theatermasks", color: .green)
-                    Spacer()
-                    RectanguloDato(nombre: "Idioma", dato: "Español", icono: "globe", color: .orange)
-                    Spacer()
-                    RectanguloDato(nombre: "Publicado", dato: archivo.fechaPublicacion ?? "desconocido", icono: "calendar", color: .pink)
+                    RectanguloDato(nombre: "Tamaño", dato: ManipulacionSizes().formatearSize(archivo.fileSize), icono: "externaldrive", color: vm.color)
                 }
                 
             }
@@ -266,6 +368,8 @@ struct ImagenMiniatura: View {
     @ObservedObject var vm: ModeloColeccion
     
     @StateObject private var viewModel = ModeloMiniaturaArchivo()
+    
+    private var tema: EnumTemas { ap.temaResuelto }
 
     var body: some View {
         ZStack {
@@ -277,31 +381,30 @@ struct ImagenMiniatura: View {
                     .overlay(alignment: .bottom) {
                         LinearGradient(
                             gradient: Gradient(stops: [
-                                .init(color: .black.opacity(0.85), location: 0.0),
-                                .init(color: .black.opacity(0.85), location: 0.7),
+                                .init(color: .black.opacity(0.75), location: 0.0),
+                                .init(color: .black.opacity(0.75), location: 0.7),
                                 .init(color: .clear,                location: 1.0)
                             ]),
                             startPoint: .bottom,
                             endPoint: .top
                         )
-                        .frame(height: 85)
+                        .frame(height: 45)
                         .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))
                         .allowsHitTesting(false)
                     }
                     // Ojo + estrellas centrados y apilados
                     .overlay(alignment: .bottom) {
-                        VStack(alignment: .center, spacing: 8) {
+                        HStack(alignment: .center, spacing: 4) {
                             Image("custom-eye")
-                                .renderingMode(.template)    // para tintar
-                                .foregroundColor(.gray)
-                                .padding(.top, 4)
-
-                            EditableStarRating(url: archivo.url, puntuacion: $archivo.puntuacion)
-                                .frame(maxWidth: .infinity, alignment: .center) // <-- fuerza ancho para centrar
+                                .font(.system(size: ap.constantes.iconSize * 0.7))
+                                .foregroundColor(vm.color.opacity(0.8))
+                            
+                            Text("Miniatura")
+                                .foregroundColor(vm.color.opacity(0.8))
                         }
                         .frame(maxWidth: .infinity)   // <-- ocupa todo el ancho del overlay
                         .padding(.horizontal, 12)
-                        .padding(.bottom, 12)
+                        .padding(.bottom, 6)
 
                     }
                     .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))
@@ -323,64 +426,80 @@ struct EditableStarRating: View {
     
     @EnvironmentObject var ap: AppEstado
     
+    @ObservedObject var vm: ModeloColeccion
+    
     let url: URL
     @Binding var puntuacion: Double // permite valores como 3.5
     let maxRating: Int = 5
     private var iz: CGFloat { ap.constantes.iconSize }
     
     var body: some View {
-        HStack(spacing: 4) {
-            Spacer()
+        HStack(spacing: 10) {
+            Text(displayRating)
+                .font(.system(size: ap.constantes.titleSize * 1.1))
+                .frame(minWidth: 40, alignment: .trailing)
             
-            ForEach(1...maxRating, id: \.self) { index in
-                let starType = starImageType(for: index)
-                
-                Image(systemName: starType)
-                    .font(.system(size: iz))
-                    .foregroundColor(.yellow)
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            // Si ya está en media estrella, pasa a estrella completa; si está completa, baja a media
-                            if puntuacion == Double(index) {
-                                puntuacion = Double(index) - 0.5
-                            } else {
-                                puntuacion = Double(index)
+            HStack(spacing: 4) {
+                ForEach(1...maxRating, id: \.self) { index in
+                    let starType = starImageType(for: index)
+                    
+                    Image(systemName: starType)
+                        .font(.system(size: iz))
+                        .foregroundColor(vm.color)
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                // Si ya está en media estrella, pasa a estrella completa; si está completa, baja a media
+                                if puntuacion == Double(index) {
+                                    puntuacion = Double(index) - 0.5
+                                } else {
+                                    puntuacion = Double(index)
+                                }
                             }
+                            PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
                         }
+                }
+                
+            }
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { value in
+                        let totalWidth = CGFloat(maxRating) * (iz + 4) - 4
+                        let clampedX = min(max(value.location.x, 0), totalWidth)
+                        let rawStars = Double(clampedX / (totalWidth / CGFloat(maxRating)))
+                        
+                        // Redondear a media estrella
+                        let halfStep = (rawStars * 2).rounded() / 2
+                        withAnimation(.easeInOut(duration: 0.2)) { puntuacion = min(Double(maxRating), max(0.5, halfStep)) }
+                    }
+                    .onEnded { _ in
                         PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
                     }
-            }
-            
-            Spacer()
-            
-            Text(String(format: "%.1f", puntuacion))
-                .textoAdaptativo(t: ap.constantes.subTitleSize * 0.9, a: 0.6, l: 1, alig: .center, mW: 25)
+            )
         }
-        .gesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { value in
-                    let totalWidth = CGFloat(maxRating) * (iz + 4) - 4
-                    let clampedX = min(max(value.location.x, 0), totalWidth)
-                    let rawStars = Double(clampedX / (totalWidth / CGFloat(maxRating)))
-                    
-                    // Redondear a media estrella
-                    let halfStep = (rawStars * 2).rounded() / 2
-                    puntuacion = min(Double(maxRating), max(0.5, halfStep))
-                }
-                .onEnded { _ in
-                    PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
-                }
-        )
     }
     
     private func starImageType(for index: Int) -> String {
-            if puntuacion >= Double(index) {
-                return "star.fill"
-            } else if puntuacion >= Double(index) - 0.5 {
-                return "star.lefthalf.fill"
-            } else {
-                return "star"
-            }
+        if puntuacion >= Double(index) {
+            return "star.fill"
+        } else if puntuacion >= Double(index) - 0.5 {
+            return "star.lefthalf.fill"
+        } else {
+            return "star"
         }
+    }
+    
+    private var displayRating: String {
+        if puntuacion == 0 {
+            return "" // 👈 no se muestra nada
+        } else if puntuacion.truncatingRemainder(dividingBy: 1) == 0 {
+            // Es entero
+            return String(Int(puntuacion))
+        } else {
+            // Tiene decimales
+            return String(format: "%.1f", puntuacion)
+        }
+    }
+
+
     
 }

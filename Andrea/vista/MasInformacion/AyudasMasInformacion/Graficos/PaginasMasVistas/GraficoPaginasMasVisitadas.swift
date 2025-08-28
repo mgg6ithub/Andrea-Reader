@@ -25,7 +25,7 @@ struct GraficoPaginasMasVisitadas: View {
     @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     
     var data: [PageVisitCount] {
-        estadisticas.topPaginasMasVisitadas(limit: 14)
+        estadisticas.topPaginasMasVisitadas(limit: 16)
     }
     
     var average: Double {

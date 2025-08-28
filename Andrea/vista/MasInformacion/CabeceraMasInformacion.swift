@@ -26,6 +26,7 @@ struct CabeceraMasInformacion: View {
     
     @EnvironmentObject var ap: AppEstado
     
+    let nombre: String
     @Binding var pantallaCompleta: Bool
     
     var cDinamico: Color { ap.temaActual.colorContrario }
@@ -50,13 +51,12 @@ struct CabeceraMasInformacion: View {
             
             Spacer()
                                     
-            Text("Información y ajustes")
-                .font(.system(size: ap.constantes.titleSize * 1.35))
+            Text(nombre)
+                .font(.system(size: ap.constantes.titleSize * 1.45))
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .padding()
-            
             
             Spacer()
             
