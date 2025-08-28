@@ -291,7 +291,7 @@ struct PersistenciaDatos {
     // valor = Dato (int, string, bool, enum ...) que se guarda en ud
     // elementURL = el elemento (coleccion o archivo) al que pertenece el valor se usara como k en el dict
     // key = llave de ese diccinario donde se guardaran todos los datos
-    public func guardarDatoArchivo(valor: Any, elementoURL: URL, key: String) { // <- sirve para sobreescribir valors es decir actualizar
+    public func guardarDatoArchivo(valor: Any, elementoURL: URL, key: String) { // <- sirve para sobreescribir valores es decir actualizar
         let k = self.obtenerKey(elementoURL)
         if let convertido = self.convertirValor(valor) {
             var mapa = obtenerMapa(key: key)

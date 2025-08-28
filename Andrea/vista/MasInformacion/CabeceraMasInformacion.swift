@@ -80,9 +80,11 @@ struct CabeceraMasInformacion: View {
                     .submitLabel(.done)
                     .onSubmit {
                         elemento.nombre = tituloElemento
-                        withAnimation {
-                            isTitleEditing = false
-                        }
+                        
+                        //Rename (persistencia)
+                        SistemaArchivos.sa.renombrarElemento(elemento: elemento, nuevoNombre: tituloElemento)
+                        
+                        withAnimation { isTitleEditing = false }
                         print("Nuevo autor: \(tituloElemento)")
                     }
                     .onAppear {

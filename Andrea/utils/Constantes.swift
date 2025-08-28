@@ -71,6 +71,11 @@ struct ClavesPersistenciaElementos {
     //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: String = "fechaPrimeraVezEntrado"
     
+    //Datos basicos
+    public let autor: String = "autor"
+    public let descripcion: String = "descripcion"
+    
+    public let puntuacion: String = "puntuacion"
     public let favoritos: String = "favotiros"
     public let protegidos: String = "Protegidos"
     
@@ -112,6 +117,10 @@ struct ClavesPersistenciaElementos {
                 fechaImportacion,
                 fechaPrimeraVezEntrado,
                 
+                autor,
+                descripcion,
+                
+                puntuacion,
                 favoritos,
                 protegidos,
                 
@@ -142,6 +151,11 @@ struct ValoresElementoPredeterminados {
     //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: Date? = nil
     
+    //Datos basicos
+    public let autor: String = ""
+    public let descripcion: String = ""
+    
+    public let puntuacion: Double = 0.0
     public let favoritos: Bool = false
     public let protegidos: Bool = false
     

@@ -194,10 +194,22 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         //enum
         self.tipoMiniatura = pd.recuperarDatoArchivoEnum(elementoURL: fileURL, key: cpe.miniaturaElemento, default: p.miniaturaElemento)
         
+        //puntuacion (rating)
+        self.puntuacion = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.puntuacion, default: p.puntuacion)
+        
         super.init(nombre: fileName, url: fileURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
         self.cargarPaginasAsync()
         
+    }
+    
+    /**
+     Carga los datos necesarios para cuando se ejecuta la vista "mas informacion".
+     Datos que no son necesarios al crear la instancia.
+     */
+    public func cargarDatosMasInformacion() {
+        self.autor = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.autor, default: p.autor)
+        self.descripcion = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.descripcion, default: p.descripcion)
     }
     
 

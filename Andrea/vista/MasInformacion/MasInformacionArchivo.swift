@@ -170,6 +170,8 @@ struct Contenido: View {
     private var const: Constantes { ap.constantes }
     private var titleS: CGFloat { const.titleSize * 0.75 }
     private var subTitleS: CGFloat { const.subTitleSize * 0.75 }
+    private var pd: PersistenciaDatos = PersistenciaDatos()
+    private var cpe: ClavesPersistenciaElementos = ClavesPersistenciaElementos()
     
     init(archivo: Archivo, vm: ModeloColeccion) {
         self.archivo = archivo
@@ -182,7 +184,7 @@ struct Contenido: View {
         ImagenMiniatura(archivo: archivo, vm: vm)
         Spacer()
         VStack(alignment: .center, spacing: 0) {
-            VStack(alignment: .leading, spacing: 15) {
+            VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .bottom, spacing: 2) {
                     Image(systemName: "text.page.fill")
                         .foregroundColor(vm.color)
@@ -211,7 +213,7 @@ struct Contenido: View {
                     .onTapGesture { withAnimation {isEditingAutor.toggle()} }
                     
                     if isEditingAutor {
-                        TextField("Introduce un autor", text: $autorTexto)
+                        TextField("Autor1, Autor2, Autor3...", text: $autorTexto)
                             .font(.system(size: titleS))
                             .foregroundColor(tema.tituloColor)
                             .textFieldStyle(.roundedBorder)
@@ -219,6 +221,10 @@ struct Contenido: View {
                             .submitLabel(.done)
                             .onSubmit {
                                 archivo.autor = autorTexto
+                                
+                                //persitencia
+                                pd.guardarDatoArchivo(valor: autorTexto, elementoURL: archivo.url, key: cpe.autor)
+                                
                                 withAnimation { isEditingAutor = false }
                                 print("Nuevo autor: \(autorTexto)")
                             }
@@ -228,7 +234,7 @@ struct Contenido: View {
                                     isEditingAutorFocused = true
                                 }
                             }
-                            .frame(height: 40)
+                            .frame(height: 20)
                     } else {
                         ZStack {
                             Text(autorTexto.isEmpty ? "desconocido" : autorTexto)
@@ -237,13 +243,11 @@ struct Contenido: View {
                                 .bold()
                                 .multilineTextAlignment(.leading)
                         }
-                        .frame(height: 40, alignment: .topLeading)
+                        .frame(height: 20, alignment: .topLeading)
                         .contentShape(Rectangle())
                         .onTapGesture { withAnimation {isEditingAutor.toggle()} }
                     }
-
                 }
-                
                 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 2) {
@@ -264,7 +268,7 @@ struct Contenido: View {
                             TextEditor(text: $descripcionTexto)
                                 .bold()
                                 .font(.system(size: titleS))
-                                .frame(height: 100)
+                                .frame(height: 120)
                                 .focused($isEditingDescriptionFocused)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
@@ -282,6 +286,10 @@ struct Contenido: View {
                                 Spacer() // empuja a la derecha
                                 Button("Aceptar") {
                                     archivo.descripcion = descripcionTexto
+                                    
+                                    //persitencia
+                                    pd.guardarDatoArchivo(valor: descripcionTexto, elementoURL: archivo.url, key: cpe.descripcion)
+                                    
                                     withAnimation { isEditingDescripcion = false }
                                     print("Nueva descripción: \(descripcionTexto)")
                                 }
@@ -296,11 +304,11 @@ struct Contenido: View {
                                 .font(.system(size: titleS))
                                 .foregroundColor(tema.tituloColor)
                                 .multilineTextAlignment(.leading)
-                                .lineLimit(5)
+                                .lineLimit(6)
                                 .truncationMode(.tail)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-                        .frame(height: 100, alignment: .topLeading)
+                        .frame(height: 120, alignment: .topLeading)
                         .contentShape(Rectangle())
                         .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                     }
@@ -325,6 +333,7 @@ struct Contenido: View {
                         }
                     }
                     .frame(height: 20)
+                    .padding(.bottom, 10)
                 }
 
             }
@@ -410,8 +419,8 @@ struct ImagenMiniatura: View {
                     .overlay(alignment: .bottom) {
                         LinearGradient(
                             gradient: Gradient(stops: [
-                                .init(color: .black.opacity(0.75), location: 0.0),
-                                .init(color: .black.opacity(0.75), location: 0.7),
+                                .init(color: .black.opacity(0.65), location: 0.0),
+                                .init(color: .black.opacity(0.65), location: 0.65),
                                 .init(color: .clear,                location: 1.0)
                             ]),
                             startPoint: .bottom,
@@ -426,10 +435,10 @@ struct ImagenMiniatura: View {
                         HStack(alignment: .center, spacing: 4) {
                             Image("custom-eye")
                                 .font(.system(size: ap.constantes.iconSize * 0.7))
-                                .foregroundColor(vm.color.opacity(0.8))
+                                .foregroundColor(.white.opacity(0.8))
                             
                             Text("Miniatura")
-                                .foregroundColor(vm.color.opacity(0.8))
+                                .foregroundColor(.white.opacity(0.8))
                         }
                         .frame(maxWidth: .infinity)   // <-- ocupa todo el ancho del overlay
                         .padding(.horizontal, 12)
@@ -475,8 +484,10 @@ struct EditableStarRating: View {
                     Image(systemName: starType)
                         .font(.system(size: iz))
                         .foregroundColor(vm.color)
+                        .scaleEffect(puntuacion.rounded() == Double(index) ? 1.2 : 1.0) // efecto extra
+                        .animation(.spring(response: 0.25, dampingFraction: 0.7), value: puntuacion)
                         .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.2)) {
+                            withAnimation(.linear(duration: 0.1)) {
                                 // Si ya está en media estrella, pasa a estrella completa; si está completa, baja a media
                                 if puntuacion == Double(index) {
                                     puntuacion = Double(index) - 0.5
@@ -484,7 +495,7 @@ struct EditableStarRating: View {
                                     puntuacion = Double(index)
                                 }
                             }
-                            PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
+                            PersistenciaDatos().guardarDatoArchivo(valor: puntuacion, elementoURL: url, key: ClavesPersistenciaElementos().puntuacion)
                         }
                 }
                 
@@ -498,10 +509,10 @@ struct EditableStarRating: View {
                         
                         // Redondear a media estrella
                         let halfStep = (rawStars * 2).rounded() / 2
-                        withAnimation(.easeInOut(duration: 0.2)) { puntuacion = min(Double(maxRating), max(0.5, halfStep)) }
+                        withAnimation(.linear(duration: 0.1)) { puntuacion = min(Double(maxRating), max(0.5, halfStep)) }
                     }
                     .onEnded { _ in
-                        PersistenciaDatos().guardarDatoElemento(url: url, atributo: "puntuacion", valor: puntuacion)
+                        PersistenciaDatos().guardarDatoArchivo(valor: puntuacion, elementoURL: url, key: ClavesPersistenciaElementos().puntuacion)
                     }
             )
         }
