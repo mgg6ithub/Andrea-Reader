@@ -1,24 +1,25 @@
 
 import SwiftUI
 
-//#Preview {
-//    PreviewMasInformacion1()
-//}
-////
-//private struct PreviewMasInformacion1: View {
-//    @State private var pantallaCompleta = false
-//    
-//    var body: some View {
-//        MasInformacion(
-//            pantallaCompleta: $pantallaCompleta,
-//            vm: ModeloColeccion(),
-//            elemento: Archivo.preview
-//        )
-////                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-////                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
-//    }
-//}
+#Preview {
+    PreviewMasInformacion1()
+}
+//
+private struct PreviewMasInformacion1: View {
+    @State private var pantallaCompleta = false
+    
+    var body: some View {
+        MasInformacionArchivo(
+            vm: ModeloColeccion(),
+            archivo: Archivo.preview,
+            pantallaCompleta: $pantallaCompleta,
+            escala: 1.0
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+    }
+}
 
 struct MasInformacionArchivo: View {
     
@@ -53,7 +54,6 @@ struct MasInformacionArchivo: View {
                     //ESTADISTICAS
                     VStack(alignment: .center, spacing: 0) {
                         if archivo.fechaPrimeraVezEntrado == nil {
-
                             HStack {
                                 Spacer()
                                 ImagenLibreriaVacia(imagen: "buhosf", texto: "Aun no has leido este comic! ¿A que esperas para hacerlo?", anchura: 200, altura: 200)
@@ -63,7 +63,7 @@ struct MasInformacionArchivo: View {
                         } else {
                         
                         EstadisticasProgresoLectura(archivo: archivo)
-                                .padding(.top, 30)
+                                .padding(.top, 15)
                                 .padding(.horizontal, 45)
                         
                         MenuNavegacion(estadisticas: archivo.estadisticas)
@@ -103,7 +103,7 @@ struct MasInformacionArchivo: View {
 
 struct MenuNavegacion: View {
     @State private var seleccion: Seccion = .progreso
-    
+    @State private var verTodo: Bool = false
     @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     
     enum Seccion: String, CaseIterable, Identifiable {
@@ -116,14 +116,15 @@ struct MenuNavegacion: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .center, spacing: 0) {
             Picker("Sección", selection: $seleccion) {
                 ForEach(Seccion.allCases) { seccion in
                     Text(seccion.rawValue).tag(seccion)
                 }
             }
             .pickerStyle(.segmented)
-            .padding()
+            .padding(.top, 5)
+            .padding(.bottom, 20)
             
             Spacer()
             
@@ -131,17 +132,30 @@ struct MenuNavegacion: View {
             switch seleccion {
             case .progreso:
                 GraficoProgreso(estadisticas: estadisticas)
-                    .padding(.horizontal, 20)
             case .velocidad:
-                GraficoVelocidadLectura(estadisticas: estadisticas)
-                    .padding(.horizontal, 20)
+                VStack(alignment: .leading, spacing: 20) {
+                    GraficoVelocidadLectura(estadisticas: estadisticas, verTodo: $verTodo)
+                    
+                    Button(action: {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            verTodo.toggle()
+                        }
+                    }) {
+                        Text(verTodo ? "Ver menos" : "Ver todo")
+                            .font(.footnote)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(6)
+                    }
+                }
             case .masVistas:
                 GraficoPaginasMasVisitadas(estadisticas: estadisticas)
             case .masTiempo:
                 GraficoTiempoPorPagina(estadisticas: estadisticas)
             }
             
-            Spacer()
+//            Spacer()
         }
         .padding(.horizontal, 20)
     }
@@ -179,7 +193,7 @@ struct Contenido: View {
         ImagenMiniatura(archivo: archivo, vm: vm)
         Spacer()
         VStack(alignment: .center, spacing: 0) {
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .bottom, spacing: 2) {
                     Image(systemName: "text.page.fill")
                         .font(.system(size: titleS * 1.2))
@@ -193,8 +207,11 @@ struct Contenido: View {
                     
                     EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
                 }
+                .border(.red)
                 
-                VStack(alignment: .leading, spacing: 4) {
+                Spacer()
+                
+                VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 2) {
                         Text("Autor")
                             .underline()
@@ -230,7 +247,7 @@ struct Contenido: View {
                                     isEditingAutorFocused = true
                                 }
                             }
-                            .frame(height: 20)
+                            .frame(height: 30)
                     } else {
                         ZStack {
                             Text(autorTexto.isEmpty ? "desconocido" : autorTexto)
@@ -239,13 +256,15 @@ struct Contenido: View {
                                 .bold()
                                 .multilineTextAlignment(.leading)
                         }
-                        .frame(height: 20, alignment: .topLeading)
+                        .frame(height: 30, alignment: .topLeading)
                         .contentShape(Rectangle())
                         .onTapGesture { withAnimation {isEditingAutor.toggle()} }
                     }
                 }
                 
-                VStack(alignment: .leading, spacing: 4) {
+                Spacer()
+                
+                VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 2) {
                         Text("Descripción")
                             .underline()
@@ -311,7 +330,7 @@ struct Contenido: View {
                     
                     // 👇 Ellipsis botón debajo del área
                     ZStack {
-                        if !isEditingDescripcion, descripcionTexto.count > 214 {
+                        if !isEditingDescripcion, descripcionTexto.count > 254 {
                             Button("Leer más…") {
                                 mostrarDescripcionCompleta.toggle()
                             }

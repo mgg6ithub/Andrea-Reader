@@ -29,7 +29,7 @@ struct GraficoTiempoPorPagina: View {
     
     /// Datos ya transformados a `PageTimeData`
     var data: [PageTimeData] {
-        estadisticas.topPaginasConMasTiempo(limit: 16)
+        estadisticas.topPaginasConMasTiempo(limit: 20)
     }
     
     var average: Double {
@@ -72,7 +72,7 @@ struct GraficoTiempoPorPagina: View {
                     }
                     .annotation(position: .top) {
                         if topFourPages.contains(item.page) {
-                            Text("\(String(format: "%.1f", item.tiempo))")
+                            Text("\(String(item.tiempo.formatted()))")
                                 .font(.caption2)
                                 .fontWeight(.semibold)
                                 .foregroundColor(.gray)
@@ -88,7 +88,7 @@ struct GraficoTiempoPorPagina: View {
                     .annotation(position: .overlay) {
                         HStack {
                             Spacer()
-                            Text("Avg \(String(format: "%.1f", average))")
+                            Text("Avg \(String(average.formatted()))")
                                 .font(.caption2)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
@@ -111,13 +111,29 @@ struct GraficoTiempoPorPagina: View {
                     }
                 }
             }
+            .chartXAxisLabel(position: .bottom, alignment: .center) {
+                Text("Páginas")
+            }
             .chartYAxis {
-                AxisMarks(position: .leading) { _ in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0))
+                AxisMarks(position: .leading) { value in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.3, dash: [2]))
+                        .foregroundStyle(.gray.opacity(0.5))
+                    AxisTick()
+                    AxisValueLabel {
+                        if let y = value.as(Double.self) {
+                            Text("\(y.formatted())")
+                                .font(.caption2)
+                                .foregroundColor(.gray)
+                        }
+                    }
                 }
             }
+            .chartYAxisLabel(position: .leading, alignment: .center) {
+                Text("Tiempo")
+                    .rotationEffect(.degrees(180))
+            }
+
             .frame(height: 220)
-            .padding(.horizontal, 40)
         }
     }
 }

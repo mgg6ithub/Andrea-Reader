@@ -17,10 +17,17 @@ struct ReadingSpeedData: Identifiable {
     let speed: Double
 }
 
+func esNuevaHora(actual date: Date, respectoA previousDate: Date?) -> Bool {
+    guard let prev = previousDate else { return true } // el primero siempre es "nuevo"
+    let actualHour = Calendar.current.component(.hour, from: date)
+    let prevHour   = Calendar.current.component(.hour, from: prev)
+    return actualHour != prevHour
+}
+
 struct GraficoVelocidadLectura: View {
     // Datos de ejemplo
     @ObservedObject var estadisticas: EstadisticasYProgresoLectura
-    @State var verTodo: Bool = false
+    @Binding var verTodo: Bool
     
     var body: some View {
         let data = estadisticas.sesionesLectura.map { $0.toReadingSpeedData }
@@ -114,13 +121,26 @@ struct GraficoVelocidadLectura: View {
                         return false
                     }()
                     
+                    let prevDate: Date? = value.index > 0
+                        ? estadisticas.sesionesLectura[value.index - 1].inicio
+                        : nil
+                    
+                    let isNewHour = esNuevaHora(actual: date, respectoA: prevDate)
+                    
                     AxisValueLabel {
                         VStack(alignment: .leading) {
-                            switch hour {
-                            case 0, 12:
-                                Text("\(date.formatted(.dateTime.hour()))h")
-                            default:
-                                Text("\(date.formatted(.dateTime.hour(.defaultDigits(amPM: .omitted))))h")
+                            if verTodo {
+                                HStack(spacing: 1) {
+                                    Text(date, format: .dateTime.hour().minute()) // 👈 "10:05"
+                                    .font(.caption2)
+                                }
+                            }
+                            
+                            if !verTodo {
+                                if isNewHour {
+                                    Text("\(date)h", format: .dateTime.hour())
+                                        .font(.caption2)
+                                }
                             }
                             
                             if isNewDay {
@@ -139,6 +159,9 @@ struct GraficoVelocidadLectura: View {
                 }
             }
         }
+        .chartXAxisLabel(position: .bottom, alignment: .center) {
+            Text("Tiempo")
+        }
         .if(verTodo) { v in
             v.chartScrollableAxes(.horizontal)
              .chartXScale(domain: [
@@ -147,11 +170,15 @@ struct GraficoVelocidadLectura: View {
              ])
         }
         .chartYAxis {
-            AxisMarks(position: .trailing) {
+            AxisMarks(position: .leading) {
                 AxisGridLine()
                 AxisValueLabel()
             }
         }
-        .frame(height: 200)
+        .chartYAxisLabel(position: .leading, alignment: .center) {
+            Text("Velocidad")
+                .rotationEffect(.degrees(180))
+        }
+        .frame(height: 220)
     }
 }

@@ -51,8 +51,8 @@ struct GraficoPaginasMasVisitadas: View {
                     .foregroundStyle(
                         LinearGradient(
                             gradient: Gradient(colors: [
-                                Color.purple.opacity(0.6),
-                                Color.purple.opacity(0.1)
+                                Color.blue.opacity(0.6),
+                                Color.blue.opacity(0.1)
                             ]),
                             startPoint: .top,
                             endPoint: .bottom
@@ -64,7 +64,7 @@ struct GraficoPaginasMasVisitadas: View {
                             Text("\(item.count)")
                                 .font(.caption2)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.purple)
+                                .foregroundColor(.blue)
                                 .offset(y: -8)
                         }
                     }
@@ -72,15 +72,15 @@ struct GraficoPaginasMasVisitadas: View {
                 
                 RuleMark(y: .value("Promedio", average))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
-                    .foregroundStyle(.purple)
+                    .foregroundStyle(.black)
                     .annotation(position: .overlay) {
                         HStack {
                             Spacer()
-                            Text("Avg \(String(format: "%.1f", average))")
+                            Text("Avg \(String(format: "%.1fp", average))")
                                 .font(.caption2)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
-                                .background(Color.purple)
+                                .background(Color.black)
                                 .cornerRadius(4)
                                 .foregroundColor(.white)
                                 .padding(.trailing, 4)
@@ -99,13 +99,28 @@ struct GraficoPaginasMasVisitadas: View {
                     }
                 }
             }
+            .chartXAxisLabel(position: .bottom, alignment: .center) {
+                Text("Páginas")
+            }
             .chartYAxis {
-                AxisMarks(position: .leading) { _ in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0))
+                AxisMarks(position: .leading) { value in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.3, dash: [2]))
+                        .foregroundStyle(.gray.opacity(0.5))
+                    AxisTick()
+                    AxisValueLabel {
+                        if let visitas = value.as(Int.self) {
+                            Text("\(visitas)")
+                                .font(.caption2)
+                                .foregroundColor(.gray)
+                        }
+                    }
                 }
             }
+            .chartYAxisLabel(position: .leading, alignment: .center) {
+                Text("Visitas")
+                    .rotationEffect(.degrees(180))
+            }
             .frame(height: 220)
-            .padding(.horizontal, 40)
         }
     }
 }
