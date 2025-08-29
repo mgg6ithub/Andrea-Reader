@@ -167,7 +167,7 @@ class AppEstado: ObservableObject {
         
         //HISTORIAL
         self.historialColecciones = pd.obtenerAjusteGeneral(key: cpag.historiaclColecciones, default: p.historialColecciones)
-        self.historialEstilo = pd.obtenerAjusteGeneralEnum(key: cpag.historiaclColecciones, default: p.historialEstilo)
+        self.historialEstilo = pd.obtenerAjusteGeneralEnum(key: cpag.historialEstilo, default: p.historialEstilo)
         self.historialSize = pd.obtenerAjusteGeneral(key: cpag.historialSize, default: p.historialSize)
         
         
