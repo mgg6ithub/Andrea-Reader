@@ -173,13 +173,28 @@ enum EnumMiniaturasArchivos: String {
 
 //ENUM TIPO DE MINIATURA
 enum EnumTipoMiniatura: String, CaseIterable {
+    case imagenBase = "Imagen base"
+    case primeraPagina = "Primera página"
+    case aleatoria = "Aleatoria"
+    case personalizada = "Personalizada"
     
-    case imagenBase
-    case primeraPagina
-    case aleatoria
-    case personaliza
+    /// Nombre del SF Symbol asociado a cada caso
+    var iconName: String {
+        switch self {
+        case .imagenBase: return "document"
+        case .primeraPagina: return "photo"
+        case .aleatoria: return "photo.on.rectangle.angled.fill"
+        case .personalizada: return "photo.artframe"
+        }
+    }
+    
+    /// Título para mostrar en UI
+    var title: String {
+        return self.rawValue
+    }
     
 }
+
 
 enum EnumTipoMiniaturaColeccion: String {
     

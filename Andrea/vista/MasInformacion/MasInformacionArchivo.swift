@@ -456,18 +456,22 @@ struct ImagenMiniatura: View {
                     }
                     // Ojo + estrellas centrados y apilados
                     .overlay(alignment: .bottom) {
-                        HStack(alignment: .center, spacing: 4) {
-                            Image("custom-eye")
-                                .font(.system(size: ap.constantes.iconSize * 0.7))
-                                .foregroundColor(.white.opacity(0.8))
-                            
-                            Text("Miniatura")
-                                .foregroundColor(.white.opacity(0.8))
+                        Button(action: {
+                            ap.elementoSeleccionado = archivo
+                            withAnimation(.easeInOut(duration: 0.3)) { ap.vistaPrevia = true }
+                        }) {
+                            HStack(alignment: .center, spacing: 4) {
+                                Image("custom-eye")
+                                    .font(.system(size: ap.constantes.iconSize * 0.7))
+                                    .foregroundColor(.white.opacity(0.8))
+                                
+                                Text("Miniatura")
+                                    .foregroundColor(.white.opacity(0.8))
+                            }
+                            .frame(maxWidth: .infinity)   // <-- ocupa todo el ancho del overlay
+                            .padding(.horizontal, 12)
+                            .padding(.bottom, 6)
                         }
-                        .frame(maxWidth: .infinity)   // <-- ocupa todo el ancho del overlay
-                        .padding(.horizontal, 12)
-                        .padding(.bottom, 6)
-
                     }
                     .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))
             } else {
@@ -480,6 +484,9 @@ struct ImagenMiniatura: View {
         }
         .onDisappear {
             viewModel.unloadThumbnail(for: archivo)
+        }
+        .onChange(of: archivo.tipoMiniatura) {
+            viewModel.cambiarMiniatura(color: vm.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
         }
     }
 }

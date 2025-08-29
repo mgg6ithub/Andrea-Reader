@@ -33,7 +33,6 @@ struct ElementoVista<Content: View>: View {
     private let sa: SistemaArchivos = SistemaArchivos.sa
 
     var body: some View {
-        
         content()
             .background(
                 GeometryReader { geo in

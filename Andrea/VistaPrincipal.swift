@@ -69,20 +69,22 @@ struct VistaPrincipal: View {
             if ap.masInformacion, let elementoSelecionado = ap.elementoSeleccionado {
                 if let elemento = elementoSelecionado as? ElementoSistemaArchivos {
                     MasInformacion(pantallaCompleta: $ap.pantallaCompleta, vm: pc.getColeccionActual(), elemento: elemento)
-                        .capaSuperior()
+                        .ignoresSafeArea()
+                        .zIndex(1)
                 }
             }
-            // --- VISTA PREVIA DE UN ELEMENTO ---
-            if ap.vistaPrevia, let elementoSelecionado = ap.elementoSeleccionado {
-                CartaHolografica3D(vm: pc.getColeccionActual(), elemento: elementoSelecionado)
+            
+            // --- VISTA PREVIA DE UNA MINIATURA ---
+            if ap.vistaPrevia, let elementoSelecionado = ap.elementoSeleccionado, let archivo = elementoSelecionado as? Archivo {
+                CartaHolografica3D(vm: pc.getColeccionActual(), archivo: archivo)
                     .ignoresSafeArea()
+                    .zIndex(5)
             }
             
         }
 //        .animation(.easeInOut, value: ap.archivoEnLectura)
         .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
             ContenedorLector(archivo: archivo)
-//                .background(tema.backgroundColor) // tu color
                 .background(tema.backgroundGradient) // tu color
                 .ignoresSafeArea()
                 .presentationBackground(.clear)            // <- quita el blanco del presentador

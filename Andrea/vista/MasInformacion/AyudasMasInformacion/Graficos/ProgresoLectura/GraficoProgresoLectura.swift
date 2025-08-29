@@ -96,26 +96,33 @@ struct GraficoProgresoLectura: View {
         ])
         // Eje X: tiempo
         .chartXAxis {
-            AxisMarks(values: .stride(by: .hour)) { value in
+            AxisMarks(values: estadisticas.sesionesLectura.map { $0.inicio }) { value in
                 if let date = value.as(Date.self) {
+                    let prevDate: Date? = value.index > 0
+                        ? estadisticas.sesionesLectura[value.index - 1].inicio
+                        : nil
                     
-                    // Línea vertical para cada hora
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.3, dash: [2]))
-                        .foregroundStyle(.gray.opacity(0.5))
-                    AxisTick(stroke: StrokeStyle(lineWidth: 0.3))
+                    let isNewHour = esNuevaHora(actual: date, respectoA: prevDate)
+                    let isNewDay  = prevDate.map { !Calendar.current.isDate($0, inSameDayAs: date) } ?? true
                     
-                    // Etiquetas
-                    AxisValueLabel {
-                        VStack(spacing: 2) {
-                            // Siempre mostramos la hora
-                            Text(date, format: .dateTime.hour(.defaultDigits(amPM: .omitted)))
-                                .font(.caption2)
-                            
-                            // Cuando cambia de día (00h), añadimos la fecha
-                            if Calendar.current.component(.hour, from: date) == 0 {
-                                Text(date, format: .dateTime.day().month())
+                    // 👉 Solo mostramos ticks/lineas si cambia la hora
+                    if isNewHour {
+                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.3, dash: [2]))
+                            .foregroundStyle(.gray.opacity(0.5))
+                        AxisTick(stroke: StrokeStyle(lineWidth: 0.3))
+                        
+                        AxisValueLabel {
+                            VStack(spacing: 2) {
+                                // Hora:minuto en cada cambio de hora
+                                Text(date, format: .dateTime.hour().minute())
                                     .font(.caption2)
-                                    .foregroundColor(.gray)
+                                
+                                // Día cuando es cambio de día
+                                if isNewDay {
+                                    Text(date, format: .dateTime.day().month())
+                                        .font(.caption2)
+                                        .foregroundColor(.gray)
+                                }
                             }
                         }
                     }

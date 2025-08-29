@@ -165,42 +165,34 @@ struct GraficoVelocidadLectura: View {
             } else {
                 AxisMarks(values: estadisticas.sesionesLectura.map { $0.inicio }) { value in
                     if let date = value.as(Date.self) {
-                        let hour = Calendar.current.component(.hour, from: date)
-                        let isNewDay = value.index == 0 || {
-                            if value.index > 0 {
-                                let previousDate = estadisticas.sesionesLectura[value.index - 1].inicio
-                                return !Calendar.current.isDate(date, inSameDayAs: previousDate)
-                            }
-                            return false
-                        }()
-                        
                         let prevDate: Date? = value.index > 0
                             ? estadisticas.sesionesLectura[value.index - 1].inicio
                             : nil
                         
                         let isNewHour = esNuevaHora(actual: date, respectoA: prevDate)
+                        let isNewDay  = prevDate.map { !Calendar.current.isDate($0, inSameDayAs: date) } ?? true
                         
-                        AxisValueLabel {
-                            VStack(alignment: .leading) {
-                                if isNewHour {
-                                    Text(date, format: .dateTime.hour())
+                        // 👉 Solo mostramos ticks/lineas si cambia la hora
+                        if isNewHour {
+                            AxisGridLine(stroke: StrokeStyle(lineWidth: 0.3, dash: [2]))
+                                .foregroundStyle(.gray.opacity(0.5))
+                            AxisTick(stroke: StrokeStyle(lineWidth: 0.3))
+                            
+                            AxisValueLabel {
+                                VStack(spacing: 2) {
+                                    // Hora:minuto en cada cambio de hora
+                                    Text(date, format: .dateTime.hour().minute())
                                         .font(.caption2)
-                                }
-                                
-                                if isNewDay {
-                                    Text(date, format: .dateTime.month().day())
+                                    
+                                    // Día cuando es cambio de día
+                                    if isNewDay {
+                                        Text(date, format: .dateTime.day().month())
+                                            .font(.caption2)
+                                            .foregroundColor(.gray)
+                                    }
                                 }
                             }
                         }
-                        
-                        if isNewDay {
-                            AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                            AxisTick(stroke: StrokeStyle(lineWidth: 0.5))
-                        } else if isNewHour {
-                            AxisGridLine()
-                            AxisTick()
-                        }
-                        
                     }
                 }
             }
