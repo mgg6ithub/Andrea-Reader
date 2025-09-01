@@ -488,6 +488,8 @@ class SistemaArchivos: ObservableObject {
             let coleccionDestino = direccionNuevaColeccion ?? self.homeURL
             let nuevaColeccionURL = coleccionDestino.appendingPathComponent(nombre, isDirectory: true)
             
+            print("Nueva coleccion creada: ", nuevaColeccionURL)
+            
             if !self.sau.fileExists(elementURL: nuevaColeccionURL) {
                 try? self.fm.createDirectory(at: nuevaColeccionURL, withIntermediateDirectories: true)
                 
@@ -547,5 +549,21 @@ class SistemaArchivos: ObservableObject {
         
     }
     
+    /**
+     Comprueba si la carpeta oculta de imagenes existe. Si no existe crear una, dentro de la coleccion princiopal. (/Documents/.imagenes)
+     */
+    public func crearColImagenesYCopiar(url: URL) {
+        
+        //Creamos la coleccion /Documents/.imagenes para guardar en esa coleccion las imagenes personalizadas
+        self.crearColeccion(nombre: ".imagenes")
+        
+//        print("Coleccion oculta imagenes creada.")
+        let coleccionImagenesOculta = self.homeURL.appendingPathComponent(".imagenes", isDirectory: true)
+        
+        //Copia la imagen desde local -> /Andrea/Documents/.imagenes
+        self.crearArchivo(archivoURL: url, coleccionDestino: coleccionImagenesOculta)
+        
+//        print("Foto \(url.path) copiada a ", coleccionImagenesOculta.path)
+    }
     
 }

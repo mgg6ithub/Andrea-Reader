@@ -50,19 +50,17 @@ class ModeloMiniaturaArchivo: ObservableObject {
         }
     }
     
-    public func cambiarMiniatura(color: Color, archivo: Archivo, tipoMiniatura: EnumTipoMiniatura) {
+    public func cambiarMiniatura(color: Color, archivo: Archivo, tipoMiniatura: EnumTipoMiniatura, url: URL? = nil) {
         
         switch tipoMiniatura {
-        case .imagenBase:
-            self.miniatura = mm.imagenBase(tipoArchivo: archivo.fileType, color: color)
-        case .primeraPagina:
-            self.miniatura = mm.obtenerMiniaturaPrimera(archivo: archivo, color: color) //Tiene que estar ya en cache si no fallara
-        case .aleatoria:
-            self.miniatura = mm.obtenerMiniaturaAleatoria(archivo: archivo, color: color)
-        case .personalizada:
-            self.miniatura = mm.imagenBase(tipoArchivo: archivo.fileType, color: color)
-        default:
-            self.miniatura = mm.imagenBase(tipoArchivo: archivo.fileType, color: color)
+            case .imagenBase:
+                self.miniatura = mm.imagenBase(tipoArchivo: archivo.fileType, color: color)
+            case .primeraPagina:
+                self.miniatura = mm.obtenerMiniaturaPrimera(archivo: archivo, color: color) //Tiene que estar ya en cache si no fallara
+            case .aleatoria:
+                self.miniatura = mm.obtenerMiniaturaAleatoria(archivo: archivo, color: color)
+            case .personalizada:
+                self.miniatura = mm.obtenerMiniaturaPersonalizada(archivo: archivo, color: color, urlMiniatura: url)
         }
         
     }

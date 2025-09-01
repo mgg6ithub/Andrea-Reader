@@ -249,6 +249,9 @@ struct CartaHolografica3D: View {
                     onPick: { urls in
                         if let url = urls.first {
                             print("✅ Imagen seleccionada:", url)
+                            SistemaArchivos.sa.crearColImagenesYCopiar(url: url)
+                            print("Importando: comprobando si existe .imagenes")
+                            viewModel.cambiarMiniatura(color: vm.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura, url: url)
                         }
                     },
                     onCancel: {

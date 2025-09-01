@@ -61,6 +61,7 @@ extension EnumDispositivoActual {
 //MARK: - FILTROS DE ARCHIVOS NO DESEADOS
 enum EnumFiltroArchivos {
     case excludeTrash
+    case excludeImagenes
     case excludeHiddenFiles
     case none  // Puedes agregar más filtros en el futuro
     
@@ -70,6 +71,9 @@ enum EnumFiltroArchivos {
         
         case .excludeTrash:
             return url.lastPathComponent != ".Trash"
+            
+        case .excludeImagenes:
+            return url.lastPathComponent != ".imagenes"
         
         case .excludeHiddenFiles:
             return !url.lastPathComponent.hasPrefix(".")  // Filtra archivos ocultos

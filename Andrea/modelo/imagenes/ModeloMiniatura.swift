@@ -82,7 +82,7 @@ class ModeloMiniatura {
             }
         }
     }
-
+    
     
     func imagenBase(tipoArchivo: EnumTipoArchivos, color: Color) -> UIImage? {
         // 1) Placeholder (no optional)
@@ -91,19 +91,19 @@ class ModeloMiniatura {
         // 2) Genera la miniatura por defecto, que sí es opcional
         return  {
             guard let thumb = ImagenArchivoModelo()
-                    .crearMiniaturaPorDefecto(
-                        miniatura: placeholder,
-                        color: UIColor(color)
-                    )?
-                    .uiImage
+                .crearMiniaturaPorDefecto(
+                    miniatura: placeholder,
+                    color: UIColor(color)
+                )?
+                .uiImage
             else {
                 return nil
             }
             return thumb
         }()
-
+        
     }
-
+    
     func downsample(
         imageData: Data,
         to pointSize: CGSize,
@@ -111,7 +111,7 @@ class ModeloMiniatura {
     ) -> UIImage? {
         let cfData = imageData as CFData
         guard let src = CGImageSourceCreateWithData(cfData, nil) else { return nil }
-
+        
         let maxPixelSize = max(pointSize.width, pointSize.height) * scale
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
@@ -119,13 +119,13 @@ class ModeloMiniatura {
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceShouldCacheImmediately: false
         ]
-
+        
         guard let cgThumb = CGImageSourceCreateThumbnailAtIndex(src, 0, options as CFDictionary) else {
             return nil
         }
         return UIImage(cgImage: cgThumb)
     }
-
+    
     
     
     func obtenerLLave(archivoURL: URL) -> NSString {
@@ -139,7 +139,7 @@ class ModeloMiniatura {
         
         //Mera comprobacion
         if self.cacheMiniaturas.object(forKey: key) != nil {
-//            print("✅ Imagen confirmada en caché para archivo:", archivo.name)
+            //            print("✅ Imagen confirmada en caché para archivo:", archivo.name)
         } else {
             print("❌ No se pudo confirmar imagen en caché para archivo:", archivo.nombre)
         }
@@ -158,62 +158,90 @@ class ModeloMiniatura {
     func obtenerMiniaturaPrimera(archivo: Archivo, color: Color) -> UIImage? {
         // Imagen base como fallback
         let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
-
+        
         // Intentar sacar la primera página del archivo
         guard let primeraPagina = archivo.obtenerPrimeraPagina(),
               let data = archivo.cargarDatosImagen(nombreImagen: primeraPagina)
         else {
             return imagenBase
         }
-
+        
         // Downsamplear
         let targetSize = CGSize(width: 1000, height: 1000)
         let miniatura = self.downsample(imageData: data, to: targetSize)
-
+        
         // Guardar en cache y devolver
         if let thumb = miniatura {
             self.guardarMiniatura(miniatura: thumb, archivo: archivo)
             return thumb
         }
-
+        
         return imagenBase
     }
-
+    
     
     //OBTIENE UNA IMAGEN ALEATORIA PERO NUNCA ES LA PRIMERA
     func obtenerMiniaturaAleatoria(archivo: Archivo, color: Color) -> UIImage? {
         // Miniatura base por si falla
         let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
-
+        
         // Pedimos una página aleatoria
         guard let randomPage = archivo.obtenerPaginaAleatoria(),
               let data = archivo.cargarDatosImagen(nombreImagen: randomPage)
         else {
             return imagenBase
         }
-
+        
         // Downsample a tamaño razonable
         let targetSize = CGSize(width: 1000, height: 1000)
         let miniatura = self.downsample(imageData: data, to: targetSize)
-
+        
         // Guardamos en cache si se pudo crear
         if let thumb = miniatura {
             self.guardarMiniatura(miniatura: thumb, archivo: archivo)
             return thumb
         }
-
+        
         return imagenBase
     }
-
-    //NECESITO MANEJAR AQUI UNA IMAGEN PERSONALIZADA
-    //cuando un archivo tengo el tipo personalizado de imagen significa que tendra en archivo.miniaturaPersonalizada y tendra una url de dicha imagen
-    //las imagenes se almaceneran en el programa en una carpeta oculta .customImages y su url siempre sera:
-    //          /Documents/.customImages/image1
-    //          /Documents/.customImages/image2
-    //1. Lo que habra que hacer será cargar dicha imagen sumandole el path absoluto en ese runtime a esa url para poder localizara.
-    //2. Habra que renderizarla  con el downsample y eso
-    //3. Habra que asignarla en el cache
     
+    public func obtenerMiniaturaPersonalizada(archivo: Archivo, color: Color, urlMiniatura: URL? = nil) -> UIImage? {
+        
+        print("Llamando a cambiar imagen per")
+        
+        let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
+        
+        guard let url = urlMiniatura else { return imagenBase }
+        
+        print("Se ejecuta")
+        
+        do {
+            guard url.startAccessingSecurityScopedResource() else {
+                print("❌ No se pudo acceder al recurso seguro")
+                return imagenBase
+            }
+            defer { url.stopAccessingSecurityScopedResource() }
+            // 1. Leer los datos binarios de la imagen
+            let data = try Data(contentsOf: url)
+            
+            // 2. Downsample para evitar cargar un monstruo gigante en memoria
+            let targetSize = CGSize(width: 1000, height: 1000)
+            let miniatura = self.downsample(imageData: data, to: targetSize)
+            
+            // 3. Guardar en caché y devolver
+            if let thumb = miniatura {
+                self.guardarMiniatura(miniatura: thumb, archivo: archivo)
+                return thumb
+            } else {
+                return imagenBase
+            }
+            
+        } catch {
+            print("❌ Error cargando imagen personalizada:", error)
+            return imagenBase
+        }
+        
+    }
     
     
     func eliminarMiniatura(archivo: Archivo) {
