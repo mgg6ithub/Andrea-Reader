@@ -212,7 +212,7 @@ struct ManipulacionCadenas {
         return extractFirstMatch(from: text, pattern: pattern)
     }
     
-    func extraerNumeroDeLaColeccion(from text: String) -> Int? {
+    func extraerNumeroActual(from text: String) -> Int? {
         // Expresión regular para capturar un número al final del nombre antes de los paréntesis (con ceros a la izquierda permitidos) o solo el número al final
         let pattern = #"\s*(\d{1,3})(?=\s?\(|\s*$)"#  // Captura un número seguido de un paréntesis o el final de la cadena
 
@@ -266,7 +266,7 @@ struct ManipulacionCadenas {
 
     
     /// Extrae el número de issues del patrón "(of X)" en el texto.
-    func extractNumberOfIssues(from text: String) -> Int? {
+    func extraerTotalNumeros(from text: String) -> Int? {
         // Expresión regular para buscar el patrón "(of X)" donde X es un número
         let pattern = #"\(of (\d+)\)"#
         

@@ -63,14 +63,12 @@ struct MasInformacionArchivo: View {
                         } else {
                         
                         EstadisticasProgresoLectura(archivo: archivo)
-                                .padding(.top, 20)
+                                .padding(.top, 15)
                                 .padding(.horizontal, 45)
                         
                         MenuNavegacion(estadisticas: archivo.estadisticas)
-                            .padding(.vertical, 15)
-                            
-//                            EstadisticaProgresoTiempo(archivo: archivo)
-//                            .padding(.bottom, 15)
+                            .padding(.top, 25)
+                            .padding(.bottom, 20)
                         }
                     }
                     .overlay(
@@ -123,8 +121,8 @@ struct MenuNavegacion: View {
                 }
             }
             .pickerStyle(.segmented)
-            .padding(.top, 5)
-            .padding(.bottom, 15)
+//            .padding(.top, 5)
+            .padding(.bottom, 25)
             
             Spacer()
             
@@ -204,7 +202,7 @@ struct Contenido: View {
         Spacer()
         VStack(alignment: .center, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                HStack(alignment: .bottom, spacing: 2) {
+                HStack(spacing: 2) {
                     Image(systemName: "text.page.fill")
                         .font(.system(size: titleS * 1.2))
                         .foregroundColor(vm.color)
@@ -212,11 +210,37 @@ struct Contenido: View {
                         .bold()
                         .font(.system(size: titleS * 1.2))
                         .foregroundColor(tema.tituloColor)
+                        .offset(y: 3)
                     
                     Spacer()
                     
                     EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
                 }
+                .padding(.bottom, 25)
+                
+                HStack(spacing: 2) {
+                    Image(systemName: "zipper.page")
+                        .font(.system(size: titleS * 1.2))
+                        .foregroundColor(vm.color)
+                    Text(EnumDescripcionArchivo.descripcion(for: archivo.fileType))
+                        .bold()
+                        .font(.system(size: titleS * 1.2))
+                        .foregroundColor(tema.tituloColor)
+                        .offset(y: 3)
+                    
+                    Text("(\(archivo.fileType.rawValue.uppercased()))") // Ej: (PDF), (CBR)...
+                        .font(.system(size: subTitleS))
+                        .foregroundColor(tema.tituloColor)
+                        .offset(y: 4)
+                }
+                
+                Spacer()
+                
+                Rectangle()
+                    .fill(.gray.opacity(0.25))
+                    .frame(height: 0.5)
+                    .frame(maxWidth: .infinity)
+                    .padding(15)
                 
                 Spacer()
                 
@@ -292,7 +316,7 @@ struct Contenido: View {
                             TextEditor(text: $descripcionTexto)
                                 .bold()
                                 .font(.system(size: titleS))
-                                .frame(height: 120)
+                                .frame(height: 105)
                                 .focused($isEditingDescriptionFocused)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
@@ -332,7 +356,7 @@ struct Contenido: View {
                                 .truncationMode(.tail)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-                        .frame(height: 120, alignment: .topLeading)
+                        .frame(height: 105, alignment: .topLeading)
                         .contentShape(Rectangle())
                         .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                     }
@@ -357,21 +381,20 @@ struct Contenido: View {
                         }
                     }
                     .frame(height: 20)
-                    .padding(.bottom, 10)
                 }
 
             }
             
-            VStack(alignment: .center, spacing: 20) {
-                HStack(alignment: .bottom, spacing: 0) {
-                    RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileExtension))", icono: "books.vertical", color: vm.color)
-                    Spacer()
-                    RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.estadisticas.totalPaginas ?? 0))", icono: "book.pages", color: vm.color)
-                    Spacer()
-                    RectanguloDato(nombre: "Tamaño", dato: ManipulacionSizes().formatearSize(archivo.fileSize), icono: "externaldrive", color: vm.color)
-                }
-                
-            }
+//            VStack(alignment: .center, spacing: 20) {
+//                HStack(alignment: .bottom, spacing: 0) {
+//                    RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileExtension))", icono: "books.vertical", color: vm.color)
+//                    Spacer()
+//                    RectanguloDato(nombre: "Páginas", dato: "\(String(describing: archivo.estadisticas.totalPaginas ?? 0))", icono: "book.pages", color: vm.color)
+//                    Spacer()
+//                    RectanguloDato(nombre: "Tamaño", dato: ManipulacionSizes().formatearSize(archivo.fileSize), icono: "externaldrive", color: vm.color)
+//                }
+//                
+//            }
         } //FIN VSTACK INFORMACION DERECHA
         .frame(height: 320 * ap.constantes.scaleFactor)
         .padding(10)
@@ -443,8 +466,8 @@ struct ImagenMiniatura: View {
                     .overlay(alignment: .bottom) {
                         LinearGradient(
                             gradient: Gradient(stops: [
-                                .init(color: .black.opacity(0.65), location: 0.0),
-                                .init(color: .black.opacity(0.65), location: 0.65),
+                                .init(color: .black.opacity(0.90), location: 0.0),
+                                .init(color: .black.opacity(0.90), location: 0.80),
                                 .init(color: .clear,                location: 1.0)
                             ]),
                             startPoint: .bottom,
@@ -461,16 +484,16 @@ struct ImagenMiniatura: View {
                             withAnimation(.easeInOut(duration: 0.3)) { ap.vistaPrevia = true }
                         }) {
                             HStack(alignment: .center, spacing: 4) {
-                                Image("custom-eye")
-                                    .font(.system(size: ap.constantes.iconSize * 0.7))
-                                    .foregroundColor(.white.opacity(0.8))
+                                Image(systemName: "paintbrush")
+                                    .font(.system(size: ap.constantes.iconSize * 0.6))
+                                    .foregroundColor(.white.opacity(0.95))
                                 
-                                Text("Miniatura")
-                                    .foregroundColor(.white.opacity(0.8))
+                                Text("Modificar miniatura")
+                                    .foregroundColor(.white.opacity(0.95))
                             }
                             .frame(maxWidth: .infinity)   // <-- ocupa todo el ancho del overlay
                             .padding(.horizontal, 12)
-                            .padding(.bottom, 6)
+                            .padding(.bottom, 10)
                         }
                     }
                     .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))

@@ -65,11 +65,10 @@ struct ConstantesPorDefecto {
 //MARK: - --- PERSISTENCIA DATOS DE ELEMENTOS ---
 struct ClavesPersistenciaElementos {
     
-    //fecha importacion
+    //al importar
     public let fechaImportacion: String = "fechaImportacion"
-    
-    //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: String = "fechaPrimeraVezEntrado"
+    public let nombreOriginal: String = "nombreOriginal"
     
     //Datos basicos
     public let autor: String = "autor"
@@ -118,6 +117,7 @@ struct ClavesPersistenciaElementos {
             [
                 fechaImportacion,
                 fechaPrimeraVezEntrado,
+                nombreOriginal,
                 
                 autor,
                 descripcion,
@@ -145,7 +145,6 @@ struct ClavesPersistenciaElementos {
                 
             ]
         }
-    
 }
 
 struct ValoresElementoPredeterminados {
@@ -154,6 +153,7 @@ struct ValoresElementoPredeterminados {
     
     //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: Date? = nil
+    public let nombreOriginal: String? = nil
     
     //Datos basicos
     public let autor: String = ""

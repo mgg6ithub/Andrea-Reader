@@ -72,18 +72,15 @@ class SistemaArchivos: ObservableObject {
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: homeURL)
-        print("URL de los documents")
-        print(self.homeURL)
-        print("URLS de .imagenes")
-        for url in SistemaArchivosUtilidades.sau.getUrlsRootDirectoryContents() {
-            print(url)
-            print("URLS QUE CONTIENE")
-            for suburl in SistemaArchivosUtilidades.sau.getListSubdirectoryContentsWithNoExtensions(urlPath: url) {
-                print(suburl)
-            }
-            print()
-        }
-        print()
+//        for url in SistemaArchivosUtilidades.sau.getUrlsRootDirectoryContents() {
+//            print(url)
+//            print("URLS QUE CONTIENE")
+//            for suburl in SistemaArchivosUtilidades.sau.getListSubdirectoryContentsWithNoExtensions(urlPath: url) {
+//                print(suburl)
+//            }
+//            print()
+//        }
+//        print()
         
     }
     
@@ -454,9 +451,8 @@ class SistemaArchivos: ObservableObject {
             
             // --- AL IMPORTAR UN ARCHIVO SE CREAR ---
             // guardamos su nombre original al importar
-            PersistenciaDatos().guardarDatoElemento(url: nuevoArchivoURL, atributo: "nombreOriginal", valor: nombreArchivo)
-            //guardamos la fecha en la que se importo
-            PersistenciaDatos().guardarDatoElemento(url: nuevoArchivoURL, atributo: "fechaImportacion", valor: Fechas().formatDate1(Date()))
+//            PersistenciaDatos().guardarDatoElemento(url: nuevoArchivoURL, atributo: "nombreOriginal", valor: nombreArchivo)
+//            self.pd.guardarDatoArchivo(valor: nombreArchivo, elementoURL: nuevoArchivoURL, key: self.cpe.nombreOriginal)
             
             // --- Agregamos el archivo a la carpeta Andrea para la persistencia ---
             if !self.sau.fileExists(elementURL: nuevoArchivoURL) {

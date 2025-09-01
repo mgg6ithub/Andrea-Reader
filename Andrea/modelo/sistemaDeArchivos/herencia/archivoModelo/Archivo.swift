@@ -138,6 +138,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     @Published var nombreOriginal: String?
     var perteneceAcoleccion: String?
     var numeroDeLaColeccion: Int?
+    var totalNumerosColeccion: Int?
     
     @Published var formatoEscaneo: String?
     @Published var entidadEscaneo: String?
@@ -178,7 +179,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     //CONSTRUCTOR DE VERDAD
-    init(fileName: String, fileURL: URL, fechaImportacion: Date, fechaModificacion: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int, favorito: Bool, protegido: Bool) {
+    init(fileName: String, fileURL: URL, fechaImportacion: Date, nombreOriginal: String, fechaModificacion: Date, fileType: EnumTipoArchivos, fileExtension: String, fileSize: Int, favorito: Bool, protegido: Bool) {
         
         self.estadisticas = EstadisticasYProgresoLectura(url: fileURL)
         
@@ -186,6 +187,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.fileExtension = fileExtension
         self.mimeType = sau.getMimeType(for: fileURL)
         self.fileSize = fileSize
+        
+        self.nombreOriginal = nombreOriginal
         
         let permissions = sau.getFilePermissions(for: fileURL)
         
@@ -205,7 +208,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         let imagenPersonalizadaURL = SistemaArchivosUtilidades.sau.home.appendingPathComponent(".imagenes").appendingPathComponent(imagenPerString)
         
         self.imagenPersonalizada = imagenPersonalizadaURL
-        print("URL DE LA IMAGEN PERSONALIZADA: ", imagenPersonalizadaURL)
         
         super.init(nombre: fileName, url: fileURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
@@ -218,8 +220,15 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
      Datos que no son necesarios al crear la instancia.
      */
     public func cargarDatosMasInformacion() {
+        print("Aqui se llama ? ")
         self.autor = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.autor, default: p.autor)
         self.descripcion = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.descripcion, default: p.descripcion)
+        
+        if let no = self.nombreOriginal {
+            print("Se llama el nombre original es: ", no)
+            self.numeroDeLaColeccion = ManipulacionCadenas().extraerNumeroActual(from: no)
+            self.totalNumerosColeccion = ManipulacionCadenas().extraerTotalNumeros(from: no)
+        }
     }
     
 

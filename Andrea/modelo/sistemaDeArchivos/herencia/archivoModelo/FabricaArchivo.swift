@@ -16,12 +16,33 @@ struct FactoryArchivo {
         let fileSize = sau.getFileSize(fileURL: url)
         
         var fechaImportacion: Date
-        if let guardada = pd.recuperarDatoElemento(elementoURL: url, key: cpe.fechaImportacion, default: p.fechaImportacion) {
-            fechaImportacion = guardada
+        if let fechaGuardada = pd.recuperarDatoElemento(elementoURL: url, key: cpe.fechaImportacion, default: p.fechaImportacion) {
+            fechaImportacion = fechaGuardada
         } else {
             fechaImportacion = Date()
             pd.guardarDatoArchivo(valor: fechaImportacion, elementoURL: url, key: cpe.fechaImportacion)
             print("FECHA IMPORTACION: ", fechaImportacion)
+        }
+        
+        var nombreOriginal: String
+        
+        let nombreGuardado: String = pd.recuperarDatoElemento(
+            elementoURL: url,
+            key: cpe.nombreOriginal,
+            default: "" // <- valor por defecto si no hay nada guardado
+        )
+        
+        print("devuelve la cadena ", nombreGuardado)
+        print(type(of: nombreGuardado))
+
+        if nombreGuardado != "" {
+            print("PARECE QUE YA HAY UN NOMBRE GUARDADO")
+            nombreOriginal = nombreGuardado
+        } else {
+            nombreOriginal = fileName
+            print("nombre original nuevo al importar: ", fileName)
+            pd.guardarDatoArchivo(valor: nombreOriginal, elementoURL: url, key: cpe.nombreOriginal)
+            print("NOMBRE ORIGINAL")
         }
         
         let fechaModificacion = sau.getElementModificationDate(elementURL: url)
@@ -38,6 +59,7 @@ struct FactoryArchivo {
                 fileName: fileName,
                 fileURL: url,
                 fechaImportacion: fechaImportacion,
+                nombreOriginal: nombreOriginal,
                 fechaModificacion: fechaModificacion,
                 fileType: fileType,
                 fileExtension: fileURL.pathExtension,
@@ -51,6 +73,7 @@ struct FactoryArchivo {
                 fileName: fileName,
                 fileURL: url,
                 fechaImportacion: fechaImportacion,
+                nombreOriginal: nombreOriginal,
                 fechaModificacion: fechaModificacion,
                 fileType: fileType,
                 fileExtension: fileURL.pathExtension,
@@ -64,6 +87,7 @@ struct FactoryArchivo {
                 fileName: fileName,
                 fileURL: url,
                 fechaImportacion: fechaImportacion,
+                nombreOriginal: nombreOriginal,
                 fechaModificacion: fechaModificacion,
                 fileType: fileType,
                 fileExtension: fileURL.pathExtension,

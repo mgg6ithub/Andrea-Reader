@@ -60,11 +60,24 @@ struct GraficoProgresoLectura: View {
     
     var body: some View {
         // Transformar sesiones a progreso
-        let data: [ReadingProgress] = estadisticas.sesionesLectura.map { sesion in
-            let actual = estadisticas.progresoRealEnFecha(sesion.inicio)
-            let ideal  = estadisticas.progresoIdealEnFecha(sesion.inicio)
-            return ReadingProgress(date: sesion.inicio, actual: actual, ideal: ideal)
-        }
+        let data: [ReadingProgress] = {
+            var result = estadisticas.sesionesLectura.map { sesion in
+                let actual = estadisticas.progresoRealEnFecha(sesion.inicio)
+                let ideal  = estadisticas.progresoIdealEnFecha(sesion.inicio)
+                return ReadingProgress(date: sesion.inicio, actual: actual, ideal: ideal)
+            }
+            
+            // Si solo hay una sesión, añadimos el punto final
+            if estadisticas.sesionesLectura.count == 1,
+               let sesion = estadisticas.sesionesLectura.first,
+               let fin = sesion.fin {
+                
+                let actualFin = estadisticas.progresoRealEnFecha(fin)
+                let idealFin  = estadisticas.progresoIdealEnFecha(fin)
+                result.append(ReadingProgress(date: fin, actual: actualFin, ideal: 100))
+            }
+            return result
+        }()
         
         Chart {
             // Línea progreso real
@@ -107,9 +120,11 @@ struct GraficoProgresoLectura: View {
                     
                     // 👉 Solo mostramos ticks/lineas si cambia la hora
                     if isNewHour {
-                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.3, dash: [2]))
-                            .foregroundStyle(.gray.opacity(0.5))
-                        AxisTick(stroke: StrokeStyle(lineWidth: 0.3))
+                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                            .foregroundStyle(.gray.opacity(0.3))
+                        
+                        AxisTick(stroke: StrokeStyle(lineWidth: 1, dash: [4,2]))
+                            .foregroundStyle(.gray)
                         
                         AxisValueLabel {
                             VStack(spacing: 2) {

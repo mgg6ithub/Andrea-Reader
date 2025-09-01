@@ -344,6 +344,17 @@ struct PersistenciaDatos {
         if T.self == Date.self, let timestamp = valor as? Double {
             return Date(timeIntervalSince1970: timestamp) as! T
         }
+        
+        // Caso especial: String?
+        if T.self == String?.self {
+            print("El valor es nulo")
+            if let s = valor as? String {
+                return (s as String?) as! T
+            } else {
+                return (nil as String?) as! T   // 👈 aquí ya sí sabe que es String?
+            }
+        }
+
 
         // Caso especial: Date?
         if T.self == Date?.self, let timestamp = valor as? Double {

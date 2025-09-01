@@ -30,29 +30,30 @@ enum EnumTipoArchivos: String {
 }
 
 enum EnumDescripcionArchivo: String {
+    // Usamos las extensiones como rawValue
+    case epub, pdf, cbz, cbr, txt, xml, md, json, unknown
     
-    //LIBRO ELECTRONICO
-    case epub = "Electronic Publishing"
+    var descripcion: String {
+        switch self {
+        case .epub: return "Electronic Publishing"
+        case .pdf: return "Portable Document Format"
+        case .cbz: return "Comic Book Zip"
+        case .cbr: return "Comic Book Rar"
+        case .txt: return "Plain Text File"
+        case .xml: return "Extensible Markup Language"
+        case .md: return "Markdown"
+        case .json: return "JavaScript Object Notation"
+        case .unknown: return "Unknown File Type"
+        }
+    }
     
-    //PDF
-    case pdf = "Portable Document Format"
-    
-    // COMICS
-    case cbz = "Comic Book Zip"
-    case cbr = "Comic Book Rar"
-    
-    //PLAIN TEXT
-    case txt = "Plain Text File"
-    case xml = "Extensible Markup Language"
-    case md = "Markdown"
-    case json = "JavaScript Object Notation"
-    
-    case unknown = "Unknown File Type"
-
     static func descripcion(for tipoArchivo: EnumTipoArchivos) -> String {
-        return EnumDescripcionArchivo(rawValue: tipoArchivo.rawValue)?.rawValue ?? "Unknown File Type"
+        EnumDescripcionArchivo(rawValue: tipoArchivo.rawValue)?.descripcion
+        ?? EnumDescripcionArchivo.unknown.descripcion
     }
 }
+
+
 
 //MARK: - TEMPORAL PARA PODER
 
