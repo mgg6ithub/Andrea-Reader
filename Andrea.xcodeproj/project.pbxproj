@@ -113,6 +113,7 @@
 		D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */; };
 		D4BF0B292DEF4F9100152333 /* TXTArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */; };
 		D4BF4B1C2E168D1400224C71 /* Algoritmos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BF4B1B2E168D1400224C71 /* Algoritmos.swift */; };
+		D4C4A2AE2E66075500B16EA9 /* ImagenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C4A2AD2E66075500B16EA9 /* ImagenInfo.swift */; };
 		D4CF28E32E323CF3003B3ABC /* ModificarTamano.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E22E323CF3003B3ABC /* ModificarTamano.swift */; };
 		D4CF28E52E323D3D003B3ABC /* Desplazamiento.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E42E323D3D003B3ABC /* Desplazamiento.swift */; };
 		D4CF28E72E323E29003B3ABC /* ModeloMiniaturaArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CF28E62E323E29003B3ABC /* ModeloMiniaturaArchivo.swift */; };
@@ -247,6 +248,7 @@
 		D4BF0B252DEF4B4F00152333 /* EnumTipoArchivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTipoArchivos.swift; sourceTree = "<group>"; };
 		D4BF0B282DEF4F9100152333 /* TXTArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TXTArchivo.swift; sourceTree = "<group>"; };
 		D4BF4B1B2E168D1400224C71 /* Algoritmos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algoritmos.swift; sourceTree = "<group>"; };
+		D4C4A2AD2E66075500B16EA9 /* ImagenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagenInfo.swift; sourceTree = "<group>"; };
 		D4CF28E22E323CF3003B3ABC /* ModificarTamano.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModificarTamano.swift; sourceTree = "<group>"; };
 		D4CF28E42E323D3D003B3ABC /* Desplazamiento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Desplazamiento.swift; sourceTree = "<group>"; };
 		D4CF28E62E323E29003B3ABC /* ModeloMiniaturaArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloMiniaturaArchivo.swift; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 				D49DE74F2E0D348F002FDB7A /* ImagenArchivoModelo.swift */,
 				D4B8B3882E1324B200585A6D /* ThumbnailService.swift */,
 				D4ACC9B12E1AB8C4006778AE /* ModeloMiniatura.swift */,
+				D4C4A2AD2E66075500B16EA9 /* ImagenInfo.swift */,
 			);
 			path = imagenes;
 			sourceTree = "<group>";
@@ -956,6 +959,7 @@
 				D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */,
 				D49961972E4514C00089488D /* NotificacionesEstado.swift in Sources */,
 				D4A6C7272DEA216400E7451F /* RectangleFormView.swift in Sources */,
+				D4C4A2AE2E66075500B16EA9 /* ImagenInfo.swift in Sources */,
 				D4B23FA22E45F54F00425DB8 /* IndicesAjustes.swift in Sources */,
 				D4A12EF92E5A0F730022276D /* GraficoPaginasMasVisitadas.swift in Sources */,
 				D47139C72E0AE76500B5FA35 /* CuadriculaArchivo.swift in Sources */,

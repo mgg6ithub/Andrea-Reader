@@ -249,23 +249,26 @@ struct CartaHolografica3D: View {
                 Spacer()
                 
                 // Panel inferior con información
-                VStack(alignment: .leading, spacing: 12) {
-                    infoRow("Ruta:", "/Documentos/Comics/Ivy23.pdf")
-                    infoRow("Tipo:", "Miniatura generada")
-                    infoRow("Dimensiones:", "400 x 600 px")
-                    infoRow("Calidad:", "Alta")
-                    infoRow("Ruta:", "/Documentos/Comics/Ivy23.pdf")
-                    infoRow("Tipo:", "Miniatura generada")
-                    infoRow("Dimensiones:", "400 x 600 px")
-                    infoRow("Calidad:", "Alta")
+                if let info = ImagenInfo(imagen: viewModel.miniatura, url: archivo.imagenPersonalizada) {
+                    VStack(alignment: .leading, spacing: 12) {
+                        infoRow("Ruta:", info.url?.path ?? "N/A")
+                        infoRow("Formato:", info.formato)
+                        infoRow("Dimensiones:", "\(info.ancho) x \(info.alto) px")
+                        infoRow("Peso:", "\(info.pesoKB) KB")
+                        infoRow("Calidad:", info.calidad)
+                        infoRow("Ratio:", info.ratio)
+                        if let fecha = info.fechaModificacion {
+                            infoRow("Fecha modificación: ", DateFormatter.localizedString(from: fecha, dateStyle: .medium, timeStyle: .short))
+                        }
+                    }
+                    .padding(10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.gray.opacity(0.2))
+                    )
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 30)
                 }
-                .padding(10)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.gray.opacity(0.2))
-                )
-                .padding(.horizontal, 20)
-                .padding(.bottom, 30)
                 
             } //7FIN ZSTACK
             .sheet(isPresented: $mostrarDocumentPicker) {
@@ -285,6 +288,7 @@ struct CartaHolografica3D: View {
         }
     }
     
+    
     // helper para filas de texto
     private func infoRow(_ title: String, _ value: String) -> some View {
         HStack {
@@ -297,6 +301,7 @@ struct CartaHolografica3D: View {
                 .font(.system(size: 16))
         }
     }
+    
     
     // Efecto de reflejo holográfico mejorado
     func holographicReflection() -> some View {
