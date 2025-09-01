@@ -139,15 +139,17 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     var perteneceAcoleccion: String?
     var numeroDeLaColeccion: Int?
     var totalNumerosColeccion: Int?
+    var yearPublicion: Int?
     
-    @Published var formatoEscaneo: String?
-    @Published var entidadEscaneo: String?
-    @Published var fechaPublicacion: String?
+    var formatoEscaneo: String?
+    var entidadEscaneo: String?
+    var fechaPublicacion: String?
     
     @Published var puntuacion: Double = 0
     var autor: String = ""
     var idioma: EnumIdiomas = .castellano
     var genero: String = ""
+    var editorial: String?
     
     //MODELOS NECESARIOS
     private let sau = SistemaArchivosUtilidades.sau
@@ -220,17 +222,21 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
      Datos que no son necesarios al crear la instancia.
      */
     public func cargarDatosMasInformacion() {
-        print("Aqui se llama ? ")
+
         self.autor = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.autor, default: p.autor)
         self.descripcion = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.descripcion, default: p.descripcion)
         
+        let mc = ManipulacionCadenas()
+        
         if let no = self.nombreOriginal {
-            print("Se llama el nombre original es: ", no)
-            self.numeroDeLaColeccion = ManipulacionCadenas().extraerNumeroActual(from: no)
-            self.totalNumerosColeccion = ManipulacionCadenas().extraerTotalNumeros(from: no)
+            self.numeroDeLaColeccion = mc.extraerNumeroActual(from: no)
+            self.totalNumerosColeccion = mc.extraerTotalNumeros(from: no)
+            self.formatoEscaneo = mc.extraerFormatoEscaneo(from: no)
+            self.entidadEscaneo = mc.extraerEntidad(from: no)
+            self.yearPublicion = mc.extraerYear(from: no)
         }
+        
     }
-    
 
     
     //MARK: - --- FUNCIONES GENERALES ---

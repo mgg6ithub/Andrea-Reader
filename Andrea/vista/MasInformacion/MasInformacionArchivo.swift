@@ -39,7 +39,10 @@ struct MasInformacionArchivo: View {
     private var isSmall: Bool { ap.resolucionLogica == .small }
     private var padding: CGFloat { pantallaCompleta ? 20 : 10 }
     
-    @State private var masInfoPresionado: Bool = true
+    @State private var masInfoPresionado: Bool = false
+    @State private var show: Bool = false
+    private var const: Constantes { ap.constantes }
+    private var scale: CGFloat { const.scaleFactor }
     
     var body: some View {
         ScrollViewReader { proxy in
@@ -56,9 +59,49 @@ struct MasInformacionArchivo: View {
                         if archivo.fechaPrimeraVezEntrado == nil || archivo.estadisticas.paginaActual == 0 {
                             HStack {
                                 Spacer()
-                                ImagenLibreriaVacia(imagen: "buhosf", texto: "Aun no has leido este comic! ¿A que esperas para hacerlo?", anchura: 200, altura: 200)
+                                VStack(alignment: .center) {
+                                    Spacer()
+                                    VStack(spacing: 0) {
+                                        
+                                        HStack(spacing: 3) {
+                                            Image("book-slash")
+                                                .font(.system(size: const.iconSize * 0.75, weight: .medium))
+                                            
+                                            Text("No hay sesiones de lectura.")
+                                            .font(.system(size: const.titleSize * 0.8))
+                                            .bold()
+                                            .offset(y: 2)
+                                        }
+                                        
+                                        Image("buho-pantalla")
+                                            .resizable()
+                                            .frame(width: 200 * scale, height: 215 * scale)
+                                        
+                                        Text("Aun no has leido este archivo.\n¿A que esperas para hacerlo?")
+//                                            .font(.headline)
+                                            .foregroundColor(ap.temaResuelto.textColor)
+                                        
+                                        Button(action: {
+                                            
+                                        }) {
+                                            ZStack {
+                                                Text("Empezar a leer")
+                                            }
+                                            .padding(10) // margen interno
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 6)
+                                                    .fill(vm.color)
+                                            )
+                                        }
+                                        .padding(.top, 15)
+                                        
+                                    }
+                                    Spacer()
+                                }
+                                .aparicionStiffness(show: $show)
                                 Spacer()
                             }
+                            .padding(15)
 
                         } else {
                         
@@ -76,6 +119,14 @@ struct MasInformacionArchivo: View {
                             .stroke(.gray.opacity(0.25), lineWidth: 1)
                     )
                     
+                    //FECHAS
+                    InformacionAvanzadaFechas(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(.gray.opacity(0.25), lineWidth: 1)
+                        )
+                        .padding(.top, 10)
+                    
                     //INFORMACION AVANZADA
                     InformacionAvanzada(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
                         .overlay(
@@ -90,8 +141,10 @@ struct MasInformacionArchivo: View {
             .padding(.horizontal, 15)
             .onChange(of: masInfoPresionado) { nuevoValor in
                 if nuevoValor {
-                    withAnimation {
-                        proxy.scrollTo("informacionAvanzada", anchor: .bottom)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                        withAnimation {
+                            proxy.scrollTo("informacionAvanzada", anchor: .bottom)
+                        }
                     }
                 }
             }
@@ -238,8 +291,7 @@ struct Contenido: View {
                 
                 Rectangle()
                     .fill(.gray.opacity(0.25))
-                    .frame(height: 0.5)
-                    .frame(maxWidth: .infinity)
+                    .frame(height: 1)
                     .padding(15)
                 
                 Spacer()

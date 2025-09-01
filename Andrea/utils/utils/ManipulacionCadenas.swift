@@ -4,6 +4,52 @@
 
 import SwiftUI
 
+struct AutoSizingText: View {
+    let text: String
+    let minFontSize: CGFloat
+    let maxFontSize: CGFloat
+    
+    @State private var fittedSize: CGFloat = 16
+    
+    var body: some View {
+        GeometryReader { geo in
+            Text(text)
+                .font(.system(size: fittedSize))
+                .lineLimit(nil) // multilínea
+                .multilineTextAlignment(.trailing)
+                .foregroundColor(.primary)
+                .onAppear {
+                    ajustarFuente(geo.size)
+                }
+                .onChange(of: text) { _ in
+                    ajustarFuente(geo.size)
+                }
+        }
+        .frame(minHeight: 20) // para no colapsar
+    }
+    
+    private func ajustarFuente(_ size: CGSize) {
+        // 👇 ajusta el tamaño en función del ancho disponible
+        var current = maxFontSize
+        while current > minFontSize {
+            let attrString = NSAttributedString(
+                string: text,
+                attributes: [.font: UIFont.systemFont(ofSize: current)]
+            )
+            let bounding = attrString.boundingRect(
+                with: CGSize(width: size.width, height: .greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                context: nil
+            )
+            if bounding.height <= size.height {
+                break
+            }
+            current -= 1
+        }
+        fittedSize = current
+    }
+}
+
 
 struct ManipulacionCadenas {
     
@@ -208,8 +254,30 @@ struct ManipulacionCadenas {
     
     /// Extrae la entidad (último elemento entre paréntesis)
     func extraerEntidad(from text: String) -> String? {
-        let pattern = #"\(([^()]+)\)(?:\.[^.]+)?$"#  // Último paréntesis con contenido
-        return extractFirstMatch(from: text, pattern: pattern)
+        let pattern = #"\(([^()]+)\)"#
+        let regex = try? NSRegularExpression(pattern: pattern)
+        let range = NSRange(text.startIndex..., in: text)
+        
+        let matches = regex?.matches(in: text, range: range) ?? []
+        if let last = matches.last,
+           let range = Range(last.range(at: 1), in: text) {
+            return String(text[range])
+        }
+        return nil
+    }
+
+    
+    /// Método genérico para extraer la primera coincidencia de un patrón regex
+    func extractFirstMatch(from text: String, pattern: String) -> String? {
+        let regex = try? NSRegularExpression(pattern: pattern, options: [])
+        let range = NSRange(text.startIndex..., in: text)
+        
+        if let match = regex?.firstMatch(in: text, options: [], range: range),
+           let range = Range(match.range(at: 1), in: text) {
+            return String(text[range])
+        }
+        
+        return nil
     }
     
     func extraerNumeroActual(from text: String) -> Int? {
@@ -281,16 +349,14 @@ struct ManipulacionCadenas {
         return nil  // Devuelve nil si no se encuentra el número
     }
     
-    /// Método genérico para extraer la primera coincidencia de un patrón regex
-    func extractFirstMatch(from text: String, pattern: String) -> String? {
-        let regex = try? NSRegularExpression(pattern: pattern, options: [])
-        let range = NSRange(text.startIndex..., in: text)
-        
-        if let match = regex?.firstMatch(in: text, options: [], range: range),
-           let range = Range(match.range(at: 1), in: text) {
-            return String(text[range])
+    func extraerYear(from text: String) -> Int? {
+        let pattern = #"\((\d{4})\)"#
+        if let match = extractFirstMatch(from: text, pattern: pattern) {
+            // Extraer el número de la coincidencia
+            if let year = Int(match) {
+                return year
+            }
         }
-        
         return nil
     }
     
