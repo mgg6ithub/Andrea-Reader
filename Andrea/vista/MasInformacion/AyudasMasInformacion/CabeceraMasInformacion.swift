@@ -44,21 +44,24 @@ struct CabeceraMasInformacion: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            Button(action: {
-                isPressed = true
-                withAnimation(.easeInOut(duration: 0.25)) { ap.masInformacion = false }
-            }) {
-                Image(systemName: "xmark.square.fill")
-                    .font(.system(size: ap.constantes.iconSize * 1.3))
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(cDinamico, Color.red)
-                    .symbolEffect(.bounce, value: isPressed)
-            }
-            .frame(width: ap.constantes.iconSize * 1.3,
-                   height: ap.constantes.iconSize * 1.3) // 👈 fuerza el tamaño al del icono
-            .contentShape(Rectangle())
             
-            Spacer()
+            if pantallaCompleta {
+                Button(action: {
+                    isPressed = true
+                    withAnimation(.easeInOut(duration: 0.25)) { ap.masInformacion = false }
+                }) {
+                    Image(systemName: "xmark.square.fill")
+                        .font(.system(size: ap.constantes.iconSize * 1.3))
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(cDinamico, Color.red)
+                        .symbolEffect(.bounce, value: isPressed)
+                }
+                .frame(width: ap.constantes.iconSize * 1.3,
+                       height: ap.constantes.iconSize * 1.3) // 👈 fuerza el tamaño al del icono
+                .contentShape(Rectangle())
+                
+                Spacer()
+            }
             
             ZStack {
                 if isTitleEditing {
