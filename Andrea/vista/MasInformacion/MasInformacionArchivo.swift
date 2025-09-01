@@ -488,6 +488,9 @@ struct ImagenMiniatura: View {
         .onChange(of: archivo.tipoMiniatura) {
             viewModel.cambiarMiniatura(color: vm.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
         }
+        .onChange(of: archivo.imagenPersonalizada) {
+            viewModel.cambiarMiniatura(color: vm.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura, url: archivo.imagenPersonalizada)
+        }
     }
 }
 

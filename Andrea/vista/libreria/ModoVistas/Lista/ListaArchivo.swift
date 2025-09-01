@@ -133,5 +133,8 @@ struct ListaArchivo: View {
         .onChange(of: archivo.tipoMiniatura) {
             viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
         }
+        .onChange(of: archivo.imagenPersonalizada) {
+            viewModel.cambiarMiniatura(color: coleccionVM.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura, url: archivo.imagenPersonalizada)
+        }
     }
 }

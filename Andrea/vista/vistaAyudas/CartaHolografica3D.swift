@@ -35,7 +35,6 @@ struct ImportacionPersonalizada: View {
                         RoundedRectangle(cornerRadius: 6)
                             .fill(modoImportacion == .archivos ? color : Color.gray.opacity(0.2))
                             .frame(width: 150, alignment: .leading)
-                            .border(.red)
                     )
                 }
                 .buttonStyle(.plain)
@@ -90,7 +89,7 @@ struct CartaHolografica3D: View {
     init(vm: ModeloColeccion, archivo: Archivo) {
         self.vm = vm
         self.archivo = archivo
-        self.mostrarPopoverPersonalizado = archivo.tipoMiniatura == .personalizada
+        self.mostrarPopoverPersonalizado = false
     }
 
     var body: some View {
@@ -113,9 +112,12 @@ struct CartaHolografica3D: View {
                         let isSel = archivo.tipoMiniatura == option
                         
                         Button {
+                            if option == .personalizada {
+                                mostrarPopoverPersonalizado = true
+                                return
+                            }
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = option }
                             PersistenciaDatos().guardarDatoArchivo(valor: option, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
-                            if option == .personalizada { mostrarPopoverPersonalizado = true }
                         } label: {
                             HStack(spacing: 4) {
                                 Image(systemName: option.iconName)
@@ -221,6 +223,9 @@ struct CartaHolografica3D: View {
                 .onChange(of: archivo.tipoMiniatura) {
                     viewModel.cambiarMiniatura(color: vm.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura)
                 }
+                .onChange(of: archivo.imagenPersonalizada) {
+                    viewModel.cambiarMiniatura(color: vm.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura, url: archivo.imagenPersonalizada)
+                }
                 
                 Spacer()
                 
@@ -247,11 +252,9 @@ struct CartaHolografica3D: View {
             .sheet(isPresented: $mostrarDocumentPicker) {
                 ImagePickerDocument(
                     onPick: { urls in
-                        if let url = urls.first {
-                            print("✅ Imagen seleccionada:", url)
-                            SistemaArchivos.sa.crearColImagenesYCopiar(url: url)
-                            print("Importando: comprobando si existe .imagenes")
-                            viewModel.cambiarMiniatura(color: vm.color, archivo: archivo, tipoMiniatura: archivo.tipoMiniatura, url: url)
+                        if let urlImagen = urls.first { //solamnetre la primera seleccionada
+                            print("✅ Imagen seleccionada:", urlImagen)
+                            SistemaArchivos.sa.crearColImagenesYCopiar(color: vm.color, archivo: archivo, urlImagen: urlImagen, viewModel: viewModel)
                         }
                     },
                     onCancel: {

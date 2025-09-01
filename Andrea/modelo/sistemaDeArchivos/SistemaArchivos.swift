@@ -72,6 +72,18 @@ class SistemaArchivos: ObservableObject {
         
         // Indexar recursivamente a partir de la raiz
         self.indexamientoRecursivoColecciones(desde: homeURL)
+        print("URL de los documents")
+        print(self.homeURL)
+        print("URLS de .imagenes")
+        for url in SistemaArchivosUtilidades.sau.getUrlsRootDirectoryContents() {
+            print(url)
+            print("URLS QUE CONTIENE")
+            for suburl in SistemaArchivosUtilidades.sau.getListSubdirectoryContentsWithNoExtensions(urlPath: url) {
+                print(suburl)
+            }
+            print()
+        }
+        print()
         
     }
     
@@ -552,18 +564,26 @@ class SistemaArchivos: ObservableObject {
     /**
      Comprueba si la carpeta oculta de imagenes existe. Si no existe crear una, dentro de la coleccion princiopal. (/Documents/.imagenes)
      */
-    public func crearColImagenesYCopiar(url: URL) {
+    public func crearColImagenesYCopiar(color: Color, archivo: Archivo, urlImagen: URL, viewModel: ModeloMiniaturaArchivo) {
         
         //Creamos la coleccion /Documents/.imagenes para guardar en esa coleccion las imagenes personalizadas
         self.crearColeccion(nombre: ".imagenes")
         
-//        print("Coleccion oculta imagenes creada.")
+//        print("Coleccion oculta .imagenes creada.")
         let coleccionImagenesOculta = self.homeURL.appendingPathComponent(".imagenes", isDirectory: true)
         
         //Copia la imagen desde local -> /Andrea/Documents/.imagenes
-        self.crearArchivo(archivoURL: url, coleccionDestino: coleccionImagenesOculta)
+        self.crearArchivo(archivoURL: urlImagen, coleccionDestino: coleccionImagenesOculta)
         
-//        print("Foto \(url.path) copiada a ", coleccionImagenesOculta.path)
+        let nombreImagen = urlImagen.lastPathComponent
+        
+        let urlImagenPersonalizada = coleccionImagenesOculta.appendingPathComponent(nombreImagen)
+        archivo.imagenPersonalizada = urlImagenPersonalizada
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = EnumTipoMiniatura.personalizada }
+        PersistenciaDatos().guardarDatoArchivo(valor: EnumTipoMiniatura.personalizada, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
+        
+        //Persistencia para almacenar la url de la nueva imagen perosnalizada
+        PersistenciaDatos().guardarDatoArchivo(valor: nombreImagen, elementoURL: archivo.url, key: ClavesPersistenciaElementos().imagenPersonalizada)
     }
     
 }

@@ -77,7 +77,27 @@ class ModeloMiniatura {
                 return
                 
             case .personalizada:
-                DispatchQueue.main.async { completion(imagenBase) }
+                guard let imagenPersonalizada = archivo.imagenPersonalizada else {
+                    DispatchQueue.main.async { completion(imagenBase) }
+                    return
+                }
+                
+                do {
+                    let data = try Data(contentsOf: imagenPersonalizada)
+                    
+                    // 2. Downsample para evitar cargar un monstruo gigante en memoria
+                    let targetSize = CGSize(width: 1000, height: 1000)
+                    let miniatura = self.downsample(imageData: data, to: targetSize)
+                    
+                    // 3. Guardar en caché y devolver
+                    if let thumb = miniatura {
+                        self.guardarMiniatura(miniatura: thumb, archivo: archivo)
+                    }
+                    DispatchQueue.main.async { completion(miniatura ?? imagenBase) }
+                } catch {
+                    print("❌ Error cargando imagen personalizada:", error)
+                    DispatchQueue.main.async { completion(imagenBase) }
+                }
                 return
             }
         }
@@ -205,30 +225,23 @@ class ModeloMiniatura {
         return imagenBase
     }
     
-    public func obtenerMiniaturaPersonalizada(archivo: Archivo, color: Color, urlMiniatura: URL? = nil) -> UIImage? {
-        
-        print("Llamando a cambiar imagen per")
+    public func obtenerMiniaturaPersonalizada(
+        archivo: Archivo,
+        color: Color,
+        urlMiniatura: URL? = nil
+    ) -> UIImage? {
         
         let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
         
         guard let url = urlMiniatura else { return imagenBase }
         
-        print("Se ejecuta")
-        
         do {
-            guard url.startAccessingSecurityScopedResource() else {
-                print("❌ No se pudo acceder al recurso seguro")
-                return imagenBase
-            }
-            defer { url.stopAccessingSecurityScopedResource() }
-            // 1. Leer los datos binarios de la imagen
+            // ⚡ No hace falta security scope porque está en tu sandbox
             let data = try Data(contentsOf: url)
             
-            // 2. Downsample para evitar cargar un monstruo gigante en memoria
             let targetSize = CGSize(width: 1000, height: 1000)
             let miniatura = self.downsample(imageData: data, to: targetSize)
             
-            // 3. Guardar en caché y devolver
             if let thumb = miniatura {
                 self.guardarMiniatura(miniatura: thumb, archivo: archivo)
                 return thumb
@@ -240,8 +253,8 @@ class ModeloMiniatura {
             print("❌ Error cargando imagen personalizada:", error)
             return imagenBase
         }
-        
     }
+
     
     
     func eliminarMiniatura(archivo: Archivo) {

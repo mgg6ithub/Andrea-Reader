@@ -60,13 +60,9 @@ class ModeloMiniaturaArchivo: ObservableObject {
             case .aleatoria:
                 self.miniatura = mm.obtenerMiniaturaAleatoria(archivo: archivo, color: color)
             case .personalizada:
-                self.miniatura = mm.obtenerMiniaturaPersonalizada(archivo: archivo, color: color, urlMiniatura: url)
+            self.miniatura = mm.obtenerMiniaturaPersonalizada(archivo: archivo, color: color, urlMiniatura: archivo.imagenPersonalizada)
         }
         
     }
-    
-//    public func cambiarMiniaturaColeccion() {
-//        
-//    }
     
 }

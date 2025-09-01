@@ -122,6 +122,8 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     var dirName: String = ""
     var dirColor: UIColor = .gray
     
+    @Published var imagenPersonalizada: URL? = nil
+    
     //ATRIBUTOS
     var esColeccion = false
     var fileType: EnumTipoArchivos
@@ -196,6 +198,14 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
         //puntuacion (rating)
         self.puntuacion = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.puntuacion, default: p.puntuacion)
+        
+        //Si tiene imagen personalizada
+        let imagenPerString = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.imagenPersonalizada, default: p.imagenPersonalizada)
+        
+        let imagenPersonalizadaURL = SistemaArchivosUtilidades.sau.home.appendingPathComponent(".imagenes").appendingPathComponent(imagenPerString)
+        
+        self.imagenPersonalizada = imagenPersonalizadaURL
+        print("URL DE LA IMAGEN PERSONALIZADA: ", imagenPersonalizadaURL)
         
         super.init(nombre: fileName, url: fileURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
