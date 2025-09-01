@@ -149,6 +149,39 @@ class CBZArchivo: Archivo, ProtocoloComic {
         }
     }
     
+    override func obtenerPaginaAleatoria() -> String? {
+        do {
+            let archive = try Archive(url: self.url, accessMode: .read)
+
+            // Lista todas las imágenes en el CBZ
+            let imagenes = archive.compactMap { entry -> String? in
+                let lowercased = entry.path.lowercased()
+                if lowercased.hasSuffix(".jpg") || lowercased.hasSuffix(".jpeg") || lowercased.hasSuffix(".png") {
+                    return entry.path
+                }
+                return nil
+            }
+
+            guard imagenes.count > 1 else {
+                // si no hay más de 1 página, no se puede devolver aleatoria distinta de la primera
+                return nil
+            }
+
+            // La primera página según tu lógica actual
+            let primera = imagenes.first!
+
+            // Filtra para excluir la primera
+            let restantes = imagenes.filter { $0 != primera }
+
+            // Elige aleatoria
+            return restantes.randomElement()
+        } catch {
+            print("Error leyendo archivo CBZ: \(error)")
+            return nil
+        }
+    }
+
+    
     func cargarPaginas() -> [String] {
         do {
             let archive = try Archive(url: self.url, accessMode: .read)

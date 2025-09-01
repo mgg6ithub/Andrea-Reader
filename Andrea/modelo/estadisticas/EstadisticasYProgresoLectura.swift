@@ -114,10 +114,6 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         
         self.sesionesLectura = pd.recuperarSesiones(for: url, key: cpe.sesionesLecturas)
         
-        print("SESIONES DE LECTURA: ", self.url.lastPathComponent)
-        print(self.sesionesLectura)
-        print()
-        
         // TEST
         // Día 1 - hace 1 día desde hoy
 //        let dia1 = Calendar.current.date(byAdding: .day, value: -1, to: Date())!

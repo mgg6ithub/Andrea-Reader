@@ -319,6 +319,7 @@ class SistemaArchivos: ObservableObject {
         }
     }
     
+    
     //MARK: --- DUPLICACION RAPIDA DE UN ELEMENTO EN LA MISMA COLECCION ---
     public func duplicarElemento(_ elemento: any ElementoSistemaArchivosProtocolo, vm: ModeloColeccion) throws {
         fileQueue.sync {

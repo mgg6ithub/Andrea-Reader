@@ -244,6 +244,11 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         return "corrupted"
     }
     
+    // En Archivo
+    func obtenerPaginaAleatoria() -> String? {
+        return nil // por defecto nada
+    }
+    
     //Solamente se guardara la primera vez que se lea con la fecha en persistencia
     override var fechaPrimeraVezEntrado: Date? { didSet { pd.guardarDatoArchivo(valor: fechaPrimeraVezEntrado, elementoURL: url, key: cpe.fechaPrimeraVezEntrado) } }
     

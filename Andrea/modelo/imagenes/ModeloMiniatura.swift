@@ -29,46 +29,56 @@ class ModeloMiniatura {
         archivo: Archivo,
         completion: @escaping (UIImage?) -> Void
     ) {
-        // 1) Lanza todo el trabajo pesado en un hilo userInitiated
         DispatchQueue.global(qos: .utility).async {
-            //--- obtener imagen por defecto ---
+            //--- Imagen por defecto ---
             let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
-            //--- si el tipo de archivo es desconodio ---
+            
+            //--- Tipo de archivo desconocido ---
             guard archivo.fileType != .unknown else {
                 DispatchQueue.main.async { completion(imagenBase) }
                 return
             }
-            //--- si el tipo miniatura es la imagen base ---
-            guard archivo.tipoMiniatura != .imagenBase else {
+            
+            //--- Según el tipo de miniatura ---
+            switch archivo.tipoMiniatura {
+                
+            case .imagenBase:
                 DispatchQueue.main.async { completion(imagenBase) }
                 return
-            }
-
-            // 3) Si no hay páginas, devolvemos default
-            guard let primeraPagina = archivo.obtenerPrimeraPagina() else {
+                
+            case .primeraPagina:
+                guard let primeraPagina = archivo.obtenerPrimeraPagina(),
+                      let data = archivo.cargarDatosImagen(nombreImagen: primeraPagina)
+                else {
+                    DispatchQueue.main.async { completion(imagenBase) }
+                    return
+                }
+                
+                let miniatura = self.downsample(imageData: data, to: CGSize(width: 1000, height: 1000))
+                if let thumb = miniatura {
+                    self.guardarMiniatura(miniatura: thumb, archivo: archivo)
+                }
+                DispatchQueue.main.async { completion(miniatura ?? imagenBase) }
+                return
+                
+            case .aleatoria:
+                guard let randomPage = archivo.obtenerPaginaAleatoria(),
+                      let data = archivo.cargarDatosImagen(nombreImagen: randomPage)
+                else {
+                    DispatchQueue.main.async { completion(imagenBase) }
+                    return
+                }
+                
+                let miniatura = self.downsample(imageData: data, to: CGSize(width: 1000, height: 1000))
+                if let thumb = miniatura {
+                    self.guardarMiniatura(miniatura: thumb, archivo: archivo)
+                }
+                DispatchQueue.main.async { completion(miniatura ?? imagenBase) }
+                return
+                
+            case .personalizada:
                 DispatchQueue.main.async { completion(imagenBase) }
                 return
-            }
-
-            // 4) Carga datos y downsamplea
-            guard let data = archivo.cargarDatosImagen(nombreImagen: primeraPagina) else {
-                DispatchQueue.main.async { completion(imagenBase) }
-                return
-            }
-
-            let targetSize = CGSize(width: 1000, height: 1000)
-            let miniatura: UIImage?
-
-            // 4.1) Downsample dentro de este hilo userInitiated
-            miniatura = self.downsample(imageData: data, to: targetSize, scale: 1.0)
-
-            // 5) Guardar en cache y regresar al hilo principal
-            if let thumb = miniatura {
-                self.guardarMiniatura(miniatura: thumb, archivo: archivo)
-            }
-
-            DispatchQueue.main.async {
-                completion(miniatura ?? imagenBase)
             }
         }
     }
@@ -135,7 +145,7 @@ class ModeloMiniatura {
         }
     }
     
-    
+    //OBTIENE LA PRIMERA MINIATURA
     func obtenerMiniatura(archivo: Archivo) -> UIImage? {
         let key = obtenerLLave(archivoURL: archivo.url)
         if let miniatura = cacheMiniaturas.object(forKey: key) {
@@ -143,6 +153,68 @@ class ModeloMiniatura {
         }
         return nil
     }
+    
+    // OBTIENE LA PRIMERA MINIATURA
+    func obtenerMiniaturaPrimera(archivo: Archivo, color: Color) -> UIImage? {
+        // Imagen base como fallback
+        let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
+
+        // Intentar sacar la primera página del archivo
+        guard let primeraPagina = archivo.obtenerPrimeraPagina(),
+              let data = archivo.cargarDatosImagen(nombreImagen: primeraPagina)
+        else {
+            return imagenBase
+        }
+
+        // Downsamplear
+        let targetSize = CGSize(width: 1000, height: 1000)
+        let miniatura = self.downsample(imageData: data, to: targetSize)
+
+        // Guardar en cache y devolver
+        if let thumb = miniatura {
+            self.guardarMiniatura(miniatura: thumb, archivo: archivo)
+            return thumb
+        }
+
+        return imagenBase
+    }
+
+    
+    //OBTIENE UNA IMAGEN ALEATORIA PERO NUNCA ES LA PRIMERA
+    func obtenerMiniaturaAleatoria(archivo: Archivo, color: Color) -> UIImage? {
+        // Miniatura base por si falla
+        let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
+
+        // Pedimos una página aleatoria
+        guard let randomPage = archivo.obtenerPaginaAleatoria(),
+              let data = archivo.cargarDatosImagen(nombreImagen: randomPage)
+        else {
+            return imagenBase
+        }
+
+        // Downsample a tamaño razonable
+        let targetSize = CGSize(width: 1000, height: 1000)
+        let miniatura = self.downsample(imageData: data, to: targetSize)
+
+        // Guardamos en cache si se pudo crear
+        if let thumb = miniatura {
+            self.guardarMiniatura(miniatura: thumb, archivo: archivo)
+            return thumb
+        }
+
+        return imagenBase
+    }
+
+    //NECESITO MANEJAR AQUI UNA IMAGEN PERSONALIZADA
+    //cuando un archivo tengo el tipo personalizado de imagen significa que tendra en archivo.miniaturaPersonalizada y tendra una url de dicha imagen
+    //las imagenes se almaceneran en el programa en una carpeta oculta .customImages y su url siempre sera:
+    //          /Documents/.customImages/image1
+    //          /Documents/.customImages/image2
+    //1. Lo que habra que hacer será cargar dicha imagen sumandole el path absoluto en ese runtime a esa url para poder localizara.
+    //2. Habra que renderizarla  con el downsample y eso
+    //3. Habra que asignarla en el cache
+    
+    
     
     func eliminarMiniatura(archivo: Archivo) {
         let key = obtenerLLave(archivoURL: archivo.url)

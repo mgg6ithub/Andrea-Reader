@@ -98,6 +98,37 @@ class CBRArchivo: Archivo, ProtocoloComic {
             return nil
         }
     }
+    
+    override func obtenerPaginaAleatoria() -> String? {
+        do {
+            let archive = try Archive(path: self.url.path)
+            let entries = try archive.entries()
+            
+            // Filtrar solo imágenes y ordenarlas por nombre
+            let imageEntries = entries
+                .filter { entry in
+                    let name = entry.fileName.lowercased()
+                    return name.hasSuffix(".jpg") || name.hasSuffix(".jpeg") || name.hasSuffix(".png")
+                }
+                .sorted { $0.fileName.localizedStandardCompare($1.fileName) == .orderedAscending }
+            
+            // Si no hay al menos 2 imágenes, no hay "aleatoria distinta de la primera"
+            guard imageEntries.count > 1 else { return nil }
+            
+            // La primera según tu lógica
+            let primera = imageEntries.first!
+            
+            // Filtramos las demás
+            let restantes = imageEntries.dropFirst()
+            
+            // Elegimos aleatoria de las restantes
+            return restantes.randomElement()?.fileName
+        } catch {
+            print("Error abriendo archivo CBR: \(error)")
+            return nil
+        }
+    }
+
 
     
     //    func cargarPaginas() -> [String] {

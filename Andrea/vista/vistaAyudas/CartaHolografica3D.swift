@@ -1,5 +1,72 @@
 import SwiftUI
 
+enum ModoImportacion {
+    case archivos
+    case internet
+    case ninguno
+}
+
+struct ImportacionPersonalizada: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    @State var modoImportacion: ModoImportacion = .ninguno
+    
+    @Binding var mostrarDocumentPicker: Bool
+    let color: Color
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Label("Importar miniatura", systemImage: "square.and.arrow.down")
+                .font(.system(size: 12))
+
+                Button {
+                    modoImportacion = .archivos
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { mostrarDocumentPicker = true }
+                } label: {
+                    HStack {
+                        Image(systemName: ap.dispositivoActual.iconoDispositivo) // ej. "ipad"
+                        Text("Desde mi ipad")
+                    }
+                    .font(.system(size: 14, weight: modoImportacion == .archivos ? .bold : .medium))
+                    .foregroundColor(modoImportacion == .archivos ? .white : .gray)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(modoImportacion == .archivos ? color : Color.gray.opacity(0.2))
+                            .frame(width: 150, alignment: .leading)
+                            .border(.red)
+                    )
+                }
+                .buttonStyle(.plain)
+                
+                // --- Botón: Buscar en internet ---
+                Button {
+                    modoImportacion = .internet
+                } label: {
+                    HStack {
+                        Image("importar-internet")
+                        Text("Desde internet")
+                    }
+                    .font(.system(size: 14, weight: modoImportacion == .internet ? .bold : .medium))
+                    .foregroundColor(modoImportacion == .internet ? .white : .gray)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(modoImportacion == .internet ? Color.accentColor : Color.gray.opacity(0.2))
+                            .frame(width: 150, alignment: .leading)
+                    )
+                }
+                .buttonStyle(.plain)
+            
+        }
+        .padding()
+    }
+    
+}
+
+
 struct CartaHolografica3D: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -13,17 +80,19 @@ struct CartaHolografica3D: View {
     @State var vertical: Double = 0
     @State var horizontal: Double = 0
     
+    private let imageW: CGFloat = 340
+    private let imageH: CGFloat = 510
+    
+    @Namespace private var namespace
+    @State var mostrarPopoverPersonalizado: Bool
+    @State var mostrarDocumentPicker: Bool = false
+    
     init(vm: ModeloColeccion, archivo: Archivo) {
         self.vm = vm
         self.archivo = archivo
+        self.mostrarPopoverPersonalizado = archivo.tipoMiniatura == .personalizada
     }
-    
-    private let imageW: CGFloat = 340
-    private let imageH: CGFloat = 490
-    
-    @State private var selectedOption = "Aleatoria"
-    let options = ["Imagen base", "Primera imagen", "Aleatoria", "Personalizada"]
-    
+
     var body: some View {
         ZStack {
             Rectangle()
@@ -40,37 +109,44 @@ struct CartaHolografica3D: View {
             
             VStack(alignment: .center, spacing: 20) {
                 HStack(spacing: 8) {
-                        ForEach(EnumTipoMiniatura.allCases, id: \.self) { option in
-                            let isSel = archivo.tipoMiniatura == option
-                            Label(option.title, systemImage: option.iconName)
-                                .foregroundColor(isSel ? .white : .gray)
-                                .font(.system(size: 14, weight: .medium))
-                                .if(isSel) { v in v.bold() }
-                                .padding(.vertical, 6)
-                                .padding(.horizontal, 12)
-                                .background(
-                                    ZStack {
-                                        if isSel {
-                                            RoundedRectangle(cornerRadius: 6)
-                                                .fill(vm.color)
-                                                .matchedGeometryEffect(id: "selector", in: namespace)
-                                        }
-                                    }
-                                )
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
-                                        archivo.tipoMiniatura = option // 👈 guardamos el enum directamente
+                    ForEach(EnumTipoMiniatura.allCases, id: \.self) { option in
+                        let isSel = archivo.tipoMiniatura == option
+                        
+                        Button {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = option }
+                            PersistenciaDatos().guardarDatoArchivo(valor: option, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
+                            if option == .personalizada { mostrarPopoverPersonalizado = true }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: option.iconName)
+                                Text(option.title)
+                            }
+                            .font(.system(size: 14, weight: isSel ? .bold : .medium))
+                            .foregroundColor(isSel ? .white : .gray)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 10)
+                            .background(
+                                ZStack {
+                                    if isSel {
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .fill(vm.color)
+                                            .matchedGeometryEffect(id: "selector", in: namespace)
                                     }
                                 }
+                            )
                         }
+                        .buttonStyle(.plain)
                     }
+                }
+                .popover(isPresented: $mostrarPopoverPersonalizado) {
+                    ImportacionPersonalizada(mostrarDocumentPicker: $mostrarDocumentPicker, color: vm.color) // aquí puedes pasar también el archivo si lo necesitas
+                }
                 .padding(10)
                 .background(
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 6)
                         .fill(Color.gray.opacity(0.2))
                 )
-                .padding(.top, 30)
+                .padding(.top, 45)
                 .padding(.bottom, 80)
                 
                 // Carta con efecto holográfico
@@ -114,7 +190,6 @@ struct CartaHolografica3D: View {
                         .shadow(color: glowColor.opacity(0.9), radius: 20)
                         .shadow(color: glowColor.opacity(0.7), radius: 40)
                         .shadow(color: glowColor.opacity(0.4), radius: 60)
-
 
                 }
                 .rotation3DEffect(.degrees(vertical), axis: (x: 1, y: 0, z: 0))
@@ -169,11 +244,21 @@ struct CartaHolografica3D: View {
                 .padding(.bottom, 30)
                 
             } //7FIN ZSTACK
+            .sheet(isPresented: $mostrarDocumentPicker) {
+                ImagePickerDocument(
+                    onPick: { urls in
+                        if let url = urls.first {
+                            print("✅ Imagen seleccionada:", url)
+                        }
+                    },
+                    onCancel: {
+                        print("❌ Cancelado")
+                    }
+                )
+            }
 
         }
     }
-    
-    @Namespace private var namespace
     
     // helper para filas de texto
     private func infoRow(_ title: String, _ value: String) -> some View {

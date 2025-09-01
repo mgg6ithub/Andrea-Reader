@@ -46,4 +46,21 @@ struct DocumentPicker: UIViewControllerRepresentable {
     }
 }
 
+struct ImagePickerDocument: View {
+    var onPick: ([URL]) -> Void
+    var onCancel: () -> Void
+    
+    var body: some View {
+        DocumentPicker(
+            onPick: onPick,
+            onCancel: onCancel,
+            allowMultipleSelection: false, // 👈 solo 1
+            contentTypes: [
+                .image // 👈 restringido a imágenes (UTType.image)
+            ]
+        )
+    }
+}
+
+
 
