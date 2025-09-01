@@ -21,7 +21,7 @@ struct ImportacionPersonalizada: View {
 
                 Button {
                     modoImportacion = .archivos
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { mostrarDocumentPicker = true }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { mostrarDocumentPicker = true }
                 } label: {
                     HStack {
                         Image(systemName: ap.dispositivoActual.iconoDispositivo) // ej. "ipad"
@@ -31,10 +31,10 @@ struct ImportacionPersonalizada: View {
                     .foregroundColor(modoImportacion == .archivos ? .white : .gray)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 10)
+                    .frame(width: 150, alignment: .leading)
                     .background(
                         RoundedRectangle(cornerRadius: 6)
                             .fill(modoImportacion == .archivos ? color : Color.gray.opacity(0.2))
-                            .frame(width: 150, alignment: .leading)
                     )
                 }
                 .buttonStyle(.plain)
@@ -51,10 +51,10 @@ struct ImportacionPersonalizada: View {
                     .foregroundColor(modoImportacion == .internet ? .white : .gray)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 10)
+                    .frame(width: 150, alignment: .leading)
                     .background(
                         RoundedRectangle(cornerRadius: 6)
                             .fill(modoImportacion == .internet ? Color.accentColor : Color.gray.opacity(0.2))
-                            .frame(width: 150, alignment: .leading)
                     )
                 }
                 .buttonStyle(.plain)
@@ -65,8 +65,50 @@ struct ImportacionPersonalizada: View {
     
 }
 
+struct BotonMenuSeleccionMiniatura: View {
+    
+    @ObservedObject var archivo: Archivo
+    let seleccionMiniatura: EnumTipoMiniatura
+    let color: Color
+    let icono: String
+    let titulo: String
+    @Binding var mostrarPopoverPersonalizado: Bool
+    var namespace: Namespace.ID
+    
+    var isSel: Bool { archivo.tipoMiniatura == seleccionMiniatura }
+    
+    var body: some View {
+        Button {
+            if seleccionMiniatura == .personalizada { mostrarPopoverPersonalizado = true }
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = seleccionMiniatura }
+            PersistenciaDatos().guardarDatoArchivo(valor: seleccionMiniatura, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: icono)
+                Text(titulo)
+            }
+            .font(.system(size: 14, weight: isSel ? .bold : .medium))
+            .foregroundColor(isSel ? .white : .gray)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 10)
+            .background(
+                ZStack {
+                    if isSel {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(color)
+                            .matchedGeometryEffect(id: "selector", in: namespace)
+                    }
+                }
+            )
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 
 struct CartaHolografica3D: View {
+    
+    @Namespace private var namespace
     
     @EnvironmentObject var ap: AppEstado
     @ObservedObject var vm: ModeloColeccion
@@ -82,9 +124,13 @@ struct CartaHolografica3D: View {
     private let imageW: CGFloat = 340
     private let imageH: CGFloat = 510
     
-    @Namespace private var namespace
     @State var mostrarPopoverPersonalizado: Bool
     @State var mostrarDocumentPicker: Bool = false
+    
+    @State private var imagenBase: Bool = false
+    @State private var primera: Bool = false
+    @State private var aleatoria: Bool = false
+    @State private var personalizada: Bool = false
     
     init(vm: ModeloColeccion, archivo: Archivo) {
         self.vm = vm
@@ -108,40 +154,13 @@ struct CartaHolografica3D: View {
             
             VStack(alignment: .center, spacing: 20) {
                 HStack(spacing: 8) {
-                    ForEach(EnumTipoMiniatura.allCases, id: \.self) { option in
-                        let isSel = archivo.tipoMiniatura == option
-                        
-                        Button {
-                            if option == .personalizada {
-                                mostrarPopoverPersonalizado = true
-                                return
-                            }
-                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = option }
-                            PersistenciaDatos().guardarDatoArchivo(valor: option, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
-                        } label: {
-                            HStack(spacing: 4) {
-                                Image(systemName: option.iconName)
-                                Text(option.title)
-                            }
-                            .font(.system(size: 14, weight: isSel ? .bold : .medium))
-                            .foregroundColor(isSel ? .white : .gray)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 10)
-                            .background(
-                                ZStack {
-                                    if isSel {
-                                        RoundedRectangle(cornerRadius: 6)
-                                            .fill(vm.color)
-                                            .matchedGeometryEffect(id: "selector", in: namespace)
-                                    }
-                                }
-                            )
+                    BotonMenuSeleccionMiniatura(archivo: archivo, seleccionMiniatura: .imagenBase, color: vm.color, icono: "document", titulo: "Imagen base", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace)
+                    BotonMenuSeleccionMiniatura(archivo: archivo, seleccionMiniatura: .primeraPagina, color: vm.color, icono: "photo", titulo: "Primera página", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace)
+                    BotonMenuSeleccionMiniatura(archivo: archivo, seleccionMiniatura: .aleatoria, color: vm.color, icono: "photo.on.rectangle.angled.fill", titulo: "Aleatoria", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace)
+                    BotonMenuSeleccionMiniatura(archivo: archivo, seleccionMiniatura: .personalizada, color: vm.color, icono: "photo.artframe", titulo: "Personalizada", mostrarPopoverPersonalizado: $mostrarPopoverPersonalizado, namespace: namespace)
+                        .popover(isPresented: $mostrarPopoverPersonalizado) {
+                            ImportacionPersonalizada(mostrarDocumentPicker: $mostrarDocumentPicker, color: vm.color) // aquí puedes pasar también el archivo si lo necesitas
                         }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .popover(isPresented: $mostrarPopoverPersonalizado) {
-                    ImportacionPersonalizada(mostrarDocumentPicker: $mostrarDocumentPicker, color: vm.color) // aquí puedes pasar también el archivo si lo necesitas
                 }
                 .padding(10)
                 .background(
