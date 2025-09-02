@@ -44,7 +44,6 @@ struct CabeceraMasInformacion: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            
             if pantallaCompleta {
                 Button(action: {
                     isPressed = true
