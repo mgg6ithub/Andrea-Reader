@@ -77,6 +77,8 @@ struct VistaPrincipal: View {
             // --- MAS INFORMACION DE UNA COLECCION ---
             if ap.masInformacionColeccion, let coleccionseleccionada = ap.coleccionseleccionada {
                 MasInfoCol(pantallaCompleta: $ap.pantallaCompleta, vm: coleccionseleccionada)
+                    .ignoresSafeArea()
+                    .zIndex(1)
             }
             
             

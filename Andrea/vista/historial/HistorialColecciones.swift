@@ -125,17 +125,9 @@ struct HistorialColecciones: View {
             if pc.getColeccionActual().coleccion.nombre != "HOME" {
                 Button(action: {
                     
-//                    self.colorTemporal = pc.getColeccionActual().color
                     ap.coleccionseleccionada = pc.getColeccionActual()
                     withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacionColeccion = true }
                     
-                    if ap.animaciones {
-                        withAnimation {
-                            esVerColeccionPresionado.toggle()
-                        }
-                    } else {
-                        esVerColeccionPresionado.toggle()
-                    }
                 }) {
                     HStack(spacing: 6) {
                         Image("custom-folder-lupa")
@@ -153,11 +145,6 @@ struct HistorialColecciones: View {
                     .fondoBoton(pH: ConstantesPorDefecto().horizontalPadding, pV: 7, isActive: false, color: .gray, borde: false)
                     .aparicionStiffness(show: $show)
                 }
-//                .sheet(isPresented: $esVerColeccionPresionado, onDismiss: {
-//                    pc.getColeccionActual().color = colorTemporal //Al cerrar asignamos el color seleccionado
-//                }) {
-//                    MasInformacionColeccion(vm: pc.getColeccionActual(), pantallaCompleta: $pantallaCompleta)
-//                }
                 .padding(.trailing, 2.5)
             }
         }
