@@ -12,28 +12,17 @@ struct CuadriculaVista: View {
     var namespace: Namespace.ID
     
     let elementos: [ElementoSistemaArchivos]
+//    @Binding var hasScrolled: Bool
     
     @State private var visibleIndices: [VisibleIndex] = []
     @State private var debounceWorkItem: DispatchWorkItem?
     @State private var elementoArrastrando: ElementoSistemaArchivos? = nil
     @State private var scrollEnabled: Bool = true
     
-    @State private var hasScrolled: Bool = true
-
+//    @State private var lastOffset: CGFloat = 0
+    
     var body: some View {
         GeometryReader { geo in
-            
-//            ZStack {
-//                if hasScrolled {
-//                    Rectangle()
-//                        .fill(Color.gray)
-//                        .frame(height: 1)
-//                        .transition(.opacity)
-//                        .frame(maxHeight: .infinity, alignment: .top)
-//
-//                        .zIndex(1)
-//                }
-
                let outerPadding: CGFloat = 20      // ← cuanto quieras de margen a cada lado
                let spacing: CGFloat = 20           // ← spacing interno entre celdas
                let columnsCount = vm.columnas
@@ -86,7 +75,6 @@ struct CuadriculaVista: View {
                             }
                         }
                         .padding(.horizontal, outerPadding)
-                        .padding(.vertical, spacing/2)
                         .animation(.easeInOut(duration: 0.3), value: vm.columnas)
                         .background(
                             GeometryReader { _ in Color.clear }
@@ -96,11 +84,19 @@ struct CuadriculaVista: View {
                     .onPreferenceChange(ScrollIndexPreferenceKey.self) { newValue in
                         visibleIndices = newValue
 
-                        // ✅ Detectar si el ítem top está debajo del inicio visible
 //                        if let top = newValue.min(by: { $0.minY < $1.minY }) {
-//                            hasScrolled = top.minY < -1  // <- margen de tolerancia por seguridad
-//                        } else {
-//                            hasScrolled = false
+//                            let currentOffset = top.minY
+//                            
+//                            // ✅ si va hacia abajo (el valor disminuye), activar
+//                            if currentOffset < lastOffset {
+//                                hasScrolled = true
+//                            }
+//                            // ✅ si va hacia arriba (el valor aumenta y vuelve a 0), desactivar
+//                            if currentOffset >= 0 {
+//                                hasScrolled = false
+//                            }
+//                            
+//                            lastOffset = currentOffset
 //                        }
 
                         // Resto de lógica (debounce, scrollPos)...
@@ -144,10 +140,8 @@ struct CuadriculaVista: View {
                         atributo: "columnas"
                     )
                 }
-//                .zIndex(0)
-//            } //vstack porsiacaso
 
-        }
+        } //zstack
     }
     
 }

@@ -7,30 +7,64 @@ struct Libreria: View {
     @ObservedObject var vm: ModeloColeccion
     @Namespace private var animationNamespace
 
+    @State private var hasScrolled: Bool = false
+    
+    @State private var searchText: String = ""
+    @FocusState private var searchFieldFocused: Bool
+    
     var body: some View {
         
         let visibles = vm.elementosParaMostrar(segun: ap.sistemaArchivos)
-
-        // Caso especial: en ARBOL no hay archivos (puede haber subcolecciones, pero no se pintan)
-        // Si tienes vm.elementosCargados, agrégalo al condicional para evitar parpadeos:
-        // let noHayArchivosEnArbol = ap.sistemaArchivos == .arbol && vm.elementosCargados && !vm.tieneArchivos
-//        let noHayArchivosEnArbol = ap.sistemaArchivos == .arbol && !vm.tieneArchivos
         
-        ZStack {
+        var elementosFiltrados: [ElementoSistemaArchivos] {
+            guard !searchText.isEmpty else { return visibles }
+            return visibles.filter { elemento in
+                if let archivo = elemento as? Archivo {
+                    return archivo.nombre.localizedCaseInsensitiveContains(searchText)
+                } else if let coleccion = elemento as? Coleccion {
+                    return coleccion.nombre.localizedCaseInsensitiveContains(searchText)
+                } else {
+                    return false
+                }
+            }
+        }
+        
+        VStack(alignment: .center, spacing: 0) {
+            
+            if ap.barraBusqueda {
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.gray)
+                    
+                    TextField(searchFieldFocused ? "" : "Buscar archivos...", text: $searchText)
+                        .focused($searchFieldFocused)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .disableAutocorrection(true)
+                }
+                .padding([.horizontal, .bottom], 10)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color(.systemGray6))
+                )
+                .padding([.horizontal])
+                
+                Rectangle()
+                    .fill(Color.gray)
+                    .frame(height: 1)
+                    .padding(.horizontal, 20)
+            }
+            
             if vm.elementos.isEmpty {
                 if vm.coleccion.nombre == "HOME" {
                     ImagenLibreriaVacia(imagen: "estanteria-vacia2", texto: "Biblioteca \"Andrea\" vacía.", anchura: 315, altura: 350)
                 } else {
                     ImagenLibreriaVacia(imagen: "caja-vacia", texto: "Colección vacia, sin elementos.", anchura: 235, altura: 235)
                 }
-            } 
-//            else if noHayArchivosEnArbol {
-//                ImagenLibreriaVacia(imagen: "caja-vacia", texto: "Colección vacia, sin elementos.", anchura: 235, altura: 235)
-//            }
+            }
             else {
                 switch vm.modoVista {
                 case .cuadricula:
-                    CuadriculaVista(vm: vm, namespace: animationNamespace, elementos: visibles)
+                    CuadriculaVista(vm: vm, namespace: animationNamespace, elementos: elementosFiltrados)
                         .transition(.opacity.combined(with: .scale))
 
                 case .lista:

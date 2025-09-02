@@ -76,9 +76,6 @@ class PilaColecciones: ObservableObject {
         //Comprobamos que existen las colecciones recuperadas
         let homeURLStripped = self.homeURL.deletingLastPathComponent()
         
-        let pilaRecuperada = pd.obtenerAjusteGeneral(key: ClavesPersistenciaAjustesGenerales().pilaGuardada, default: AjustesGeneralesPredeterminados().pilaGuardada)
-        print("PILA RECUPERADA DE PERSISTENCIA: ", pilaRecuperada)
-        
         if let pilaGuardada = pd.obtenerAjusteGeneral(key: ClavesPersistenciaAjustesGenerales().pilaGuardada, default: AjustesGeneralesPredeterminados().pilaGuardada) {
             print("Pila guardada: ", pilaGuardada)
             let coleccionesGuardadas: [URL] = pilaGuardada.compactMap { col in

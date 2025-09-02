@@ -247,6 +247,7 @@ struct ClavesPersistenciaAjustesGenerales {
     public let historialSize: String = "historialSize"
     
     //LIBRERIA
+    public let barraBusqueda: String = "barraBusqueda"
     //porcentaje
     public let porcentaje: String = "porcentaje"
     
@@ -314,6 +315,8 @@ struct AjustesGeneralesPredeterminados {
     public let historialSize: Double = 18.0
     
     //LIBRERIA
+    public let barraBusqueda: Bool = true
+    
     //porcentaje
     public let porcentaje: Bool = true
     

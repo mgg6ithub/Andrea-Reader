@@ -28,6 +28,16 @@ struct AjustesLibreria: View {
             Text("Define cómo se ven y se mueven tus libros. Personaliza las cartas, activa el porcentaje de lectura y afina el scroll para una experiencia fluida.")
                 .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
             
+            Text("Iconos")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.colorContrario, pH: 6, pW: 0, b: true)
+            
+            Text("Puedes usar doble color que se adapta a la aplicación, hacer que cambien según el tema o mantenerlos en un gris neutro más discreto.")
+                .capaDescripcion(s: const.descripcionAjustes, c: tema.secondaryText, pH: paddingVertical, pW: 0)
+            
+            VStack(spacing: 0) {
+                TogglePersonalizado(titulo: "Barra de busqueda", descripcion: "La barra de busqueda te ayudara filtrar cualquier archivo dentro de una colección.", opcionBinding: $ap.barraBusqueda, opcionTrue: "Ocultar barra", opcionFalse: "Mostrar barra", isInsideToggle: true, isDivider: false)
+            }.fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows)
+            
             TituloInformacion(titulo: "Porcentaje", isSection: isSection)
             
             Text("Cada archivo importado puede mostrar su progreso de lectura. Puedes desactivarlo o personalizar la forma en la que se ve.")

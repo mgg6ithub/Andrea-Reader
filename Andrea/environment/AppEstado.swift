@@ -78,6 +78,8 @@ class AppEstado: ObservableObject {
     
     // --- LIBRERIA ---
     
+    @Published var barraBusqueda: Bool { didSet { pd.guardarAjusteGeneral(valor: barraBusqueda, key: cpag.barraBusqueda) } }
+    
     //porcentaje
     @Published var porcentaje: Bool { didSet { pd.guardarAjusteGeneral(valor: porcentaje, key: cpag.porcentaje) } }
     
@@ -172,6 +174,7 @@ class AppEstado: ObservableObject {
         
         
         //LIBRERIA
+        self.barraBusqueda = pd.obtenerAjusteGeneral(key: cpag.barraBusqueda, default: p.barraBusqueda)
         //porcentaje
         self.porcentaje = pd.obtenerAjusteGeneral(key: cpag.porcentaje, default: p.porcentaje)
         
