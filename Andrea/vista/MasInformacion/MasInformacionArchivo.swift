@@ -406,7 +406,7 @@ struct Contenido: View {
                             Text(descripcionTexto.isEmpty ? "???" : descripcionTexto)
                                 .font(.system(size: descripcionTexto.isEmpty ? titleS * 0.8 : titleS))
                                 .foregroundColor(tema.tituloColor)
-                                .bold(!autorTexto.isEmpty)
+                                .bold(!descripcionTexto.isEmpty)
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(6)
                                 .truncationMode(.tail)

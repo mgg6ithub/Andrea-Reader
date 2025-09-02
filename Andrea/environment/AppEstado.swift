@@ -99,6 +99,10 @@ class AppEstado: ObservableObject {
     // --- MAS INFORMACION DE UN ELEMENTO ---
     @Published var masInformacion: Bool = false
     @Published var elementoSeleccionado: (any ElementoSistemaArchivosProtocolo)? = nil
+    
+    @Published var masInformacionColeccion: Bool = false
+    @Published var coleccionseleccionada: ModeloColeccion? = nil
+    
     @Published var pantallaCompleta: Bool = false
 
     @Published var vistaPrevia: Bool = false
