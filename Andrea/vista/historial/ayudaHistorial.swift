@@ -82,7 +82,7 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
     
     let textoSize: CGFloat
     let colorPrimario: Color
-    let color: Color
+    @ObservedObject var vm: ModeloColeccion
     let isActive: Bool
     let pH: CGFloat
     let animationDelay: Double
@@ -100,12 +100,12 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .layoutPriority(1)
 //            .fondoBoton(pH: pH, pV: 7, isActive: isActive, color: color, borde: true)
 //            .fondoBoton1(pH: pH, pV: 7, isActive: isActive, color: color)
-            .fondoHistorial(estilo: ap.historialEstilo, pH: pH, isActive: isActive, color: color)
+            .fondoHistorial(estilo: ap.historialEstilo, pH: pH, isActive: isActive, color: vm.color)
             .if(isActive) { view in
                 view.aparicionStiffness(show: $show)
             }
             .aparicionSuave(show: $show)
-            .animacionDesvanecer(color)
+            .animacionDesvanecer(vm.color)
     }
 }
 

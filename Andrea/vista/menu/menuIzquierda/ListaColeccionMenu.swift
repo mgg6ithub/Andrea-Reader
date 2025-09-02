@@ -38,7 +38,7 @@ struct ListaColeccionMenu: View {
                             ColeccionRectanguloAvanzado(
                                 textoSize: 14,
                                 colorPrimario: tema.textColor,
-                                color: Color.gray,
+                                vm: pc.getColeccionActual(),
                                 isActive: pc.getColeccionActual().coleccion == coleccionPrincipal,
                                 pH: 7,
                                 animationDelay: 0

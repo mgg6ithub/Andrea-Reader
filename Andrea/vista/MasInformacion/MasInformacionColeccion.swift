@@ -198,8 +198,8 @@ struct ImagenColeccion: View {
                     .frame(width: 220, height: 270 * ap.constantes.scaleFactor, alignment: .top)
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(
-                        col.color.gradient,
-                        col.color.darken(by: 0.2).gradient
+                        vm.color.gradient,
+                        vm.color.darken(by: 0.2).gradient
                     )
             }
             
@@ -257,6 +257,7 @@ struct SelectorColor: View {
                             colorActual = color
                             vm.color = color
                         }
+                        PersistenciaDatos().guardarDatoArchivo(valor: color, elementoURL: vm.coleccion.url, key: ClavesPersistenciaElementos().colorGuardado)
                     } label: {
                         RoundedRectangle(cornerRadius: 4)
                             .fill(

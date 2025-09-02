@@ -30,7 +30,7 @@ struct HistorialColecciones: View {
                 ColeccionRectanguloAvanzado(
                     textoSize: grande,
                     colorPrimario: tema.textColor,
-                    color: Color.gray,
+                    vm: ModeloColeccion(),
                     isActive: true,
                     pH: paddingScalado,
                     animationDelay: delay(0)
@@ -43,7 +43,6 @@ struct HistorialColecciones: View {
                             .bold()
                     }
                 }
-                
             } else {
                 Button(action: {
                    pc.conservarSoloHome()
@@ -51,7 +50,7 @@ struct HistorialColecciones: View {
                     ColeccionRectanguloAvanzado(
                         textoSize: peke,
                         colorPrimario: tema.textColor,
-                        color: Color.gray,
+                        vm: ModeloColeccion(),
                         isActive: false,
                         pH: paddingScalado,
                         animationDelay: delay(0)
@@ -76,7 +75,7 @@ struct HistorialColecciones: View {
                                     ColeccionRectanguloAvanzado(
                                         textoSize: grande,
                                         colorPrimario: tema.textColor,
-                                        color: vm.color,
+                                        vm: vm,
                                         isActive: true,
                                         pH: paddingScalado,
                                         animationDelay: delay(Double(index))
@@ -97,7 +96,7 @@ struct HistorialColecciones: View {
                                         ColeccionRectanguloAvanzado(
                                             textoSize: peke,
                                             colorPrimario: tema.secondaryText,
-                                            color: vm.color,
+                                            vm: vm,
                                             isActive: false,
                                             pH: paddingScalado,
                                             animationDelay: delay(Double(index))
