@@ -2,6 +2,8 @@ import SwiftUI
 
 struct PopOutCollectionsView<Header: View, Content: View>: View {
     
+    @EnvironmentObject var me: MenuEstado
+    
     // --- PARAMETROS ---
     @ViewBuilder var header: (Bool) -> Header
     @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
@@ -14,7 +16,6 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
     @State private var isRightSide: Bool = false
     
     var body: some View {
-        
         header(animatedView)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .onGeometryChange1 { newValue in
@@ -40,6 +41,7 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
                ) {
                    cerrarMenu()
                }
+               .statusBar(hidden: me.barraEstado)
 
             }
             .padding(.horizontal, animatedView ? 5 : 0)

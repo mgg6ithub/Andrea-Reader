@@ -87,6 +87,7 @@ struct VistaPrincipal: View {
                 .background(tema.backgroundGradient) // tu color
                 .ignoresSafeArea()
                 .presentationBackground(.clear)            // <- quita el blanco del presentador
+                .statusBar(hidden: me.barraEstado)
         }
         .foregroundColor(tema.textColor)
         .animation(.easeInOut, value: tema)

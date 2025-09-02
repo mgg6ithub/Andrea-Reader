@@ -100,10 +100,6 @@ struct MasInformacionArchivo: View {
                             }
                             .padding(15)
                             .frame(maxWidth: .infinity, alignment: .center)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(.gray.opacity(0.25), lineWidth: 1)
-                            )
                             .aparicionStiffness(show: $show)
 
                         } else {
@@ -117,7 +113,10 @@ struct MasInformacionArchivo: View {
                             .padding(.bottom, 20)
                         }
                     }
-                    
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(.gray.opacity(0.25), lineWidth: 1)
+                    )
                     
                     //FECHAS
                     InformacionAvanzadaFechas(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
