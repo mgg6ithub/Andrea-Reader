@@ -5,8 +5,8 @@ import SwiftUI
 struct AndreaAppView_Preview: PreviewProvider {
     static var previews: some View {
         // Instancias de ejemplo para los objetos de entorno
-        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
-//        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
+//        let ap = AppEstado(screenWidth: 375, screenHeight: 667) // > iphone 8
+        let ap = AppEstado(screenWidth: 393, screenHeight: 852) //iphone 15
 //        let ap = AppEstado(screenWidth: 744, screenHeight: 1133) //ipad 9,8,7
 //        let ap = AppEstado(screenWidth: 820, screenHeight: 1180) //ipad 10
 //        let ap = AppEstado(screenWidth: 834, screenHeight: 1194) //ipad Pro 11

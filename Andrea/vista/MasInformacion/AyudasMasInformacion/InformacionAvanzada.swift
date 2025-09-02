@@ -2,6 +2,26 @@
 
 import SwiftUI
 
+#Preview {
+    PreviewMasInformacion2()
+}
+//
+private struct PreviewMasInformacion2: View {
+    @State private var pantallaCompleta = false
+    
+    var body: some View {
+        MasInformacionArchivo(
+            vm: ModeloColeccion(),
+            archivo: Archivo.preview,
+            pantallaCompleta: $pantallaCompleta,
+            escala: 1.0
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+    }
+}
+
 struct InformacionAvanzadaFechas: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -12,17 +32,19 @@ struct InformacionAvanzadaFechas: View {
     let opacidad: CGFloat
     @Binding var masInfoPresionado: Bool
     
+    private var const: Constantes { ap.constantes }
+    private var titleS: CGFloat { const.titleSize }
+    
     var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 10) {
-                HStack(spacing: 2) {
+                HStack(alignment: .firstTextBaseline, spacing: 2) {
                     Image(systemName: "calendar")
                         .font(.system(size: ap.constantes.iconSize * 0.8))
-                        .offset(y: -5.5)
-                    
+
                     Text("Fechas")
-                        .font(.headline)
-                        .padding(.bottom, 5)
+                        .bold()
+                        .font(.system(size: titleS))
                 }
                 
                 GrupoDatoAvanzadoEditable(nombre: "Fecha de publicación", valor: archivo.yearPublicion != nil ? "\(archivo.yearPublicion!)" : "Desconocido")
@@ -60,18 +82,19 @@ struct InformacionAvanzada: View {
        
        let opacidad: CGFloat
     @Binding var masInfoPresionado: Bool
+    private var const: Constantes { ap.constantes }
+    private var titleS: CGFloat { const.titleSize }
     
     var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 10) {
-                HStack(spacing: 2) {
+                HStack(alignment: .firstTextBaseline, spacing: 2) {
                     Image(systemName: "info.square")
                         .font(.system(size: ap.constantes.iconSize * 0.8))
-                        .offset(y: -5.5)
                     
                     Text("Información avanzada")
-                        .font(.headline)
-                        .padding(.bottom, 5)
+                        .bold()
+                        .font(.system(size: titleS))
                 }
                 
                 
@@ -88,7 +111,8 @@ struct InformacionAvanzada: View {
                 }) {
                     HStack(spacing: 5) {
                         Text(masInfoPresionado ? "Menos información" : "Más información")
-                            .font(.subheadline)
+                            .font(.system(size: titleS))
+                            .bold()
                             .padding(.bottom, 5)
                         
                         Image(systemName: "chevron.forward")
@@ -121,13 +145,20 @@ struct InformacionAvanzada: View {
 }
 
 struct GrupoDatoAvanzadoSoloLectura: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
     let nombre: String
     let valor: String
+    
+    private var const: Constantes { ap.constantes }
+    private var titleS: CGFloat { const.titleSize }
 
     var body: some View {
         HStack(alignment: .top) {
             Text(nombre)
-                .foregroundColor(.secondary)
+                .font(.system(size: titleS))
+                .foregroundColor(ap.temaResuelto.secondaryText)
 
             Spacer()
             
@@ -135,6 +166,7 @@ struct GrupoDatoAvanzadoSoloLectura: View {
                 .multilineTextAlignment(.trailing)
                 .lineLimit(3)                 // 👉 permite hasta 5 líneas
                 .minimumScaleFactor(0.5)      // 👉 reducirá la fuente si no cabe
+                .font(.system(size: titleS))
 
         }
         .frame(maxWidth: .infinity)
@@ -151,11 +183,15 @@ struct GrupoDatoAvanzadoEditable: View {
     @State var valor: String
     @State private var editando = false
 
+    private var const: Constantes { ap.constantes }
+    private var titleS: CGFloat { const.titleSize }
+    
     var body: some View {
         HStack(alignment: .top) {
             HStack(spacing: 2) {
                 Text(nombre)
-                    .foregroundColor(.secondary)
+                    .font(.system(size: titleS))
+                    .foregroundColor(ap.temaResuelto.secondaryText)
                 Image(systemName: "pencil")
                     .font(.system(size: ap.constantes.iconSize * 0.5))
                     .foregroundColor(ap.temaResuelto.secondaryText)
@@ -172,6 +208,7 @@ struct GrupoDatoAvanzadoEditable: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: 200, alignment: .trailing)
+                .font(.system(size: titleS))
             } else {
                 Text(valor)
                     .multilineTextAlignment(.trailing)
@@ -180,6 +217,7 @@ struct GrupoDatoAvanzadoEditable: View {
                     .onTapGesture {
                         editando = true
                     }
+                    .font(.system(size: titleS))
             }
         }
         .frame(maxWidth: .infinity)

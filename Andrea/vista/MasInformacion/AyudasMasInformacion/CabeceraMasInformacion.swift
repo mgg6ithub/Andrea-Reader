@@ -119,7 +119,7 @@ struct CabeceraMasInformacion: View {
                     }
                 }
             }
-            .padding(.horizontal, 15)
+            .padding(.horizontal, pantallaCompleta ? 15 : 0)
             
             Spacer()
             

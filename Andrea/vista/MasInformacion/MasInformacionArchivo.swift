@@ -49,75 +49,75 @@ struct MasInformacionArchivo: View {
             ScrollView(.vertical, showsIndicators: false) {
                 //IMAGEN + DATOS
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack {
+                    if ap.resolucionLogica == .small {
                         Contenido(archivo: archivo, vm: vm)
+                            .padding(.bottom, 10)
+                    } else {
+                        HStack {
+                            Contenido(archivo: archivo, vm: vm)
+                        }
+                        .padding(.bottom, 10)
                     }
-                    .padding(.bottom, 10)
                     
                     //ESTADISTICAS
                     VStack(alignment: .center, spacing: 0) {
                         if archivo.fechaPrimeraVezEntrado == nil || archivo.estadisticas.paginaActual == 0 {
-                            HStack {
-                                Spacer()
-                                VStack(alignment: .center) {
-                                    Spacer()
-                                    VStack(spacing: 0) {
-                                        
-                                        HStack(spacing: 3) {
-                                            Image("book-slash")
-                                                .font(.system(size: const.iconSize * 0.75, weight: .medium))
-                                            
-                                            Text("No hay sesiones de lectura.")
-                                            .font(.system(size: const.titleSize * 0.8))
-                                            .bold()
-                                            .offset(y: 2)
-                                        }
-                                        
-                                        Image("buho-pantalla")
-                                            .resizable()
-                                            .frame(width: 200 * scale, height: 215 * scale)
-                                        
-                                        Text("Aun no has leido este archivo.\n¿A que esperas para hacerlo?")
-//                                            .font(.headline)
-                                            .foregroundColor(ap.temaResuelto.textColor)
-                                        
-                                        Button(action: {
-                                            
-                                        }) {
-                                            ZStack {
-                                                Text("Empezar a leer")
-                                            }
-                                            .padding(10) // margen interno
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 6)
-                                                    .fill(vm.color)
-                                            )
-                                        }
-                                        .padding(.top, 15)
-                                        
-                                    }
-                                    Spacer()
+                            VStack(alignment: .center, spacing: 0) {
+                                HStack(spacing: 3) {
+                                    Image("book-slash")
+                                        .font(.system(size: const.iconSize * 0.75, weight: .medium))
+                                    
+                                    Text("No hay sesiones de lectura.")
+                                    .font(.system(size: const.titleSize * 0.8))
+                                    .bold()
+                                    .offset(y: 2)
                                 }
-                                .aparicionStiffness(show: $show)
-                                Spacer()
+                                
+                                Image("buho-pantalla")
+                                    .resizable()
+                                    .frame(width: 200 * scale, height: 215 * scale)
+                                
+                                Text("Aun no has leido este archivo.\n¿A que esperas para hacerlo?")
+                                    .font(.system(size: const.titleSize * 0.8))
+                                    .foregroundColor(ap.temaResuelto.textColor)
+                                
+                                Button(action: {
+                                    
+                                }) {
+                                    ZStack {
+                                        Text("Empezar a leer")
+                                            .foregroundColor(ap.temaResuelto.textColor)
+                                            .font(.system(size: const.titleSize * 0.8))
+                                    }
+                                    .padding(10) // margen interno
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .fill(vm.color)
+                                    )
+                                }
+                                .padding(.top, 15)
+                                
                             }
                             .padding(15)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(.gray.opacity(0.25), lineWidth: 1)
+                            )
+                            .aparicionStiffness(show: $show)
 
                         } else {
                         
                         EstadisticasProgresoLectura(archivo: archivo)
-                                .padding(.top, 15)
-                                .padding(.horizontal, 45)
+                            .padding(.top, 15)
+                            .padding(.horizontal, 45)
                         
                         MenuNavegacion(estadisticas: archivo.estadisticas)
                             .padding(.top, 25)
                             .padding(.bottom, 20)
                         }
                     }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(.gray.opacity(0.25), lineWidth: 1)
-                    )
+                    
                     
                     //FECHAS
                     InformacionAvanzadaFechas(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
@@ -252,6 +252,9 @@ struct Contenido: View {
     
     var body: some View {
         ImagenMiniatura(archivo: archivo, vm: vm)
+            .if(ap.resolucionLogica == .small) { v in
+                v.frame(maxWidth: .infinity, alignment: .center)
+            }
         Spacer()
         VStack(alignment: .center, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
@@ -267,9 +270,11 @@ struct Contenido: View {
                     
                     Spacer()
                     
-                    EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
+                    if archivo.fechaPrimeraVezEntrado != nil || archivo.estadisticas.paginaActual != 0 {
+                        EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
+                    }
                 }
-                .padding(.bottom, 25)
+                .padding(.bottom, 25 * ap.constantes.scaleFactor)
                 
                 HStack(spacing: 2) {
                     Image(systemName: "zipper.page")
@@ -292,7 +297,7 @@ struct Contenido: View {
                 Rectangle()
                     .fill(.gray.opacity(0.25))
                     .frame(height: 1)
-                    .padding(15)
+                    .padding(15 * ap.constantes.scaleFactor)
                 
                 Spacer()
                 
@@ -332,16 +337,16 @@ struct Contenido: View {
                                     isEditingAutorFocused = true
                                 }
                             }
-                            .frame(height: 30)
+//                            .frame(height: 30 * ap.constantes.scaleFactor)
                     } else {
                         ZStack {
-                            Text(autorTexto.isEmpty ? "desconocido" : autorTexto)
-                                .font(.system(size: titleS))
+                            Text(autorTexto.isEmpty ? "???" : autorTexto)
+                                .font(.system(size: autorTexto.isEmpty ? titleS * 0.8 : titleS))
                                 .foregroundColor(tema.tituloColor)
-                                .bold()
+                                .bold(!autorTexto.isEmpty)
                                 .multilineTextAlignment(.leading)
                         }
-                        .frame(height: 30, alignment: .topLeading)
+//                        .frame(height: 30 * ap.constantes.scaleFactor, alignment: .topLeading)
                         .contentShape(Rectangle())
                         .onTapGesture { withAnimation {isEditingAutor.toggle()} }
                     }
@@ -368,7 +373,7 @@ struct Contenido: View {
                             TextEditor(text: $descripcionTexto)
                                 .bold()
                                 .font(.system(size: titleS))
-                                .frame(height: 105)
+//                                .frame(height: 105 * ap.constantes.scaleFactor)
                                 .focused($isEditingDescriptionFocused)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
@@ -399,16 +404,16 @@ struct Contenido: View {
 
                     } else {
                         HStack(alignment: .top) {
-                            Text(descripcionTexto.isEmpty ? "sin descripción" : descripcionTexto)
-                                .bold()
-                                .font(.system(size: titleS))
+                            Text(descripcionTexto.isEmpty ? "???" : descripcionTexto)
+                                .font(.system(size: descripcionTexto.isEmpty ? titleS * 0.8 : titleS))
                                 .foregroundColor(tema.tituloColor)
+                                .bold(!autorTexto.isEmpty)
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(6)
                                 .truncationMode(.tail)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-                        .frame(height: 105, alignment: .topLeading)
+//                        .frame(height: 105 * ap.constantes.scaleFactor, alignment: .topLeading)
                         .contentShape(Rectangle())
                         .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                     }
@@ -432,11 +437,12 @@ struct Contenido: View {
                             }
                         }
                     }
-                    .frame(height: 20)
+//                    .frame(height: 20)
+                    Spacer()
                 }
 
             }
-            
+
 //            VStack(alignment: .center, spacing: 20) {
 //                HStack(alignment: .bottom, spacing: 0) {
 //                    RectanguloDato(nombre: "Extensión", dato: "\(String(describing: archivo.fileExtension))", icono: "books.vertical", color: vm.color)
@@ -448,7 +454,7 @@ struct Contenido: View {
 //                
 //            }
         } //FIN VSTACK INFORMACION DERECHA
-        .frame(height: 320 * ap.constantes.scaleFactor)
+//        .frame(height: 320 * ap.constantes.scaleFactor)
         .padding(10)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
