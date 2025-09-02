@@ -41,6 +41,8 @@ class PilaColecciones: ObservableObject {
 
     private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
     private var sa: SistemaArchivos!
+    
+    private var pd: PersistenciaDatos = PersistenciaDatos()
 
     public init(preview: Bool = false) {
         if preview {
@@ -73,8 +75,12 @@ class PilaColecciones: ObservableObject {
         
         //Comprobamos que existen las colecciones recuperadas
         let homeURLStripped = self.homeURL.deletingLastPathComponent()
-        if let pilaGuardada = PersistenciaDatos().obtenerAjusteGeneral(key: ClavesPersistenciaAjustesGenerales().pilaGuardada, default: AjustesGeneralesPredeterminados().pilaGuardada) {
-            
+        
+        let pilaRecuperada = pd.obtenerAjusteGeneral(key: ClavesPersistenciaAjustesGenerales().pilaGuardada, default: AjustesGeneralesPredeterminados().pilaGuardada)
+        print("PILA RECUPERADA DE PERSISTENCIA: ", pilaRecuperada)
+        
+        if let pilaGuardada = pd.obtenerAjusteGeneral(key: ClavesPersistenciaAjustesGenerales().pilaGuardada, default: AjustesGeneralesPredeterminados().pilaGuardada) {
+            print("Pila guardada: ", pilaGuardada)
             let coleccionesGuardadas: [URL] = pilaGuardada.compactMap { col in
                 let absolutaURL = homeURLStripped.appendingPathComponent(col)
                 return ManipulacionCadenas().agregarPrivate(absolutaURL)
@@ -117,7 +123,7 @@ class PilaColecciones: ObservableObject {
         print()
         print("PILA que se guarda en persistencia: ", rutasRelativas)
         print()
-        PersistenciaDatos().guardarAjusteGeneral(valor: rutasRelativas, key: ClavesPersistenciaAjustesGenerales().pilaGuardada)
+        pd.guardarAjusteGeneral(valor: rutasRelativas, key: ClavesPersistenciaAjustesGenerales().pilaGuardada)
     }
     
 

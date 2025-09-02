@@ -413,13 +413,13 @@ class SistemaArchivos: ObservableObject {
                     }
                     
                     // --- LOG ---
-                    var tipo: String = ""
-                    if let _ = elemento as? Coleccion {
-                        tipo = "Coleccion"
-                    } else {
-                        tipo = "Archivo"
-                    }
-                    NotificacionesEstado.ne.crearLog(mensaje: "\(tipo) \(elemento.nombre) eliminado.", icono: "\(tipo)-eliminado", color: .red)
+//                    var tipo: String = ""
+//                    if let _ = elemento as? Coleccion {
+//                        tipo = "Coleccion"
+//                    } else {
+//                        tipo = "Archivo"
+//                    }
+//                    NotificacionesEstado.ne.crearLog(mensaje: "\(tipo) \(elemento.nombre) eliminado.", icono: "\(tipo)-eliminado", color: .red)
                     
                 }
             } catch {

@@ -171,6 +171,7 @@ extension PersistenciaDatos {
         case let v as [String:Double]: return v
         case let v as [String:Bool]:   return v
         case let v as [String:String]: return v
+        case let v as [String]: return v
             
         default: return nil
         }
