@@ -11,11 +11,6 @@ struct ElementoVista<Content: View>: View {
     let elemento: any ElementoSistemaArchivosProtocolo
     var elementoURL: URL { elemento.url }
     let scrollIndex: Int?
-    // Cambiar miniatura para archivo
-    var cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)? = nil
-    // Cambiar miniatura para colección
-    var cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)? = nil
-    var cambiarDireccionAbanico: ((EnumDireccionAbanico) -> Void)? = nil
     
     @ViewBuilder let content: () -> Content
 
@@ -52,9 +47,6 @@ struct ElementoVista<Content: View>: View {
                 ContextMenuContenido(
                     vm: vm,
                     elemento: elemento,
-                    cambiarMiniaturaArchivo: cambiarMiniaturaArchivo,
-                    cambiarMiniaturaColeccion: cambiarMiniaturaColeccion,
-                    cambiarDireccionAbanico: cambiarDireccionAbanico,
                     borrarPresionado: $borrarPresionado,
                     renombrarPresionado: $renombrarPresionado,
                     accionDocumento: $accionDocumento,
@@ -144,9 +136,6 @@ struct ContextMenuContenido: View {
     
     var elemento: any ElementoSistemaArchivosProtocolo
     var elementoURL: URL { elemento.url }
-    let cambiarMiniaturaArchivo: ((EnumTipoMiniatura) -> Void)?
-    let cambiarMiniaturaColeccion: ((EnumTipoMiniaturaColeccion) -> Void)?
-    let cambiarDireccionAbanico: ((EnumDireccionAbanico) -> Void)?
 
     @Binding var borrarPresionado: Bool
     @Binding var renombrarPresionado: Bool
@@ -204,26 +193,6 @@ struct ContextMenuContenido: View {
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(cDinamico, cGris)
             }
-
-            
-            Button(action: {
-                //vista previa de mi programa personalizada. se motrara la miniatura y 3 datos basicos.
-                ap.elementoSeleccionado = elemento
-                withAnimation(.easeInOut(duration: 0.3)) { ap.vistaPrevia = true }
-            }) {
-                Label {
-                    Text("Vista previa")
-                } icon: {
-                    Image("custom-eye") // <- tu símbolo personalizado
-                        .renderingMode(.template) // permite aplicar `foregroundStyle`
-                }
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(cGris, cDinamico)
-
-            }
-            
-            CambiarMiniaturaMenu(elemento: elemento, cambiarMiniaturaArchivo: cambiarMiniaturaArchivo, cambiarMiniaturaColeccion: cambiarMiniaturaColeccion, cambiarDireccionAbanico: cambiarDireccionAbanico)
-            
         }
         
         //--- ESTADO DEL ARCHIVO ---

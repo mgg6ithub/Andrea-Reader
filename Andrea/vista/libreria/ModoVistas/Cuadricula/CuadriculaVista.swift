@@ -70,27 +70,7 @@ struct CuadriculaVista: View {
                             spacing: spacing
                         ) {
                             ForEach(Array(elementos.enumerated()), id: \.element.id) { index, elemento in
-                                ElementoVista(vm: vm, elemento: elemento, scrollIndex: index, 
-                                    cambiarMiniaturaArchivo: { nuevoTipo in
-                                    if let archivo = elemento as? Archivo {
-                                            archivo.tipoMiniatura = nuevoTipo
-                                        PersistenciaDatos().guardarDatoArchivo(valor: nuevoTipo, elementoURL: archivo.url, key: cpe.miniaturaElemento)
-                                        }
-                                    },
-                                    cambiarMiniaturaColeccion: { nuevoTipo in
-                                        if let coleccion = elemento as? Coleccion {
-                                            coleccion.tipoMiniatura = nuevoTipo
-                                            PersistenciaDatos().guardarDatoArchivo(valor: nuevoTipo, elementoURL: coleccion.url, key: cpe.miniaturaElemento)
-                                        }
-                                    },
-                                    cambiarDireccionAbanico: { nuevaDireccion in
-                                        if let coleccion = elemento as? Coleccion {
-                                            coleccion.direccionAbanico = nuevaDireccion
-                                            //FALTA POR HACER
-                                            PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "direccionAbanico", valor: nuevaDireccion)
-                                        }
-                                    }
-                                ) {
+                                ElementoVista(vm: vm, elemento: elemento, scrollIndex: index) {
                                     if let placeholder = elemento as? ElementoPlaceholder {
                                         PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
                                     } else if let archivo = elemento as? Archivo {

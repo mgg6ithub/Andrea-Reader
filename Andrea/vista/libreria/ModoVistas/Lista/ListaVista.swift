@@ -32,27 +32,7 @@ struct ListaVista: View {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 10) {
                     ForEach(Array(elementos.enumerated()), id: \.element.id) { index, elemento in
-                        ElementoVista(vm: vm, elemento: elemento, scrollIndex: index,
-                            cambiarMiniaturaArchivo: { nuevoTipo in
-                            if let archivo = elemento as? Archivo {
-                                    archivo.tipoMiniatura = nuevoTipo
-                                    PersistenciaDatos().guardarDatoElemento(url: archivo.url, atributo: "tipoMiniatura", valor: nuevoTipo)
-                                }
-                            },
-                            cambiarMiniaturaColeccion: { nuevoTipo in
-                                if let coleccion = elemento as? Coleccion {
-                                    coleccion.tipoMiniatura = nuevoTipo
-                                    PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "tipoMiniatura", valor: nuevoTipo)
-                                }
-                            },
-                            cambiarDireccionAbanico: { nuevaDireccion in
-                                if let coleccion = elemento as? Coleccion {
-                                    coleccion.direccionAbanico = nuevaDireccion
-                              
-                                    PersistenciaDatos().guardarDatoElemento(url: coleccion.url, atributo: "direccionAbanico", valor: nuevaDireccion)
-                                }
-                            }
-                        ) {
+                        ElementoVista(vm: vm, elemento: elemento, scrollIndex: index) {
                             if let placeholder = elemento as? ElementoPlaceholder {
                                 PlaceholderLista(placeholder: placeholder, coleccionVM: vm)
                             } else if let archivo = elemento as? Archivo {
