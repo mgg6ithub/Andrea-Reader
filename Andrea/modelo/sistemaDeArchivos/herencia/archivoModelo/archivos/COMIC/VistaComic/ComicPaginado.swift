@@ -42,7 +42,7 @@ struct SinglePage: UIViewControllerRepresentable {
             Spine -> Derecha si esta invertido, si no izquierfa. (solo en .pageCurl)
             Padding -> Padding entre paginas (solo en .scroll)
          */
-        var keyOptions: [UIPageViewController.OptionsKey: Any] = [
+        let keyOptions: [UIPageViewController.OptionsKey: Any] = [
             .spineLocation: viewSettings.isInverted ? UIPageViewController.SpineLocation.max.rawValue : UIPageViewController.SpineLocation.min.rawValue,
             .interPageSpacing: viewSettings.padding
         ]
@@ -316,7 +316,6 @@ class ViewControllerCache {
     func prefetchViewController(for page: Int, imageCache: ComicCache, comicFile: any ProtocoloComic, prefetchRange: Int = 3) {
         guard !_cachedPages.contains(page), !pendingPages.contains(page) else { return }
         pendingPages.insert(page)
-//        print("🔜 Iniciando prefetch VC - Página \(page)")
         
         if let image = imageCache.getImage(for: page) {
             self.createAndCacheVC(page: page, image: image)
@@ -328,11 +327,11 @@ class ViewControllerCache {
                 forName: .didCacheImage,
                 object: nil,
                 queue: .main
-            ) { [weak self] notification in
+            ) { [weak self, weak token] notification in
                 guard let self = self,
                       let cachedPage = notification.object as? Int,
-                      cachedPage == page else { return } //Si la imagen que se ha cacheado es la pagina que necesitamos
-                
+                      cachedPage == page else { return }
+
                 if let image = imageCache.getImage(for: page) {
                     self.createAndCacheVC(page: page, image: image)
                     NotificationCenter.default.post(name: .vcDidCache, object: page)
@@ -360,8 +359,7 @@ class ViewControllerCache {
     
     func printCacheInfo() {
         accessQueue.sync {
-            let sortedPages = _cachedPages.sorted()
-//            print("🎬 VCs cacheados (\(sortedPages.count)): \(sortedPages)")
+            _ = _cachedPages.sorted()
         }
     }
 }

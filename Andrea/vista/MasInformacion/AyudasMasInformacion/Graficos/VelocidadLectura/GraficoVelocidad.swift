@@ -123,7 +123,7 @@ struct GraficoVelocidadLectura: View {
             if verTodo {
                 AxisMarks(values: estadisticas.sesionesLectura.map { $0.inicio }) { value in
                     if let date = value.as(Date.self) {
-                        let hour = Calendar.current.component(.hour, from: date)
+                        let _ = Calendar.current.component(.hour, from: date)
                         let isNewDay = value.index == 0 || {
                             if value.index > 0 {
                                 let previousDate = estadisticas.sesionesLectura[value.index - 1].inicio
@@ -136,7 +136,7 @@ struct GraficoVelocidadLectura: View {
                             ? estadisticas.sesionesLectura[value.index - 1].inicio
                             : nil
                         
-                        let isNewHour = esNuevaHora(actual: date, respectoA: prevDate)
+                        let _ = esNuevaHora(actual: date, respectoA: prevDate)
                         
                         AxisValueLabel {
                             VStack(alignment: .leading) {

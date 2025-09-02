@@ -476,7 +476,7 @@ final class EstadisticasYProgresoLectura: ObservableObject {
             print("Sesion \(s.numeroSesion)")
             print("--------------------------------")
             print("fecha inicio: ", s.inicio)
-            print("fecha fin: ", s.fin)
+            print("fecha fin: ", s.fin as Any)
             print("pagina inicio: ", s.paginaInicio)
             print("pagina fin: ", s.paginaFin)
             print("paginas totales: ", s.paginasLeidas)

@@ -22,8 +22,7 @@ class ComicCache: ObservableObject {
     
     public func printCacheInfo() {
         cacheAccessQueue.sync {
-            let cachedPages = _cachekeys.map { $0.intValue }.sorted()
-//            print("📄 Páginas en caché (\(_cachekeys.count) en total): \(cachedPages)")
+            _ = _cachekeys.map { $0.intValue }.sorted()
         }
     }
     
@@ -34,8 +33,7 @@ class ComicCache: ObservableObject {
     func setImage(_ image: UIImage, for key: Int) {
         let keyNumber = NSNumber(value: key)
         self.pageCache.setObject(image, forKey: keyNumber)
-        cacheAccessQueue.sync { self._cachekeys.insert(keyNumber) }
-//        print("✅ Imagen cacheada - Página \(key)")
+        cacheAccessQueue.sync { _ = self._cachekeys.insert(keyNumber) }
         DispatchQueue.main.async { [weak self] in
             self?.objectWillChange.send()
         }

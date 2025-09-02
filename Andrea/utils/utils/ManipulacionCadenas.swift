@@ -21,7 +21,7 @@ struct AutoSizingText: View {
                 .onAppear {
                     ajustarFuente(geo.size)
                 }
-                .onChange(of: text) { _ in
+                .onChange(of: text) {
                     ajustarFuente(geo.size)
                 }
         }

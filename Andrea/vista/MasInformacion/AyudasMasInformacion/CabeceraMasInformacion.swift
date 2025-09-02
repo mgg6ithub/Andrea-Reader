@@ -39,7 +39,7 @@ struct CabeceraMasInformacion: View {
     init(elemento: ElementoSistemaArchivos, pantallaCompleta: Binding<Bool>) {
         self.elemento = elemento
         _pantallaCompleta = pantallaCompleta
-        _tituloElemento = State(initialValue: elemento.nombre ?? "")
+        _tituloElemento = State(initialValue: elemento.nombre)
     }
     
     var body: some View {

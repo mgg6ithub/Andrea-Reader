@@ -69,7 +69,7 @@ struct MenuSeleccionMultipleAbajo: View {
                             switch accion {
                             case .mover:
                                 me.aplicarAccionPorElemento { elemento in
-                                    try? sa.moverElemento(elemento, vm: coleccionActualVM, a: destino)
+                                    sa.moverElemento(elemento, vm: coleccionActualVM, a: destino)
                                 }
                             case .copiar:
                                 me.aplicarAccionPorElemento { elemento in

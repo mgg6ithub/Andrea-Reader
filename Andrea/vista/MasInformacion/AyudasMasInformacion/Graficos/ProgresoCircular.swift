@@ -49,7 +49,7 @@ struct ProgresoCircular: View {
                 animatedValor = progresoDouble
             }
         }
-        .onChange(of: progresoDouble) { newVal in
+        .onChange(of: progresoDouble) { old, newVal in
             withAnimation(.easeInOut(duration: 1.1)) {
                 animatedValor = newVal
             }

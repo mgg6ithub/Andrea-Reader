@@ -92,7 +92,7 @@ struct ElementoVista<Content: View>: View {
                         guard let destino = urls.first else { return }
                         switch accion {
                         case .mover:
-                            try? sa.moverElemento(elemento, vm: vm, a: destino)
+                            sa.moverElemento(elemento, vm: vm, a: destino)
                         case .copiar:
                             try? sa.copiarElemento(elemento, vm: vm, a: destino)
                         default:

@@ -80,7 +80,7 @@ class PilaColecciones: ObservableObject {
                 return ManipulacionCadenas().agregarPrivate(absolutaURL)
             }
 
-            var vistaModelos = coleccionesGuardadas.compactMap { url in
+            let vistaModelos = coleccionesGuardadas.compactMap { url in
                 if FileManager.default.fileExists(atPath: url.path),
                    let coleccion = cache[url]?.coleccion {
                     return ModeloColeccion(coleccion)

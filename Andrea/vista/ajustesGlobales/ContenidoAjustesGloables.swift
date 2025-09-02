@@ -158,7 +158,7 @@ struct ContenidoAjustes: View {
                                         isScrollInitialized = true
                                     }
                                 }
-                                .onChange(of: geo.frame(in: .global).minY) { newValue in
+                                .onChange(of: geo.frame(in: .global).minY) { old, newValue in
                                     handleScrollChange(newY: newValue)
                                 }
                         }
@@ -225,7 +225,7 @@ struct ContenidoAjustes: View {
                                 // Trackeamos el rango visible de la sección en global
                                 let frame = geo.frame(in: .global)
                                 Color.clear
-                                    .onChange(of: frame.minY) { _ in
+                                    .onChange(of: frame.minY) {
                                         sectionOffsets[section] = frame.minY          // compatibilidad con tu diccionario actual
                                         sectionRanges[section] = frame.minY...frame.maxY
                                         if !isUserInteracting { updateActiveSection() }

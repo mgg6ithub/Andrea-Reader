@@ -86,14 +86,14 @@ struct AjustesMenu: View {
             
             VStack(spacing: 0) {
                 TogglePersonalizado(titulo: "Adaptar al tema", descripcion: "El color de los iconos se ajusta automáticamente al tema actual.", opcionBinding: $me.colorAutomatico, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: true)
-                    .onChange(of: me.colorAutomatico) { newValue in
+                    .onChange(of: me.colorAutomatico) { old, newValue in
                         if newValue {
                             me.colorGris = false
                         }
                     }
                 
                 TogglePersonalizado(titulo: "Color neutral", descripcion: "Aplica un tono gris neutro a todos los iconos.", opcionBinding: $me.colorGris, opcionTrue: "Deshabilitar opcion", opcionFalse: "Habilitar opcion", isInsideToggle: true, isDivider: false)
-                    .onChange(of: me.colorGris) { newValue in
+                    .onChange(of: me.colorGris) { old, newValue in
                         if newValue {
                             me.colorAutomatico = false
                         }
@@ -118,7 +118,7 @@ struct AjustesMenu: View {
             
             VStack(spacing: 0) {
                 TogglePersonalizado(titulo: "Fondo de los menus", descripcion: "Cada menu con iconos tiene un fondo. Puedes desactivarlo o modificarlo.", opcionBinding: $me.fondoMenu, opcionTrue: "Deshabilitar fondo", opcionFalse: "Habilitar fondo", isInsideToggle: true, isDivider: me.fondoMenu ? true : false)
-                    .onChange(of: me.colorAutomatico) { newValue in
+                    .onChange(of: me.colorAutomatico) { old, newValue in
                         if newValue {
                             me.colorGris = false
                         }

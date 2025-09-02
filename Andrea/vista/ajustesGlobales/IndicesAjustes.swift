@@ -83,7 +83,7 @@ struct IndicesVertical: View {
             let m = computeMetrics(totalH: geo.size.height, count: sections.count)
             let dot = m.dot
             let spacing = m.spacing
-            let rowHeight = dot + spacing
+            let _ = dot + spacing
             let topPad = m.topPad
             let fontScale = m.fontScale
             

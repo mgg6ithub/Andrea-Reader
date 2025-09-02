@@ -64,28 +64,29 @@ class CBZArchivo: Archivo, ProtocoloComic {
     func getImageDimensions() -> [Int: (width: Int, height: Int)] {
         var dimensionsDict: [Int: (width: Int, height: Int)] = [:] // Índice -> (ancho, alto)
 
-        guard let archive = Archive(url: self.url, accessMode: .read) else {
-            print("Error al abrir el archivo CBZ")
-            return [:]
-        }
-
-        // Filtrar solo imágenes .jpg y .png
-        let comicImages = archive.compactMap { entry in
-            if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
-                return entry
+        do {
+            let archive = try Archive(url: self.url, accessMode: .read)
+            // Filtrar solo imágenes .jpg y .png
+            let comicImages = archive.compactMap { entry in
+                if entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png") {
+                    return entry
+                }
+                return nil
             }
-            return nil
-        }
-        .prefix(5)
-        
-        // Iterar sobre las imágenes y obtener las dimensiones
-        comicImages.enumerated().forEach { (index, entry) in
-            if let dimensions = getDimensions(from: archive, entry: entry) {
-                dimensionsDict[index] = dimensions
+            .prefix(5)
+            
+            // Iterar sobre las imágenes y obtener las dimensiones
+            comicImages.enumerated().forEach { (index, entry) in
+                if let dimensions = getDimensions(from: archive, entry: entry) {
+                    dimensionsDict[index] = dimensions
+                }
             }
-        }
 
-        return dimensionsDict
+            return dimensionsDict
+        } catch {
+            print("Error al abrir el archivo: \(error)")
+            return dimensionsDict
+        }
     }
 
     func getDimensions(from archive: Archive, entry: Entry) -> (width: Int, height: Int)? {
@@ -220,7 +221,7 @@ class CBZArchivo: Archivo, ProtocoloComic {
             let imageCount = archive.filter { entry in
                 entry.path.lowercased().hasSuffix(".jpg") || entry.path.lowercased().hasSuffix(".png")
             }.count
-            ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
+            let _ = ManipulacionCadenas().filterImagesWithIndex(files: comicPages)
             return imageCount
         } catch {
             return 0

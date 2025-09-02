@@ -55,7 +55,7 @@ class CBRArchivo: Archivo, ProtocoloComic {
     }
     
     func getImageDimensions() -> [Int : (width: Int, height: Int)] {
-        var dimensionsDict: [Int: (width: Int, height: Int)] = [:]
+        let dimensionsDict: [Int: (width: Int, height: Int)] = [:]
         return dimensionsDict
     }
     
@@ -116,7 +116,7 @@ class CBRArchivo: Archivo, ProtocoloComic {
             guard imageEntries.count > 1 else { return nil }
             
             // La primera según tu lógica
-            let primera = imageEntries.first!
+            _ = imageEntries.first!
             
             // Filtramos las demás
             let restantes = imageEntries.dropFirst()

@@ -275,7 +275,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
     }
     
     //Solamente se guardara la primera vez que se lea con la fecha en persistencia
-    override var fechaPrimeraVezEntrado: Date? { didSet { pd.guardarDatoArchivo(valor: fechaPrimeraVezEntrado, elementoURL: url, key: cpe.fechaPrimeraVezEntrado) } }
+    override var fechaPrimeraVezEntrado: Date? { didSet { pd.guardarDatoArchivo(valor: fechaPrimeraVezEntrado as Any, elementoURL: url, key: cpe.fechaPrimeraVezEntrado) } }
     
     //NECESARIAS PARA SABER CUANDO SE INICIA LA LECTURA
     var leyendose: Bool = false {

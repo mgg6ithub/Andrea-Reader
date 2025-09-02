@@ -73,7 +73,7 @@ struct GraficoProgresoLectura: View {
                let fin = sesion.fin {
                 
                 let actualFin = estadisticas.progresoRealEnFecha(fin)
-                let idealFin  = estadisticas.progresoIdealEnFecha(fin)
+                _  = estadisticas.progresoIdealEnFecha(fin)
                 result.append(ReadingProgress(date: fin, actual: actualFin, ideal: 100))
             }
             return result
@@ -220,8 +220,7 @@ struct GraficoProgreso1: View {
         .chartXAxis {
             AxisMarks(values: .stride(by: .day)) { value in
                     if let date = value.as(Date.self) {
-                        
-                        let hour = Calendar.current.component(.hour, from: date)
+                        let _ = Calendar.current.component(.hour, from: date)
                         let isNewDay = value.index == 0 || {
                             if value.index > 0 {
                                 let previousDate = estadisticas.sesionesLectura[value.index - 1].inicio

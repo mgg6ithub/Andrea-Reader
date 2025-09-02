@@ -410,7 +410,7 @@ enum EnumTemas: String, CaseIterable {
         case .light, .dark, .sistema, .dayNight:
             return self.backgroundColor
         default:
-            let (c1, c2) = gradientColors
+            let (c1, _) = gradientColors
             return c1.opacity(0.7) // o mezcla de c1 y c2 si quieres
         }
     }

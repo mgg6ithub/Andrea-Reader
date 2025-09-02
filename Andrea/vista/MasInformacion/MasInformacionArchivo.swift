@@ -139,7 +139,7 @@ struct MasInformacionArchivo: View {
                 
             }
             .padding(.horizontal, 15)
-            .onChange(of: masInfoPresionado) { nuevoValor in
+            .onChange(of: masInfoPresionado) { old, nuevoValor in
                 if nuevoValor {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                         withAnimation {
@@ -246,7 +246,7 @@ struct Contenido: View {
     init(archivo: Archivo, vm: ModeloColeccion) {
         self.archivo = archivo
         self.vm = vm
-        _autorTexto = State(initialValue: archivo.autor ?? "")
+        _autorTexto = State(initialValue: archivo.autor)
         _descripcionTexto = State(initialValue: archivo.descripcion ?? "")
     }
     
