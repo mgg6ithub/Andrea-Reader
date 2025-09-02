@@ -150,6 +150,39 @@ class CBZArchivo: Archivo, ProtocoloComic {
         }
     }
     
+    
+    override func obtenerPaginaActual() -> String? {
+        do {
+            let archive = try Archive(url: self.url, accessMode: .read)
+
+            // Filtrar todas las imágenes válidas y ordenarlas por nombre
+            let imagenes = archive.compactMap { entry -> String? in
+                let lowercased = entry.path.lowercased()
+                if lowercased.hasSuffix(".jpg") || lowercased.hasSuffix(".jpeg") || lowercased.hasSuffix(".png") {
+                    return entry.path
+                }
+                return nil
+            }.sorted() // Importante: asegura el orden alfabético
+
+            print("Imagenes actuales: ", imagenes)
+            print()
+            print("Pagina actual: ", self.estadisticas.paginaActual)
+            
+            // Verificar que el índice esté dentro de rango
+            guard self.estadisticas.paginaActual >= 0,
+                  self.estadisticas.paginaActual < imagenes.count else {
+                return nil
+            }
+
+            return imagenes[self.estadisticas.paginaActual]
+
+        } catch {
+            print("Error leyendo archivo CBZ: \(error)")
+            return nil
+        }
+    }
+
+    
     override func obtenerPaginaAleatoria() -> String? {
         do {
             let archive = try Archive(url: self.url, accessMode: .read)
@@ -181,6 +214,7 @@ class CBZArchivo: Archivo, ProtocoloComic {
             return nil
         }
     }
+
 
     
     func cargarPaginas() -> [String] {

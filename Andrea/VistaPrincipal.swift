@@ -98,7 +98,7 @@ struct VistaPrincipal: View {
             
         }
         .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
-            ContenedorLector(archivo: archivo)
+            ContenedorLector(archivo: archivo, vm: pc.getColeccionActual())
                 .background(tema.backgroundGradient) // tu color
                 .ignoresSafeArea()
                 .presentationBackground(.clear)            // <- quita el blanco del presentador

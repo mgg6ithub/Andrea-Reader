@@ -269,6 +269,10 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         return "corrupted"
     }
     
+    func obtenerPaginaActual() -> String? {
+        return "corrupted"
+    }
+    
     // En Archivo
     func obtenerPaginaAleatoria() -> String? {
         return nil // por defecto nada

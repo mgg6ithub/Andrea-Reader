@@ -225,6 +225,31 @@ class ModeloMiniatura {
         return imagenBase
     }
     
+    func obtenerMiniaturaPaginaActual(archivo: Archivo, color: Color) -> UIImage? {
+        // Miniatura base por si falla
+        let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
+        
+        // Pedimos una página aleatoria
+        guard let randomPage = archivo.obtenerPaginaActual(),
+              let data = archivo.cargarDatosImagen(nombreImagen: randomPage)
+        else {
+            return imagenBase
+        }
+        
+        // Downsample a tamaño razonable
+        let targetSize = CGSize(width: 1000, height: 1000)
+        let miniatura = self.downsample(imageData: data, to: targetSize)
+        
+        // Guardamos en cache si se pudo crear
+        if let thumb = miniatura {
+            self.guardarMiniatura(miniatura: thumb, archivo: archivo)
+            return thumb
+        }
+        
+        return imagenBase
+    }
+    
+    
     public func obtenerMiniaturaPersonalizada(
         archivo: Archivo,
         color: Color,

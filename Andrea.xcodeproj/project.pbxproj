@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D40097A22E67965300DA3E48 /* MenuAjustesLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40097A12E67965300DA3E48 /* MenuAjustesLectura.swift */; };
+		D40097A42E679E7900DA3E48 /* VistaProgresoMenuLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40097A32E679E7900DA3E48 /* VistaProgresoMenuLectura.swift */; };
 		D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */; };
 		D40E28AE2E1C24050024DF2E /* AjustesSistemaColecciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */; };
 		D42084322E58DCAF008525DB /* EstadisticasYProgresoLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42084312E58DCAF008525DB /* EstadisticasYProgresoLectura.swift */; };
@@ -143,6 +145,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D40097A12E67965300DA3E48 /* MenuAjustesLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuAjustesLectura.swift; sourceTree = "<group>"; };
+		D40097A32E679E7900DA3E48 /* VistaProgresoMenuLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VistaProgresoMenuLectura.swift; sourceTree = "<group>"; };
 		D402E7AD2DEF6EED00BAC95E /* HistorialColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorialColecciones.swift; sourceTree = "<group>"; };
 		D40E28AD2E1C24050024DF2E /* AjustesSistemaColecciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjustesSistemaColecciones.swift; sourceTree = "<group>"; };
 		D42084312E58DCAF008525DB /* EstadisticasYProgresoLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstadisticasYProgresoLectura.swift; sourceTree = "<group>"; };
@@ -509,6 +513,8 @@
 			isa = PBXGroup;
 			children = (
 				D4A071732E674DDC00BD64EA /* VistaLectura.swift */,
+				D40097A12E67965300DA3E48 /* MenuAjustesLectura.swift */,
+				D40097A32E679E7900DA3E48 /* VistaProgresoMenuLectura.swift */,
 			);
 			path = lectura;
 			sourceTree = "<group>";
@@ -951,6 +957,7 @@
 				D440162E2DF1CB490025832B /* DocumentPicker.swift in Sources */,
 				D4A12EF72E5A04B80022276D /* GraficoTiempoPorPagina.swift in Sources */,
 				D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */,
+				D40097A42E679E7900DA3E48 /* VistaProgresoMenuLectura.swift in Sources */,
 				D480E76C2E42216300C8BBCC /* Rendimiento.swift in Sources */,
 				D4DA1BD72E3BC9DE00529C47 /* Consejos.swift in Sources */,
 				D49D7D012E26D77500E0A93B /* ListaArchivo.swift in Sources */,
@@ -985,6 +992,7 @@
 				D4A2704A2E4CA2B300ECEF2F /* VistaGeneral.swift in Sources */,
 				D4A888432E26F9EC00C64974 /* PlaceholderLista.swift in Sources */,
 				D485896C2DEB9DF10074DB8E /* Utilidades.swift in Sources */,
+				D40097A22E67965300DA3E48 /* MenuAjustesLectura.swift in Sources */,
 				D48589682DEB9D7E0074DB8E /* ElementSistemaArchivos.swift in Sources */,
 				D4BF4B1C2E168D1400224C71 /* Algoritmos.swift in Sources */,
 				D4B3C3BD2E3A8E4700CA6064 /* MenuSeleccionMultipleAbajo.swift in Sources */,
