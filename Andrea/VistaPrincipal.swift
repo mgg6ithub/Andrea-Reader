@@ -82,7 +82,6 @@ struct VistaPrincipal: View {
             }
             
         }
-//        .animation(.easeInOut, value: ap.archivoEnLectura)
         .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
             ContenedorLector(archivo: archivo)
                 .background(tema.backgroundGradient) // tu color
@@ -194,18 +193,13 @@ struct MenuLectura: View {
         VStack {
             HStack {
                 Button("Cerrar") {
-                    //antes de cerrar guardamos el progreso actualizando la pagina
-//                    print("terminando lectura")
                     archivo.leyendose = false
-                    
-//                    print("Tiempo total de lectura: \(sss.tiempoTotal)s")
-                    
                     cerrar()
-                } // ← ya no toca el menú
+                }
                 
                 Spacer()
                 
-                Text("Tiempo: \(formatTime(sss.tiempoActual))")
+                Text("Tiempo: \(TimeInterval().formatTimeMS(sss.tiempoActual))")
                 
                 Spacer()
                 Text("Progreso: \(sss.progreso)%")
@@ -216,17 +210,6 @@ struct MenuLectura: View {
             .background(.ultraThinMaterial)
             Spacer()
         }
-    }
-    
-    func formatTime(_ interval: TimeInterval) -> String {
-        let minutes = Int(interval) / 60
-        let seconds = Int(interval) % 60
-        if minutes > 0 {
-            return "\(minutes)m \(seconds)s"
-        } else {
-            return "\(seconds)s"
-        }
-        
     }
     
 }

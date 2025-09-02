@@ -253,11 +253,9 @@ class ModeloColeccion: ObservableObject {
         self.quitarInvertido()
 
         //guardamos la ordenacion
-        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "ordenacion", valor: modoOrdenacion)
-        
-        print("Guardando diccinario: ", ordenDict)
+        pd.guardarDatoArchivo(valor: modoOrdenacion, elementoURL: self.coleccion.url, key: cpe.enumModoOrdenacion)
         // Guarda el diccionario completo como atributo "ordenPersonalizado"
-        PersistenciaDatos().guardarDatoElemento(url: self.coleccion.url, atributo: "ordenPersonalizado", valor: ordenDict)
+        pd.guardarDatoArchivo(valor: ordenDict, elementoURL: self.coleccion.url, key: cpe.ordenPersonalizado)
     }
 
     

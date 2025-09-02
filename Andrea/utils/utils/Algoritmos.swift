@@ -44,11 +44,7 @@ struct Algoritmos {
         case .personalizado:
             guard let coleccionURL = coleccionURL else { return [] }
             
-            guard let ordenDict = PersistenciaDatos().obtenerAtributoConcreto(url: coleccionURL, atributo: "ordenPersonalizado") as? [String: Int] else {
-                return []
-            }
-            
-            print("AHORA SI")
+            let ordenDict = PersistenciaDatos().recuperarDatoElemento(elementoURL: coleccionURL, key: ClavesPersistenciaElementos().ordenPersonalizado, default: ValoresElementoPredeterminados().ordenPersonalizado)
                 
             tempElementos = elementos.sorted { (a, b) -> Bool in
                 let posA = ordenDict[PersistenciaDatos().obtenerKey(a.url)] ?? Int.max

@@ -282,7 +282,7 @@ struct GraficoProgreso1: View {
         .chartYAxisLabel(position: .bottom, alignment: .center) {
             HStack(spacing: 15) {
                 HStack {
-                    Rectangle()
+                    Rectangle()//test
                         .fill(.green)
                         .frame(width: 25, height: 2)
                     Text("Progreso")

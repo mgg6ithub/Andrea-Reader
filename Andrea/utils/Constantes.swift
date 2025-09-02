@@ -86,6 +86,7 @@ struct ClavesPersistenciaElementos {
     public let desplazamientoColeccion: String = "desplazamientoColeccion"
     public let enumModoVista: String = "enumModoVista"
     public let enumModoOrdenacion: String = "enumModoOrdenacion"
+    public let ordenPersonalizado: String = "ordenPersonalizado"
     public let esInvertido: String = "esInvertido"
     public let columnas: String = "columnas"
     public let altura: String = "altura"
@@ -132,6 +133,7 @@ struct ClavesPersistenciaElementos {
                 desplazamientoColeccion,
                 enumModoVista,
                 enumModoOrdenacion,
+                ordenPersonalizado,
                 esInvertido,
                 columnas,
                 altura,
@@ -170,6 +172,7 @@ struct ValoresElementoPredeterminados {
     public let desplazamientoColeccion: Int = 0
     public let enumModoVista: EnumModoVista = .cuadricula
     public let enumModoOrdenacion: EnumOrdenaciones = .nombre
+    public let ordenPersonalizado: [String : Int] = [:]
     public let esInvertido: Bool = false
     public let columnas: Int = 4
     public let altura: CGFloat = 180

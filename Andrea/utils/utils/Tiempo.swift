@@ -30,6 +30,18 @@ extension TimeInterval {
             .map { "\($0.valor)\($0.unidad)" }
             .joined(separator: " ")
     }
+    
+    func formatTimeMS(_ interval: TimeInterval) -> String {
+        let minutes = Int(interval) / 60
+        let seconds = Int(interval) % 60
+        if minutes > 0 {
+            return "\(minutes)m \(seconds)s"
+        } else {
+            return "\(seconds)s"
+        }
+        
+    }
+    
 }
 
 

@@ -54,7 +54,6 @@
 		D49D7D052E26DAC100E0A93B /* ProgresoLista.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D7D042E26DAC100E0A93B /* ProgresoLista.swift */; };
 		D49D7D072E26DB2800E0A93B /* InformacionLista.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D7D062E26DB2800E0A93B /* InformacionLista.swift */; };
 		D49DE74B2E0D33F1002FDB7A /* CBRArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49DE74A2E0D33F1002FDB7A /* CBRArchivo.swift */; };
-		D49DE74E2E0D3481002FDB7A /* ImagenArchivo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49DE74D2E0D3481002FDB7A /* ImagenArchivo.swift */; };
 		D49DE7502E0D348F002FDB7A /* ImagenArchivoModelo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49DE74F2E0D348F002FDB7A /* ImagenArchivoModelo.swift */; };
 		D49E266A2E3A77BD009A0EDC /* MasInformacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E26692E3A77BD009A0EDC /* MasInformacion.swift */; };
 		D49E266D2E3A7C4A009A0EDC /* AyudaCambiarPortada.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E266C2E3A7C4A009A0EDC /* AyudaCambiarPortada.swift */; };
@@ -103,7 +102,6 @@
 		D4B6DF262E54E35C00A46D0A /* General.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6DF252E54E35C00A46D0A /* General.swift */; };
 		D4B741842E15CBBD009511F1 /* PersistenciaDatos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */; };
 		D4B88CB02E5467A900E68D45 /* Colores.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B88CAF2E5467A900E68D45 /* Colores.swift */; };
-		D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8B3882E1324B200585A6D /* ThumbnailService.swift */; };
 		D4B921912E5871C500305A09 /* InformacionAvanzada.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B921902E5871C500305A09 /* InformacionAvanzada.swift */; };
 		D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */; };
 		D4BA32F32E0BDDC900CF3219 /* ProgresoCuadricula.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */; };
@@ -189,7 +187,6 @@
 		D49D7D042E26DAC100E0A93B /* ProgresoLista.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoLista.swift; sourceTree = "<group>"; };
 		D49D7D062E26DB2800E0A93B /* InformacionLista.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformacionLista.swift; sourceTree = "<group>"; };
 		D49DE74A2E0D33F1002FDB7A /* CBRArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBRArchivo.swift; sourceTree = "<group>"; };
-		D49DE74D2E0D3481002FDB7A /* ImagenArchivo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagenArchivo.swift; sourceTree = "<group>"; };
 		D49DE74F2E0D348F002FDB7A /* ImagenArchivoModelo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagenArchivoModelo.swift; sourceTree = "<group>"; };
 		D49E26692E3A77BD009A0EDC /* MasInformacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasInformacion.swift; sourceTree = "<group>"; };
 		D49E266C2E3A7C4A009A0EDC /* AyudaCambiarPortada.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AyudaCambiarPortada.swift; sourceTree = "<group>"; };
@@ -238,7 +235,6 @@
 		D4B6DF252E54E35C00A46D0A /* General.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = General.swift; sourceTree = "<group>"; };
 		D4B741832E15CBBD009511F1 /* PersistenciaDatos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenciaDatos.swift; sourceTree = "<group>"; };
 		D4B88CAF2E5467A900E68D45 /* Colores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colores.swift; sourceTree = "<group>"; };
-		D4B8B3882E1324B200585A6D /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
 		D4B921902E5871C500305A09 /* InformacionAvanzada.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformacionAvanzada.swift; sourceTree = "<group>"; };
 		D4BA32F02E0BDD1300CF3219 /* InformacionCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformacionCuadricula.swift; sourceTree = "<group>"; };
 		D4BA32F22E0BDDC900CF3219 /* ProgresoCuadricula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoCuadricula.swift; sourceTree = "<group>"; };
@@ -445,9 +441,7 @@
 		D49DE74C2E0D3458002FDB7A /* imagenes */ = {
 			isa = PBXGroup;
 			children = (
-				D49DE74D2E0D3481002FDB7A /* ImagenArchivo.swift */,
 				D49DE74F2E0D348F002FDB7A /* ImagenArchivoModelo.swift */,
-				D4B8B3882E1324B200585A6D /* ThumbnailService.swift */,
 				D4ACC9B12E1AB8C4006778AE /* ModeloMiniatura.swift */,
 				D4C4A2AD2E66075500B16EA9 /* ImagenInfo.swift */,
 			);
@@ -913,7 +907,6 @@
 				D4B0CCEA2E577AA9000C69CF /* EstadisticaProgresoLectura.swift in Sources */,
 				D48C58802E3BA855006D9C07 /* CabeceraMasInformacion.swift in Sources */,
 				D4BA32F12E0BDD1300CF3219 /* InformacionCuadricula.swift in Sources */,
-				D4B8B3892E1324B200585A6D /* ThumbnailService.swift in Sources */,
 				D4BF0B262DEF4B4F00152333 /* EnumTipoArchivos.swift in Sources */,
 				D48589742DEBA1A80074DB8E /* Archivo.swift in Sources */,
 				D48589762DEBA1C50074DB8E /* Coleccion.swift in Sources */,
@@ -954,7 +947,6 @@
 				D4CF28E72E323E29003B3ABC /* ModeloMiniaturaArchivo.swift in Sources */,
 				D46E94322DEA27E800ABD9EE /* AjustesMenu.swift in Sources */,
 				D424A40B2E4BEBC3003D8BD8 /* AnimatedScrollViewTest.swift in Sources */,
-				D49DE74E2E0D3481002FDB7A /* ImagenArchivo.swift in Sources */,
 				D4A6C7252DEA1F9A00E7451F /* CirculoActivo.swift in Sources */,
 				D402E7AE2DEF6EED00BAC95E /* HistorialColecciones.swift in Sources */,
 				D49961972E4514C00089488D /* NotificacionesEstado.swift in Sources */,
