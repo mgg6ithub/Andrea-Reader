@@ -50,15 +50,7 @@ class Coleccion: ElementoSistemaArchivos {
         
         super.init(nombre: directoryName, url: directoryURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
-        if let tipoRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "tipoMiniatura") as? String,
-           let tipo = EnumTipoMiniaturaColeccion(rawValue: tipoRaw) {
-            self.tipoMiniatura = tipo
-        }
-        
-        if let dirRaw = PersistenciaDatos().obtenerAtributoConcreto(url: self.url, atributo: "direccionAbanico") as? String,
-           let dir = EnumDireccionAbanico(rawValue: dirRaw) {
-            self.direccionAbanico = dir
-        }
+        //PERSISTENCIA DE LA IMAGEN
         
     }
     

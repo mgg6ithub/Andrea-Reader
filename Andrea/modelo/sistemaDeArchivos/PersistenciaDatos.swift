@@ -120,8 +120,6 @@ extension PersistenciaDatos {
         uds.removeObject(forKey: key)
         print("🗑️ Eliminadas sesiones para: \(elementoURL.lastPathComponent)")
     }
-
-
     
 }
 
@@ -173,10 +171,6 @@ extension PersistenciaDatos {
         case let v as [String:Double]: return v
         case let v as [String:Bool]:   return v
         case let v as [String:String]: return v
-        case let v as [Int]:           return v
-        case let v as [Double]:        return v
-        case let v as [Bool]:          return v
-        case let v as [String]:        return v
             
         default: return nil
         }
@@ -190,104 +184,12 @@ struct PersistenciaDatos {
     let mc = ManipulacionCadenas()
     private let uds = UserDefaults.standard
     
-    //MARK: --- ELIMINAR CLAVE Y VALOR DE PERSISTENCIA ---
-    public func eliminarDatos(url: URL) {
-        let key = obtenerKey(url)
-        uds.removeObject(forKey: key)
-        print("🗑️ Eliminados datos de persistencia para la clave: \(key)")
-    }
-
-    
-    //MARK: --- ACTUALIZAR PERSISTENCIA ---
-    public func actualizarClaveURL(origen: URL, destino: URL) {
-        let keyAntigua = obtenerKey(origen)
-        let keyNueva = obtenerKey(destino)
-
-        guard let datosAntiguos = uds.dictionary(forKey: keyAntigua) else {
-            print("⚠️ No se encontraron datos en persistencia para la clave antigua: \(keyAntigua)")
-            return
-        }
-
-        uds.set(datosAntiguos, forKey: keyNueva)
-        uds.removeObject(forKey: keyAntigua)
-        print("🔄 Persistencia actualizada de \(keyAntigua) → \(keyNueva)")
-    }
-    
-    //MARK: --- DUPLICAR DATOS DE UNA CLAVE ---
-    public func duplicarDatosClave(origen: URL, destino: URL) {
-        let keyOrigen = obtenerKey(origen)
-        let keyDestino = obtenerKey(destino)
-        
-        guard let datosOrigen = uds.dictionary(forKey: keyOrigen) else {
-            print("⚠️ No se encontraron datos para duplicar desde la clave: \(keyOrigen)")
-            return
-        }
-
-        uds.set(datosOrigen, forKey: keyDestino)
-        print("📄 Datos duplicados de \(keyOrigen) → \(keyDestino)")
-    }
-    
-    //MARK: --- ARCHIVO ---
-    public func guardarDatoElemento(url: URL, atributo: String, valor: Any) {
-        let key = obtenerKey(url)
-        var dict = uds.dictionary(forKey: key) ?? [:]
-
-        if let convertido = self.convertirValor(valor) {
-            dict[atributo] = convertido
-        }
-        
-        uds.set(dict, forKey: key)
-    }
-    
     //MARK:  --- COLECCION ---
     
     // MARK: - Keys
     public func obtenerKey(_ url: URL) -> String {
         mc.borrarURLLOCAL(url: url)
     }
-
-
-    // MARK: - Obtener todos los datos de un elemento
-    public func obtenerAtributos(url: URL) -> [String: Any]? {
-        let key = obtenerKey(url)
-        return uds.dictionary(forKey: key)
-    }
-
-    // MARK: - Obtener un atributo específico
-    public func obtenerAtributoConcreto(url: URL, atributo: String) -> Any? {
-        let key = obtenerKey(url)
-        
-        guard let dict = uds.dictionary(forKey: key) else { return nil }
-        return dict[atributo]
-    }
-    
-    public func obtenerAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String) -> Any? {
-        let key = obtenerKey(coleccion.url)
-        guard let dict = uds.dictionary(forKey: key),
-              let vistaAtributos = dict["vistaAtributos"] as? [String: Any],
-              let atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] else {
-            return nil
-        }
-        
-        return atributosVista[atributo]
-    }
-
-    
-    //MARK: - gurdar un atributo
-    public func guardarAtributoVista(coleccion: Coleccion, modo: EnumModoVista, atributo: String, valor: Any) {
-        let key = obtenerKey(coleccion.url)
-        var dict = uds.dictionary(forKey: key) ?? [:]
-
-        var vistaAtributos = dict["vistaAtributos"] as? [String: Any] ?? [:]
-        var atributosVista = vistaAtributos[modo.rawValue] as? [String: Any] ?? [:]
-
-        atributosVista[atributo] = valor
-        vistaAtributos[modo.rawValue] = atributosVista
-        dict["vistaAtributos"] = vistaAtributos
-
-        uds.set(dict, forKey: key)
-    }
-    
 
     //MARK: - --- AJUSTES GENERALES ---
     public func guardarAjusteGeneral(valor: Any, key: String) {
@@ -347,7 +249,6 @@ struct PersistenciaDatos {
         
         // Caso especial: String?
         if T.self == String?.self {
-            print("El valor es nulo")
             if let s = valor as? String {
                 return (s as String?) as! T
             } else {
@@ -380,18 +281,6 @@ struct PersistenciaDatos {
         }
         return def
     }
-    
-    
-    /// Recuperar un color desde persistencia
-//    public func recuperarDatoArchivoColor(elementoURL: URL, key: String, default def: Color) -> Color {
-//        let k = self.obtenerKey(elementoURL)
-//        let mapa = self.obtenerMapa(key: key)
-//
-//        if let hex = mapa[k] as? String {
-//            return Color(hex: hex)
-//        }
-//        return def
-//    }
 
     
     /// Actualizar la clave en varios diccionarios de persistencia (ej: al renombrar o mover un archivo)
@@ -401,10 +290,6 @@ struct PersistenciaDatos {
         
         for key in keys {
             var mapa = self.obtenerMapa(key: key)
-            
-//            print("Mapa para: ", origenURL.lastPathComponent)
-//            print(mapa)
-//            print()
             
             if let valor = mapa[oldk] {
                 mapa[newk] = valor
@@ -418,8 +303,7 @@ struct PersistenciaDatos {
     }
     
     // Duplicar datos de una clave (atributos asociados directamente a una URL)
-    /// No borra el origen, solo copia su valor a la nueva URL.
-    public func duplicarDatoElemento(origenURL: URL, destinoURL: URL, keys: [String]) {
+    public func duplicarDatoArchivo(origenURL: URL, destinoURL: URL, keys: [String]) {
         let oldk = self.obtenerKey(origenURL)
         let newk = self.obtenerKey(destinoURL)
         
@@ -434,11 +318,9 @@ struct PersistenciaDatos {
             }
         }
     }
-
-
     
-    //metodo para eliminar de persistencia
-    public func eliminarPersistenciaElemento(elementoURL: URL, keys: [String]) {
+    //metodo para eliminar de persistencia todas las claves de un elemento
+    public func eliminarPersistenciaArchivo(elementoURL: URL, keys: [String]) {
         let k = self.obtenerKey(elementoURL)
         
         for key in keys {
@@ -448,13 +330,6 @@ struct PersistenciaDatos {
             self.guardarMapa(mapa: mapaParaEstaKey, key: key)
         }
     }
-    
-    
-//    public func actualizarDatoArchivo(valor: Any?, elementoURL: URL, key: String) {
-//        
-//    }
-
-    //metodo para actualizar o borrar varias claves en un diccinario pasando un array de keys = [String]
     
     private func obtenerMapa(key: String) -> [String : Any] {
         if let mapa = uds.dictionary(forKey: key) {

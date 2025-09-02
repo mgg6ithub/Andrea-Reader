@@ -304,7 +304,7 @@ class SistemaArchivos: ObservableObject {
                 
                 if let _ = elemento as? Archivo {
                     coleccionDestino.totalArchivos += 1
-                    self.pd.duplicarDatoElemento(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
+                    self.pd.duplicarDatoArchivo(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
                     self.pd.duplicarSesiones(origenURL: origenURL, destinoURL: destinoURL)
                 } else if let coleccion = elemento as? Coleccion {
                     coleccionDestino.totalArchivos += 1
@@ -319,7 +319,7 @@ class SistemaArchivos: ObservableObject {
                     }
                     
                     //--- duplicar en persistencia ---
-                    self.pd.duplicarDatoElemento(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
+                    self.pd.duplicarDatoArchivo(origenURL: origenURL, destinoURL: destinoURL, keys: self.cpe.arrayClavesPersistenciaElementos)
                 }
                 
             } catch {
@@ -356,7 +356,7 @@ class SistemaArchivos: ObservableObject {
             }
             
             //--- duplicar en persistencia ---
-            self.pd.duplicarDatoElemento(origenURL: origenURL, destinoURL: duplicadaURL, keys: self.cpe.arrayClavesPersistenciaElementos)
+            self.pd.duplicarDatoArchivo(origenURL: origenURL, destinoURL: duplicadaURL, keys: self.cpe.arrayClavesPersistenciaElementos)
             self.pd.duplicarSesiones(origenURL: origenURL, destinoURL: duplicadaURL)
         }
     }
@@ -408,7 +408,7 @@ class SistemaArchivos: ObservableObject {
                             vm.coleccion.totalArchivos -= 1
                             
                             // --- PERSISTENCIA (BORRADO) ---
-                            self.pd.eliminarPersistenciaElemento(elementoURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
+                            self.pd.eliminarPersistenciaArchivo(elementoURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
                         }
                     }
                     
