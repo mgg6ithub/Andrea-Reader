@@ -87,6 +87,13 @@ struct VistaPrincipal: View {
                     .zIndex(5)
             }
             
+            // --- VISTA PREVIA COLECCION ---
+            if ap.vistaPreviaColeccion, let coleccionSeleccionada = ap.coleccionseleccionada {
+                ColeccionHolografica3D(vm: pc.getColeccionActual())
+                    .ignoresSafeArea()
+                    .zIndex(5)
+            }
+            
         }
         .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
             ContenedorLector(archivo: archivo)
@@ -147,5 +154,6 @@ extension View {
             .zIndex(10)
     }
 }
+
 
 

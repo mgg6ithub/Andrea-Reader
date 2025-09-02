@@ -106,6 +106,7 @@ class AppEstado: ObservableObject {
     @Published var pantallaCompleta: Bool = false
 
     @Published var vistaPrevia: Bool = false
+    @Published var vistaPreviaColeccion: Bool = false
     
     init(screenWidth: CGFloat? = nil, screenHeight: CGFloat? = nil) {
         self.isFirstTimeLaunch = true

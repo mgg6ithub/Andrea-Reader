@@ -17,7 +17,7 @@ struct MasInfoCol: View {
                 .animation(.easeInOut(duration: 0.3), value: pantallaCompleta)
                 .onTapGesture {
                     if !pantallaCompleta {
-                        withAnimation(.easeInOut(duration: 0.25)) { ap.masInformacion = false }
+                        withAnimation(.easeInOut(duration: 0.25)) { ap.masInformacionColeccion = false }
                     }
                 }
             

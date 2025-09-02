@@ -197,12 +197,25 @@ enum EnumTipoMiniatura: String, CaseIterable {
 }
 
 
-enum EnumTipoMiniaturaColeccion: String {
+// ENUM TIPO DE MINIATURA DE COLECCIÓN
+enum EnumTipoMiniaturaColeccion: String, CaseIterable {
+    case carpeta = "Carpeta"
+    case abanico = "Abanico"
     
-    case carpeta
-    case abanico
+    /// Nombre del SF Symbol asociado a cada caso
+    var iconName: String {
+        switch self {
+        case .carpeta: return "folder.fill"
+        case .abanico: return "square.stack.3d.down.right.fill"
+        }
+    }
     
+    /// Título para mostrar en UI
+    var title: String {
+        return self.rawValue
+    }
 }
+
 
 enum EnumDireccionAbanico: String {
     

@@ -72,10 +72,18 @@ struct ContenidoColeccion: View {
                         EditableStarRating(vm: vm, url: vm.coleccion.url, puntuacion: $puntucacion)
 //                    }
                 }
-                .padding(.bottom, 25 * ap.constantes.scaleFactor)
+                .padding(.bottom, 15 * ap.constantes.scaleFactor)
                 
+                SelectorColor(vm: vm)
                 
-                SelectorColor()
+                Spacer()
+                
+                Rectangle()
+                    .fill(.gray.opacity(0.25))
+                    .frame(height: 1)
+                    .padding(15 * ap.constantes.scaleFactor)
+                
+                Spacer()
                 
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 2) {
@@ -195,15 +203,20 @@ struct ImagenColeccion: View {
                     )
             }
             
-            // 🔹 Texto + icono debajo
-            HStack(alignment: .center, spacing: 4) {
-                Image(systemName: "paintbrush")
-                    .foregroundColor(.gray)
-                
-                Text("Modificar miniatura")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+            Button(action: {
+                ap.coleccionseleccionada = vm
+                withAnimation(.easeInOut(duration: 0.3)) { ap.vistaPreviaColeccion = true }
+            }) {
+                HStack(alignment: .center, spacing: 4) {
+                    Image(systemName: "paintbrush")
+                        .foregroundColor(.gray)
+                    
+                    Text("Modificar miniatura")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
             }
+            
         }
         .frame(width: 220, height: 340 * ap.constantes.scaleFactor, alignment: .top)
         .border(.red) // 👈 para que veas el contenedor
@@ -211,6 +224,9 @@ struct ImagenColeccion: View {
 }
 
 struct SelectorColor: View {
+    
+    @ObservedObject var vm: ModeloColeccion
+    
     @State private var colorActual: Color = .blue
     @State private var mostrarColorPicker = false
     
@@ -237,7 +253,10 @@ struct SelectorColor: View {
             ) {
                 ForEach(coloresPredefinidos, id: \.self) { color in
                     Button {
-                        colorActual = color
+                        withAnimation {
+                            colorActual = color
+                            vm.color = color
+                        }
                     } label: {
                         RoundedRectangle(cornerRadius: 4)
                             .fill(
