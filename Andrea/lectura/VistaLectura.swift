@@ -75,6 +75,9 @@ struct MenuLectura: View {
     @State private var miniatura: UIImage?
     @State private var isPressed: Bool = false
     
+    @State private var sideMenuVisible: Bool = false
+    @State private var dragOffset: CGFloat = 0
+    
     private var sss: EstadisticasYProgresoLectura { estadisticas }
     private var const: Constantes { ap.constantes }
     
@@ -112,6 +115,7 @@ struct MenuLectura: View {
                                     .contentTransition(.interpolate)
                                     .animation(.easeInOut(duration: 0.25), value: estadisticas.paginaActual)
                             }
+                            
                         }
                         .onAppear {
                            actualizarMiniatura()
@@ -212,7 +216,7 @@ struct MenuLectura: View {
                                    .font(.system(size: const.iconSize * 0.9))
                                    .symbolRenderingMode(.palette)
                                    .foregroundStyle(.black)
-//                                   .symbolEffect(.bounce.down.byLayer, value: sideMenuVisible)
+                                   .symbolEffect(.bounce.down.byLayer, value: sideMenuVisible)
                                    .fontWeight(.thin)
                            }
                            .padding(.horizontal, 7.5)
@@ -221,6 +225,12 @@ struct MenuLectura: View {
                            .shadow(color: Color.black.opacity(0.25), radius: 2.5, x: 0, y: 2)
                            .cornerRadius(5)
                        }
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                sideMenuVisible = true
+                                dragOffset = 0
+                            }
+                        }
                         .offset(x: -8)
                         
                     }
@@ -241,6 +251,73 @@ struct MenuLectura: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.vertical, 35)
             .padding(.horizontal, 25)
+            
+            
+            Rectangle()
+            .fill(Color.black.opacity(sideMenuVisible ? 0.65 : 0))
+            .edgesIgnoringSafeArea(.all)
+            .onTapGesture {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                    sideMenuVisible = false
+                }
+            }
+            .opacity(sideMenuVisible ? 1 : 0)
+        
+        GeometryReader { geometry in
+                HStack(spacing: 0) {
+                    Spacer()
+                    
+                    ZStack(alignment: .leading) {
+//                        ChapterMenu(elementModel: elementModel,
+//                                   viewModelMenu: viewModelMenu,
+//                                   dirColor: dirInfo.color,
+//                                   colorPersonalizado: Color(UIColor.systemGray5),
+//                                   sideMenuVisible: $sideMenuVisible,
+//                                   dragOffset: $dragOffset)
+                            RoundedRectangle(cornerRadius: 5)
+                            .frame(width: 300)
+                            .background(Color(UIColor.systemGray6))
+                            .offset(x: sideMenuVisible ? dragOffset : 300 + dragOffset)
+                            .gesture(
+                                DragGesture()
+                                    .onChanged { value in
+                                        // Si el menú está visible, permitimos deslizar en cualquier dirección
+                                        if sideMenuVisible {
+                                            // Para cerrar: limitamos el arrastre de 0 (cerrado) a 300 (abierto)
+                                            dragOffset = min(300, max(0, value.translation.width))
+                                        }
+                                        // Si no está visible, solo permitimos abrir desde la derecha
+                                        else if value.translation.width < 0 {
+                                            // Para abrir: limitamos de -300 a 0
+                                            dragOffset = max(-300, value.translation.width)
+                                        }
+                                    }
+                                    .onEnded { value in
+                                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                            // Cerrando el menú (deslizando de izquierda a derecha)
+                                            if sideMenuVisible && value.translation.width > 50 {
+                                                sideMenuVisible = false
+                                                print("Cerrando menú con gesto")
+                                            }
+                                            // Abriendo el menú (deslizando de derecha a izquierda)
+                                            else if !sideMenuVisible && value.translation.width < -50 {
+                                                sideMenuVisible = true
+                                                print("Abriendo menú con gesto")
+                                            }
+                                            
+                                            // Siempre reseteamos el offset al finalizar
+                                            dragOffset = 0
+                                        }
+                                    }
+                            )
+                        
+
+                    }
+                    
+                }
+                .edgesIgnoringSafeArea(.all)
+            }
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
