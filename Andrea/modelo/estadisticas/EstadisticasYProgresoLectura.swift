@@ -243,7 +243,6 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         pausa = false
         enPausa = false
 
-        // Calcular tiempo total de sesión
         var sesion = tiempoAcumuladoSesion
         if let inicio = inicioLectura {
             sesion += Date().timeIntervalSince(inicio)
@@ -256,36 +255,39 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         timerCancellable?.cancel()
         timerCancellable = nil
 
-        // ⚠️ Descartar sesión demasiado corta
+        // ⚠️ Validación de la sesión
         guard lecturaValidada else {
             print("⚠️ Sesión descartada por ser demasiado corta (\(sesion)s)")
             sesionActual = nil
             return
         }
-        tiempoTotal += sesion
-
-        // Registrar última página
-        if let inicioPaginaFecha = inicioPaginaFecha {
-            _ = registrarTiempoSiValido(pagina: paginaActual, desde: inicioPaginaFecha)
-            self.inicioPaginaFecha = nil
-        }
 
         if var sesionObj = sesionActual {
             sesionObj.fin = Date()
             sesionObj.paginaFin = paginaActual
-            sesionObj.paginasLeidas = max(1, paginaActual - sesionObj.paginaInicio)
+            sesionObj.paginasLeidas = max(0, paginaActual - sesionObj.paginaInicio)
+
+            // ⚠️ Nuevo filtro: no contar sesiones sin avance
+            guard sesionObj.paginasLeidas > 0 else {
+                print("⚠️ Sesión descartada (sin páginas leídas)")
+                sesionActual = nil
+                return
+            }
 
             let duracionMinutos = sesionObj.fin!.timeIntervalSince(sesionObj.inicio) / 60
             sesionObj.velocidadLectura = Double(sesionObj.paginasLeidas) / duracionMinutos
 
             sesionesLectura.append(sesionObj)
             sesionActual = nil
+
+            tiempoTotal += sesion
         }
 
         // Persistencia
         pd.guardarDatoArchivo(valor: tiemposPorPagina, elementoURL: url, key: cpe.tiemposPorPagina)
         pd.guardarDatoArchivo(valor: visitasPorPagina, elementoURL: url, key: cpe.visitasPorPagina)
     }
+
 
     // ---------------------- //
     // Pausar solo temporal   //

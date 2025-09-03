@@ -3,6 +3,10 @@
 import UIKit
 import SwiftUI
 
+extension Notification.Name {
+    static let sliderPageChanged = Notification.Name("sliderPageChanged")
+}
+
 
 // MARK: - SinglePage (UIPageViewController integrado en SwiftUI)
 struct SinglePage: UIViewControllerRepresentable {
@@ -25,7 +29,7 @@ struct SinglePage: UIViewControllerRepresentable {
         self.pages = pages
         self.comicFile = comicFile
         _currentPage = currentPage
-
+        
     }
     
     func makeUIViewController(context: Context) -> UIPageViewController {
@@ -85,21 +89,36 @@ struct SinglePage: UIViewControllerRepresentable {
         return pageVC
     }
     
+    //Necesario para que se actulice desde el slider.
     func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {
-        guard let currentVC = pageViewController.viewControllers?.first as? BaseZoomableViewController else { return }
-        
-        // Si la página actual del binding es diferente de la mostrada
-        if currentVC.currentPage != currentPage {
-            if let newVC = context.coordinator.viewController(for: currentPage) {
-                let direction: UIPageViewController.NavigationDirection = currentPage > currentVC.currentPage ? .forward : .reverse
-                pageViewController.setViewControllers([newVC], direction: direction, animated: true)
-            }
-        }
+//        guard let currentVC = pageViewController.viewControllers?.first as? BaseZoomableViewController else { return }
+//        
+//        // Solo forzar el cambio si viene del slider
+//        if context.coordinator.isExternalChange, currentVC.currentPage != currentPage {
+//            if let newVC = context.coordinator.viewController(for: currentPage) {
+//                let direction: UIPageViewController.NavigationDirection = currentPage > currentVC.currentPage ? .forward : .reverse
+//                pageViewController.setViewControllers([newVC], direction: direction, animated: true)
+//            }
+//            context.coordinator.isExternalChange = false // resetear
+//        }
     }
+
 
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
+        let coordinator = Coordinator(self)
+        // Suscribirse a la notificación del slider
+        NotificationCenter.default.addObserver(
+           forName: .sliderPageChanged,
+           object: nil,
+           queue: .main
+       ) { notif in
+           if let page = notif.object as? Int {
+               coordinator.goToPage(page)
+           }
+       }
+        
+        return coordinator
     }
     
     
@@ -169,6 +188,37 @@ struct SinglePage: UIViewControllerRepresentable {
             
             parent.sessionCache.printCacheInfo()
         }
+        
+        
+        func goToPage(_ page: Int) {
+            guard let pageVC = pageViewController else { return }
+            guard let newVC = viewController(for: page) else { return }
+            
+            print("Pagina: ", pageVC)
+            print("Pagina pasad: ", newVC)
+            
+            let currentPage = (pageVC.viewControllers?.first as? BaseZoomableViewController)?.currentPage ?? self.parent.currentPage
+            print("pagina actuala", currentPage)
+            let direction: UIPageViewController.NavigationDirection =
+                page > currentPage ? .forward : .reverse
+            
+            print("Pasando pagina")
+            pageVC.setViewControllers([newVC], direction: direction, animated: true)
+            
+            // actualizar bindings
+            parent.currentPage = page
+            parent.sessionCache.currentPage = page
+            parent.comicFile.estadisticas.setCurrentPage(currentPage: page)
+            
+            // prefetch
+            parent.sessionCache.prefetchNearbyPages(currentPage: page, range: parent.prefetchRange)
+            parent.vcCache.prefetchNearbyPages(comicFile: parent.comicFile,
+                                               sessionCache: parent.sessionCache,
+                                               for: page,
+                                               prefetchRange: parent.prefetchRange)
+        }
+
+        
         
         /**
          PAGINA ANTERIOR <-

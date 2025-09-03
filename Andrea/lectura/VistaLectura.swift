@@ -62,8 +62,9 @@ struct ContenedorLector: View {
                     archivo.estadisticas.pausa = true
                 } else {
                     archivo.estadisticas.pausa = false
+                    print("Se deneria de actualizar la pagina en el comic")
+                    DispatchQueue.main.async { NotificationCenter.default.post(name: .sliderPageChanged, object: archivo.estadisticas.paginaActual) }
                 }
-                
             }
         }
     }

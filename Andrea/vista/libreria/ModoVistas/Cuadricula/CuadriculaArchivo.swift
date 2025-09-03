@@ -31,9 +31,7 @@ struct CuadriculaArchivo: View {
         VStack(spacing: 0) {
             // --- Imagen ---
             Button(action: {
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    ap.archivoEnLectura = archivo
-                }
+                withAnimation(.easeInOut(duration: 0.5)) { ap.archivoEnLectura = archivo }
             }) {
                 ZStack {
                     CheckerEncimaDelElemento(elementoURL: archivo.url, topPadding: true)
