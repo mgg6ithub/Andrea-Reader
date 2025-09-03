@@ -133,31 +133,32 @@ struct VistaProgresoLectura: View {
                         )
                     }
                     .contentShape(.rect)
-                    .simultaneousGesture(
-                        LongPressGesture(minimumDuration: 0.2)
-                            .updating($isActive) { _, out, _ in
-                                out = true   // activa solo mientras dure el long press
-                            }
-                    )
                     .gesture(
-                        DragGesture(minimumDistance: 10)
-                            .updating($isActive) { _, out, _ in out = true }
-                            .onChanged { gesture in
-                                let progress = gesture.location.x / geo.size.width
-                                dragValue = min(max(progress * CGFloat(total - 1), 0), CGFloat(total - 1))
+                        DragGesture(minimumDistance: 0) // 👈 detecta también taps/long press
+                            .updating($isActive) { _, out, _ in
+                                out = true
                             }
-                            .onEnded { _ in
-                                let newPage = Int(dragValue.rounded())
-                                withAnimation(.easeInOut(duration: 0.25)) {
-                                    estadisticas.paginaActual = newPage
+                            .onChanged { gesture in
+                                if gesture.translation == .zero {
+                                    // 👈 está manteniendo sin mover
+                                    // Solo expandir, no mover el slider todavía
+                                } else {
+                                    // 👈 está arrastrando → mover barra
+                                    let progress = gesture.location.x / geo.size.width
+                                    dragValue = min(max(progress * CGFloat(total - 1), 0), CGFloat(total - 1))
                                 }
-                                dragValue = CGFloat(newPage)
-                                // 👈 aquí no tocamos nada: isActive se apagará solo
+                            }
+                            .onEnded { gesture in
+                                if gesture.translation != .zero {
+                                    // 👈 solo si arrastró actualizamos la página
+                                    let newPage = Int(dragValue.rounded())
+                                    withAnimation(.easeInOut(duration: 0.25)) {
+                                        estadisticas.paginaActual = newPage
+                                    }
+                                    dragValue = CGFloat(newPage)
+                                }
                             }
                     )
-                    .onChange(of: estadisticas.paginaActual) { _, newValue in
-                        dragValue = CGFloat(newValue)
-                    }
                 }
             }
             .frame(height: 20 + (effectiveActive ? 25 : 0))
