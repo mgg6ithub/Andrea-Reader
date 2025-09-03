@@ -40,7 +40,7 @@ struct DocumentPicker: UIViewControllerRepresentable {
         }
         
         func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-            print("El usuario canceló la selección.")
+//            print("El usuario canceló la selección.")
             onCancel() // Llamar al closure de cancelación
         }
     }

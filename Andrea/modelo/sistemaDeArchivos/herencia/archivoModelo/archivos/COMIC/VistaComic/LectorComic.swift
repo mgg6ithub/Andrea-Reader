@@ -46,13 +46,10 @@ struct LectorComic: View {
             .onDisappear {
                 sessionCache.endCache()
             }
-                
             //MARK: - PAGINADO (PAGINA A PAGINA)
-                
 
         }
         .onAppear {
-            print("Empezar timer")
             comic.leyendose = true
         }
         .ignoresSafeArea()

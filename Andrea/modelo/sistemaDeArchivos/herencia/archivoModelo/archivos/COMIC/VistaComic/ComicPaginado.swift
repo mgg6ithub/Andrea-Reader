@@ -167,10 +167,7 @@ struct SinglePage: UIViewControllerRepresentable {
             parent.sessionCache.cleanupCache(keepingRange: parent.prefetchRange, imageViewCache: &fakeCache)
             parent.vcCache.cleanup(keepingRange: parent.prefetchRange, around: zoomVC.currentPage, totalPages: parent.pages.count)
             
-//            print()
-//            print("PAGINA ACTUAL", zoomVC.currentPage)
             parent.sessionCache.printCacheInfo()
-//            print()
         }
         
         /**

@@ -194,10 +194,6 @@ class CBZArchivo: Archivo, ProtocoloComic {
                 }
                 return nil
             }.sorted() // Importante: asegura el orden alfabético
-
-            print("Imagenes actuales: ", imagenes)
-            print()
-            print("Pagina actual: ", self.estadisticas.paginaActual)
             
             // Verificar que el índice esté dentro de rango
             guard self.estadisticas.paginaActual >= 0,

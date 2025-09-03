@@ -194,6 +194,10 @@ struct VistaProgresoLectura: View {
                                     // 👈 está arrastrando → mover barra
                                     let progress = gesture.location.x / geo.size.width
                                     dragValue = min(max(progress * CGFloat(total - 1), 0), CGFloat(total - 1))
+                                    
+                                    //AQUI SE PUEDE HACER UN PASO DE PAGINAS RAPIDAS
+                                    //-----
+                                    //-----
                                 }
                             }
                             .onEnded { gesture in
@@ -201,7 +205,7 @@ struct VistaProgresoLectura: View {
                                     // 👈 solo si arrastró actualizamos la página
                                     let newPage = Int(dragValue.rounded())
                                     withAnimation(.easeInOut(duration: 0.25)) {
-                                        estadisticas.paginaActual = newPage
+                                        estadisticas.setCurrentPage(currentPage: newPage)
                                     }
                                     dragValue = CGFloat(newPage)
                                 }

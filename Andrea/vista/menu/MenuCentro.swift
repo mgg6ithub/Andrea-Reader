@@ -93,7 +93,7 @@ struct MenuCentro: View {
 //                        coleccionActualVM.ordenarElementos(modoOrdenacion: self.coleccionActualVM.ordenacion)
                     },
                     onCancel: {
-                        print("Cancelado")
+//                        print("Cancelado")
                     },
                     allowMultipleSelection: true,
                     contentTypes: [.item]

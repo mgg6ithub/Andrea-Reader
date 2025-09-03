@@ -61,7 +61,7 @@ struct MasInformacionArchivo: View {
                     
                     //ESTADISTICAS
                     VStack(alignment: .center, spacing: 0) {
-                        if archivo.fechaPrimeraVezEntrado == nil || archivo.estadisticas.paginaActual == 0 {
+                        if archivo.fechaPrimeraVezEntrado == nil {
                             VStack(alignment: .center, spacing: 0) {
                                 HStack(spacing: 3) {
                                     Image("book-slash")

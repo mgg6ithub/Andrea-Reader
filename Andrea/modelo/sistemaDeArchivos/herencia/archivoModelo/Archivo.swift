@@ -280,9 +280,6 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
                     self.fechaPrimeraVezEntrado = Date() //Si es la primera agregamos la fecha en la que se entro.
                 }
                 
-                //Sumamos una entrada
-//                self.vecesEntrado += 1
-                
                 //Iniciamos la lectura
                 estadisticas.iniciarLectura()
             } else {

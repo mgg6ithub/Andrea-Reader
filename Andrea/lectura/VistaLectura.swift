@@ -57,6 +57,13 @@ struct ContenedorLector: View {
         .onTapGesture {
             withAnimation {
                 mostrarMenu.toggle()
+                
+                if mostrarMenu {
+                    archivo.estadisticas.pausa = true
+                } else {
+                    archivo.estadisticas.pausa = false
+                }
+                
             }
         }
     }

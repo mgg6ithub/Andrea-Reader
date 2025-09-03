@@ -39,11 +39,11 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     
     // --- TIEMPOS ---
     private var timerCancellable: AnyCancellable?
+    private var tiempoAcumuladoSesion: TimeInterval = 0
     @Published var tiempoActual: TimeInterval = 0      // se actualiza en vivo
     @Published var tiempoTotal: TimeInterval { didSet { pd.guardarDatoArchivo(valor: Int(tiempoTotal), elementoURL: url, key: cpe.tiempoLecturaTotal) } } //guardamos el tiempo total al cambiarse
     @Published var tiempoRestante: TimeInterval = 0 // <- implicito en el progreso circular
     var tiempoPorPagina: TimeInterval = 0 // <- grafica de barras o algo por el estilo moderno
-
     
     // --- VELOCIDAD ---
     var velocidadLectura: Double?
@@ -65,9 +65,21 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     @Published var completado: Bool = false
     
     //TIEMPOS MEJORA ESTADISTICAS REALES
-    private let tiempoMinimoLectura: TimeInterval = 2.0   // Sesiones cortas
-    private let tiempoMinimoPagina: TimeInterval = 2.0    // Páginas rápidas
+    private let tiempoMinimoLectura: TimeInterval = 4.0   // Sesiones cortas
+    private let tiempoMinimoPagina: TimeInterval = 4.0    // Páginas rápidas
     private var lecturaValidada = false                   // Marca si la sesión es válida
+    
+    //VARIABLE PARA PAUSAR Y REINICIAR LAS ESTADISTICAS (al entrar al menu del archivo)
+    private var enPausa: Bool = false   // <- el estado real
+    var pausa: Bool = false {
+        didSet {
+            if pausa {
+                self.pausarLectura()
+            } else {
+                self.reanudarLectura()
+            }
+        }
+    }
     
     //METODO PARA INICIAR LAS ESTADISTICAS COMPLEMENTARIAS A PARTIR DE LAS PRIMARIAS QUE SE INICIALIZAN EN EL CONSTRUCTOR
     public func crearEstadisticas() {
@@ -113,98 +125,6 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         self.visitasPorPagina = pd.recuperarVisitasPorPagina(elementoURL: url, key: cpe.visitasPorPagina)
         
         self.sesionesLectura = pd.recuperarSesiones(for: url, key: cpe.sesionesLecturas)
-        
-        // TEST
-        // Día 1 - hace 1 día desde hoy
-//        let dia1 = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-//
-//        let s1 = SesionDeLectura(
-//            numeroSesion: 1,
-//            inicio: Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: dia1)!,
-//            fin: Calendar.current.date(bySettingHour: 10, minute: 0, second: 0, of: dia1)!,
-//            paginaInicio: 0,
-//            paginaFin: 12,
-//            paginasLeidas: 12,
-//            velocidadLectura: 2.5
-//        )
-//
-//        let s2 = SesionDeLectura(
-//            numeroSesion: 2,
-//            inicio: Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: dia1)!,
-//            fin: Calendar.current.date(bySettingHour: 18, minute: 0, second: 0, of: dia1)!,
-//            paginaInicio: 12,
-//            paginaFin: 22,
-//            paginasLeidas: 10,
-//            velocidadLectura: 1.8
-//        )
-//
-//        // ➕ Nueva sesión Día 1
-//        let s3 = SesionDeLectura(
-//            numeroSesion: 3,
-//            inicio: Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: dia1)!,
-//            fin: Calendar.current.date(bySettingHour: 22, minute: 30, second: 0, of: dia1)!,
-//            paginaInicio: 22,
-//            paginaFin: 30,
-//            paginasLeidas: 8,
-//            velocidadLectura: 1.6
-//        )
-//
-//
-//        // Día 2 - hoy
-//        let dia2 = Date()
-//
-//        let s4 = SesionDeLectura(
-//            numeroSesion: 4,
-//            inicio: Calendar.current.date(bySettingHour: 9, minute: 30, second: 0, of: dia2)!,
-//            fin: Calendar.current.date(bySettingHour: 10, minute: 15, second: 0, of: dia2)!,
-//            paginaInicio: 22,
-//            paginaFin: 40,
-//            paginasLeidas: 18,
-//            velocidadLectura: 3.2
-//        )
-//
-//        let s5 = SesionDeLectura(
-//            numeroSesion: 5,
-//            inicio: Calendar.current.date(bySettingHour: 15, minute: 0, second: 0, of: dia2)!,
-//            fin: Calendar.current.date(bySettingHour: 15, minute: 45, second: 0, of: dia2)!,
-//            paginaInicio: 40,
-//            paginaFin: 50,
-//            paginasLeidas: 10,
-//            velocidadLectura: 2.0
-//        )
-//
-//        let s6 = SesionDeLectura(
-//            numeroSesion: 6,
-//            inicio: Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: dia2)!,
-//            fin: Calendar.current.date(bySettingHour: 21, minute: 30, second: 0, of: dia2)!,
-//            paginaInicio: 50,
-//            paginaFin: 65,
-//            paginasLeidas: 15,
-//            velocidadLectura: 7.0
-//        )
-//
-//        // ➕ Nuevas sesiones Día 2
-//        let s7 = SesionDeLectura(
-//            numeroSesion: 7,
-//            inicio: Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: dia2)!,
-//            fin: Calendar.current.date(bySettingHour: 22, minute: 30, second: 0, of: dia2)!,
-//            paginaInicio: 65,
-//            paginaFin: 75,
-//            paginasLeidas: 10,
-//            velocidadLectura: 2.8
-//        )
-//
-//        let s8 = SesionDeLectura(
-//            numeroSesion: 8,
-//            inicio: Calendar.current.date(bySettingHour: 23, minute: 30, second: 0, of: dia2)!,
-//            fin: Calendar.current.date(bySettingHour: 23, minute: 45, second: 0, of: dia2)!,
-//            paginaInicio: 75,
-//            paginaFin: 90,
-//            paginasLeidas: 15,
-//            velocidadLectura: 3.5
-//        )
-
-//        self.sesionesLectura.append(contentsOf: [s1, s2, s3, s4, s5, s6, s7, s8])
 
     }
     
@@ -217,12 +137,14 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         
         // 2. Actualizar página actual
         paginaActual = max(0, currentPage)
-        withAnimation {
-            actualizarProgreso()
-        }
+        withAnimation { actualizarProgreso() }
         
-        // 3. Reiniciar cronómetro
-        inicioPaginaFecha = Date()
+        // 3. Reiniciar cronómetro solo si no está en pausa
+         if !enPausa {
+             inicioPaginaFecha = Date()
+         } else {
+             inicioPaginaFecha = nil
+         }
     }
 
     
@@ -258,6 +180,14 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     /// Registra el tiempo y la visita de una página si supera el umbral mínimo
     @discardableResult
     private func registrarTiempoSiValido(pagina: Int, desde inicio: Date) -> Bool {
+        
+        guard !enPausa else {
+            print("⏸ Ignorado (menú activo)")
+            return false
+        }
+        
+        print("Registrando el tiempo en la pagina: ", pagina)
+        
         let tiempoLeido = Date().timeIntervalSince(inicio)
         if tiempoLeido >= tiempoMinimoPagina {
             tiemposPorPagina[pagina, default: 0] += tiempoLeido
@@ -270,13 +200,16 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     }
 
     
-    //MARK: - --- ESTADISTICAS ---
+    // ---------------------- //
+    // Iniciar lectura normal //
+    // ---------------------- //
     func iniciarLectura() {
         guard inicioLectura == nil else { return }
-        
+
         inicioLectura = Date()
         lecturaValidada = false
-        
+        tiempoAcumuladoSesion = 0
+
         sesionActual = SesionDeLectura(
             numeroSesion: contadorSesiones,
             inicio: Date(),
@@ -286,64 +219,118 @@ final class EstadisticasYProgresoLectura: ObservableObject {
             paginasLeidas: 0,
             velocidadLectura: 0.0
         )
-        
+
         // Validar sesión solo si pasa el umbral
         DispatchQueue.main.asyncAfter(deadline: .now() + tiempoMinimoLectura) { [weak self] in
             guard let self = self, self.inicioLectura != nil else { return }
             self.lecturaValidada = true
         }
-        
-        // Timer de visualización (igual que antes)
+
+        // Timer de visualización
         timerCancellable = Timer.publish(every: 1, on: RunLoop.main, in: .common)
             .autoconnect()
             .sink { [weak self] (_: Date) in
                 guard let self = self, let inicio = self.inicioLectura else { return }
-                self.tiempoActual = Date().timeIntervalSince(inicio)
+                let parcial = self.tiempoAcumuladoSesion + Date().timeIntervalSince(inicio)
+                self.tiempoActual = parcial
             }
     }
 
-    
+    // ----------------------- //
+    // Terminar lectura total  //
+    // ----------------------- //
     func terminarLectura() {
-        guard let inicio = inicioLectura else { return }
-        
-        let sesion = Date().timeIntervalSince(inicio)
+        pausa = false
+        enPausa = false
+
+        // Calcular tiempo total de sesión
+        var sesion = tiempoAcumuladoSesion
+        if let inicio = inicioLectura {
+            sesion += Date().timeIntervalSince(inicio)
+        }
+
         inicioLectura = nil
+        tiempoAcumuladoSesion = 0
         tiempoActual = 0
-        
+
         timerCancellable?.cancel()
         timerCancellable = nil
-        
+
         // ⚠️ Descartar sesión demasiado corta
         guard lecturaValidada else {
             print("⚠️ Sesión descartada por ser demasiado corta (\(sesion)s)")
             sesionActual = nil
             return
         }
-        
         tiempoTotal += sesion
-        
-        // ⬇️ Usar función utilitaria para registrar la última página
+
+        // Registrar última página
         if let inicioPaginaFecha = inicioPaginaFecha {
             _ = registrarTiempoSiValido(pagina: paginaActual, desde: inicioPaginaFecha)
             self.inicioPaginaFecha = nil
         }
-        
-        if var sesion = sesionActual {
-            sesion.fin = Date()
-            sesion.paginaFin = paginaActual
-            sesion.paginasLeidas = max(1, paginaActual - sesion.paginaInicio)
-            
-            let duracionMinutos = sesion.fin!.timeIntervalSince(sesion.inicio) / 60
-            sesion.velocidadLectura = Double(sesion.paginasLeidas) / duracionMinutos
-            
-            sesionesLectura.append(sesion)
+
+        if var sesionObj = sesionActual {
+            sesionObj.fin = Date()
+            sesionObj.paginaFin = paginaActual
+            sesionObj.paginasLeidas = max(1, paginaActual - sesionObj.paginaInicio)
+
+            let duracionMinutos = sesionObj.fin!.timeIntervalSince(sesionObj.inicio) / 60
+            sesionObj.velocidadLectura = Double(sesionObj.paginasLeidas) / duracionMinutos
+
+            sesionesLectura.append(sesionObj)
             sesionActual = nil
         }
-        
+
+        // Persistencia
         pd.guardarDatoArchivo(valor: tiemposPorPagina, elementoURL: url, key: cpe.tiemposPorPagina)
         pd.guardarDatoArchivo(valor: visitasPorPagina, elementoURL: url, key: cpe.visitasPorPagina)
     }
 
+    // ---------------------- //
+    // Pausar solo temporal   //
+    // ---------------------- //
+    public func pausarLectura() {
+        guard !enPausa else { return }
+        enPausa = true
+
+        // Acumula tiempo hasta ahora
+        if let inicio = inicioLectura {
+            tiempoAcumuladoSesion += Date().timeIntervalSince(inicio)
+            inicioLectura = nil
+        }
+
+        timerCancellable?.cancel()
+        timerCancellable = nil
+
+        if let inicio = inicioPaginaFecha {
+            _ = registrarTiempoSiValido(pagina: paginaActual, desde: inicio)
+            inicioPaginaFecha = nil
+        }
+
+        print("⏸ Lectura en pausa (acumulado: \(tiempoAcumuladoSesion)s)")
+    }
+
+    // ---------------------- //
+    // Reanudar después pausa //
+    // ---------------------- //
+    public func reanudarLectura() {
+        guard enPausa else { return }
+        enPausa = false
+
+        inicioLectura = Date()
+        inicioPaginaFecha = Date()
+
+        timerCancellable = Timer.publish(every: 1, on: RunLoop.main, in: .common)
+            .autoconnect()
+            .sink { [weak self] (_: Date) in
+                guard let self = self, let inicio = self.inicioLectura else { return }
+                let parcial = self.tiempoAcumuladoSesion + Date().timeIntervalSince(inicio)
+                self.tiempoActual = parcial
+            }
+
+        print("▶️ Lectura reanudada (acumulado: \(tiempoAcumuladoSesion)s)")
+    }
     
     
     private func calcularPaginasRestantes() -> Int {
