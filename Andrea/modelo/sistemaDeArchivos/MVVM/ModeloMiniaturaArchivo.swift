@@ -51,7 +51,6 @@ class ModeloMiniaturaArchivo: ObservableObject {
     }
     
     public func cambiarMiniatura(color: Color, archivo: Archivo, tipoMiniatura: EnumTipoMiniatura, url: URL? = nil) {
-        
         switch tipoMiniatura {
             case .imagenBase:
                 self.miniatura = mm.imagenBase(tipoArchivo: archivo.fileType, color: color)

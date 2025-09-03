@@ -24,11 +24,7 @@ class ModeloMiniatura {
     //MARK: --- CONSTRUCTOR PRIVADO ---
     private init() {}
     
-    func construirMiniatura(
-        color: Color,
-        archivo: Archivo,
-        completion: @escaping (UIImage?) -> Void
-    ) {
+    func construirMiniatura(color: Color, archivo: Archivo, completion: @escaping (UIImage?) -> Void) {
         DispatchQueue.global(qos: .utility).async {
             //--- Imagen por defecto ---
             let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
@@ -47,33 +43,11 @@ class ModeloMiniatura {
                 return
                 
             case .primeraPagina:
-                guard let primeraPagina = archivo.obtenerPrimeraPagina(),
-                      let data = archivo.extraerImagen(nombreImagen: primeraPagina)
-                else {
-                    DispatchQueue.main.async { completion(imagenBase) }
-                    return
-                }
-                
-                let miniatura = self.downsample(imageData: data, to: CGSize(width: 1000, height: 1000))
-                if let thumb = miniatura {
-                    self.guardarMiniatura(miniatura: thumb, archivo: archivo)
-                }
-                DispatchQueue.main.async { completion(miniatura ?? imagenBase) }
+                DispatchQueue.main.async { completion(self.obtenerMiniaturaPrimera(archivo: archivo, color: color) ?? imagenBase) }
                 return
                 
             case .aleatoria:
-                guard let randomPage = archivo.obtenerPaginaAleatoria(),
-                      let data = archivo.extraerImagen(nombreImagen: randomPage)
-                else {
-                    DispatchQueue.main.async { completion(imagenBase) }
-                    return
-                }
-                
-                let miniatura = self.downsample(imageData: data, to: CGSize(width: 1000, height: 1000))
-                if let thumb = miniatura {
-                    self.guardarMiniatura(miniatura: thumb, archivo: archivo)
-                }
-                DispatchQueue.main.async { completion(miniatura ?? imagenBase) }
+                DispatchQueue.main.async { completion(self.obtenerMiniaturaAleatoria(archivo: archivo, color: color) ?? imagenBase) }
                 return
                 
             case .personalizada:
@@ -81,28 +55,11 @@ class ModeloMiniatura {
                     DispatchQueue.main.async { completion(imagenBase) }
                     return
                 }
-                
-                do {
-                    let data = try Data(contentsOf: imagenPersonalizada)
-                    
-                    // 2. Downsample para evitar cargar un monstruo gigante en memoria
-                    let targetSize = CGSize(width: 1000, height: 1000)
-                    let miniatura = self.downsample(imageData: data, to: targetSize)
-                    
-                    // 3. Guardar en caché y devolver
-                    if let thumb = miniatura {
-                        self.guardarMiniatura(miniatura: thumb, archivo: archivo)
-                    }
-                    DispatchQueue.main.async { completion(miniatura ?? imagenBase) }
-                } catch {
-                    print("❌ Error cargando imagen personalizada:", error)
-                    DispatchQueue.main.async { completion(imagenBase) }
-                }
+                DispatchQueue.main.async { completion(self.obtenerMiniaturaPersonalizada(archivo: archivo, color: color, urlMiniatura: imagenPersonalizada)) }
                 return
             }
         }
     }
-    
     
     func imagenBase(tipoArchivo: EnumTipoArchivos, color: Color) -> UIImage? {
         // 1) Placeholder (no optional)
@@ -165,6 +122,20 @@ class ModeloMiniatura {
         }
     }
     
+    //DOWNSAMPLER BASICO
+    func downsampler(data: Data, archivo: Archivo) -> UIImage? {
+        // Downsamplear
+        let targetSize = CGSize(width: 1000, height: 1000)
+        let miniatura = self.downsample(imageData: data, to: targetSize)
+        
+        // Guardar en cache y devolver
+        if let thumb = miniatura {
+            self.guardarMiniatura(miniatura: thumb, archivo: archivo)
+            return thumb
+        }
+        return nil
+    }
+    
     //OBTIENE LA PRIMERA MINIATURA
     func obtenerMiniatura(archivo: Archivo) -> UIImage? {
         let key = obtenerLLave(archivoURL: archivo.url)
@@ -176,27 +147,14 @@ class ModeloMiniatura {
     
     // OBTIENE LA PRIMERA MINIATURA
     func obtenerMiniaturaPrimera(archivo: Archivo, color: Color) -> UIImage? {
-        // Imagen base como fallback
         let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
-        
         // Intentar sacar la primera página del archivo
         guard let primeraPagina = archivo.obtenerPrimeraPagina(),
               let data = archivo.extraerImagen(nombreImagen: primeraPagina)
         else {
             return imagenBase
         }
-        
-        // Downsamplear
-        let targetSize = CGSize(width: 1000, height: 1000)
-        let miniatura = self.downsample(imageData: data, to: targetSize)
-        
-        // Guardar en cache y devolver
-        if let thumb = miniatura {
-            self.guardarMiniatura(miniatura: thumb, archivo: archivo)
-            return thumb
-        }
-        
-        return imagenBase
+        return downsampler(data: data, archivo: archivo) ?? imagenBase
     }
     
     
@@ -211,18 +169,7 @@ class ModeloMiniatura {
         else {
             return imagenBase
         }
-        
-        // Downsample a tamaño razonable
-        let targetSize = CGSize(width: 1000, height: 1000)
-        let miniatura = self.downsample(imageData: data, to: targetSize)
-        
-        // Guardamos en cache si se pudo crear
-        if let thumb = miniatura {
-            self.guardarMiniatura(miniatura: thumb, archivo: archivo)
-            return thumb
-        }
-        
-        return imagenBase
+        return downsampler(data: data, archivo: archivo) ?? imagenBase
     }
     
     func obtenerMiniaturaPaginaActual(archivo: Archivo, color: Color) -> UIImage? {
@@ -235,44 +182,17 @@ class ModeloMiniatura {
         else {
             return imagenBase
         }
-        
-        // Downsample a tamaño razonable
-        let targetSize = CGSize(width: 1000, height: 1000)
-        let miniatura = self.downsample(imageData: data, to: targetSize)
-        
-        // Guardamos en cache si se pudo crear
-        if let thumb = miniatura {
-            self.guardarMiniatura(miniatura: thumb, archivo: archivo)
-            return thumb
-        }
-        
-        return imagenBase
+        return downsampler(data: data, archivo: archivo) ?? imagenBase
     }
     
     
-    public func obtenerMiniaturaPersonalizada(
-        archivo: Archivo,
-        color: Color,
-        urlMiniatura: URL? = nil
-    ) -> UIImage? {
-        
+    public func obtenerMiniaturaPersonalizada(archivo: Archivo, color: Color, urlMiniatura: URL? = nil) -> UIImage? {
         let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
-        
         guard let url = urlMiniatura else { return imagenBase }
-        
         do {
             // ⚡ No hace falta security scope porque está en tu sandbox
             let data = try Data(contentsOf: url)
-            
-            let targetSize = CGSize(width: 1000, height: 1000)
-            let miniatura = self.downsample(imageData: data, to: targetSize)
-            
-            if let thumb = miniatura {
-                self.guardarMiniatura(miniatura: thumb, archivo: archivo)
-                return thumb
-            } else {
-                return imagenBase
-            }
+            return downsampler(data: data, archivo: archivo) ?? imagenBase
             
         } catch {
             print("❌ Error cargando imagen personalizada:", error)
