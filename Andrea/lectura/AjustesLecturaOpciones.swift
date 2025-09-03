@@ -21,48 +21,15 @@ struct AjustesLecturaOpciones: View {
     ]
 
     var const: Constantes { ap.constantes }
-    var customFontColor: Color = .red
+    var tema: EnumTemas { ap.temaResuelto }
+    var pColor: Color  { tema.colorContrario }
+    var sColor: Color { tema.secondaryText }
     var iconSize: CGFloat { const.iconSize }
     
     var body: some View {
         
         ZStack {
-            Color(UIColor.systemGray5)
-                .blur(radius: 2.5)
-
             VStack(alignment: .center, spacing: 15) {
-                
-//                ZStack {
-//                    Button(action: {
-//                        self.isPreviewPressed.toggle()
-//                    }) {
-//                        HStack {
-//                            Spacer()
-//                            Text("PREVIEW")
-//                                .font(.system(size: 17))
-//                                .foregroundColor(customFontColor.opacity(0.9))
-//                                .bold()
-//                            
-//                            Image(self.isPreviewPressed ? "custom-camera" : "camera-slash")
-//                                .frame(width: 20, height: 20)
-//                                .font(.system(size: iconSize * 0.7))
-//                                .transition(.symbolEffect)
-//                                .symbolRenderingMode(.palette)
-//                                .foregroundStyle(customFontColor.opacity(0.9))
-//                                .animation(.easeInOut(duration: 0.15), value: isPreviewPressed)
-//                                .padding(.bottom, 1)
-//                            
-//                            Spacer()
-//                        }
-//                    }
-//                }
-//                .padding(10)
-//                .overlay(
-//                    RoundedRectangle(cornerRadius: 10)
-//                        .stroke(style: StrokeStyle(lineWidth: 2, dash: [5])) // Línea discontinua
-//                        .foregroundColor(.secondary)
-//                )
-                
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .fill(Color.gray.opacity(0.2))
@@ -71,7 +38,7 @@ struct AjustesLecturaOpciones: View {
                         HStack {
                             Text("Dimensiones")
                                 .font(.footnote)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(sColor)
                             Spacer()
                         }
                         .padding(.bottom, 2)
@@ -89,12 +56,12 @@ struct AjustesLecturaOpciones: View {
                                         .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
                                         .symbolRenderingMode(.palette)
-                                        .foregroundStyle(customFontColor.opacity(0.9), Color.clear, Color.clear)
+                                        .foregroundStyle(pColor.opacity(0.9), Color.clear, Color.clear)
                                         .animation(.easeInOut(duration: 0.3), value: self.viewSettings.isFullscreen)
                                 
                                     Text("Completa")
                                         .font(.system(size: 13))
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                 }
                                 .padding(2.5)
                                 .background(self.viewSettings.isFullscreen ? colorPersonalizado : Color.clear) // Azul más claro
@@ -123,12 +90,12 @@ struct AjustesLecturaOpciones: View {
                                     .font(.system(size: iconSize * 0.6))
                                     .transition(.symbolEffect)
                                     .symbolRenderingMode(.palette)
-                                    .foregroundStyle(customFontColor.opacity(0.9), Color.clear, Color.clear)
+                                    .foregroundStyle(pColor.opacity(0.9), Color.clear, Color.clear)
                                     .animation(.easeInOut(duration: 0.3), value: self.viewSettings.isBorderless)
                                 
                                 Text("Bordes")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                             }
                             .padding(2.5)
                             .background(self.viewSettings.isBorderless ? colorPersonalizado : Color.clear) // Azul más claro
@@ -156,7 +123,7 @@ struct AjustesLecturaOpciones: View {
                             HStack {
                                 Image("custom-ruler")
                                     .font(.system(size: iconSize * 0.6))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .transition(.symbolEffect)
                                     .font(Font.title.weight(.regular))
                                     .animation(.easeInOut(duration: 0.3), value: viewSettings.isDimensionPressed)
@@ -164,14 +131,14 @@ struct AjustesLecturaOpciones: View {
                                 
                                 Text("Ajustar margenes")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .bold()
                                 
                                 Spacer()
                                 
                                 Image(systemName: "chevron.forward")
                                     .font(.system(size: iconSize * 0.6))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .transition(.symbolEffect)
                                     .rotationEffect(.degrees(viewSettings.isDimensionPressed ? 90 : 0))
                                     .animation(.easeInOut(duration: 0.3), value: viewSettings.isDimensionPressed)
@@ -196,7 +163,7 @@ struct AjustesLecturaOpciones: View {
                                             HStack {
                                                 Text("Ajustar dimensiones")
                                                     .font(.footnote)
-                                                    .foregroundColor(customFontColor.opacity(0.9))
+                                                    .foregroundColor(pColor.opacity(0.9))
                                                 Spacer()
                                             }
                                             .padding(.bottom, 2)
@@ -260,7 +227,7 @@ struct AjustesLecturaOpciones: View {
                         HStack {
                             Text("Orientación")
                                 .font(.footnote)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(sColor)
                             Spacer()
                         }
                         .padding(.bottom, 2)
@@ -274,13 +241,13 @@ struct AjustesLecturaOpciones: View {
                                     Image(systemName: "arrow.up.and.down")
                                         .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                         .symbolRenderingMode(.palette)
                                         .animation(.easeInOut(duration: 0.3), value: viewSettings.isVertical)
                                 
                                 Text("Vertical")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                             }
                             .padding(.leading, 3)
                             .padding(2.5)
@@ -310,7 +277,7 @@ struct AjustesLecturaOpciones: View {
                                     Image(systemName: "arrow.left.and.right")
                                         .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                         .animation(.easeInOut(duration: 0.3), value: viewSettings.isHorizontal)
 //                                }
 //                                else {
@@ -323,7 +290,7 @@ struct AjustesLecturaOpciones: View {
                                 
                                 Text("Horizontal")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                             }
                             .padding(2.5)
                             .background(self.viewSettings.isHorizontal ? colorPersonalizado : Color.clear) // Azul más claro
@@ -355,12 +322,12 @@ struct AjustesLecturaOpciones: View {
                                         .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
                                         .symbolRenderingMode(.palette)
-                                        .foregroundStyle(customFontColor.opacity(0.9))
+                                        .foregroundStyle(pColor.opacity(0.9))
 //                                                .animation(.easeInOut(duration: 0.3), value: viewSettings.isInverted)
                                     
                                     Text(self.viewSettings.isInverted ? "Normal" : "Invertir")
                                         .font(.system(size: 13))
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                 }
                                 .padding(2.5)
                                 .background(Color.clear) // Azul más claro
@@ -384,7 +351,7 @@ struct AjustesLecturaOpciones: View {
                         HStack {
                             Text("Paso de página")
                                 .font(.footnote)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(sColor)
                             Spacer()
                         }
                         .padding(.bottom, 2)
@@ -402,14 +369,14 @@ struct AjustesLecturaOpciones: View {
                                     Image("custom-page")
                                         .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                         .symbolRenderingMode(.palette)
                                         .animation(.easeInOut(duration: 0.3), value: viewSettings.isSinglePage)
                                     
                                     
                                     Text("Paginada")
                                         .font(.system(size: 13))
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                 }
                                 .padding(2.5)
                                 .background(self.viewSettings.isSinglePage ? colorPersonalizado : Color.clear) // Azul más claro
@@ -437,7 +404,7 @@ struct AjustesLecturaOpciones: View {
                                     Image("custom-page")
                                         .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                         .symbolRenderingMode(.palette)
                                         .animation(.easeInOut(duration: 0.3), value: viewSettings.isContiousPage)
                                         .padding(0)
@@ -445,7 +412,7 @@ struct AjustesLecturaOpciones: View {
                                     Image("custom-page")
                                         .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                         .symbolRenderingMode(.palette)
                                         .animation(.easeInOut(duration: 0.3), value: viewSettings.isContiousPage)
                                         .padding(0)
@@ -454,7 +421,7 @@ struct AjustesLecturaOpciones: View {
                                 
                                 Text("Continua")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                             }
                             .padding(2.5)
                             .background(self.viewSettings.isContiousPage ? colorPersonalizado : Color.clear) // Azul más claro
@@ -488,7 +455,7 @@ struct AjustesLecturaOpciones: View {
                         HStack {
                             Text("Movimiento para pasar página")
                                 .font(.footnote)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(sColor)
                             Spacer()
                         }
                         .padding(.bottom, 2)
@@ -501,13 +468,13 @@ struct AjustesLecturaOpciones: View {
                                 Image("custom-hand-tap")
                                     .font(.system(size: iconSize * 0.6))
                                     .transition(.symbolEffect)
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .symbolRenderingMode(.palette)
                                     .animation(.easeInOut(duration: 0.3), value: viewSettings.isSingleTap)
                                 
                                 Text("Toque")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                             }
                             .padding(2.5)
                             .background(self.viewSettings.isSingleTap ? colorPersonalizado : Color.clear)
@@ -537,13 +504,13 @@ struct AjustesLecturaOpciones: View {
                                 Image(systemName: "hand.draw")
                                     .font(.system(size: iconSize * 0.6))
                                     .transition(.symbolEffect)
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
 //                                    .symbolRenderingMode(.palette)
                                     .animation(.easeInOut(duration: 0.3), value: viewSettings.isDelizar)
                                 
                                 Text("Deslizar")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                             }
                             .padding(2.5)
                             .background(self.viewSettings.isDelizar ? colorPersonalizado : Color.clear)
@@ -574,14 +541,14 @@ struct AjustesLecturaOpciones: View {
                                     Image(systemName: "book.pages")
                                       .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
     //                                    .symbolRenderingMode(.palette)
                                         .animation(.easeInOut(duration: 0.3), value: viewSettings.curlPageEffect)
 
                                     
                                     Text("Efecto real")
                                         .font(.system(size: 13))
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                 }
                                 .padding(2.5)
                                 .background(self.viewSettings.curlPageEffect ? colorPersonalizado : Color.clear)
@@ -617,18 +584,18 @@ struct AjustesLecturaOpciones: View {
                                             .font(.system(size: iconSize * 0.6))
                                             .transition(.symbolEffect)
                                             .symbolRenderingMode(.palette)
-                                            .foregroundStyle(customFontColor.opacity(0.9), colorPersonalizado)
+                                            .foregroundStyle(pColor.opacity(0.9), colorPersonalizado)
                                         
                                         Text("Automatizar")
                                             .font(.system(size: 13))
-                                            .foregroundColor(customFontColor.opacity(0.9))
+                                            .foregroundColor(pColor.opacity(0.9))
                                         
                                         Spacer()
                                         
                                         Image(systemName: "arrow.triangle.2.circlepath")
                                             .font(.system(size: iconSize * 0.6))
                                             .transition(.symbolEffect)
-                                            .foregroundColor(self.viewSettings.autoScroll ? colorPersonalizado : customFontColor.opacity(0.9))
+                                            .foregroundColor(self.viewSettings.autoScroll ? colorPersonalizado : pColor.opacity(0.9))
 //                                                    .symbolEffect(.rotate.byLayer, options: .repeat(.infinity), value: self.viewSettings.autoScroll)
                                         
                                     }
@@ -647,13 +614,13 @@ struct AjustesLecturaOpciones: View {
                                     Image("effects1")
                                         .font(.system(size: iconSize * 0.6))
                                         .transition(.symbolEffect)
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                         .animation(.easeInOut(duration: 0.3), value: viewSettings.isMoreEffectsPressed)
                                         .padding(.top, 1.5)
                                         
                                     Text("Más efectos")
                                         .font(.system(size: 13))
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                         .font(Font.title.weight(.regular))
                                         .bold()
                                     
@@ -661,7 +628,7 @@ struct AjustesLecturaOpciones: View {
                                     
                                     Image(systemName: "chevron.forward")
                                         .font(.system(size: iconSize * 0.6))
-                                        .foregroundColor(customFontColor.opacity(0.9))
+                                        .foregroundColor(pColor.opacity(0.9))
                                         .transition(.symbolEffect)
                                         .rotationEffect(.degrees(viewSettings.isMoreEffectsPressed ? 90 : 0))
                                         .animation(.easeInOut(duration: 0.3), value: viewSettings.isMoreEffectsPressed)
@@ -686,7 +653,7 @@ struct AjustesLecturaOpciones: View {
                                                 HStack {
                                                     Text("Ajustar dimensiones")
                                                         .font(.footnote)
-                                                        .foregroundColor(customFontColor.opacity(0.9))
+                                                        .foregroundColor(pColor.opacity(0.9))
                                                     Spacer()
                                                 }
                                                 .padding(.bottom, 2)
@@ -695,11 +662,11 @@ struct AjustesLecturaOpciones: View {
                                                 
                                                 HStack {
                                                     Image(systemName: "ruler")
-                                                        .foregroundColor(customFontColor.opacity(0.9))
+                                                        .foregroundColor(pColor.opacity(0.9))
                                                     
                                                     Text("Automaticamente")
                                                         .font(.system(size: 13))
-                                                        .foregroundColor(customFontColor.opacity(0.9))
+                                                        .foregroundColor(pColor.opacity(0.9))
                                                     
                                                     Spacer()
                                                     
@@ -716,7 +683,7 @@ struct AjustesLecturaOpciones: View {
                                             
                                                 Text("Margen")
                                                     .font(.system(size: 13))
-                                                    .foregroundColor(customFontColor.opacity(0.9))
+                                                    .foregroundColor(pColor.opacity(0.9))
                                                 
 //                                                Slider(value: $margen, in: 0...10, step: 1) // Slider de 0 a 100 con pasos de 1
 ////                                                                    .padding(.horizontal, 10)
@@ -725,7 +692,7 @@ struct AjustesLecturaOpciones: View {
                                 
                                                 Text("Padding")
                                                     .font(.system(size: 13))
-                                                    .foregroundColor(customFontColor.opacity(0.9))
+                                                    .foregroundColor(pColor.opacity(0.9))
                                                 
 //                                                Slider(value: $padding, in: 0...10, step: 1) // Slider de 0 a 100 con pasos de 1
 ////                                                                    .padding(.horizontal, 20)
@@ -757,7 +724,7 @@ struct AjustesLecturaOpciones: View {
                         HStack {
                             Text("Zoom")
                                 .font(.footnote)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(sColor)
                             Spacer()
                         }
                         .padding(.bottom, 2)
@@ -771,19 +738,19 @@ struct AjustesLecturaOpciones: View {
                                 Image("custom-page-lupa")
                                     .font(.system(size: iconSize * 0.6))
                                     .transition(.symbolEffect)
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .animation(.easeInOut(duration: 0.3), value: viewSettings.isZoom)
                                     .padding(.top, 1)
                                 
                                 Text("Ajustar zoom")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .font(Font.title.weight(.regular))
                                     .bold()
                                 Spacer()
                                 Image(systemName: "chevron.forward")
                                     .font(.system(size: iconSize * 0.6))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .transition(.symbolEffect)
                                     .rotationEffect(.degrees(viewSettings.isZoom ? 90 : 0))
                                     .animation(.easeInOut(duration: 0.3), value: viewSettings.isZoom)
@@ -807,7 +774,7 @@ struct AjustesLecturaOpciones: View {
                                                 
                                                 Text("Zoomout")
                                                     .font(.system(size: 13))
-                                                    .foregroundColor(customFontColor.opacity(0.9))
+                                                    .foregroundColor(pColor.opacity(0.9))
                                                 
                                                 Spacer()
                                                 Toggle(isOn: $viewSettings.isZoomOut) {}
@@ -821,7 +788,7 @@ struct AjustesLecturaOpciones: View {
                                                 
                                                 Text("Zoom individual")
                                                     .font(.system(size: 13))
-                                                    .foregroundColor(customFontColor.opacity(0.9))
+                                                    .foregroundColor(pColor.opacity(0.9))
                                                 Spacer()
                                                 Toggle(isOn: $viewSettings.isIndividualZoom) {}
                                                     .toggleStyle(SwitchToggleStyle(tint: Color.blue))
@@ -834,7 +801,7 @@ struct AjustesLecturaOpciones: View {
                                                 
                                                 Text("Centrar zoom")
                                                     .font(.system(size: 13))
-                                                    .foregroundColor(customFontColor.opacity(0.9))
+                                                    .foregroundColor(pColor.opacity(0.9))
                                                 Spacer()
                                                 Toggle(isOn: $viewSettings.isZoomCentered) {}
                                                     .toggleStyle(SwitchToggleStyle(tint: Color.blue))
@@ -863,7 +830,7 @@ struct AjustesLecturaOpciones: View {
                     HStack {
                         Text("Colores")
                             .font(.footnote)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(sColor)
                         Spacer()
                     }
                     .padding(.bottom, 2)
@@ -882,12 +849,12 @@ struct AjustesLecturaOpciones: View {
                                     .animation(.easeInOut(duration: 0.3), value: viewSettings.isColorPressed)
                                 Text("Color de fondo")
                                     .font(.system(size: 13))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .bold()
                                 Spacer()
                                 Image(systemName: "chevron.forward")
                                     .font(.system(size: iconSize * 0.6))
-                                    .foregroundColor(customFontColor.opacity(0.9))
+                                    .foregroundColor(pColor.opacity(0.9))
                                     .transition(.symbolEffect)
                                     .rotationEffect(.degrees(viewSettings.isColorPressed ? 90 : 0))
                                     .animation(.easeInOut(duration: 0.3), value: viewSettings.isColorPressed)
@@ -912,7 +879,7 @@ struct AjustesLecturaOpciones: View {
                                         HStack {
                                             Text("Colores recientes")
                                                 .font(.footnote)
-                                                .foregroundColor(customFontColor.opacity(0.9))
+                                                .foregroundColor(pColor.opacity(0.9))
                                             Spacer()
                                         }
                                         
@@ -930,7 +897,7 @@ struct AjustesLecturaOpciones: View {
                                                         .overlay(
                                                             Circle()
                                                                 .stroke(Color.white, lineWidth: 1.5)
-                                                            //                                                                    .stroke(appState.currentColor == color ? (appState.currentTheme == .dark ? Color.white : customFontColor.opacity(0.9)) : Color.clear, lineWidth: 1.5)
+                                                            //                                                                    .stroke(appState.currentColor == color ? (appState.currentTheme == .dark ? Color.white : pColor.opacity(0.9)) : Color.clear, lineWidth: 1.5)
                                                         )
                                                 }
                                                 .buttonStyle(PlainButtonStyle())
@@ -940,7 +907,7 @@ struct AjustesLecturaOpciones: View {
                                         ColorPicker("Paleta de colores", selection: $viewSettings.selectedBackgroundColor)
                                             .padding(.trailing, -4)
                                             .font(.system(size: 13))
-                                            .foregroundColor(customFontColor.opacity(0.9))
+                                            .foregroundColor(pColor.opacity(0.9))
                                             .padding(.vertical, 2.5)
                                         Divider()
                                     }
@@ -1024,6 +991,7 @@ struct AjustesLecturaOpciones: View {
             .padding(10)
 
         } // FIN Zstack
+        .background(.clear)
         
     }
     

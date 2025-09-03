@@ -15,6 +15,7 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
     
     // --- PARAMETROS ---
     let tipoMenuPO: EnumTipoDeMenuPopOver
+    @ObservedObject var vm: ModeloColeccion
     let header: (Bool) -> Header
     let content: (Bool, @escaping () -> Void) -> Content
 
@@ -27,14 +28,16 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
     
     //Necesario para poder pasar el tipo de menu
     init(
-       tipoMenuPO: EnumTipoDeMenuPopOver,
-       @ViewBuilder header: @escaping (Bool) -> Header,
-       @ViewBuilder content: @escaping (Bool, @escaping () -> Void) -> Content
-   ) {
-       self.tipoMenuPO = tipoMenuPO
-       self.header = header
-       self.content = content
-   }
+        tipoMenuPO: EnumTipoDeMenuPopOver,
+        vm: ModeloColeccion,
+        @ViewBuilder header: @escaping (Bool) -> Header,
+        @ViewBuilder content: @escaping (Bool, @escaping () -> Void) -> Content
+    ) {
+        self.tipoMenuPO = tipoMenuPO
+        self.vm = vm
+        self.header = header
+        self.content = content
+    }
     
     var body: some View {
         header(animatedView)
@@ -59,7 +62,8 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
                        content(isExpandable, cerrarMenu)
                    },
                    isRightSide: isRightSide,
-                   tipoMenuPO: tipoMenuPO
+                   tipoMenuPO: tipoMenuPO,
+                   vm: vm
                ) {
                    cerrarMenu()
                }
@@ -123,15 +127,19 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
     var isRightSide: Bool
     var tipoMenuPO: EnumTipoDeMenuPopOver
+    @ObservedObject var vm: ModeloColeccion
     var dismissView: () -> ()
     
     // --- ESTADO ---
     @State private var edgeInsets: EdgeInsets = .init()
     @State private var scale: CGFloat = 1
     
+    // --- CALCULADAS ---
+    private var tema: EnumTemas { ap.temaResuelto }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 15) {
+            HStack(spacing: 10) {
                 
                 switch tipoMenuPO {
                 case .lista:
@@ -153,21 +161,20 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
                     }
                     
                     header(animateView)
+                        .padding(.trailing, 5)
                 case .ajustesLectura:
-                    Spacer()
+                    Image(systemName: "book.and.wrench")
+                        .font(.system(size: ap.constantes.iconSize * 1.05))
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(vm.color, tema.colorContrario)
+                        .fontWeight(.thin)
+                    
                     if animateView {
                         Text("Ajustes lectura")
                             .font(.system(size: 20))
                             .bold()
                             .frame(alignment: .bottom)
                     }
-                    
-//                    header(animateView)
-                    Image(systemName: "book.and.wrench")
-                        .font(.system(size: ap.constantes.iconSize * 0.95))
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.red, Color.black)
-                        .fontWeight(.thin)
                 }
                 
             }

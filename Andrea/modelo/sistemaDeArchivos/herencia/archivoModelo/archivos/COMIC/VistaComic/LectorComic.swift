@@ -27,7 +27,7 @@ struct LectorComic: View {
     init(comic: any ProtocoloComic, paginaActual: Binding<Int>){
         self.comic = comic
         self._paginaActual = paginaActual
-        comic.comicPages = comic.loadComicPages(applyFilters: false)
+        comic.comicPages = comic.cargarPaginas(applyFilters: false)
         
         let sessionCache = ComicCache(comicFile: comic)
         _sessionCache = StateObject(wrappedValue: sessionCache)

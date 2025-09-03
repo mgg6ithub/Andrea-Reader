@@ -49,7 +49,7 @@ struct MenuIzquierda: View {
             //MARK: --- SISTEMA DE ARCHIVOS ARBOL INDEXADO LATERAL ---
             if ap.sistemaArchivos == .arbol {
                 ZStack {
-                    PopOutCollectionsView(tipoMenuPO: .lista) { isExpandable in
+                    PopOutCollectionsView(tipoMenuPO: .lista, vm: coleccionActualVM) { isExpandable in
                         Image("custom-library.badge")
                             .font(.system(size: iconSize * 1.01))
                             .symbolRenderingMode(.palette)

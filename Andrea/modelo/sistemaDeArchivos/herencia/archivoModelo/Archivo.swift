@@ -213,7 +213,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         
         super.init(nombre: fileName, url: fileURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
-        self.cargarPaginasAsync()
+        self.cargarPaginasTotalesAsync()
         
     }
     
@@ -237,31 +237,19 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         }
         
     }
-
     
     //MARK: - --- FUNCIONES GENERALES ---
     func viewContent() -> AnyView {
         return AnyView(ZStack{})
     }
     
-//    func getTotalPages() -> Int {
-//        return self.totalPaginas ?? 0
-//    }
-    
     //MARK: - --- FUNCIONES POLIMORFICAS PARA SER OVRRIDEADAS ---
-    func extractPageData(named nombre: String) -> Data? {
+    
+    func extraerImagen(nombreImagen: String) -> Data? {
         return nil
     }
     
-    func cargarImagen(nombreImagen: String) -> UIImage? {
-        return nil
-    }
-    
-    func cargarDatosImagen(nombreImagen: String) -> Data? {
-        return nil
-    }
-    
-    func cargarPaginasAsync() {
+    func cargarPaginasTotalesAsync() {
         // Implementación vacía por defecto o genérica
     }
     

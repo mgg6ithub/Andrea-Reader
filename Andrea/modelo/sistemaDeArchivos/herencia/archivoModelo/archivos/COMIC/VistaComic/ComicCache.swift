@@ -74,7 +74,7 @@ class ComicCache: ObservableObject {
         let workItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
             let imageName = self.comicFile.comicPages[index]
-            if let image = self.comicFile.loadImage(named: imageName) {
+            if let image = self.comicFile.cargarImagen(nombreImagen: imageName) {
                 self.setImage(image, for: index)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .didCacheImage, object: index)

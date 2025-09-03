@@ -30,7 +30,7 @@ struct MenuDerecha: View {
         HStack {
             if me.iconoNotificaciones {
                 ZStack {
-                    PopOutCollectionsView(tipoMenuPO: .notificaciones) { isExpandable in
+                    PopOutCollectionsView(tipoMenuPO: .notificaciones, vm: coleccionActualVM) { isExpandable in
                         Image("notificaciones")
                             .font(.system(size: iconSize * 1.03))
                             .symbolRenderingMode(.palette)

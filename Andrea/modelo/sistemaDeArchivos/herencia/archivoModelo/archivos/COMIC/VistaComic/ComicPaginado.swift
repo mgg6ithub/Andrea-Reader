@@ -132,7 +132,7 @@ struct SinglePage: UIViewControllerRepresentable {
             if let image = parent.sessionCache.getImage(for: page) {
                 zPageVC.image = image
             } else {
-                if let image = parent.comicFile.loadImage(named: parent.comicFile.comicPages[page]) {
+                if let image = parent.comicFile.cargarImagen(nombreImagen: parent.comicFile.comicPages[page]) {
                     zPageVC.image = image
                     parent.sessionCache.setImage(image, for: page)
                 }

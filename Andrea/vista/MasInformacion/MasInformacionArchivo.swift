@@ -537,6 +537,7 @@ struct ImagenMiniatura: View {
                     // Ojo + estrellas centrados y apilados
                     .overlay(alignment: .bottom) {
                         Button(action: {
+//                            DispatchQueue.main.async { archivo.paginas = archivo.cargarNombresPaginas(applyFilters: true) }
                             ap.elementoSeleccionado = archivo
                             withAnimation(.easeInOut(duration: 0.3)) { ap.vistaPrevia = true }
                         }) {

@@ -77,4 +77,5 @@ struct ImagenInfo {
         }
         return a
     }
+    
 }

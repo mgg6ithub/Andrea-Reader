@@ -19,6 +19,4 @@ protocol ProtocoloArchivo: ElementoSistemaArchivosProtocolo {
 //    func getTotalPages() -> Int
 //    func setCurrentPage(currentPage: Int) -> Void
     
-    func extractPageData(named: String) -> Data?
-    
 }

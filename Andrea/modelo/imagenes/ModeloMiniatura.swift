@@ -48,7 +48,7 @@ class ModeloMiniatura {
                 
             case .primeraPagina:
                 guard let primeraPagina = archivo.obtenerPrimeraPagina(),
-                      let data = archivo.cargarDatosImagen(nombreImagen: primeraPagina)
+                      let data = archivo.extraerImagen(nombreImagen: primeraPagina)
                 else {
                     DispatchQueue.main.async { completion(imagenBase) }
                     return
@@ -63,7 +63,7 @@ class ModeloMiniatura {
                 
             case .aleatoria:
                 guard let randomPage = archivo.obtenerPaginaAleatoria(),
-                      let data = archivo.cargarDatosImagen(nombreImagen: randomPage)
+                      let data = archivo.extraerImagen(nombreImagen: randomPage)
                 else {
                     DispatchQueue.main.async { completion(imagenBase) }
                     return
@@ -181,7 +181,7 @@ class ModeloMiniatura {
         
         // Intentar sacar la primera página del archivo
         guard let primeraPagina = archivo.obtenerPrimeraPagina(),
-              let data = archivo.cargarDatosImagen(nombreImagen: primeraPagina)
+              let data = archivo.extraerImagen(nombreImagen: primeraPagina)
         else {
             return imagenBase
         }
@@ -207,7 +207,7 @@ class ModeloMiniatura {
         
         // Pedimos una página aleatoria
         guard let randomPage = archivo.obtenerPaginaAleatoria(),
-              let data = archivo.cargarDatosImagen(nombreImagen: randomPage)
+              let data = archivo.extraerImagen(nombreImagen: randomPage)
         else {
             return imagenBase
         }
@@ -231,7 +231,7 @@ class ModeloMiniatura {
         
         // Pedimos una página aleatoria
         guard let randomPage = archivo.obtenerPaginaActual(),
-              let data = archivo.cargarDatosImagen(nombreImagen: randomPage)
+              let data = archivo.extraerImagen(nombreImagen: randomPage)
         else {
             return imagenBase
         }
