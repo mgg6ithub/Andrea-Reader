@@ -141,24 +141,7 @@ struct MenuLectura: View {
                             .font(.system(size: 11))
                             .foregroundStyle(.white)
                         
-                        Button(action: {
-                            
-                            
-                        
-                        }) {
-                            Image(systemName: "book.and.wrench")
-                                .font(.system(size: ap.constantes.iconSize * 0.95))
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(vm.color, Color.black)
-                                .symbolEffect(.bounce, value: isPressed)
-                                .fontWeight(.thin)
-                        }
-                        .padding(7.4)
-                        .background(Color.gray.opacity(0.5).gradient)
-                        .shadow(color: Color.black.opacity(0.25),
-                                radius: 2.5,
-                                x: 0, y: 2)
-                        .cornerRadius(5)
+                        AjustesLectura(vm: vm)
                     }
                     .padding(.trailing, 35)
                     

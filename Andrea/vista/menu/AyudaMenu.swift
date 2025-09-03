@@ -1,12 +1,22 @@
 import SwiftUI
 
+enum EnumTipoDeMenuPopOver {
+    
+    case lista
+    case notificaciones
+    case ajustesLectura
+    
+}
+
+
 struct PopOutCollectionsView<Header: View, Content: View>: View {
     
     @EnvironmentObject var me: MenuEstado
     
     // --- PARAMETROS ---
-    @ViewBuilder var header: (Bool) -> Header
-    @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
+    let tipoMenuPO: EnumTipoDeMenuPopOver
+    let header: (Bool) -> Header
+    let content: (Bool, @escaping () -> Void) -> Content
 
     // --- ESTADO ---
     @State private var sourceRect: CGRect = .zero
@@ -14,6 +24,17 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
     @State private var animatedView: Bool = false
     @State private var haptics: Bool = false
     @State private var isRightSide: Bool = false
+    
+    //Necesario para poder pasar el tipo de menu
+    init(
+       tipoMenuPO: EnumTipoDeMenuPopOver,
+       @ViewBuilder header: @escaping (Bool) -> Header,
+       @ViewBuilder content: @escaping (Bool, @escaping () -> Void) -> Content
+   ) {
+       self.tipoMenuPO = tipoMenuPO
+       self.header = header
+       self.content = content
+   }
     
     var body: some View {
         header(animatedView)
@@ -37,7 +58,8 @@ struct PopOutCollectionsView<Header: View, Content: View>: View {
                    content: { isExpandable, cerrarMenu in
                        content(isExpandable, cerrarMenu)
                    },
-                   isRightSide: isRightSide
+                   isRightSide: isRightSide,
+                   tipoMenuPO: tipoMenuPO
                ) {
                    cerrarMenu()
                }
@@ -100,6 +122,7 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     @ViewBuilder var header: (Bool) -> Header
     @ViewBuilder var content: (Bool, @escaping () -> Void) -> Content
     var isRightSide: Bool
+    var tipoMenuPO: EnumTipoDeMenuPopOver
     var dismissView: () -> ()
     
     // --- ESTADO ---
@@ -109,7 +132,18 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 15) {
-                if isRightSide {
+                
+                switch tipoMenuPO {
+                case .lista:
+                    header(animateView)
+                    
+                    if animateView {
+                        Text("Colecciones")
+                            .font(.system(size: 20))
+                            .bold()
+                            .frame(alignment: .bottom)
+                    }
+                case .notificaciones:
                     Spacer()
                     if animateView {
                         Text("Notificaciones")
@@ -119,17 +153,23 @@ fileprivate struct PopOutListOverlay<Header: View, Content: View>: View {
                     }
                     
                     header(animateView)
-                } else {
-                    
-                    header(animateView)
-                    
+                case .ajustesLectura:
+                    Spacer()
                     if animateView {
-                        Text("Colecciones")
+                        Text("Ajustes lectura")
                             .font(.system(size: 20))
                             .bold()
                             .frame(alignment: .bottom)
                     }
+                    
+//                    header(animateView)
+                    Image(systemName: "book.and.wrench")
+                        .font(.system(size: ap.constantes.iconSize * 0.95))
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.red, Color.black)
+                        .fontWeight(.thin)
                 }
+                
             }
             .padding(.bottom, 5)
             .padding([.leading, .trailing, .top], animateView ? 10 : 0)

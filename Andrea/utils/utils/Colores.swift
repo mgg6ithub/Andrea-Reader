@@ -50,4 +50,13 @@ extension Color {
             self = .blue // fallback color
         }
     }
+    
+    func toHex() -> String? {
+        guard let cgColor = UIColor(self).cgColor.components else { return nil }
+        let r = Int(cgColor[0] * 255)
+        let g = Int(cgColor[1] * 255)
+        let b = Int(cgColor[2] * 255)
+        return String(format: "#%02X%02X%02X", r, g, b)
+    }
+    
 }

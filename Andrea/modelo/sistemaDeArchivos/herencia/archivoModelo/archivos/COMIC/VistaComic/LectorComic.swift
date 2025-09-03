@@ -62,13 +62,3 @@ struct LectorComic: View {
 
 }
 
-class ViewSettings: ObservableObject {
-    @Published var isBorderless: Bool = false         // Mostrar bordes o no
-    @Published var isVertical: Bool = false           // Orientación de lectura (false = horizontal)
-    @Published var curlPageEffect: Bool = false       // Efecto de pasar página (false = scroll)
-    @Published var isInverted: Bool = false           // Invertir el orden de páginas
-    @Published var padding: CGFloat = 0               // Espacio entre páginas
-    @Published var isSingleTap: Bool = false           // Avanzar con un toque único
-    @Published var isDelizar: Bool = true             // Permitir deslizar para cambiar de página
-}
-
