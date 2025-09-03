@@ -45,6 +45,33 @@ struct ProgressTextModifier1: AnimatableModifier {
     }
 }
 
+
+//MARK: --- ANIMACION CON NUMERIC TEXT ios 17+
+struct NumericTextAnimator: AnimatableModifier {
+    var value: Double
+
+    var animatableData: Double {
+        get { value }
+        set { value = newValue }
+    }
+
+    func body(content: Content) -> some View {
+        if #available(iOS 17, *) {
+            Text("\(Int(value))%")
+                .contentTransition(.numericText()) // 👈 flip de dígitos
+        } else {
+            Text("\(Int(value))%")
+        }
+    }
+}
+
+extension View {
+    func animatedNumericText(_ value: Int) -> some View {
+        self.modifier(NumericTextAnimator(value: Double(value)))
+    }
+}
+
+
 //MARK: --- vstack saliente ---
 
 extension View {

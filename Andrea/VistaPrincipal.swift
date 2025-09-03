@@ -91,7 +91,7 @@ struct VistaPrincipal: View {
             
             // --- VISTA PREVIA COLECCION ---
             if ap.vistaPreviaColeccion, let coleccionSeleccionada = ap.coleccionseleccionada {
-                ColeccionHolografica3D(vm: pc.getColeccionActual())
+                ColeccionHolografica3D(vm: coleccionSeleccionada)
                     .ignoresSafeArea()
                     .zIndex(5)
             }

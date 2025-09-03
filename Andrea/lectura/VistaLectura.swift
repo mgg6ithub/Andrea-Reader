@@ -122,6 +122,7 @@ struct MenuLectura: View {
                         
                         Text(archivo.nombre)
                             .font(.title)
+                            .foregroundColor(.white)
                             .bold()
                             .frame(width: 190, alignment: .center)
                             .lineLimit(2)
@@ -137,9 +138,9 @@ struct MenuLectura: View {
                             .foregroundStyle(.white)
                         
                         Button(action: {
-                            isPressed = true
-                            archivo.leyendose = false
-                            cerrar()
+                            
+                            
+                        
                         }) {
                             Image(systemName: "book.and.wrench")
                                 .font(.system(size: ap.constantes.iconSize * 0.95))
@@ -164,8 +165,10 @@ struct MenuLectura: View {
                         
                         Button(action: {
                             isPressed = true
-                            archivo.leyendose = false
-                            cerrar()
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                archivo.leyendose = false
+                                cerrar()
+                            }
                         }) {
                             Image(systemName: "xmark")
                                 .font(.system(size: ap.constantes.iconSize * 1.1))
@@ -194,6 +197,7 @@ struct MenuLectura: View {
                         
                         Text(vm.coleccion.nombre)
                             .font(.title)
+                            .foregroundColor(.white)
                             .bold()
                             .padding(.bottom, 60)
                         

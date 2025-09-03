@@ -85,7 +85,18 @@ struct SinglePage: UIViewControllerRepresentable {
         return pageVC
     }
     
-    func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {}
+    func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {
+        guard let currentVC = pageViewController.viewControllers?.first as? BaseZoomableViewController else { return }
+        
+        // Si la página actual del binding es diferente de la mostrada
+        if currentVC.currentPage != currentPage {
+            if let newVC = context.coordinator.viewController(for: currentPage) {
+                let direction: UIPageViewController.NavigationDirection = currentPage > currentVC.currentPage ? .forward : .reverse
+                pageViewController.setViewControllers([newVC], direction: direction, animated: true)
+            }
+        }
+    }
+
     
     func makeCoordinator() -> Coordinator {
         return Coordinator(self)

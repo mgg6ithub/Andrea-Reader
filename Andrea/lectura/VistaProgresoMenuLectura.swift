@@ -90,7 +90,7 @@ struct VistaProgresoLectura: View {
             }
             .frame(height: 20 + (isActive ? 25 : 0))
             .mask {
-                RoundedRectangle(cornerRadius: 15)
+                RoundedRectangle(cornerRadius: 7.5)
                     .frame(height: 20 + (isActive ? 25 : 0))
             }
             .animation(
