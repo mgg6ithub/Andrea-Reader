@@ -81,9 +81,7 @@ struct MasInformacionArchivo: View {
                                     .font(.system(size: const.titleSize * 0.8))
                                     .foregroundColor(ap.temaResuelto.textColor)
                                 
-                                Button(action: {
-                                    
-                                }) {
+                                Button(action: { ap.archivoEnLectura = archivo }) {
                                     ZStack {
                                         Text("Empezar a leer")
                                             .foregroundColor(ap.temaResuelto.textColor)

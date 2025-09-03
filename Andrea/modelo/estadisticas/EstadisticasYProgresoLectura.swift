@@ -354,16 +354,21 @@ final class EstadisticasYProgresoLectura: ObservableObject {
         }
     }
     
-    //VELOCIDAD DE LECTURA: Paginas por minuto
+    //VELOCIDAD DE LECTURA: Paginas por minuto (ppm)
     func calcularVelocidadLectura() {
         let totalTiempo = tiemposPorPagina.values.reduce(0, +) // segundos
         let paginasContadas = tiemposPorPagina.keys.count      // páginas con tiempo real
-        
-        guard paginasContadas > 0, totalTiempo > 0 else { return }
-        
+
+        // ⚠️ Filtro mínimo: al menos 2 páginas distintas y 30 s en total
+        guard paginasContadas >= 2, totalTiempo >= 30 else {
+            velocidadLectura = 0
+            return
+        }
+
         // páginas por minuto
         velocidadLectura = Double(paginasContadas) / (totalTiempo / 60.0)
     }
+
     
     /// Devuelve el tiempo restante estimado en segundos.
     private func estimarTiempoRestante(velocidadPaginasPorMinuto v: Double? = nil) -> TimeInterval {
@@ -423,25 +428,31 @@ final class EstadisticasYProgresoLectura: ObservableObject {
     }
     
     private func calcularVelocidadesPorSesion() {
-        
+        let sesionesValidas = sesionesLectura.filter { $0.paginasLeidas > 0 && $0.velocidadLectura > 0 }
+
+        guard !sesionesValidas.isEmpty else {
+            velocidadSesionMed = 0
+            velocidadSesionMax = 0
+            velocidadSesionMin = 0
+            return
+        }
+
         var sMedCount: Double = 0
         var vMax: Double = 0
-        var vMin: Double = 0
-        
-        for s in self.sesionesLectura {
+        var vMin: Double = Double.greatestFiniteMagnitude
+
+        for s in sesionesValidas {
             let sv = s.velocidadLectura
-            
             sMedCount += sv
             if sv > vMax { vMax = sv }
-            if vMin == 0 { vMin = sv }
             if sv < vMin { vMin = sv }
         }
-        
-        self.velocidadSesionMed = sMedCount / Double(self.sesionesLectura.count)
-        self.velocidadSesionMax = vMax
-        self.velocidadSesionMin = vMin
-        
+
+        velocidadSesionMed = sMedCount / Double(sesionesValidas.count)
+        velocidadSesionMax = vMax
+        velocidadSesionMin = vMin
     }
+
 
     
     private func imprimirDatos() {
