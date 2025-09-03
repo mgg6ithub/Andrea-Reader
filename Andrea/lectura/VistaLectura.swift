@@ -242,6 +242,7 @@ struct MenuLectura: View {
                 ZStack{
                         //MARK: - CUSTOM SLIDER
                     VistaProgresoLectura(estadisticas: estadisticas, vm: vm)
+                        .padding(.bottom, 30)
                     
                 }
                 .frame(height: 45)
