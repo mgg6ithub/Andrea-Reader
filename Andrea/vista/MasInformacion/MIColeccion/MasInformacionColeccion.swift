@@ -31,8 +31,10 @@ struct MasInformacionColeccion: View {
     private var const: Constantes { ap.constantes }
     private var tema: EnumTemas { ap.temaResuelto }
     private var esOscuro: Bool { tema == .dark }
-    
     private var sombraCarta: Color { esOscuro ? .black.opacity(0.4) : .black.opacity(0.1) }
+    
+    private let opacidad: CGFloat = 0.15
+    @State private var masInfoPresionado: Bool = false
     
     var body: some View {
         ScrollViewReader { proxy in
@@ -48,33 +50,60 @@ struct MasInformacionColeccion: View {
                         .padding(.bottom, 10)
                     }
                     
-//                    VStack(alignment: .leading, spacing: 16) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(tema.backgroundGradient)
+                            .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                         
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .fill(tema.backgroundGradient)
-                                .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
-                            
-                            if ap.resolucionLogica == .small {
-                                VStack {
-                                    CantidadArchivos()
-                                }
-                                .padding()
-                            } else {
-                                HStack {
-                                    CantidadArchivos()
-                                }.padding()
+                        if ap.resolucionLogica == .small {
+                            VStack {
+                                CantidadArchivos()
                             }
-                            
+                            .padding()
+                        } else {
+                            HStack {
+                                CantidadArchivos()
+                            }.padding()
                         }
-                        .padding(.bottom, 10)
-
-
-                        TiposArchivos()
                         
-//                    }
+                    }
+                    .padding(.bottom, 10)
+                
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(tema.backgroundGradient)
+                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                     
+                    if ap.resolucionLogica == .small {
+                        VStack {
+                            TiposArchivos()
+                        }
+                        .padding()
+                    } else {
+                        HStack {
+                            TiposArchivos()
+                        }.padding()
+                    }
                     
+                }
+                .padding(.bottom, 10)
+               
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(tema.backgroundGradient)
+                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                    InformacionAvanzadaFechas(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+                }
+                .padding(.bottom, 10)
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(tema.backgroundGradient)
+                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                    InformacionAvanzada(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+                }
+                .padding(.bottom, 10)
                     
                 }
                 .padding()

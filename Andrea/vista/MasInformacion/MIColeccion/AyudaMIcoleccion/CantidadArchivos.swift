@@ -28,7 +28,6 @@ struct CantidadArchivos: View {
     private var esOscuro: Bool { tema == .dark }
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 8) {
             Text("Cantidad de archivos")
                 .font(.headline)
