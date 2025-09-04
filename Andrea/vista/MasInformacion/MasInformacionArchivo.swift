@@ -182,10 +182,21 @@ struct MenuNavegacion: View {
                 VStack(alignment: .center, spacing: 15) {
                     //GRAFICO
 //                    LeyendaGraficoProgreso() //leyenda
-                    GraficoProgresoLectura(estadisticas: estadisticas) //grafico
+                    GraficoProgresoLectura(estadisticas: estadisticas, verTodo: $verTodo) //grafico
                     
                     //INFOMRMACION
-                    
+                    Button(action: {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            verTodo.toggle()
+                        }
+                    }) {
+                        Text(verTodo ? "Ver menos" : "Ver todo")
+                            .font(.footnote)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(6)
+                    }
                 }
             case .velocidad:
                 VStack(alignment: .leading, spacing: 20) {
@@ -397,7 +408,6 @@ struct Contenido: View {
                                 }
                             }
                         }
-
 
                     } else {
                         HStack(alignment: .top) {

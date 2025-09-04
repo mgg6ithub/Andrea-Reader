@@ -35,31 +35,21 @@ func esNuevaHora(actual date: Date, respectoA previousDate: Date?) -> Bool {
 }
 
 struct GraficoVelocidadLectura: View {
-    // Datos de ejemplo
     @ObservedObject var estadisticas: EstadisticasYProgresoLectura
     @Binding var verTodo: Bool
     
     var body: some View {
         let data = estadisticas.sesionesLectura.map { $0.toReadingSpeedData }
         
-//        Button(action: {
-//            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-//                verTodo.toggle()
-//            }
-//        }) {
-//            Text("Ver todo")
-//                .font(.footnote)
-//        }
-//        .zIndex(1)
-//        .padding(5) // margen interno
-//        .background(
-//            RoundedRectangle(cornerRadius: 5)
-//                .fill(Color.gray.opacity(0.2))
-//        )
-//        .padding(.trailing, 15)
-        
         // Encontrar el punto con el valor más alto
         let maxSpeedItem = data.max(by: { $0.speed < $1.speed })
+        
+        // Fechas para ticks cada hora
+        let fechas = estadisticas.sesionesLectura.map { $0.inicio }
+        let inicio = fechas.first ?? Date()
+        let fin = fechas.last ?? Date()
+        let ticksCadaHora = stride(from: inicio, through: fin, by: 3600).map { $0 }
+        
         Chart {
             // Área con degradado
             ForEach(data) { item in
@@ -67,7 +57,7 @@ struct GraficoVelocidadLectura: View {
                     x: .value("Fecha", item.date),
                     y: .value("Velocidad", item.speed)
                 )
-                .interpolationMethod(.monotone) // 👈 igual que la línea
+                .interpolationMethod(.monotone)
                 .foregroundStyle(
                     LinearGradient(
                         gradient: Gradient(colors: [
@@ -86,140 +76,60 @@ struct GraficoVelocidadLectura: View {
                     x: .value("Fecha", item.date),
                     y: .value("Velocidad", item.speed)
                 )
-                .interpolationMethod(.monotone) // 👈 misma interpolación
+                .interpolationMethod(.monotone)
                 .foregroundStyle(.green)
                 .lineStyle(StrokeStyle(lineWidth: 2))
             }
             
             // Punto destacado en el valor más alto
             if let maxItem = maxSpeedItem {
-                // Sombra del punto (punto más grande y con opacidad)
-                PointMark(
-                    x: .value("Fecha", maxItem.date),
-                    y: .value("Velocidad", maxItem.speed)
-                )
-                .foregroundStyle(.green.opacity(0.3))
-                .symbolSize(120) // Tamaño más grande para la sombra
-                
-                // Punto principal
                 PointMark(
                     x: .value("Fecha", maxItem.date),
                     y: .value("Velocidad", maxItem.speed)
                 )
                 .foregroundStyle(.green)
                 .symbolSize(80)
-                
-                // Punto interior (opcional, para más detalle)
-                PointMark(
-                    x: .value("Fecha", maxItem.date),
-                    y: .value("Velocidad", maxItem.speed)
-                )
-                .foregroundStyle(.green)
-                .symbolSize(30)
             }
         }
         .zIndex(0)
         .chartXAxis {
             if verTodo {
-                AxisMarks(values: estadisticas.sesionesLectura.map { $0.inicio }) { value in
+                // Modo detallado → ticks cada hora
+                AxisMarks(values: ticksCadaHora) { value in
                     if let date = value.as(Date.self) {
-                        let _ = Calendar.current.component(.hour, from: date)
-                        let isNewDay = value.index == 0 || {
-                            if value.index > 0 {
-                                let previousDate = estadisticas.sesionesLectura[value.index - 1].inicio
-                                return !Calendar.current.isDate(date, inSameDayAs: previousDate)
-                            }
-                            return false
-                        }()
-                        
-                        let prevDate: Date? = value.index > 0
-                            ? estadisticas.sesionesLectura[value.index - 1].inicio
-                            : nil
-                        
-                        let _ = esNuevaHora(actual: date, respectoA: prevDate)
+                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.3))
+                            .foregroundStyle(.gray.opacity(0.5))
+                        AxisTick(stroke: StrokeStyle(lineWidth: 0.3))
                         
                         AxisValueLabel {
-                            VStack(alignment: .leading) {
-//                                HStack(spacing: 1) {
-                                    Text(date, format: .dateTime.hour().minute()) // 👈 "10:05"
-                                        .font(.caption2)
-//                                }
-                                
-                                if isNewDay {
-                                    Text(date, format: .dateTime.month().day())
-//                                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-//                                    AxisTick(stroke: StrokeStyle(lineWidth: 0.5))
-                                }
+                            VStack(spacing: 2) {
+                                Text(date, format: .dateTime.hour().minute()) // ej: 18:00
+                                    .font(.caption2)
+                                Text(date, format: .dateTime.day().month())   // ej: 3 Sep
+                                    .font(.caption2)
+                                    .foregroundColor(.gray)
                             }
-                        }
-                        
-                        if isNewDay {
-                            AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                            AxisTick(stroke: StrokeStyle(lineWidth: 0.5))
-                        } else {
-                            AxisGridLine()
-                            AxisTick()
                         }
                     }
                 }
             } else {
-                AxisMarks(values: estadisticas.sesionesLectura.map { $0.inicio }) { value in
-                    if let date = value.as(Date.self) {
-                        let prevDate: Date? = value.index > 0
-                            ? estadisticas.sesionesLectura[value.index - 1].inicio
-                            : nil
-                        
-                        let isNewHour = esNuevaHora(actual: date, respectoA: prevDate)
-                        let isNewDay  = prevDate.map { !Calendar.current.isDate($0, inSameDayAs: date) } ?? true
-                        
-                        // 👉 Solo mostramos ticks/lineas si cambia la hora
-                        if isNewHour {
-                            AxisGridLine(stroke: StrokeStyle(lineWidth: 0.3, dash: [2]))
-                                .foregroundStyle(.gray.opacity(0.5))
-                            AxisTick(stroke: StrokeStyle(lineWidth: 0.3))
-                            
-                            AxisValueLabel {
-                                VStack(spacing: 2) {
-                                    // Hora:minuto en cada cambio de hora
-                                    Text(date, format: .dateTime.hour().minute())
-                                        .font(.caption2)
-                                    
-                                    // Día cuando es cambio de día
-                                    if isNewDay {
-                                        Text(date, format: .dateTime.day().month())
-                                            .font(.caption2)
-                                            .foregroundColor(.gray)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // Vista resumida → 5 ticks automáticos
+                AxisMarks(values: .automatic(desiredCount: 5))
             }
         }
         .chartXAxisLabel(position: .bottom, alignment: .center) {
             HStack(spacing: 3) {
                 Text("Tiempo")
                     .font(.system(size: 16))
-                
-                if verTodo {
-                    Text("(día:h:m)")
-                        .font(.system(size: 12))
-                        .opacity(0.8)
-                } else {
-                    Text("(día:h)")
-                        .font(.system(size: 12))
-                        .opacity(0.8)
-                }
-                
+                Text(verTodo ? "(día:h:m)" : "(día:h)")
+                    .font(.system(size: 12))
+                    .opacity(0.8)
             }
         }
+        // Scroll horizontal solo en modo detallado
         .if(verTodo) { v in
             v.chartScrollableAxes(.horizontal)
-             .chartXScale(domain: [
-                 estadisticas.sesionesLectura.first?.inicio ?? Date(),
-                 estadisticas.sesionesLectura.last?.inicio ?? Date()
-             ])
+             .chartXScale(domain: [inicio, fin])
         }
         .chartYAxis {
             AxisMarks(position: .leading) {
@@ -231,7 +141,6 @@ struct GraficoVelocidadLectura: View {
             HStack(spacing: 3) {
                 Text("Velocidad")
                     .font(.system(size: 16))
-                
                 Text("(páginas/minuto)")
                     .font(.system(size: 12))
                     .opacity(0.8)
@@ -241,3 +150,4 @@ struct GraficoVelocidadLectura: View {
         .frame(height: 220)
     }
 }
+
