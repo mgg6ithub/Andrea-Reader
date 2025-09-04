@@ -23,14 +23,16 @@ struct TiposArchivos: View {
     
     @EnvironmentObject var ap: AppEstado
     
+    @ObservedObject var vm: ModeloColeccion
+    
     private var const: Constantes { ap.constantes }
     private var tema: EnumTemas { ap.temaResuelto }
     private var esOscuro: Bool { tema == .dark }
     private var sombraCarta: Color { esOscuro ? .black.opacity(0.4) : .black.opacity(0.1) }
 //        .font(.system(size: const.titleSize * 0.9))
 //        .foregroundColor(tema.secondaryText)
+    
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 8) {
             Text("Tipos de archivo")
                 .font(.headline)
@@ -41,8 +43,9 @@ struct TiposArchivos: View {
             GraficoGithubStyle()
             //ocupe el 55% porciento del width de la pantalla
         }
+        .frame(width: 400)
             
-            Spacer()
+        Spacer()
             
         VStack(alignment: .center, spacing: 8) {
             Text("Última importación")
@@ -62,7 +65,7 @@ struct TiposArchivos: View {
                 .multilineTextAlignment(.center) // 🔹 permite varias líneas
             
             Button(action: {
-                // Acción: abrir, leer, etc.
+                
             }) {
                 HStack(spacing: 6) {
                     Image(systemName: "book.fill")
@@ -73,10 +76,11 @@ struct TiposArchivos: View {
                 .padding(.vertical, 6)
                 .background(
                     RoundedRectangle(cornerRadius: 6, style: .continuous) // 🔹 menos radius
-                        .fill(Color.blue.opacity(0.2))
+                        .fill(vm.color.opacity(0.2))
                 )
             }
+            .buttonStyle(.plain)
         }
-        .frame(width: 280)
+        .padding(.trailing, 55)
     }
 }

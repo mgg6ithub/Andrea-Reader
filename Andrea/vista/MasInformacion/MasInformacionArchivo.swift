@@ -44,6 +44,9 @@ struct MasInformacionArchivo: View {
     private var const: Constantes { ap.constantes }
     private var scale: CGFloat { const.scaleFactor }
     
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
+    
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
@@ -111,29 +114,32 @@ struct MasInformacionArchivo: View {
                             .padding(.bottom, 20)
                         }
                     }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(.gray.opacity(0.25), lineWidth: 1)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(tema.backgroundGradient)
+                            .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                     )
                     
                     //FECHAS
                     InformacionAvanzadaFechas(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(.gray.opacity(0.25), lineWidth: 1)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .fill(tema.backgroundGradient)
+                                .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                         )
                         .padding(.top, 10)
                     
                     //INFORMACION AVANZADA
                     InformacionAvanzada(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(.gray.opacity(0.25), lineWidth: 1)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .fill(tema.backgroundGradient)
+                                .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                         )
                         .padding(.top, 10)
                         .id("informacionAvanzada")
                 }
-                
+                .padding(5)
             }
             .padding(.horizontal, 15)
             .onChange(of: masInfoPresionado) { old, nuevoValor in
@@ -250,6 +256,7 @@ struct Contenido: View {
     private var subTitleS: CGFloat { const.subTitleSize * 0.75 }
     private var pd: PersistenciaDatos = PersistenciaDatos()
     private var cpe: ClavesPersistenciaElementos = ClavesPersistenciaElementos()
+    private var esOscuro: Bool { tema == .dark }
     
     init(archivo: Archivo, vm: ModeloColeccion) {
         self.archivo = archivo
@@ -463,10 +470,12 @@ struct Contenido: View {
         } //FIN VSTACK INFORMACION DERECHA
 //        .frame(height: 320 * ap.constantes.scaleFactor)
         .padding(10)
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(.gray.opacity(0.25), lineWidth: 1)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(tema.backgroundGradient)
+                .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
         )
+
     }
 }
 

@@ -122,11 +122,10 @@ struct TituloYAjustesColeccion: View {
                 .padding(.horizontal, pantallaCompleta ? 15 : 0)
             }
             .offset(y: 4)
+            
             Spacer()
             SelectorAjustesLectura(vm: vm)
         }
         .frame(height: 70)
-        .padding(.horizontal, 20)
-        .border(.red)
     }
 }

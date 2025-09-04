@@ -54,9 +54,10 @@ struct MasInfoCol: View {
                     VStack(alignment: .center, spacing: 0) {
                         CabeceraColeccionMI(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala, seleccionColeccion: $seleccionColeccion)
                             .padding(.bottom, 5)
+                            .padding(.horizontal, 15)
                         
                         TituloYAjustesColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, mostrarDocumentPicker: $mostrarDocumentPicker)
-                        
+                            .padding(.horizontal, 15)
                         // Aquí el contenido según la selección
                         switch seleccionColeccion {
                             

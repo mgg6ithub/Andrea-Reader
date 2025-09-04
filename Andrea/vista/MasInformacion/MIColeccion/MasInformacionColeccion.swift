@@ -59,16 +59,18 @@ struct MasInformacionColeccion: View {
                             VStack {
                                 CantidadArchivos()
                             }
+                            
                             .padding()
                         } else {
                             HStack {
                                 CantidadArchivos()
-                            }.padding()
+                            }
+                            .padding()
                         }
                         
                     }
+                    .padding(.horizontal, 15)
                     .padding(.bottom, 10)
-                
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -77,16 +79,17 @@ struct MasInformacionColeccion: View {
                     
                     if ap.resolucionLogica == .small {
                         VStack {
-                            TiposArchivos()
+                            TiposArchivos(vm: vm)
                         }
                         .padding()
                     } else {
                         HStack {
-                            TiposArchivos()
+                            TiposArchivos(vm: vm)
                         }.padding()
                     }
                     
                 }
+                .padding(.horizontal, 15)
                 .padding(.bottom, 10)
                
                 ZStack {
@@ -95,6 +98,7 @@ struct MasInformacionColeccion: View {
                         .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                     InformacionAvanzadaFechas(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
                 }
+                .padding(.horizontal, 15)
                 .padding(.bottom, 10)
                 
                 ZStack {
@@ -103,10 +107,10 @@ struct MasInformacionColeccion: View {
                         .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                     InformacionAvanzada(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
                 }
+                .padding(.horizontal, 15)
                 .padding(.bottom, 10)
                     
                 }
-                .padding()
             }
             .padding(.bottom, 20)
         }
@@ -138,6 +142,8 @@ struct ContenidoColeccion: View {
             .if(ap.resolucionLogica == .small) { v in
                 v.frame(maxWidth: .infinity, alignment: .center)
             }
+            .padding(.leading, 15)
+            .padding(.top, 15)
         Spacer()
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -166,7 +172,6 @@ struct ContenidoColeccion: View {
                     
                     HStack(alignment: .top, spacing: 40) {
                         SelectorColor(vm: vm)
-                        
                     }
                     
                     Spacer()
@@ -268,9 +273,11 @@ struct ContenidoColeccion: View {
                 
                 Spacer()
             }
-            .padding(10)
+            .padding(15)
 
         }
+        .padding(.horizontal, 15)
+        .padding(.top, 15)
     }
 }
 

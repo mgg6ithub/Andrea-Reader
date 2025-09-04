@@ -152,7 +152,7 @@ struct GrupoDatoAvanzadoSoloLectura: View {
     let valor: String
     
     private var const: Constantes { ap.constantes }
-    private var titleS: CGFloat { const.titleSize }
+    private var titleS: CGFloat { const.titleSize * 0.75 }
 
     var body: some View {
         HStack(alignment: .top) {
@@ -184,7 +184,7 @@ struct GrupoDatoAvanzadoEditable: View {
     @State private var editando = false
 
     private var const: Constantes { ap.constantes }
-    private var titleS: CGFloat { const.titleSize }
+    private var titleS: CGFloat { const.titleSize * 0.75 }
     
     var body: some View {
         HStack(alignment: .top) {

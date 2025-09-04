@@ -85,7 +85,6 @@ struct CabeceraColeccionMI: View {
                 )
             }
             .padding(.horizontal, 20)
-
             
             Spacer()
             
@@ -116,10 +115,8 @@ struct CabeceraColeccionMI: View {
                 
             }
         }
-        .padding(.horizontal, 15)
         .padding(.top, 5)
         .padding(.vertical, 15)
-        
         
     }
 }
