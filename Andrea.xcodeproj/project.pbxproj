@@ -139,6 +139,7 @@
 		D4FA5B002E69849E00CFFDA2 /* SelectorAjustesLectura.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FA5AFF2E69849E00CFFDA2 /* SelectorAjustesLectura.swift */; };
 		D4FA5B022E69890800CFFDA2 /* TituloYAjustesColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FA5B012E69890800CFFDA2 /* TituloYAjustesColeccion.swift */; };
 		D4FA5B052E698BA200CFFDA2 /* ProgresoColeccion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FA5B042E698BA200CFFDA2 /* ProgresoColeccion.swift */; };
+		D4FA5B072E69A2E800CFFDA2 /* GraficoGithub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FA5B062E69A2E800CFFDA2 /* GraficoGithub.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -284,6 +285,7 @@
 		D4FA5AFF2E69849E00CFFDA2 /* SelectorAjustesLectura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorAjustesLectura.swift; sourceTree = "<group>"; };
 		D4FA5B012E69890800CFFDA2 /* TituloYAjustesColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TituloYAjustesColeccion.swift; sourceTree = "<group>"; };
 		D4FA5B042E698BA200CFFDA2 /* ProgresoColeccion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgresoColeccion.swift; sourceTree = "<group>"; };
+		D4FA5B062E69A2E800CFFDA2 /* GraficoGithub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraficoGithub.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -814,6 +816,7 @@
 			children = (
 				D4B4AAF62E673842002C0CB5 /* CabeceraColeccionMI.swift */,
 				D4FA5AFF2E69849E00CFFDA2 /* SelectorAjustesLectura.swift */,
+				D4FA5B062E69A2E800CFFDA2 /* GraficoGithub.swift */,
 			);
 			path = AyudaMIcoleccion;
 			sourceTree = "<group>";
@@ -983,6 +986,7 @@
 				D4CF28E52E323D3D003B3ABC /* Desplazamiento.swift in Sources */,
 				D4B159482E57DC1A00942B91 /* Tiempo.swift in Sources */,
 				D4A071742E674DDC00BD64EA /* VistaLectura.swift in Sources */,
+				D4FA5B072E69A2E800CFFDA2 /* GraficoGithub.swift in Sources */,
 				D42084322E58DCAF008525DB /* EstadisticasYProgresoLectura.swift in Sources */,
 				D48589712DEB9EFA0074DB8E /* SistemaArchivosUtilidades.swift in Sources */,
 				D47139C12E0AE44200B5FA35 /* ListaVista.swift in Sources */,

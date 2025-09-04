@@ -26,7 +26,13 @@ struct MasInformacionColeccion: View {
     @ObservedObject var vm: ModeloColeccion
     @Binding var pantallaCompleta: Bool
     let escala: CGFloat
-
+    
+    private var const: Constantes { ap.constantes }
+    private var tema: EnumTemas { ap.temaResuelto }
+    private var esOscuro: Bool { tema == .dark }
+    
+    private var sombraCarta: Color { esOscuro ? .black.opacity(0.4) : .black.opacity(0.1) }
+    
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
@@ -40,6 +46,168 @@ struct MasInformacionColeccion: View {
                         }
                         .padding(.bottom, 10)
                     }
+                    
+                    VStack(alignment: .leading, spacing: 16) {
+                        
+                        // 📦 Card: Cantidad de archivos + detalles
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .fill(tema.backgroundGradient)
+                                .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                            
+                            HStack(alignment: .top) {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Cantidad de archivos")
+                                        .font(.headline)
+                                    Text("140 en total")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                    
+                                    Divider()
+                                    
+                                    // Tamaño promedio
+                                    HStack(spacing: 6) {
+                                        Image("doc-lupa")
+                                            .font(.system(size: const.iconSize * 0.7))
+                                            .symbolRenderingMode(.palette)
+                                            .foregroundStyle(.blue, .black)
+                                        Text("Tamaño promedio: 7 MB")
+                                            .font(.system(size: const.subTitleSize * 0.9))
+                                            .foregroundColor(.secondary)
+                                    }
+                                    
+                                    // Archivo más grande
+                                    HStack(spacing: 6) {
+                                        Image("doc-arrow-up")
+                                            .font(.system(size: const.iconSize * 0.7))
+                                            .symbolRenderingMode(.palette)
+                                            .foregroundStyle(.blue, .black)
+                                        Text("Más grande: 320 MB")
+                                            .font(.system(size: const.subTitleSize * 0.9))
+                                            .foregroundColor(.secondary)
+                                    }
+                                    
+                                    // Archivo más pequeño
+                                    HStack(spacing: 6) {
+                                        Image("doc-arrow-down")
+                                            .font(.system(size: const.iconSize * 0.7))
+                                            .symbolRenderingMode(.palette)
+                                            .foregroundStyle(.blue, .black)
+                                        Text("Más pequeño: 450 KB")
+                                            .font(.system(size: const.subTitleSize * 0.9))
+                                            .foregroundColor(.secondary)
+                                    }
+                                    
+                                    Divider()
+                                    
+                                    // Salud del almacenamiento
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "cross.case.fill")
+                                            .font(.system(size: const.iconSize * 0.7))
+                                            .foregroundColor(.red)
+                                        Text("Salud: estable (fragmentación baja)")
+                                            .font(.system(size: const.subTitleSize * 0.9))
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
+                                .frame(width: 300)
+                                .border(.red)
+                                
+                                Spacer()
+                                
+                                VStack(alignment: .center, spacing: 15) {
+                                    ProgresoCircular(
+                                        titulo: "tamaño",
+                                        progreso: 56,
+                                        progresoDouble: 0.56,
+                                        color: .red,
+                                        anchuraLinea: 12,
+                                        radio: 120
+                                    )
+                                    
+                                    VStack(alignment: .center, spacing: 4) {
+                                        HStack(spacing: 3) {
+                                            Image(systemName: "externaldrive")
+                                                .font(.system(size: const.iconSize * 0.65))
+                                                .foregroundColor(.red.opacity(0.85))
+                                            Text("Almacenamiento")
+                                                .font(.system(size: const.titleSize * 0.75))
+                                                .foregroundColor(tema.tituloColor)
+                                        }
+                                        
+                                        HStack(alignment: .bottom, spacing: 2) {
+                                            Text("Ocupa")
+                                                .font(.system(size: const.subTitleSize * 0.65))
+                                                .foregroundColor(tema.secondaryText.opacity(0.8))
+                                            Text("1.5 GB")
+                                                .font(.system(size: const.subTitleSize * 0.75))
+                                                .foregroundColor(tema.secondaryText)
+                                            Text("de")
+                                                .font(.system(size: const.subTitleSize * 0.65))
+                                                .foregroundColor(tema.secondaryText.opacity(0.8))
+                                            Text("2 GB")
+                                                .font(.system(size: const.subTitleSize * 0.75))
+                                                .foregroundColor(tema.secondaryText)
+                                        }
+                                    }
+                                }
+                                .padding(.top, 20)
+                                .padding(.trailing, 15)
+                            }
+                            .padding()
+                        }
+                        
+                        // 📊 Card: Tipos de archivo + últimos añadidos/abiertos
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .fill(tema.backgroundGradient)
+                                .shadow(color: sombraCarta, radius: 5, x: 0, y: 2)
+                            
+                            HStack(alignment: .top) {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Tipos de archivo")
+                                        .font(.headline)
+                                    Text("3 formatos distintos")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                    
+                                    Divider()
+                                    
+                                    // Últimos añadidos
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text("Últimos añadidos")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                        Text("• Batman #45.cbz")
+                                            .font(.caption2)
+                                        Text("• Avengers #12.cbr")
+                                            .font(.caption2)
+                                        Text("• One Piece Vol.1.pdf")
+                                            .font(.caption2)
+                                    }
+                                    
+                                    Divider()
+                                    
+                                    // Últimos abiertos
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text("Últimos abiertos")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                        Text("• Spiderman #102.cbz")
+                                            .font(.caption2)
+                                        Text("• X-Men Classic.cbr")
+                                            .font(.caption2)
+                                    }
+                                }
+                                
+                                Spacer()
+                                
+                                GraficoGithubStyle()
+                            }
+                            .padding()
+                        }
+                    }
+                    
                 }
                 .padding()
             }
@@ -57,6 +225,8 @@ struct ContenidoColeccion: View {
     private var const: Constantes { ap.constantes }
     private var titleS: CGFloat { const.titleSize * 0.75 }
     private var subTitleS: CGFloat { const.subTitleSize * 0.75 }
+    private var esOscuro: Bool { tema == .dark }
+    private var sombraCarta: Color { esOscuro ? .black.opacity(0.4) : .black.opacity(0.1) }
     
     @State private var isEditingDescripcion = false
     @FocusState private var isEditingDescriptionFocused: Bool
@@ -71,136 +241,138 @@ struct ContenidoColeccion: View {
                 v.frame(maxWidth: .infinity, alignment: .center)
             }
         Spacer()
-        VStack(alignment: .center, spacing: 0) {
-            VStack(alignment: .leading, spacing: 0) {
-                HStack(spacing: 2) {
-                    Image(systemName: "folder.fill")
-                        .font(.system(size: titleS * 1.2))
-                        .foregroundColor(vm.color)
-                    Text("Colección")
-                        .bold()
-                        .font(.system(size: titleS * 1.2))
-                        .foregroundColor(tema.tituloColor)
-                        .offset(y: 3)
-                    
-                    Spacer()
-                    
-//                    if archivo.fechaPrimeraVezEntrado != nil || archivo.estadisticas.paginaActual != 0 {
-                        EditableStarRating(vm: vm, url: vm.coleccion.url, puntuacion: $puntucacion)
-//                    }
-                }
-                .padding(.bottom, 15 * ap.constantes.scaleFactor)
-                .padding(.bottom, 20)
-                
-                HStack(alignment: .top, spacing: 40) {
-                    SelectorColor(vm: vm)
-                    
-                }
-                
-                Spacer()
-                
-                Rectangle()
-                    .fill(.gray.opacity(0.25))
-                    .frame(height: 1)
-                    .padding(15 * ap.constantes.scaleFactor)
-                
-                Spacer()
-                
+        ZStack {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(tema.backgroundGradient)
+                .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+            VStack(alignment: .center, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 2) {
-                        Text("Descripción")
-                            .underline()
-                            .font(.system(size: subTitleS))
-                            .foregroundColor(tema.secondaryText)
+                        Image(systemName: "folder.fill")
+                            .font(.system(size: titleS * 1.2))
+                            .foregroundColor(vm.color)
+                        Text("Colección")
+                            .bold()
+                            .font(.system(size: titleS * 1.2))
+                            .foregroundColor(tema.tituloColor)
+                            .offset(y: 3)
                         
-                        Image(systemName: "pencil")
-                            .font(.system(size: const.iconSize * 0.5))
-                            .foregroundColor(tema.secondaryText)
+                        Spacer()
+                        
+                        //                    if archivo.fechaPrimeraVezEntrado != nil || archivo.estadisticas.paginaActual != 0 {
+                        EditableStarRating(vm: vm, url: vm.coleccion.url, puntuacion: $puntucacion)
+                        //                    }
                     }
-                    .contentShape(Rectangle())
-                    .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
+                    .padding(.bottom, 15 * ap.constantes.scaleFactor)
+                    .padding(.bottom, 20)
                     
-                    if isEditingDescripcion {
-                        ZStack(alignment: .topLeading) {
-                            TextEditor(text: $descripcionTexto)
-                                .bold()
-                                .font(.system(size: titleS))
-//                                .frame(height: 105 * ap.constantes.scaleFactor)
-                                .focused($isEditingDescriptionFocused)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.secondary.opacity(0.4), lineWidth: 0.5)
-                                )
-                                .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                                        isEditingDescriptionFocused = true
-                                    }
-                                }
+                    HStack(alignment: .top, spacing: 40) {
+                        SelectorColor(vm: vm)
+                        
+                    }
+                    
+                    Spacer()
+                    
+                    Rectangle()
+                        .fill(.gray.opacity(0.25))
+                        .frame(height: 1)
+                        .padding(15 * ap.constantes.scaleFactor)
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .leading, spacing: 0) {
+                        HStack(spacing: 2) {
+                            Text("Descripción")
+                                .underline()
+                                .font(.system(size: subTitleS))
+                                .foregroundColor(tema.secondaryText)
+                            
+                            Image(systemName: "pencil")
+                                .font(.system(size: const.iconSize * 0.5))
+                                .foregroundColor(tema.secondaryText)
                         }
-                        .toolbar {
-                            ToolbarItemGroup(placement: .keyboard) {
-                                Spacer() // empuja a la derecha
-                                Button("Aceptar") {
-                                    vm.coleccion.descripcion = descripcionTexto
-                                    
-                                    //persitencia
-//                                    pd.guardarDatoArchivo(valor: descripcionTexto, elementoURL: vm.coleccion.url, key: cpe.descripcion)
-                                    
-                                    withAnimation { isEditingDescripcion = false }
-                                    print("Nueva descripción: \(descripcionTexto)")
-                                }
-                            }
-                        }
-
-
-                    } else {
-                        HStack(alignment: .top) {
-                            Text(descripcionTexto.isEmpty ? "???" : descripcionTexto)
-                                .font(.system(size: descripcionTexto.isEmpty ? titleS * 0.8 : titleS))
-                                .foregroundColor(tema.tituloColor)
-                                .bold(!descripcionTexto.isEmpty)
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(6)
-                                .truncationMode(.tail)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-//                        .frame(height: 105 * ap.constantes.scaleFactor, alignment: .topLeading)
                         .contentShape(Rectangle())
                         .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
-                    }
-                    
-                    // 👇 Ellipsis botón debajo del área
-                    ZStack {
-                        if !isEditingDescripcion, descripcionTexto.count > 254 {
-                            Button("Leer más…") {
-                                mostrarDescripcionCompleta.toggle()
+                        
+                        if isEditingDescripcion {
+                            ZStack(alignment: .topLeading) {
+                                TextEditor(text: $descripcionTexto)
+                                    .bold()
+                                    .font(.system(size: titleS))
+                                //                                .frame(height: 105 * ap.constantes.scaleFactor)
+                                    .focused($isEditingDescriptionFocused)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.secondary.opacity(0.4), lineWidth: 0.5)
+                                    )
+                                    .onAppear {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                            isEditingDescriptionFocused = true
+                                        }
+                                    }
                             }
-                            .font(.system(size: 14))
-                            .foregroundColor(tema.tituloColor)
-                            .buttonStyle(.plain)
-                            .popover(isPresented: $mostrarDescripcionCompleta) {
-                                ScrollView {
-                                    Text(descripcionTexto)
-                                        .font(.system(size: 16))
-                                        .padding()
+                            .toolbar {
+                                ToolbarItemGroup(placement: .keyboard) {
+                                    Spacer() // empuja a la derecha
+                                    Button("Aceptar") {
+                                        vm.coleccion.descripcion = descripcionTexto
+                                        
+                                        //persitencia
+                                        //                                    pd.guardarDatoArchivo(valor: descripcionTexto, elementoURL: vm.coleccion.url, key: cpe.descripcion)
+                                        
+                                        withAnimation { isEditingDescripcion = false }
+                                        print("Nueva descripción: \(descripcionTexto)")
+                                    }
                                 }
-                                .frame(width: 330, height: 350)
+                            }
+                            
+                            
+                        } else {
+                            HStack(alignment: .top) {
+                                Text(descripcionTexto.isEmpty ? "???" : descripcionTexto)
+                                    .font(.system(size: descripcionTexto.isEmpty ? titleS * 0.8 : titleS))
+                                    .foregroundColor(tema.tituloColor)
+                                    .bold(!descripcionTexto.isEmpty)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(6)
+                                    .truncationMode(.tail)
+                                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                            }
+                            //                        .frame(height: 105 * ap.constantes.scaleFactor, alignment: .topLeading)
+                            .contentShape(Rectangle())
+                            .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
+                        }
+                        
+                        // 👇 Ellipsis botón debajo del área
+                        ZStack {
+                            if !isEditingDescripcion, descripcionTexto.count > 254 {
+                                Button("Leer más…") {
+                                    mostrarDescripcionCompleta.toggle()
+                                }
+                                .font(.system(size: 14))
+                                .foregroundColor(tema.tituloColor)
+                                .buttonStyle(.plain)
+                                .popover(isPresented: $mostrarDescripcionCompleta) {
+                                    ScrollView {
+                                        Text(descripcionTexto)
+                                            .font(.system(size: 16))
+                                            .padding()
+                                    }
+                                    .frame(width: 330, height: 350)
+                                }
                             }
                         }
+                        //                    .frame(height: 20)
+                        Spacer()
                     }
-//                    .frame(height: 20)
-                    Spacer()
                 }
+                
+                Spacer()
             }
-            
-            Spacer()
+            .padding(10)
+
         }
-        .padding(10)
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(.gray.opacity(0.25), lineWidth: 1)
-        )
     }
 }
 
@@ -326,78 +498,9 @@ struct SelectorColor: View {
                 .presentationDetents([.medium])
             }
         }
-    }
-}
-
-
-struct GraficoGithubStyle: View {
-    // Datos: nombre, cantidad, color base
-    let datos: [(String, Int, Color)] = [
-        ("CBZ", 75, .blue),
-        ("CBR", 45, .green),
-        ("PDF", 20, .orange)
-    ]
-    
-    var total: Int {
-        datos.map { $0.1 }.reduce(0, +)
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // 🔹 Título + total
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Tipos de archivos")
-                    .font(.headline)
-                Text("\(total) en total")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-            }
-            
-            // 🔹 Barra segmentada
-            GeometryReader { geo in
-                HStack(spacing: 0) {
-                    ForEach(datos, id: \.0) { tipo, cantidad, color in
-                        let porcentaje = CGFloat(cantidad) / CGFloat(total)
-                        
-                        LinearGradient(
-                            gradient: Gradient(colors: [color.opacity(0.8), color]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(width: geo.size.width * porcentaje, height: 12)
-                    }
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 6))
-            }
-            .frame(height: 12)
-            
-            // 🔹 Leyenda en horizontal
-            HStack(spacing: 16) {
-                ForEach(datos, id: \.0) { tipo, cantidad, color in
-                    let porcentaje = Double(cantidad) / Double(total) * 100
-                    
-                    HStack(spacing: 6) {
-                        Circle()
-                            .fill(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [color.opacity(0.7), color]),
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(width: 10, height: 10)
-                        
-                        Text(tipo)
-                            .font(.subheadline).bold()
-                        
-                        Text("\(Int(porcentaje))%")
-                            .font(.caption)              // 🔹 más pequeño
-                            .foregroundColor(.secondary) // 🔹 gris
-                    }
-                }
-            }
-        }
-        // ❌ quitamos el .padding() para que no tenga margen lateral
+        
+        
+        
     }
 }
 
