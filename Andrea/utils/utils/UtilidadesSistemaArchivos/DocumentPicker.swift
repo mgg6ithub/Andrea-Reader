@@ -2,6 +2,25 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+extension View {
+    func importarArchivosSheet(
+        mostrar: Binding<Bool>,
+        onPick: @escaping ([URL]) -> Void
+    ) -> some View {
+        self.sheet(isPresented: mostrar) {
+            DocumentPicker(
+                onPick: { urls in
+                    onPick(urls)
+                },
+                onCancel: {},
+                allowMultipleSelection: true,
+                contentTypes: [.item]
+            )
+        }
+    }
+}
+
+
 
 struct DocumentPicker: UIViewControllerRepresentable {
     

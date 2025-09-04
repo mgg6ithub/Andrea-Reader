@@ -287,29 +287,30 @@ struct Contenido: View {
             }
         Spacer()
         VStack(alignment: .center, spacing: 0) {
-            VStack(alignment: .leading, spacing: 0) {
-                HStack(spacing: 2) {
-                    Image(systemName: "text.page.fill")
-                        .font(.system(size: titleS * 1.2))
-                        .foregroundColor(vm.color)
-                    Text("Archivo")
-                        .bold()
-                        .font(.system(size: titleS * 1.2))
-                        .foregroundColor(tema.tituloColor)
-                        .offset(y: 3)
+            VStack(alignment: .leading, spacing: 5) {
+                HStack {
+                    Spacer()
+                    EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
+                        .opacity(archivo.fechaPrimeraVezEntrado != nil ? 0.25 : 1.0)
+                        .disabled(archivo.fechaPrimeraVezEntrado != nil)
                     
                     Spacer()
-                    
-                    if archivo.fechaPrimeraVezEntrado != nil || archivo.estadisticas.paginaActual != 0 {
-                        EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
-                    }
                 }
-                .padding(.bottom, 25 * ap.constantes.scaleFactor)
+                .padding(.top, 10)
                 
-                HStack(spacing: 2) {
-                    Image(systemName: "zipper.page")
-                        .font(.system(size: titleS * 1.2))
-                        .foregroundColor(vm.color)
+                HStack(spacing: 5) {
+                    Spacer()
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(vm.color.gradient.opacity(0.3))
+                            .frame(width: 30, height: 30)
+                            .shadow(color: vm.color.opacity(0.25), radius: 4, x: 0, y: 2)
+                        
+                        Image(systemName: "text.page.fill")
+                            .foregroundColor(vm.color)
+                            .frame(width: 25, height: 32)
+                    }
+
                     Text(EnumDescripcionArchivo.descripcion(for: archivo.fileType))
                         .bold()
                         .font(.system(size: titleS * 1.2))
@@ -318,9 +319,12 @@ struct Contenido: View {
                     
                     Text("(\(archivo.fileType.rawValue.uppercased()))") // Ej: (PDF), (CBR)...
                         .font(.system(size: subTitleS))
-                        .foregroundColor(tema.tituloColor)
+                        .foregroundColor(tema.secondaryText)
                         .offset(y: 4)
+                    
+                    Spacer()
                 }
+                .offset(y: 10)
                 
                 Spacer()
                 
@@ -332,18 +336,22 @@ struct Contenido: View {
                 Spacer()
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 2) {
-                        Text("Autor")
-                            .underline()
-                            .font(.system(size: subTitleS))
-                            .foregroundColor(tema.secondaryText)
-                        
-                        Image(systemName: "pencil")
-                            .font(.system(size: const.iconSize * 0.5))
-                            .foregroundColor(tema.secondaryText)
+                    
+                    if !autorTexto.isEmpty {
+                        HStack(spacing: 2) {
+                            Text("Autor")
+                                .underline()
+                                .font(.system(size: subTitleS))
+                                .foregroundColor(tema.secondaryText)
+                            
+                            Image(systemName: "pencil")
+                                .font(.system(size: const.iconSize * 0.5))
+                                .foregroundColor(tema.secondaryText)
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture { withAnimation {isEditingAutor.toggle()} }
+                        .padding(.bottom, 3)
                     }
-                    .contentShape(Rectangle())
-                    .onTapGesture { withAnimation {isEditingAutor.toggle()} }
                     
                     if isEditingAutor {
                         TextField("Autor1, Autor2, Autor3...", text: $autorTexto)
@@ -369,41 +377,50 @@ struct Contenido: View {
                             }
 //                            .frame(height: 30 * ap.constantes.scaleFactor)
                     } else {
-                        ZStack {
-                            Text(autorTexto.isEmpty ? "???" : autorTexto)
-                                .font(.system(size: autorTexto.isEmpty ? titleS * 0.8 : titleS))
+                        if autorTexto.isEmpty {
+                            Label("Agregar autor", systemImage: "person")
+                                .font(.system(size: 14))
+                                .foregroundColor(.blue) // o tema.accent
+                                .contentShape(Rectangle())
+                                .onTapGesture { withAnimation { isEditingAutor.toggle() } }
+                        } else {
+                            Text(autorTexto)
+                                .font(.system(size: titleS))
                                 .foregroundColor(tema.tituloColor)
-                                .bold(!autorTexto.isEmpty)
+                                .bold()
                                 .multilineTextAlignment(.leading)
+                                .lineLimit(6)
+                                .truncationMode(.tail)
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-//                        .frame(height: 30 * ap.constantes.scaleFactor, alignment: .topLeading)
-                        .contentShape(Rectangle())
-                        .onTapGesture { withAnimation {isEditingAutor.toggle()} }
                     }
                 }
+                .padding(.bottom, 20)
                 
                 Spacer()
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 2) {
-                        Text("Descripción")
-                            .underline()
-                            .font(.system(size: subTitleS))
-                            .foregroundColor(tema.secondaryText)
-                        
-                        Image(systemName: "pencil")
-                            .font(.system(size: const.iconSize * 0.5))
-                            .foregroundColor(tema.secondaryText)
+                    if !descripcionTexto.isEmpty {
+                        HStack(spacing: 2) {
+                            Text("Descripción")
+                                .underline()
+                                .font(.system(size: subTitleS))
+                                .foregroundColor(tema.secondaryText)
+                            
+                            Image(systemName: "pencil")
+                                .font(.system(size: const.iconSize * 0.5))
+                                .foregroundColor(tema.secondaryText)
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
+                        .padding(.bottom, 3)
                     }
-                    .contentShape(Rectangle())
-                    .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                     
                     if isEditingDescripcion {
                         ZStack(alignment: .topLeading) {
                             TextEditor(text: $descripcionTexto)
                                 .bold()
                                 .font(.system(size: titleS))
-//                                .frame(height: 105 * ap.constantes.scaleFactor)
                                 .focused($isEditingDescriptionFocused)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
@@ -432,19 +449,22 @@ struct Contenido: View {
                         }
 
                     } else {
-                        HStack(alignment: .top) {
-                            Text(descripcionTexto.isEmpty ? "???" : descripcionTexto)
-                                .font(.system(size: descripcionTexto.isEmpty ? titleS * 0.8 : titleS))
+                        if descripcionTexto.isEmpty {
+                            Label("Agregar descripción", systemImage: "square.and.pencil")
+                                .font(.system(size: 14))
+                                .foregroundColor(.blue) // o tema.accent
+                                .contentShape(Rectangle())
+                                .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
+                        } else {
+                            Text(descripcionTexto)
+                                .font(.system(size: titleS))
                                 .foregroundColor(tema.tituloColor)
-                                .bold(!descripcionTexto.isEmpty)
+                                .bold()
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(6)
                                 .truncationMode(.tail)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-//                        .frame(height: 105 * ap.constantes.scaleFactor, alignment: .topLeading)
-                        .contentShape(Rectangle())
-                        .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                     }
                     
                     // 👇 Ellipsis botón debajo del área
@@ -619,10 +639,10 @@ struct EditableStarRating: View {
     private var iz: CGFloat { ap.constantes.iconSize }
     
     var body: some View {
-        HStack(spacing: 10) {
-            Text(displayRating)
-                .font(.system(size: ap.constantes.titleSize * 1.1))
-                .frame(minWidth: 40, alignment: .trailing)
+//        HStack(spacing: 10) {
+//            Text(displayRating)
+//                .font(.system(size: ap.constantes.titleSize * 1.1))
+//                .frame(minWidth: 40, alignment: .trailing)
             
             HStack(spacing: 4) {
                 ForEach(1...maxRating, id: \.self) { index in
@@ -662,7 +682,7 @@ struct EditableStarRating: View {
                         PersistenciaDatos().guardarDatoArchivo(valor: puntuacion, elementoURL: url, key: ClavesPersistenciaElementos().puntuacion)
                     }
             )
-        }
+//        }
     }
     
     private func starImageType(for index: Int) -> String {

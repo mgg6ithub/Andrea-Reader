@@ -110,7 +110,6 @@ struct ListaColeccionMenu: View {
                         onSeleccionColeccion?()
                     }) {
                         HStack {
-                            
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(col.color.gradient.opacity(0.3))

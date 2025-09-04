@@ -38,6 +38,8 @@ struct MasInformacionColeccion: View {
     @State private var masInfoPresionado: Bool = false
     @State private var show: Bool = false
     
+    @State private var mostrarDocumentPicker: Bool = false
+    
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
@@ -78,7 +80,7 @@ struct MasInformacionColeccion: View {
                                 .font(.system(size: const.titleSize * 0.8))
                                 .foregroundColor(ap.temaResuelto.textColor)
                             
-                            Button(action: { /*importar archivos*/ }) {
+                            Button(action: { mostrarDocumentPicker.toggle() }) {
                                 ZStack {
                                     HStack {
                                         Image(systemName: "tray.and.arrow.down")
@@ -107,6 +109,13 @@ struct MasInformacionColeccion: View {
                             }
                             .buttonStyle(.plain)
                             .padding(.top, 15)
+                            .importarArchivosSheet(mostrar: $mostrarDocumentPicker) { urls in
+                                for url in urls {
+                                    SistemaArchivos.sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.pilaColecciones.getColeccionActual().coleccion.url)
+                                }
+                                
+                                //Ordenar la libreria despues de importar.
+                            }
                         }
                         .padding(15)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -218,51 +227,46 @@ struct ContenidoColeccion: View {
                 .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
             VStack(alignment: .center, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 2) {
-                        Image(systemName: "folder.fill")
-                            .font(.system(size: titleS * 1.2))
-                            .foregroundColor(vm.color)
-                        Text("Colección")
-                            .bold()
-                            .font(.system(size: titleS * 1.2))
-                            .foregroundColor(tema.tituloColor)
-                            .offset(y: 3)
-                        
-                        Spacer()
-                        
-                        //                    if archivo.fechaPrimeraVezEntrado != nil || archivo.estadisticas.paginaActual != 0 {
+                    
+                    HStack {
+//                        Spacer()
                         EditableStarRating(vm: vm, url: vm.coleccion.url, puntuacion: $puntucacion)
-                        //                    }
+                            .opacity(vm.elementos.isEmpty ? 0.25 : 1.0)
+                            .disabled(vm.elementos.isEmpty)
+                        Spacer()
                     }
-                    .padding(.bottom, 15 * ap.constantes.scaleFactor)
                     .padding(.bottom, 20)
                     
-                    HStack(alignment: .top, spacing: 40) {
+//                    HStack(alignment: .top, spacing: 40) {
+//                        Spacer()
                         SelectorColor(vm: vm)
-                    }
+                    
+//                        Spacer()
+//                    }
                     
                     Spacer()
                     
                     Rectangle()
                         .fill(.gray.opacity(0.25))
                         .frame(height: 1)
-                        .padding(15 * ap.constantes.scaleFactor)
-                    
-                    Spacer()
+                        .padding(.bottom, 10)
                     
                     VStack(alignment: .leading, spacing: 0) {
-                        HStack(spacing: 2) {
-                            Text("Descripción")
-                                .underline()
-                                .font(.system(size: subTitleS))
-                                .foregroundColor(tema.secondaryText)
-                            
-                            Image(systemName: "pencil")
-                                .font(.system(size: const.iconSize * 0.5))
-                                .foregroundColor(tema.secondaryText)
+                        if !descripcionTexto.isEmpty {
+                            HStack(spacing: 2) {
+                                Text("Descripción")
+                                    .underline()
+                                    .font(.system(size: subTitleS))
+                                    .foregroundColor(tema.secondaryText)
+                                
+                                Image(systemName: "pencil")
+                                    .font(.system(size: const.iconSize * 0.5))
+                                    .foregroundColor(tema.secondaryText)
+                            }
+                            .contentShape(Rectangle())
+                            .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
+                            .padding(.bottom, 3)
                         }
-                        .contentShape(Rectangle())
-                        .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                         
                         if isEditingDescripcion {
                             ZStack(alignment: .topLeading) {
@@ -298,19 +302,22 @@ struct ContenidoColeccion: View {
                             }
                             
                         } else {
-                            HStack(alignment: .top) {
-                                Text(descripcionTexto.isEmpty ? "???" : descripcionTexto)
-                                    .font(.system(size: descripcionTexto.isEmpty ? titleS * 0.8 : titleS))
+                            if descripcionTexto.isEmpty {
+                                Label("Agregar descripción", systemImage: "square.and.pencil")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.blue) // o tema.accent
+                                    .contentShape(Rectangle())
+                                    .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
+                            } else {
+                                Text(descripcionTexto)
+                                    .font(.system(size: titleS))
                                     .foregroundColor(tema.tituloColor)
-                                    .bold(!descripcionTexto.isEmpty)
+                                    .bold()
                                     .multilineTextAlignment(.leading)
                                     .lineLimit(6)
                                     .truncationMode(.tail)
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
                             }
-                            //                        .frame(height: 105 * ap.constantes.scaleFactor, alignment: .topLeading)
-                            .contentShape(Rectangle())
-                            .onTapGesture { withAnimation { isEditingDescripcion.toggle() } }
                         }
                         
                         // 👇 Ellipsis botón debajo del área
@@ -402,22 +409,38 @@ struct SelectorColor: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             // 🔹 Título
-            Text("Color de colección")
-                .font(.system(size: ap.constantes.titleSize * 0.8))
-                .bold()
-                .foregroundColor(ap.temaResuelto.tituloColor)
+            
+            HStack(alignment: .bottom, spacing: 5) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(vm.color.gradient.opacity(0.3))
+                        .frame(width: 30, height: 30)
+                        .shadow(color: vm.color.opacity(0.25), radius: 4, x: 0, y: 2)
+                    
+                    Image(systemName: "folder.fill")
+                        .foregroundColor(vm.color)
+                        .frame(width: 25, height: 25)
+                }
+                
+                Text("Color de colección")
+                    .font(.system(size: ap.constantes.titleSize * 0.8))
+                    .bold()
+                    .foregroundColor(ap.temaResuelto.tituloColor)
+            }
             
             Text("Selecciona un color")
                 .font(.system(size: ap.constantes.subTitleSize * 0.8))
                 .foregroundColor(ap.temaResuelto.secondaryText)
             
+            let circleSize = ap.constantes.iconSize * 1.5
+            
             // 🔹 Grid más compacto: 6 columnas en vez de 9
-            // 🔹 Grid compacto: 4 columnas × 2 filas
             LazyVGrid(
-                columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4),
+                columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 5),
                 spacing: 8
             ) {
-                ForEach(colores.prefix(8), id: \.self) { color in   // 👈 solo mostramos los 8 primeros
+                ForEach(colores.prefix(10), id: \.self) { color in   // 👈 solo mostramos los 8 primeros
+                    let current = color == colorActual
                     Button {
                         withAnimation {
                             colorActual = color
@@ -430,18 +453,9 @@ struct SelectorColor: View {
                         )
                     } label: {
                         Circle()
-                            .fill(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [color.opacity(0.7), color]),
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(width: 40, height: 40)   // 👈 cuadraditos iguales
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 4)
-                                    .stroke(color == colorActual ? Color.primary : Color.clear, lineWidth: 2)
-                            )
+                            .fill(color.gradient)
+                            .opacity(current ? 1 : 0.3)
+                            .frame(width: circleSize, height: circleSize)
                     }
                 }
             }
@@ -454,11 +468,11 @@ struct SelectorColor: View {
                 mostrarColorPicker.toggle()
             } label: {
                 HStack {
-                    Image(systemName: "plus.circle.fill")
+                    Image(systemName: "plus.circle")
                     Text("Más colores")
                 }
                 .font(.subheadline)
-                .foregroundColor(.black)
+                .foregroundColor(.blue)
             }
             .padding(.top, 10)
             .sheet(isPresented: $mostrarColorPicker) {

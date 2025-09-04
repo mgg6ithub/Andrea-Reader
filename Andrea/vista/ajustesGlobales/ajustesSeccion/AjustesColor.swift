@@ -85,7 +85,6 @@ struct AjustesColor: View {
                     }
                     .frame(maxWidth: .infinity)
                 } // FIN VSTACK COLORES MAS USADOS
-            
             }
             .fondoRectangular(esOscuro: esOscuro, shadow: ap.shadows, pV: false)
             

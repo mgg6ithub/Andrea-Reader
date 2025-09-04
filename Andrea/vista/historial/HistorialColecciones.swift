@@ -123,10 +123,8 @@ struct HistorialColecciones: View {
 
             if pc.getColeccionActual().coleccion.nombre != "HOME" {
                 Button(action: {
-                    
                     ap.coleccionseleccionada = pc.getColeccionActual()
                     withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacionColeccion = true }
-                    
                 }) {
                     HStack(spacing: 6) {
                         Image("custom-folder-lupa")

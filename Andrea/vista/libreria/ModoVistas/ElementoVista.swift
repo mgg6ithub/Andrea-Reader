@@ -186,8 +186,13 @@ struct ContextMenuContenido: View {
         
         Section {
             Button(action: {
-                ap.elementoSeleccionado = elemento
-                withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacion = true }
+                if let _ = elemento as? Archivo {
+                    ap.elementoSeleccionado = elemento
+                    withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacion = true }
+                } else {
+                    ap.coleccionseleccionada = PilaColecciones.pilaColecciones.getColeccionActual()
+                    withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacionColeccion = true }
+                }
             }) {
                 Label("Más Información", systemImage: "info.circle")
                     .symbolRenderingMode(.palette)

@@ -82,22 +82,12 @@ struct MenuCentro: View {
 //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
             .popoverTip(ConsejoImportarElementos())
 //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
-            .sheet(isPresented: $mostrarDocumentPicker) {
-                DocumentPicker(
-                    onPick: { urls in
-                        for url in urls {
-                            sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.pilaColecciones.getColeccionActual().coleccion.url)
-                        }
-//                        print("Importados ahora se ordena")
-//                        //Despues de importar aplicar ordenamiento automatico
-//                        coleccionActualVM.ordenarElementos(modoOrdenacion: self.coleccionActualVM.ordenacion)
-                    },
-                    onCancel: {
-//                        print("Cancelado")
-                    },
-                    allowMultipleSelection: true,
-                    contentTypes: [.item]
-                )
+            .importarArchivosSheet(mostrar: $mostrarDocumentPicker) { urls in
+                for url in urls {
+                    sa.crearArchivo(archivoURL: url, coleccionDestino: PilaColecciones.pilaColecciones.getColeccionActual().coleccion.url)
+                }
+                
+                //Ordenar la libreria despues de importar.
             }
             .offset(y: -2.5)
             
