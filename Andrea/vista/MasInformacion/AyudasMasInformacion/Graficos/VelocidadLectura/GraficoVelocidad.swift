@@ -141,7 +141,7 @@ struct GraficoVelocidadLectura: View {
             HStack(spacing: 3) {
                 Text("Velocidad")
                     .font(.system(size: 16))
-                Text("(páginas/minuto)")
+                Text("(ppm)")
                     .font(.system(size: 12))
                     .opacity(0.8)
             }

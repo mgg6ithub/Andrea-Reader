@@ -62,7 +62,7 @@ class CBRArchivo: Archivo, ProtocoloComic {
         if let data = extraerImagen(nombreImagen: nombreImagen) {
             let uiImage = UIImage(data: data)  // Convierte los datos a UIImage
             //DONWSAMPLE
-            let imageJPEG = ImageMod().convertToJPEG(image: uiImage!, quality: 1.0)
+            let imageJPEG = ImagenMod().convertToJPEG(image: uiImage!, quality: 1.0)
             //DONWSAMPLE
             return imageJPEG
         }

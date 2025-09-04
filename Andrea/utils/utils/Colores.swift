@@ -59,4 +59,14 @@ extension Color {
         return String(format: "#%02X%02X%02X", r, g, b)
     }
     
+    func brightness() -> Double {
+        let components = UIColor(self).cgColor.components
+        let r = components?[0] ?? 0
+        let g = components?[1] ?? 0
+        let b = components?[2] ?? 0
+        
+        // Fórmula de luminancia relativa
+        return (0.299 * r + 0.587 * g + 0.114 * b)
+    }
+    
 }

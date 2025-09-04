@@ -67,7 +67,7 @@ class ModeloMiniatura {
         
         // 2) Genera la miniatura por defecto, que sí es opcional
         return  {
-            guard let thumb = ImagenArchivoModelo()
+            guard let thumb = ImagenMod()
                 .crearMiniaturaPorDefecto(
                     miniatura: placeholder,
                     color: UIColor(color)
@@ -147,6 +147,7 @@ class ModeloMiniatura {
     
     // OBTIENE LA PRIMERA MINIATURA
     func obtenerMiniaturaPrimera(archivo: Archivo, color: Color) -> UIImage? {
+        print("Obteniendo la primera imagen...")
         let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
         // Intentar sacar la primera página del archivo
         guard let primeraPagina = archivo.obtenerPrimeraPagina(),

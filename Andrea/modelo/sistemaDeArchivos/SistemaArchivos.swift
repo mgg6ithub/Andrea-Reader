@@ -403,7 +403,6 @@ class SistemaArchivos: ObservableObject {
                             
                             //--- PERSISTENCIA (BORRADO) ---
                             self.pd.eliminarPersistenciaRecursiva(coleccionURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
-                            self.pd.eliminarSesiones(elementoURL: url)
                         } else {
                             vm.coleccion.totalArchivos -= 1
                             
@@ -411,7 +410,7 @@ class SistemaArchivos: ObservableObject {
                             self.pd.eliminarPersistenciaArchivo(elementoURL: url, keys: self.cpe.arrayClavesPersistenciaElementos)
                         }
                     }
-                    
+                    self.pd.eliminarSesiones(elementoURL: url)
                     // --- LOG ---
 //                    var tipo: String = ""
 //                    if let _ = elemento as? Coleccion {

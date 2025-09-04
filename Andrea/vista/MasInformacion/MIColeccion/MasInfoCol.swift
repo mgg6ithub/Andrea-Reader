@@ -1,12 +1,30 @@
 
 import SwiftUI
 
+#Preview {
+    pMIcoleccion1()
+}
+//
+private struct pMIcoleccion1: View {
+    @State private var pantallaCompleta = false
+    
+    var body: some View {
+        MasInfoCol(
+            pantallaCompleta: $pantallaCompleta, vm: ModeloColeccion()
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+    }
+}
+
 struct MasInfoCol: View {
     
     @EnvironmentObject var ap: AppEstado
     @Binding var pantallaCompleta: Bool
     @ObservedObject var vm: ModeloColeccion
     
+    @State private var seleccionColeccion: EnumSeccionColeccion = .coleccion
     @State private var show: Bool = true
     
     var body: some View {
@@ -32,10 +50,19 @@ struct MasInfoCol: View {
                 
                 VStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .center, spacing: 0) {
-                        CabeceraColeccionMI(vm: vm, pantallaCompleta: $pantallaCompleta)
+                        CabeceraColeccionMI(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala, seleccionColeccion: $seleccionColeccion)
                             .padding(.bottom, 5)
                         
-                        MasInformacionColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
+                        TituloYAjustesColeccion(vm: vm, pantallaCompleta: $pantallaCompleta)
+                        
+                        // Aquí el contenido según la selección
+                        switch seleccionColeccion {
+                            
+                        case .coleccion:
+                            MasInformacionColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
+                        case .progreso:
+                            ProgresoColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
+                        }
                         
                         Spacer()
                     }

@@ -2,6 +2,23 @@
 
 import SwiftUI
 
+#Preview {
+    pMIcoleccion()
+}
+//
+private struct pMIcoleccion: View {
+    @State private var pantallaCompleta = false
+    
+    var body: some View {
+        MasInfoCol(
+            pantallaCompleta: $pantallaCompleta, vm: ModeloColeccion()
+        )
+//                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+    }
+}
+
 struct MasInformacionColeccion: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -73,8 +90,12 @@ struct ContenidoColeccion: View {
 //                    }
                 }
                 .padding(.bottom, 15 * ap.constantes.scaleFactor)
+                .padding(.bottom, 20)
                 
-                SelectorColor(vm: vm)
+                HStack(alignment: .top, spacing: 40) {
+                    SelectorColor(vm: vm)
+                    
+                }
                 
                 Spacer()
                 
@@ -223,7 +244,10 @@ struct ImagenColeccion: View {
     }
 }
 
+
 struct SelectorColor: View {
+    
+    @EnvironmentObject var ap: AppEstado
     
     @ObservedObject var vm: ModeloColeccion
     
@@ -231,27 +255,27 @@ struct SelectorColor: View {
     @State private var mostrarColorPicker = false
     
     // 🎨 Paleta de colores (mínimo 18 para llenar 2x9)
-    let coloresPredefinidos: [Color] = [
-        .blue, .green, .orange, .pink, .purple, .red, .yellow, .teal, .indigo,
-        .mint, .brown, .cyan, .gray, .black, .white, .secondary, .primary, .accentColor
-    ]
+    let colores: [Color] = [.blue, .green, .orange, .pink, .purple, .red, .yellow, .teal, .indigo, .mint, .cyan, .brown, .gray, .black, .white, .primary, .secondary, .accentColor]
+
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             // 🔹 Título
             Text("Color de colección")
-                .font(.headline)
+                .font(.system(size: ap.constantes.titleSize * 0.8))
+                .bold()
+                .foregroundColor(ap.temaResuelto.tituloColor)
             
             Text("Selecciona un color")
-                .font(.footnote)
-                .foregroundColor(.secondary)
+                .font(.system(size: ap.constantes.subTitleSize * 0.8))
+                .foregroundColor(ap.temaResuelto.secondaryText)
             
             // 🔹 Grid 2 filas × 9 columnas
             LazyVGrid(
                 columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 9),
                 spacing: 8
             ) {
-                ForEach(coloresPredefinidos, id: \.self) { color in
+                ForEach(colores, id: \.self) { color in
                     Button {
                         withAnimation {
                             colorActual = color

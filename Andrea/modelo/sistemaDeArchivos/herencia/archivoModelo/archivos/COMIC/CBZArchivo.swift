@@ -63,7 +63,7 @@ class CBZArchivo: Archivo, ProtocoloComic {
         if let data = extraerImagen(nombreImagen: nombreImagen) {
             guard let uiImage = UIImage(data: data) else { return nil}
             //DOWNSAMPLE
-            let imageJPEG = ImageMod().convertToJPEG(image: uiImage, quality: 1.0)
+            let imageJPEG = ImagenMod().convertToJPEG(image: uiImage, quality: 1.0)
             //DOWNSAMPLE
             return imageJPEG
         }
@@ -171,6 +171,8 @@ class CBZArchivo: Archivo, ProtocoloComic {
                 let lowercased = entry.path.lowercased()
                 return lowercased.hasSuffix(".jpg") || lowercased.hasSuffix(".jpeg") || lowercased.hasSuffix(".png")
             }) {
+                print("Primera miniatura entrada: ", entry)
+                print()
                 return entry.path
             }
 
