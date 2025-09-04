@@ -32,9 +32,11 @@ struct MasInformacionColeccion: View {
     private var tema: EnumTemas { ap.temaResuelto }
     private var esOscuro: Bool { tema == .dark }
     private var sombraCarta: Color { esOscuro ? .black.opacity(0.4) : .black.opacity(0.1) }
+    private var scale: CGFloat { const.scaleFactor }
     
     private let opacidad: CGFloat = 0.15
     @State private var masInfoPresionado: Bool = false
+    @State private var show: Bool = false
     
     var body: some View {
         ScrollViewReader { proxy in
@@ -42,14 +44,78 @@ struct MasInformacionColeccion: View {
                 VStack(alignment: .leading, spacing: 0) {
                     if ap.resolucionLogica == .small {
                         ContenidoColeccion(vm: vm)
-                            .padding(.bottom, 10)
+                            .padding(.bottom, 15)
                     } else {
                         HStack {
                             ContenidoColeccion(vm: vm)
                         }
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 15)
                     }
                     
+                //si la coleccion esta vacia no hay datos
+                if vm.elementos.isEmpty {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(tema.backgroundGradient)
+                            .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                        
+                        VStack(alignment: .center, spacing: 0) {
+                            HStack(spacing: 3) {
+                                Image("folder-slash")
+                                    .font(.system(size: const.iconSize * 0.75, weight: .medium))
+                                
+                                Text("La colección está vacia")
+                                    .font(.system(size: const.titleSize * 0.8))
+                                    .bold()
+                                    .offset(y: 2)
+                            }
+                            
+                            Image("caja-vacia")
+                                .resizable()
+                                .frame(width: 200 * scale, height: 215 * scale)
+                            
+                            Text("Aun no has importado archivos.\n¿A que esperas para hacerlo?")
+                                .font(.system(size: const.titleSize * 0.8))
+                                .foregroundColor(ap.temaResuelto.textColor)
+                            
+                            Button(action: { /*importar archivos*/ }) {
+                                ZStack {
+                                    HStack {
+                                        Image(systemName: "tray.and.arrow.down")
+                                            .font(.system(size: const.iconSize * 0.8, weight: .medium))
+                                            .foregroundColor(.black.opacity(0.8))
+                                            .offset(y: -2)
+                                        
+                                        Text("Importar archivos")
+                                            .font(.system(size: const.titleSize * 0.8))
+                                            .foregroundColor(.black.opacity(0.8))
+                                    }
+                                }
+                                .padding(10) // margen interno
+                                .background(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [
+                                            Color(red: 184/255, green: 226/255, blue: 152/255), // verde clarito
+                                            Color(red: 160/255, green: 215/255, blue: 132/255)  // sombra suave
+                                        ]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                    .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: 2)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .padding(.top, 15)
+                        }
+                        .padding(15)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .aparicionStiffness(show: $show)
+                    }
+                    .padding(.horizontal, 15)
+                    .padding(.bottom, 15)
+                    
+                } else {
                     ZStack {
                         RoundedRectangle(cornerRadius: 20, style: .continuous)
                             .fill(tema.backgroundGradient)
@@ -70,27 +136,28 @@ struct MasInformacionColeccion: View {
                         
                     }
                     .padding(.horizontal, 15)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 15)
                 
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(tema.backgroundGradient)
-                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
-                    
-                    if ap.resolucionLogica == .small {
-                        VStack {
-                            TiposArchivos(vm: vm)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(tema.backgroundGradient)
+                            .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                        
+                        if ap.resolucionLogica == .small {
+                            VStack {
+                                TiposArchivos(vm: vm)
+                            }
+                            .padding()
+                        } else {
+                            HStack {
+                                TiposArchivos(vm: vm)
+                            }.padding()
                         }
-                        .padding()
-                    } else {
-                        HStack {
-                            TiposArchivos(vm: vm)
-                        }.padding()
+                        
                     }
-                    
+                    .padding(.horizontal, 15)
+                    .padding(.bottom, 15)
                 }
-                .padding(.horizontal, 15)
-                .padding(.bottom, 10)
                
                 ZStack {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -108,7 +175,7 @@ struct MasInformacionColeccion: View {
                     InformacionAvanzada(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
                 }
                 .padding(.horizontal, 15)
-                .padding(.bottom, 10)
+                .padding(.bottom, 15)
                     
                 }
             }
@@ -144,7 +211,7 @@ struct ContenidoColeccion: View {
             }
             .padding(.leading, 15)
             .padding(.top, 15)
-        Spacer()
+//        Spacer()
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(tema.backgroundGradient)
@@ -230,7 +297,6 @@ struct ContenidoColeccion: View {
                                 }
                             }
                             
-                            
                         } else {
                             HStack(alignment: .top) {
                                 Text(descripcionTexto.isEmpty ? "???" : descripcionTexto)
@@ -266,7 +332,6 @@ struct ContenidoColeccion: View {
                                 }
                             }
                         }
-                        //                    .frame(height: 20)
                         Spacer()
                     }
                 }
@@ -274,9 +339,8 @@ struct ContenidoColeccion: View {
                 Spacer()
             }
             .padding(15)
-
         }
-        .padding(.horizontal, 15)
+        .padding(.trailing, 15)
         .padding(.top, 15)
     }
 }
@@ -347,20 +411,25 @@ struct SelectorColor: View {
                 .font(.system(size: ap.constantes.subTitleSize * 0.8))
                 .foregroundColor(ap.temaResuelto.secondaryText)
             
-            // 🔹 Grid 2 filas × 9 columnas
+            // 🔹 Grid más compacto: 6 columnas en vez de 9
+            // 🔹 Grid compacto: 4 columnas × 2 filas
             LazyVGrid(
-                columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 9),
+                columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4),
                 spacing: 8
             ) {
-                ForEach(colores, id: \.self) { color in
+                ForEach(colores.prefix(8), id: \.self) { color in   // 👈 solo mostramos los 8 primeros
                     Button {
                         withAnimation {
                             colorActual = color
                             vm.color = color
                         }
-                        PersistenciaDatos().guardarDatoArchivo(valor: color, elementoURL: vm.coleccion.url, key: ClavesPersistenciaElementos().colorGuardado)
+                        PersistenciaDatos().guardarDatoArchivo(
+                            valor: color,
+                            elementoURL: vm.coleccion.url,
+                            key: ClavesPersistenciaElementos().colorGuardado
+                        )
                     } label: {
-                        RoundedRectangle(cornerRadius: 4)
+                        Circle()
                             .fill(
                                 LinearGradient(
                                     gradient: Gradient(colors: [color.opacity(0.7), color]),
@@ -368,7 +437,7 @@ struct SelectorColor: View {
                                     endPoint: .bottomTrailing
                                 )
                             )
-                            .frame(height: 35) // 🔹 altura más compacta
+                            .frame(width: 40, height: 40)   // 👈 cuadraditos iguales
                             .overlay(
                                 RoundedRectangle(cornerRadius: 4)
                                     .stroke(color == colorActual ? Color.primary : Color.clear, lineWidth: 2)
@@ -376,7 +445,9 @@ struct SelectorColor: View {
                     }
                 }
             }
-            .frame(maxHeight: 90) // 🔹 fuerza que sean solo 2 filas visibles
+            .frame(maxWidth: 200) // 👈 limita ancho total del grid para que quede centrado
+
+
             
             // 🔹 Opción más colores
             Button {
@@ -389,6 +460,7 @@ struct SelectorColor: View {
                 .font(.subheadline)
                 .foregroundColor(.black)
             }
+            .padding(.top, 10)
             .sheet(isPresented: $mostrarColorPicker) {
                 VStack {
                     Text("Selecciona un color")

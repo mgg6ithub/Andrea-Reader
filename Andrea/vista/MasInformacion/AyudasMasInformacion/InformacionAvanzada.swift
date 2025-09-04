@@ -116,8 +116,8 @@ struct InformacionAvanzada: View {
                             .padding(.bottom, 5)
                         
                         Image(systemName: "chevron.forward")
-                            .font(.system(size: ap.constantes.iconSize * 0.5))
-                            .rotationEffect(.degrees(masInfoPresionado ? 90 : 0))
+                            .font(.system(size: ap.constantes.iconSize * 0.7))
+                            .rotationEffect(.degrees(masInfoPresionado ? -90 : 90))
                             .offset(y: -2)
                     }
                 }

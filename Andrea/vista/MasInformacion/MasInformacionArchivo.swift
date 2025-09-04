@@ -54,12 +54,12 @@ struct MasInformacionArchivo: View {
                 VStack(alignment: .leading, spacing: 0) {
                     if ap.resolucionLogica == .small {
                         Contenido(archivo: archivo, vm: vm)
-                            .padding(.bottom, 10)
+                            .padding(.bottom, 15)
                     } else {
                         HStack {
                             Contenido(archivo: archivo, vm: vm)
                         }
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 15)
                     }
                     
                     //ESTADISTICAS
@@ -86,18 +86,33 @@ struct MasInformacionArchivo: View {
                                 
                                 Button(action: { ap.archivoEnLectura = archivo }) {
                                     ZStack {
-                                        Text("Empezar a leer")
-                                            .foregroundColor(ap.temaResuelto.textColor)
-                                            .font(.system(size: const.titleSize * 0.8))
+                                        HStack {
+                                            Image(systemName: "eyeglasses")
+                                                .font(.system(size: const.iconSize * 0.7, weight: .medium))
+                                                .foregroundColor(.black.opacity(0.8))
+                                                .offset(y: 0)
+                                            
+                                            Text("Empezar a leer")
+                                                .font(.system(size: const.titleSize * 0.8))
+                                                .foregroundColor(.black.opacity(0.8))
+                                        }
                                     }
                                     .padding(10) // margen interno
                                     .background(
-                                        RoundedRectangle(cornerRadius: 6)
-                                            .fill(vm.color)
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color(red: 0.25, green: 0.80, blue: 0.60), // verde pantalla búho
+                                                Color(red: 0.20, green: 0.70, blue: 0.55)  // un poco más oscuro para dar profundidad
+                                            ]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                        .shadow(color: Color.black.opacity(0.15), radius: 4, x: 0, y: 2)
                                     )
                                 }
+                                .buttonStyle(.plain)
                                 .padding(.top, 15)
-                                
                             }
                             .padding(15)
                             .frame(maxWidth: .infinity, alignment: .center)
@@ -127,7 +142,7 @@ struct MasInformacionArchivo: View {
                                 .fill(tema.backgroundGradient)
                                 .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                         )
-                        .padding(.top, 10)
+                        .padding(.top, 15)
                     
                     //INFORMACION AVANZADA
                     InformacionAvanzada(archivo: archivo, vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
@@ -136,7 +151,7 @@ struct MasInformacionArchivo: View {
                                 .fill(tema.backgroundGradient)
                                 .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                         )
-                        .padding(.top, 10)
+                        .padding(.top, 15)
                         .id("informacionAvanzada")
                 }
                 .padding(5)
@@ -568,7 +583,7 @@ struct ImagenMiniatura: View {
                             }
                             .frame(maxWidth: .infinity)   // <-- ocupa todo el ancho del overlay
                             .padding(.horizontal, 12)
-                            .padding(.bottom, 10)
+                            .padding(.bottom, 15)
                         }
                     }
                     .clipShape(RoundedCorner(radius: 15, corners: [.bottomLeft, .bottomRight]))

@@ -58,7 +58,7 @@ struct Libreria: View {
                 if vm.coleccion.nombre == "HOME" {
                     ImagenLibreriaVacia(imagen: "estanteria-vacia2", texto: "Biblioteca \"Andrea\" vacía.", anchura: 315, altura: 350)
                 } else {
-                    ImagenLibreriaVacia(imagen: "caja-vacia", texto: "Colección vacia, sin elementos.", anchura: 235, altura: 235)
+                    ImagenLibreriaVacia(imagen: "caja-vacia", texto: "La colección está vacia.", anchura: 235, altura: 235)
                 }
             }
             else {
