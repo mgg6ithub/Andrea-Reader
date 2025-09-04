@@ -3,9 +3,11 @@ import SwiftUI
 struct GraficoGithubStyle: View {
     // Datos: nombre, cantidad, color base
     let datos: [(String, Int, Color)] = [
-        ("CBZ", 75, .blue),
-        ("CBR", 45, .green),
-        ("PDF", 20, .orange)
+        ("CBZ", 60, .blue),
+        ("CBR", 26, .green),
+        ("PDF", 13, .orange),
+        ("TXT", 5, .purple),
+        ("EPUB", 5, .red)
     ]
     
     var total: Int {
@@ -14,6 +16,7 @@ struct GraficoGithubStyle: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
+            
             // 🔹 Barra segmentada
             GeometryReader { geo in
                 HStack(spacing: 0) {
@@ -32,8 +35,12 @@ struct GraficoGithubStyle: View {
             }
             .frame(height: 12)
             
-            // 🔹 Leyenda en horizontal
-            HStack(spacing: 16) {
+            // 🔹 Leyenda en cuadrícula adaptable
+            let columnas = [
+                GridItem(.adaptive(minimum: 90), alignment: .leading)
+            ]
+            
+            LazyVGrid(columns: columnas, alignment: .leading, spacing: 8) {
                 ForEach(datos, id: \.0) { tipo, cantidad, color in
                     let porcentaje = Double(cantidad) / Double(total) * 100
                     
@@ -52,11 +59,12 @@ struct GraficoGithubStyle: View {
                             .font(.subheadline).bold()
                         
                         Text("\(Int(porcentaje))%")
-                            .font(.caption)              // 🔹 más pequeño
-                            .foregroundColor(.secondary) // 🔹 gris
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
                 }
             }
         }
     }
 }
+

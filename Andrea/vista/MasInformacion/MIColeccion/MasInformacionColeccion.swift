@@ -5,9 +5,10 @@ import SwiftUI
 #Preview {
     pMIcoleccion()
 }
+
 //
 private struct pMIcoleccion: View {
-    @State private var pantallaCompleta = false
+    @State private var pantallaCompleta = true
     
     var body: some View {
         MasInfoCol(
@@ -47,170 +48,38 @@ struct MasInformacionColeccion: View {
                         .padding(.bottom, 10)
                     }
                     
-                    VStack(alignment: .leading, spacing: 16) {
+//                    VStack(alignment: .leading, spacing: 16) {
                         
-                        // 📦 Card: Cantidad de archivos + detalles
                         ZStack {
                             RoundedRectangle(cornerRadius: 20, style: .continuous)
                                 .fill(tema.backgroundGradient)
                                 .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
                             
-                            HStack(alignment: .top) {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text("Cantidad de archivos")
-                                        .font(.headline)
-                                    Text("140 en total")
-                                        .font(.footnote)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Divider()
-                                    
-                                    // Tamaño promedio
-                                    HStack(spacing: 6) {
-                                        Image("doc-lupa")
-                                            .font(.system(size: const.iconSize * 0.7))
-                                            .symbolRenderingMode(.palette)
-                                            .foregroundStyle(.blue, .black)
-                                        Text("Tamaño promedio: 7 MB")
-                                            .font(.system(size: const.subTitleSize * 0.9))
-                                            .foregroundColor(.secondary)
-                                    }
-                                    
-                                    // Archivo más grande
-                                    HStack(spacing: 6) {
-                                        Image("doc-arrow-up")
-                                            .font(.system(size: const.iconSize * 0.7))
-                                            .symbolRenderingMode(.palette)
-                                            .foregroundStyle(.blue, .black)
-                                        Text("Más grande: 320 MB")
-                                            .font(.system(size: const.subTitleSize * 0.9))
-                                            .foregroundColor(.secondary)
-                                    }
-                                    
-                                    // Archivo más pequeño
-                                    HStack(spacing: 6) {
-                                        Image("doc-arrow-down")
-                                            .font(.system(size: const.iconSize * 0.7))
-                                            .symbolRenderingMode(.palette)
-                                            .foregroundStyle(.blue, .black)
-                                        Text("Más pequeño: 450 KB")
-                                            .font(.system(size: const.subTitleSize * 0.9))
-                                            .foregroundColor(.secondary)
-                                    }
-                                    
-                                    Divider()
-                                    
-                                    // Salud del almacenamiento
-                                    HStack(spacing: 6) {
-                                        Image(systemName: "cross.case.fill")
-                                            .font(.system(size: const.iconSize * 0.7))
-                                            .foregroundColor(.red)
-                                        Text("Salud: estable (fragmentación baja)")
-                                            .font(.system(size: const.subTitleSize * 0.9))
-                                            .foregroundColor(.secondary)
-                                    }
+                            if ap.resolucionLogica == .small {
+                                VStack {
+                                    CantidadArchivos()
                                 }
-                                .frame(width: 300)
-                                .border(.red)
-                                
-                                Spacer()
-                                
-                                VStack(alignment: .center, spacing: 15) {
-                                    ProgresoCircular(
-                                        titulo: "tamaño",
-                                        progreso: 56,
-                                        progresoDouble: 0.56,
-                                        color: .red,
-                                        anchuraLinea: 12,
-                                        radio: 120
-                                    )
-                                    
-                                    VStack(alignment: .center, spacing: 4) {
-                                        HStack(spacing: 3) {
-                                            Image(systemName: "externaldrive")
-                                                .font(.system(size: const.iconSize * 0.65))
-                                                .foregroundColor(.red.opacity(0.85))
-                                            Text("Almacenamiento")
-                                                .font(.system(size: const.titleSize * 0.75))
-                                                .foregroundColor(tema.tituloColor)
-                                        }
-                                        
-                                        HStack(alignment: .bottom, spacing: 2) {
-                                            Text("Ocupa")
-                                                .font(.system(size: const.subTitleSize * 0.65))
-                                                .foregroundColor(tema.secondaryText.opacity(0.8))
-                                            Text("1.5 GB")
-                                                .font(.system(size: const.subTitleSize * 0.75))
-                                                .foregroundColor(tema.secondaryText)
-                                            Text("de")
-                                                .font(.system(size: const.subTitleSize * 0.65))
-                                                .foregroundColor(tema.secondaryText.opacity(0.8))
-                                            Text("2 GB")
-                                                .font(.system(size: const.subTitleSize * 0.75))
-                                                .foregroundColor(tema.secondaryText)
-                                        }
-                                    }
-                                }
-                                .padding(.top, 20)
-                                .padding(.trailing, 15)
+                                .padding()
+                            } else {
+                                HStack {
+                                    CantidadArchivos()
+                                }.padding()
                             }
-                            .padding()
-                        }
-                        
-                        // 📊 Card: Tipos de archivo + últimos añadidos/abiertos
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .fill(tema.backgroundGradient)
-                                .shadow(color: sombraCarta, radius: 5, x: 0, y: 2)
                             
-                            HStack(alignment: .top) {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text("Tipos de archivo")
-                                        .font(.headline)
-                                    Text("3 formatos distintos")
-                                        .font(.footnote)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Divider()
-                                    
-                                    // Últimos añadidos
-                                    VStack(alignment: .leading, spacing: 3) {
-                                        Text("Últimos añadidos")
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                        Text("• Batman #45.cbz")
-                                            .font(.caption2)
-                                        Text("• Avengers #12.cbr")
-                                            .font(.caption2)
-                                        Text("• One Piece Vol.1.pdf")
-                                            .font(.caption2)
-                                    }
-                                    
-                                    Divider()
-                                    
-                                    // Últimos abiertos
-                                    VStack(alignment: .leading, spacing: 3) {
-                                        Text("Últimos abiertos")
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                        Text("• Spiderman #102.cbz")
-                                            .font(.caption2)
-                                        Text("• X-Men Classic.cbr")
-                                            .font(.caption2)
-                                    }
-                                }
-                                
-                                Spacer()
-                                
-                                GraficoGithubStyle()
-                            }
-                            .padding()
                         }
-                    }
+                        .padding(.bottom, 10)
+
+
+                        TiposArchivos()
+                        
+//                    }
+                    
+                    
                     
                 }
                 .padding()
             }
+            .padding(.bottom, 20)
         }
     }
 }
