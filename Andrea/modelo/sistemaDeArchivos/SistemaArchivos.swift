@@ -554,7 +554,7 @@ class SistemaArchivos: ObservableObject {
     /**
      Comprueba si la carpeta oculta de imagenes existe. Si no existe crear una, dentro de la coleccion princiopal. (/Documents/.imagenes)
      */
-    public func crearColImagenesYCopiar(color: Color, archivo: Archivo, urlImagen: URL, viewModel: ModeloMiniaturaArchivo) {
+    public func crearColImagenesYCopiar(color: Color, archivo: Archivo? = nil, coleccion: Coleccion? = nil, urlImagen: URL) {
         
         //Creamos la coleccion /Documents/.imagenes para guardar en esa coleccion las imagenes personalizadas
         self.crearColeccion(nombre: ".imagenes")
@@ -568,12 +568,19 @@ class SistemaArchivos: ObservableObject {
         let nombreImagen = urlImagen.lastPathComponent
         
         let urlImagenPersonalizada = coleccionImagenesOculta.appendingPathComponent(nombreImagen)
-        archivo.imagenPersonalizada = urlImagenPersonalizada
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = EnumTipoMiniatura.personalizada }
-        PersistenciaDatos().guardarDatoArchivo(valor: EnumTipoMiniatura.personalizada, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
         
-        //Persistencia para almacenar la url de la nueva imagen perosnalizada
-        PersistenciaDatos().guardarDatoArchivo(valor: nombreImagen, elementoURL: archivo.url, key: ClavesPersistenciaElementos().imagenPersonalizada)
+        if let archivo = archivo {
+            archivo.imagenPersonalizada = urlImagenPersonalizada
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = EnumTipoMiniatura.personalizada }
+            
+            PersistenciaDatos().guardarDatoArchivo(valor: EnumTipoMiniatura.personalizada, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
+            PersistenciaDatos().guardarDatoArchivo(valor: nombreImagen, elementoURL: archivo.url, key: ClavesPersistenciaElementos().imagenPersonalizada)
+            
+        } else if let coleccion = coleccion {
+            coleccion.icono = urlImagenPersonalizada
+            PersistenciaDatos().guardarDatoArchivo(valor: nombreImagen, elementoURL: coleccion.url, key: ClavesPersistenciaElementos().icono)
+        }
+
     }
     
 }

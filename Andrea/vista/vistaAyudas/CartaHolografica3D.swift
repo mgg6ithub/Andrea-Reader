@@ -276,7 +276,7 @@ struct CartaHolografica3D: View {
                     onPick: { urls in
                         if let urlImagen = urls.first { //solamnetre la primera seleccionada
                             print("✅ Imagen seleccionada:", urlImagen)
-                            SistemaArchivos.sa.crearColImagenesYCopiar(color: vm.color, archivo: archivo, urlImagen: urlImagen, viewModel: viewModel)
+                            SistemaArchivos.sa.crearColImagenesYCopiar(color: vm.color, archivo: archivo, urlImagen: urlImagen)
                         }
                     },
                     onCancel: {

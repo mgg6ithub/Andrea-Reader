@@ -15,9 +15,15 @@ class ColeccionValor {
 
 class Coleccion: ElementoSistemaArchivos {
     
+    let pd = PersistenciaDatos()
+    let cpe = ClavesPersistenciaElementos()
+    let p = ValoresElementoPredeterminados()
+    
     @Published var miniaturasBandeja: [UIImage] = []
     @Published var tipoMiniatura: EnumTipoMiniaturaColeccion = .carpeta
     @Published var direccionAbanico: EnumDireccionAbanico = .izquierda
+    
+    @Published var icono: URL? = nil
     
     //ATRIBUTOS
     var isDirectory = true
@@ -48,9 +54,12 @@ class Coleccion: ElementoSistemaArchivos {
         self.totalArchivos = totalArchivos
         self.totalColecciones = totalColecciones
         
-        super.init(nombre: directoryName, url: directoryURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
+        //ICONO DE LA COLECCION
+        let iconoString = pd.recuperarDatoElemento(elementoURL: directoryURL, key: cpe.icono, default: p.icono)
+        let iconoURL = SistemaArchivosUtilidades.sau.home.appendingPathComponent(".imagenes").appendingPathComponent(iconoString)
+        self.icono = iconoURL
         
-        //PERSISTENCIA DE LA IMAGEN
+        super.init(nombre: directoryName, url: directoryURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
     }
     

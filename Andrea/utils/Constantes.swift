@@ -83,6 +83,7 @@ struct ClavesPersistenciaElementos {
     //MARK: - --- SOLO COLECCIONES ---
     //COLOR (normalmente para el color de una coleccion)
     public let colorGuardado: String = "colorGuardado"
+    public let icono: String = "icono"
     public let desplazamientoColeccion: String = "desplazamientoColeccion"
     public let enumModoVista: String = "enumModoVista"
     public let enumModoOrdenacion: String = "enumModoOrdenacion"
@@ -130,6 +131,7 @@ struct ClavesPersistenciaElementos {
                 imagenPersonalizada,
                 
                 colorGuardado,
+                icono,
                 desplazamientoColeccion,
                 enumModoVista,
                 enumModoOrdenacion,
@@ -165,10 +167,11 @@ struct ValoresElementoPredeterminados {
     public let favoritos: Bool = false
     public let protegidos: Bool = false
     
-    public let imagenPersonalizada: String = ""
+    public let imagenPersonalizada: String = "" // <- imagen personalizada
     
     //COLOR
     public let colorGuardado: Color = .gray
+    public let icono: String = "" // <- icono personalizado
     public let desplazamientoColeccion: Int = 0
     public let enumModoVista: EnumModoVista = .cuadricula
     public let enumModoOrdenacion: EnumOrdenaciones = .nombre

@@ -27,6 +27,8 @@ struct MasInfoCol: View {
     @State private var seleccionColeccion: EnumSeccionColeccion = .coleccion
     @State private var show: Bool = true
     
+    @State private var mostrarDocumentPicker: Bool = false
+    
     var body: some View {
         
         ZStack {
@@ -53,7 +55,7 @@ struct MasInfoCol: View {
                         CabeceraColeccionMI(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala, seleccionColeccion: $seleccionColeccion)
                             .padding(.bottom, 5)
                         
-                        TituloYAjustesColeccion(vm: vm, pantallaCompleta: $pantallaCompleta)
+                        TituloYAjustesColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, mostrarDocumentPicker: $mostrarDocumentPicker)
                         
                         // Aquí el contenido según la selección
                         switch seleccionColeccion {
@@ -81,6 +83,19 @@ struct MasInfoCol: View {
                 
             } //FIN GEOMETRY
         } //FIN ZStack
+        .sheet(isPresented: $mostrarDocumentPicker) {
+            ImagePickerDocument(
+                onPick: { urls in
+                    if let urlImagen = urls.first { //solamnetre la primera seleccionada
+                        print("✅ Imagen seleccionada:", urlImagen)
+                        SistemaArchivos.sa.crearColImagenesYCopiar(color: vm.color, coleccion: vm.coleccion, urlImagen: urlImagen)
+                    }
+                },
+                onCancel: {
+                    print("❌ Cancelado")
+                }
+            )
+        }
         
     }
     
