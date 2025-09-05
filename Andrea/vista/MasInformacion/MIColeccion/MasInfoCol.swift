@@ -60,11 +60,10 @@ struct MasInfoCol: View {
                             .padding(.horizontal, 15)
                         // Aquí el contenido según la selección
                         switch seleccionColeccion {
-                            
-                        case .coleccion:
-                            MasInformacionColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
-                        case .progreso:
-                            ProgresoColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
+                            case .coleccion:
+                                MasInformacionColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
+                            case .progreso:
+                                ProgresoColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
                         }
                         
                         Spacer()

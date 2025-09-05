@@ -185,19 +185,29 @@ struct ContextMenuContenido: View {
         }
         
         Section {
-            Button(action: {
-                if let _ = elemento as? Archivo {
-                    ap.elementoSeleccionado = elemento
-                    withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacion = true }
-                } else if let coleccion = elemento as? Coleccion {
-                    ap.coleccionseleccionada = ModeloColeccion(coleccion)
-                    withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacionColeccion = true }
+            Section {
+                Button(action: {
+                    if let _ = elemento as? Archivo {
+                        ap.elementoSeleccionado = elemento
+                        withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacion = true }
+                    } else if let coleccion = elemento as? Coleccion {
+                        Task {
+                            let vm = await PilaColecciones.pilaColecciones.prepararColeccionParaInfo(coleccion)
+                            await MainActor.run {
+                                ap.coleccionseleccionada = vm
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    ap.masInformacionColeccion = true
+                                }
+                            }
+                        }
+                    }
+                }) {
+                    Label("Más Información", systemImage: "info.circle")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(cDinamico, cGris)
                 }
-            }) {
-                Label("Más Información", systemImage: "info.circle")
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(cDinamico, cGris)
             }
+
         }
         
         //--- ESTADO DEL ARCHIVO ---

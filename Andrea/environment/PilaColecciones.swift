@@ -3,6 +3,20 @@
 
 import SwiftUI
 
+extension PilaColecciones {
+    func prepararColeccionParaInfo(_ coleccion: Coleccion) async -> ModeloColeccion {
+        let vm = ModeloColeccion(coleccion)
+        return await withCheckedContinuation { continuation in
+            Task {
+                vm.cargarElementos()   // sigue siendo sync
+                continuation.resume(returning: vm)
+            }
+        }
+    }
+}
+
+
+
 @MainActor
 class PilaColecciones: ObservableObject {
 
