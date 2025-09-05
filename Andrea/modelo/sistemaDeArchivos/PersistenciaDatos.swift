@@ -150,7 +150,6 @@ extension PersistenciaDatos {
         case let v as EnumFondoMenu: return v.rawValue
         case let v as EnumEstiloHistorialColecciones: return v.rawValue
         case let v as EnumPorcentajeEstilo: return v.rawValue
-        case let v as EnumTipoMiniatura: return v.rawValue
             
         //colores
         case let v as Color: return v.toHexString

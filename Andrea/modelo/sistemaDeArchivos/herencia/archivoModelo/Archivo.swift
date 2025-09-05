@@ -199,7 +199,7 @@ class Archivo: ElementoSistemaArchivos, ProtocoloArchivo {
         self.isExecutable = permissions.executable
         
         //enum
-        self.tipoMiniatura = pd.recuperarDatoArchivoEnum(elementoURL: fileURL, key: cpe.miniaturaElemento, default: p.miniaturaElemento)
+        self.tipoMiniatura = pd.recuperarDatoArchivoEnum(elementoURL: fileURL, key: cpe.miniaturaArchivo, default: p.miniaturaArchivo)
         
         //puntuacion (rating)
         self.puntuacion = pd.recuperarDatoElemento(elementoURL: fileURL, key: cpe.puntuacion, default: p.puntuacion)

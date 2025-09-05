@@ -98,7 +98,9 @@ struct ClavesPersistenciaElementos {
     public let progresoElemento: String = "progreso_archivo"
     
     //MINIATURA DE UN ELEMENTO
-    public let miniaturaElemento: String = "miniatura_archivo"
+    public let miniaturaArchivo: String = "miniaturaArchivo"
+    public let miniaturaColeccion: String = "miniaturaColeccion"
+    public let direccionAbanico: String = "direccionAbanico"
     
     //ESTADISTICAS
     //tiempo total de lectura
@@ -139,9 +141,10 @@ struct ClavesPersistenciaElementos {
                 esInvertido,
                 columnas,
                 altura,
+                miniaturaColeccion,
                 
                 progresoElemento, //pagina actual
-                miniaturaElemento, //tipo de miniatura
+                miniaturaArchivo, //tipo de miniatura
                 tiempoLecturaTotal,
                 tiemposPorPagina,
                 visitasPorPagina,
@@ -184,7 +187,9 @@ struct ValoresElementoPredeterminados {
     public let progresoElemento: Int = 0
     
     //MINIATURA DE UN ELEMENTO
-    public let miniaturaElemento: EnumTipoMiniatura = .primeraPagina
+    public let miniaturaArchivo: EnumTipoMiniatura = .primeraPagina
+    public let miniaturaColeccion: EnumTipoMiniaturaColeccion = .carpeta
+    public let direccionAbanico: EnumDireccionAbanico = .izquierda
     
     //ESTADISTICAS
     //tiempo total de lectura

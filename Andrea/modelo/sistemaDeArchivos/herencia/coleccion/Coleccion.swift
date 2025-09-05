@@ -21,7 +21,7 @@ class Coleccion: ElementoSistemaArchivos {
     
     @Published var miniaturasBandeja: [UIImage] = []
     @Published var tipoMiniatura: EnumTipoMiniaturaColeccion = .carpeta
-    @Published var direccionAbanico: EnumDireccionAbanico = .izquierda
+    @Published var direccionAbanico: EnumDireccionAbanico = .derecha
     
     @Published var icono: URL? = nil
     
@@ -47,7 +47,7 @@ class Coleccion: ElementoSistemaArchivos {
         
     }
     
-    //--- CONSTRUCTOR ---
+    //--- CONSTRUCTOR DE VERDAD ---
     init(directoryName: String, directoryURL: URL, fechaImportacion: Date, fechaModificacion: Date, color: Color, totalArchivos: Int, totalColecciones: Int, favorito: Bool, protegido: Bool) {
         
         self.color = color
@@ -56,8 +56,14 @@ class Coleccion: ElementoSistemaArchivos {
         
         //ICONO DE LA COLECCION
         let iconoString = pd.recuperarDatoElemento(elementoURL: directoryURL, key: cpe.icono, default: p.icono)
-        let iconoURL = SistemaArchivosUtilidades.sau.home.appendingPathComponent(".imagenes").appendingPathComponent(iconoString)
-        self.icono = iconoURL
+        
+        if iconoString != "" {
+            let iconoURL = SistemaArchivosUtilidades.sau.home.appendingPathComponent(".imagenes").appendingPathComponent(iconoString)
+            self.icono = iconoURL
+        }
+        
+        //TIPO DE MINIATURA DE LA COLECCION
+        self.tipoMiniatura = pd.recuperarDatoArchivoEnum(elementoURL: directoryURL, key: cpe.miniaturaColeccion, default: p.miniaturaColeccion)
         
         super.init(nombre: directoryName, url: directoryURL, fechaImportacion: fechaImportacion, fechaModificacion: fechaModificacion, favortio: favorito, protegido: protegido)
         
@@ -77,10 +83,7 @@ class Coleccion: ElementoSistemaArchivos {
         return 0
     }
     
-    public func precargarMiniaturas() {
-        
-        print("Cargando miniatuyra abanico para URL: ", self.url)
-        
+    public func precargarMiniaturas(completion: (() -> Void)? = nil) {
         let allURLs = SistemaArchivos.sa.obtenerURLSDirectorio(coleccionURL: self.url)
         let filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
@@ -89,23 +92,23 @@ class Coleccion: ElementoSistemaArchivos {
         }
         
         let primeros4 = Array(filteredURLs.prefix(4))
-        print("Primeras 4 imagenes seleccioandas: ", primeros4)
-            var nuevasMiniaturas: [UIImage?] = Array(repeating: nil, count: primeros4.count)
-            let group = DispatchGroup()
+        var nuevasMiniaturas: [UIImage?] = Array(repeating: nil, count: primeros4.count)
+        let group = DispatchGroup()
 
-            for (index, url) in primeros4.enumerated() {
-                if let archivo = SistemaArchivos.sa.crearInstancia(elementoURL: url) as? Archivo {
-                    group.enter()
-                    ModeloMiniatura.modeloMiniatura.construirMiniatura(color: self.color, archivo: archivo) { img in
-                        nuevasMiniaturas[index] = img
-                        group.leave()
-                    }
+        for (index, url) in primeros4.enumerated() {
+            if let archivo = SistemaArchivos.sa.crearInstancia(elementoURL: url) as? Archivo {
+                group.enter()
+                ModeloMiniatura.modeloMiniatura.construirMiniatura(color: self.color, archivo: archivo) { img in
+                    nuevasMiniaturas[index] = img
+                    group.leave()
                 }
             }
+        }
 
-            group.notify(queue: .main) {
-                self.miniaturasBandeja = nuevasMiniaturas.compactMap { $0 }
-            }
+        group.notify(queue: .main) {
+            self.miniaturasBandeja = nuevasMiniaturas.compactMap { $0 }
+            completion?() // 🔹 avisamos que terminó
+        }
     }
-    
+
 }

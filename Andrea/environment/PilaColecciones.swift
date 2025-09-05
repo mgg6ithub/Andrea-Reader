@@ -95,14 +95,6 @@ class PilaColecciones: ObservableObject {
             self.colecciones = vistaModelos
         }
     }
-    
-    public func renombrarModeloColeccion(nuevoNombre: String) {
-        print("Clecciones todas")
-        for coleccion in colecciones {
-            print(coleccion.coleccion.nombre)
-        }
-    }
-
 
     /**
      Guarda la pila de colecciones en `UserDefaults` como rutas relativas.
@@ -117,9 +109,7 @@ class PilaColecciones: ObservableObject {
                 .replacingOccurrences(of: homeURLStripped, with: "")
                 .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         }
-        print()
-        print("PILA que se guarda en persistencia: ", rutasRelativas)
-        print()
+
         pd.guardarAjusteGeneral(valor: rutasRelativas, key: ClavesPersistenciaAjustesGenerales().pilaGuardada)
     }
     

@@ -81,7 +81,7 @@ struct BotonMenuSeleccionMiniatura: View {
         Button {
             if seleccionMiniatura == .personalizada { mostrarPopoverPersonalizado = true }
             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = seleccionMiniatura }
-            PersistenciaDatos().guardarDatoArchivo(valor: seleccionMiniatura, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
+            PersistenciaDatos().guardarDatoArchivo(valor: seleccionMiniatura, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaArchivo)
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: icono)

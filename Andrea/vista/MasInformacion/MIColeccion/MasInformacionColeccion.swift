@@ -361,19 +361,13 @@ struct ImagenColeccion: View {
     var body: some View {
         VStack(alignment: .center, spacing: 8) { // separación entre imagen y texto
             Spacer()
-            // 🔹 Imagen arriba
-            if col.tipoMiniatura == .carpeta {
-                Image("CARPETA-ATRAS")
-                    .resizable()
-                    .frame(width: 210 * ap.constantes.scaleFactor, height: 230 * ap.constantes.scaleFactor, alignment: .top)
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(
-                        vm.color.gradient,
-                        vm.color.darken(by: 0.2).gradient
-                    )
-            }
+            
+            MiniaturaColeccionView(coleccion: vm.coleccion, width: 210 * ap.constantes.scaleFactor, height: 230 * ap.constantes.scaleFactor)
             
             Button(action: {
+                
+                print("La coleccion seleccionada es: ", vm.coleccion.nombre)
+                
                 ap.coleccionseleccionada = vm
                 withAnimation(.easeInOut(duration: 0.3)) { ap.vistaPreviaColeccion = true }
             }) {

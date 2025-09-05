@@ -13,11 +13,24 @@ struct BotonMenuSeleccionMiniaturaColeccion: View {
     
     var isSel: Bool { coleccion.tipoMiniatura == seleccionMiniatura }
     
+    @Binding var hayMiniaturasAbanico: Bool
+    
     var body: some View {
         Button {
 //            if seleccionMiniatura == .personalizada { mostrarPopoverPersonalizado = true }
+            if seleccionMiniatura == .abanico {
+                coleccion.precargarMiniaturas()
+                
+                if coleccion.miniaturasBandeja.isEmpty {
+                    print("No hay miniaturas...")
+                    hayMiniaturasAbanico = true
+                    return
+                }
+            }
+                
+            print("Has seleccionado la miniatura: ", seleccionMiniatura)
             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { coleccion.tipoMiniatura = seleccionMiniatura }
-            PersistenciaDatos().guardarDatoArchivo(valor: seleccionMiniatura, elementoURL: coleccion.url, key: ClavesPersistenciaElementos().miniaturaElemento)
+            PersistenciaDatos().guardarDatoArchivo(valor: seleccionMiniatura, elementoURL: coleccion.url, key: ClavesPersistenciaElementos().miniaturaColeccion)
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: icono)
@@ -41,145 +54,34 @@ struct BotonMenuSeleccionMiniaturaColeccion: View {
     }
 }
 
-//struct ColeccionHolografica3D: View {
-//    
-//    @Namespace var namespace
-//    
-//    @EnvironmentObject var ap: AppEstado
-//    @ObservedObject var vm: ModeloColeccion
-//    
-//    @State var mostrarPopoverPersonalizado: Bool = false
-//    @State var mostrarDocumentPicker: Bool = false
-//    
-//    var col: Coleccion { vm.coleccion }
-//    var width: CGFloat =  210
-//    var height: CGFloat = 230
-//    
-//    var body: some View {
-//        ZStack {
-//            Rectangle()
-//                .fill(.ultraThinMaterial) // desenfoque real
-//                .ignoresSafeArea()
-//            
-//            Color.black.opacity(0.55) // capa oscura encima
-//                .ignoresSafeArea()
-//                .onTapGesture {
-//                    withAnimation(.easeInOut(duration: 0.3)) {
-//                        ap.vistaPreviaColeccion = false
-//                    }
-//                }
-//            
-//            VStack(alignment: .center, spacing: 20) {
-//                HStack(spacing: 8) {
-//                    BotonMenuSeleccionMiniaturaColeccion(coleccion: vm.coleccion, seleccionMiniatura: .carpeta, color: vm.color, icono: "folder", titulo: "Carpeta", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace)
-//                    BotonMenuSeleccionMiniaturaColeccion(coleccion: vm.coleccion, seleccionMiniatura: .abanico, color: vm.color, icono: "rectangle.on.rectangle.angled", titulo: "Abanico", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace)
-//                }
-//                .padding(10)
-//                .background(
-//                    RoundedRectangle(cornerRadius: 6)
-//                        .fill(Color.gray.opacity(0.2))
-//                )
-//                .padding(.top, 45)
-//                .padding(.bottom, 80)
-//                
-//                ZStack {
-//                    if col.tipoMiniatura == .carpeta {
-//                        Image("CARPETA-ATRAS")
-//                            .resizable()
-//                            .frame(width: width, height: height)
-//                            .symbolRenderingMode(.palette)
-//                            .foregroundStyle(col.color.gradient, col.color.darken(by: 0.2).gradient)
-//                            .zIndex(1)
-//                    } else if col.tipoMiniatura == .abanico {
-//                        let direccionAbanico: EnumDireccionAbanico = col.direccionAbanico
-//
-//                        // Configuración base
-//                        let baseXStep = width * 0.053   // proporcional a width
-//                        let yStep     = height * 0.028
-//                        let baseAngleStep: Double = 4
-//                        let scaleStep: CGFloat = 0.02
-//
-//                        // Ajuste según dirección
-//                        let xStep = direccionAbanico == .izquierda ? -baseXStep : baseXStep
-//                        let angleStep = direccionAbanico == .izquierda ? -baseAngleStep : baseAngleStep
-//                        let rotationAnchor: UnitPoint = direccionAbanico == .izquierda ? .topLeading : .topTrailing
-//
-//                        ForEach(Array(col.miniaturasBandeja.enumerated()), id: \.offset) { index, img in
-//                            Image(uiImage: img)
-//                                .resizable()
-//                                .frame(width: width * 0.8, height: height * 0.65)
-//                                .cornerRadius(4)
-//                                .shadow(radius: 1.5)
-//                                .scaleEffect(index == 0 ? 1.0 : 1.0 - CGFloat(index) * scaleStep)
-//                                .rotationEffect(
-//                                    .degrees(index == 0 ? 0 : Double(index) * angleStep),
-//                                    anchor: rotationAnchor
-//                                )
-//                                .offset(
-//                                    x: index == 0 ? 0 : CGFloat(index) * xStep,
-//                                    y: index == 0 ? 0 : -CGFloat(index) * yStep
-//                                )
-//                                .zIndex(index == 0 ? Double(col.miniaturasBandeja.count + 1) : Double(col.miniaturasBandeja.count - index))
-//                        }
-//                    }
-//                }
-//                .onAppear {
-//                    if vm.coleccion.tipoMiniatura == .abanico && vm.coleccion.miniaturasBandeja.isEmpty {
-//                        vm.coleccion.precargarMiniaturas()
-//                    }
-//                }
-//                .onChange(of: vm.coleccion.tipoMiniatura) {
-//                    if vm.coleccion.tipoMiniatura == .abanico && vm.coleccion.miniaturasBandeja.isEmpty {
-//                        vm.coleccion.precargarMiniaturas()
-//                    }
-//                }
-//                
-//                Spacer()
-//                
-////                if let info = ImagenInfo(imagen: viewModel.miniatura, url: archivo.imagenPersonalizada) {
-//                    VStack(alignment: .leading, spacing: 12) {
-//                        infoRow("Ruta:", "/Users/julio/Documents/Comics/SpiderMan01.cbz")
-//                        infoRow("Formato:", "CBZ")
-//                        infoRow("Dimensiones:", "1920 x 1080 px")
-//                        infoRow("Peso:", "4.8 MB")
-//                        infoRow("Calidad:", "Alta (300 dpi)")
-//                        infoRow("Ratio:", "16:9")
-//                        infoRow("Fecha modificación:", "5 sept 2025, 14:32")
-//                    }
-//                    .padding(10)
-//                    .background(
-//                        RoundedRectangle(cornerRadius: 10)
-//                            .fill(Color.gray.opacity(0.2))
-//                    )
-//                    .padding(.horizontal, 20)
-//                    .padding(.bottom, 30)
-////                }
-//                
-//                
-//            }
-//            .padding(10)
-//            .background(
-//                RoundedRectangle(cornerRadius: 10)
-//                    .fill(Color.gray.opacity(0.2))
-//            )
-//            .padding(.horizontal, 20)
-//            .padding(.bottom, 30)
-//                
-//            }
-//        } //FIN ZSTACK
-//    
-//    private func infoRow(_ title: String, _ value: String) -> some View {
-//        HStack {
-//            Text(title)
-//                .foregroundColor(.white)
-//                .font(.system(size: 16, weight: .medium))
-//            Spacer()
-//            Text(value)
-//                .foregroundColor(.white)
-//                .font(.system(size: 16))
-//        }
-//    }
-//}
+struct MensajeNoHayMiniaturas: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color.red.opacity(0.85))   // fondo rojo semitransparente
+                .ignoresSafeArea()
+            
+            VStack(spacing: 12) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 40))
+                    .foregroundColor(.white)
+                
+                Text("No hay miniaturas disponibles")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                Text("Importa archivos para generar miniaturas en modo abanico.")
+                    .font(.subheadline)
+                    .foregroundColor(.white.opacity(0.9))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+            .padding()
+        }
+        .frame(width: 280, height: 180) // tamaño del popover
+    }
+}
 
 struct ColeccionHolografica3D: View {
     
@@ -201,14 +103,11 @@ struct ColeccionHolografica3D: View {
     @State var mostrarPopoverPersonalizado: Bool
     @State var mostrarDocumentPicker: Bool = false
     
-    @State private var imagenBase: Bool = false
-    @State private var primera: Bool = false
-    @State private var aleatoria: Bool = false
-    @State private var personalizada: Bool = false
+    @State var hayMiniaturasAbanico: Bool = false
     
     var col: Coleccion { vm.coleccion }
-    var width: CGFloat =  210
-    var height: CGFloat = 230
+    var width: CGFloat =  270
+    var height: CGFloat = 310
     
     init(vm: ModeloColeccion) {
         self.vm = vm
@@ -231,8 +130,10 @@ struct ColeccionHolografica3D: View {
             
             VStack(alignment: .center, spacing: 20) {
                 HStack(spacing: 8) {
-                    BotonMenuSeleccionMiniaturaColeccion(coleccion: vm.coleccion, seleccionMiniatura: .carpeta, color: vm.color, icono: "folder", titulo: "Carpeta", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace)
-                    BotonMenuSeleccionMiniaturaColeccion(coleccion: vm.coleccion, seleccionMiniatura: .abanico, color: vm.color, icono: "rectangle.on.rectangle.angled", titulo: "Abanico", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace)
+                    BotonMenuSeleccionMiniaturaColeccion(coleccion: vm.coleccion, seleccionMiniatura: .carpeta, color: vm.color, icono: "folder", titulo: "Carpeta", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace, hayMiniaturasAbanico: $hayMiniaturasAbanico)
+                    
+                    BotonMenuSeleccionMiniaturaColeccion(coleccion: vm.coleccion, seleccionMiniatura: .abanico, color: vm.color, icono: "rectangle.on.rectangle.angled", titulo: "Abanico", mostrarPopoverPersonalizado: $mostrarDocumentPicker, namespace: namespace, hayMiniaturasAbanico: $hayMiniaturasAbanico)
+                        .popover(isPresented: $hayMiniaturasAbanico) { MensajeNoHayMiniaturas() }
                 }
                 .padding(10)
                 .background(
@@ -240,7 +141,8 @@ struct ColeccionHolografica3D: View {
                         .fill(Color.gray.opacity(0.2))
                 )
                 .padding(.top, 45)
-                .padding(.bottom, 80)
+                
+                Spacer()
                 
                 // Carta con efecto holográfico
                 ZStack {

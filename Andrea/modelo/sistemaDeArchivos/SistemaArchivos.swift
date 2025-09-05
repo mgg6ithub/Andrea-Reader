@@ -573,10 +573,10 @@ class SistemaArchivos: ObservableObject {
             archivo.imagenPersonalizada = urlImagenPersonalizada
             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { archivo.tipoMiniatura = EnumTipoMiniatura.personalizada }
             
-            PersistenciaDatos().guardarDatoArchivo(valor: EnumTipoMiniatura.personalizada, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaElemento)
+            PersistenciaDatos().guardarDatoArchivo(valor: EnumTipoMiniatura.personalizada, elementoURL: archivo.url, key: ClavesPersistenciaElementos().miniaturaArchivo)
             PersistenciaDatos().guardarDatoArchivo(valor: nombreImagen, elementoURL: archivo.url, key: ClavesPersistenciaElementos().imagenPersonalizada)
             
-        } else if let coleccion = coleccion {
+        } else if let coleccion = coleccion { //esto es para el icono de la coleccion
             coleccion.icono = urlImagenPersonalizada
             PersistenciaDatos().guardarDatoArchivo(valor: nombreImagen, elementoURL: coleccion.url, key: ClavesPersistenciaElementos().icono)
         }
