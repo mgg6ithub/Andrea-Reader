@@ -45,11 +45,11 @@ struct MasInformacionColeccion: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
                     if ap.resolucionLogica == .small {
-                        ContenidoColeccion(vm: vm)
+                        ContenidoColeccion(vm: vm, estadisticasColeccion: vm.estadisticasColeccion)
                             .padding(.bottom, 15)
                     } else {
                         HStack {
-                            ContenidoColeccion(vm: vm)
+                            ContenidoColeccion(vm: vm, estadisticasColeccion: vm.estadisticasColeccion)
                         }
                         .padding(.bottom, 15)
                     }
@@ -132,13 +132,13 @@ struct MasInformacionColeccion: View {
                         
                         if ap.resolucionLogica == .small {
                             VStack {
-                                CantidadArchivos()
+                                CantidadArchivos(estadisticasColeccion: vm.estadisticasColeccion)
                             }
                             
                             .padding()
                         } else {
                             HStack {
-                                CantidadArchivos()
+                                CantidadArchivos(estadisticasColeccion: vm.estadisticasColeccion)
                             }
                             .padding()
                         }
@@ -168,23 +168,23 @@ struct MasInformacionColeccion: View {
                     .padding(.bottom, 15)
                 }
                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(tema.backgroundGradient)
-                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
-                    InformacionAvanzadaFechas(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
-                }
-                .padding(.horizontal, 15)
-                .padding(.bottom, 10)
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(tema.backgroundGradient)
-                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
-                    InformacionAvanzada(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
-                }
-                .padding(.horizontal, 15)
-                .padding(.bottom, 15)
+//                ZStack {
+//                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+//                        .fill(tema.backgroundGradient)
+//                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+//                    InformacionAvanzadaFechas(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+//                }
+//                .padding(.horizontal, 15)
+//                .padding(.bottom, 10)
+//                
+//                ZStack {
+//                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+//                        .fill(tema.backgroundGradient)
+//                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+//                    InformacionAvanzada(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+//                }
+//                .padding(.horizontal, 15)
+//                .padding(.bottom, 15)
                     
                 }
             }
@@ -198,6 +198,8 @@ struct ContenidoColeccion: View {
     @EnvironmentObject var ap: AppEstado
     
     @ObservedObject var vm: ModeloColeccion
+    @ObservedObject var estadisticasColeccion: EstadisticasColeccion
+    @State private var puntuacion: Double = 0.0
     
     private var tema: EnumTemas { ap.temaResuelto }
     private var const: Constantes { ap.constantes }
@@ -210,8 +212,6 @@ struct ContenidoColeccion: View {
     @FocusState private var isEditingDescriptionFocused: Bool
     @State private var descripcionTexto: String = ""
     @State private var mostrarDescripcionCompleta: Bool = false
-    
-    @State private var puntucacion: Double = 1.5
     
     var body: some View {
         ImagenColeccion(vm: vm)
@@ -230,7 +230,13 @@ struct ContenidoColeccion: View {
                     
                     HStack {
 //                        Spacer()
-                        EditableStarRating(vm: vm, url: vm.coleccion.url, puntuacion: $puntucacion, isEditable: false)
+                        EditableStarRating(vm: vm,
+                                               url: vm.coleccion.url,
+                                               puntuacion: $puntuacion,
+                                               isEditable: false)
+                            .onReceive(estadisticasColeccion.$mediaValoraciones) { nuevaMedia in
+                                puntuacion = nuevaMedia
+                            }
                             .opacity(vm.elementos.isEmpty ? 0.25 : 1.0)
                         Spacer()
                     }
@@ -383,7 +389,6 @@ struct ImagenColeccion: View {
             
         }
         .frame(width: 220, height: 340 * ap.constantes.scaleFactor, alignment: .top)
-        .border(.red) // 👈 para que veas el contenedor
     }
 }
 

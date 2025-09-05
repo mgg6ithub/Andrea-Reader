@@ -29,6 +29,8 @@ struct MasInfoCol: View {
     
     @State private var mostrarDocumentPicker: Bool = false
     
+    @State private var yaCalculeEstadisticas: Bool = false
+    
     var body: some View {
         
         ZStack {
@@ -61,7 +63,7 @@ struct MasInfoCol: View {
                         // Aquí el contenido según la selección
                         switch seleccionColeccion {
                             case .coleccion:
-                                MasInformacionColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
+                            MasInformacionColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
                             case .progreso:
                                 ProgresoColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
                         }
@@ -95,6 +97,20 @@ struct MasInfoCol: View {
                     print("❌ Cancelado")
                 }
             )
+        }
+        .onAppear {
+            // 👇 Solo al entrar a Más Información
+            if vm.elementosCargados {
+                vm.calcularEstadisticas()
+                yaCalculeEstadisticas = true
+            }
+        }
+        .onChange(of: vm.elementosCargados) { old, cargados in
+            // 👇 Solo cuando se termine de cargar y aún no haya calculado
+            if cargados && !yaCalculeEstadisticas {
+                vm.calcularEstadisticas()
+                yaCalculeEstadisticas = true
+            }
         }
         
     }

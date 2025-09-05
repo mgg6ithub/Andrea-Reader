@@ -155,7 +155,7 @@ class PilaColecciones: ObservableObject {
                 //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
                 ConsejoCrearColeccion.estamosHome = true
                 //MARK: - --- CONSEJO CREAR COLECCION BIBLIOTECA VACIA ---
-                if coleccionActual.totalColecciones == 0 { ConsejoCrearColeccion.noTieneColeccion = true }
+//                if coleccionActual.totalColecciones == 0 { ConsejoCrearColeccion.noTieneColeccion = true }
                 //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
                 ConsejoImportarElementos.mostrarConsejoCrearColeccion = false
                 
@@ -266,17 +266,8 @@ class PilaColecciones: ObservableObject {
      Establece la HOME como actual y guarda la pila.
      */
     public func conservarSoloHome() {
-        
-        print("Sacando todas las colecciones")
-        
-        for c in self.colecciones {
-            print(c.coleccion.nombre)
-        }
-        
         guard !colecciones.isEmpty else { return }
         guard let home = colecciones.first else { return }
-        
-        print("Coleccion HOME: ", home)
         
         withAnimation(.easeInOut(duration: 0.15)) {
             colecciones = [home]

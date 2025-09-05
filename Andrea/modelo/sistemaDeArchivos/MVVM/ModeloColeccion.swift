@@ -28,6 +28,8 @@ class ModeloColeccion: ObservableObject {
     private let cpe = ClavesPersistenciaElementos()
     private let p = ValoresElementoPredeterminados()
     
+    @ObservedObject var estadisticasColeccion: EstadisticasColeccion
+    
     let coleccion: Coleccion
 
     @Published var elementos: [ElementoSistemaArchivos] = []
@@ -73,6 +75,9 @@ class ModeloColeccion: ObservableObject {
     //MARK: - CONSTRUCTOR VACIO
     //crear un constrcutor por defecto con valores nulos para crear una instancia de ModeloColeccion vacia para tests
     init() {
+        
+        self.estadisticasColeccion = EstadisticasColeccion(url: URL(fileURLWithPath: ""))
+        
             // Colección mínima para poder inicializar
         self.coleccion = Coleccion(directoryName: "TEST", directoryURL: URL(fileURLWithPath: ""), fechaImportacion: Date(), fechaModificacion: Date(), favorito: true, protegido: true)
 
@@ -95,6 +100,7 @@ class ModeloColeccion: ObservableObject {
         
         let url = coleccion.url
         
+        self.estadisticasColeccion = EstadisticasColeccion(url: url)
         self.coleccion = coleccion
         
         self.scrollPosition = pd.recuperarDatoElemento(elementoURL: url, key: cpe.desplazamientoColeccion, default: p.desplazamientoColeccion)
@@ -258,6 +264,11 @@ class ModeloColeccion: ObservableObject {
         pd.guardarDatoArchivo(valor: ordenDict, elementoURL: self.coleccion.url, key: cpe.ordenPersonalizado)
     }
 
+    //MARK: --- METODO PARA CALCULAR LAS ESTADISTICAS DE LA COLECCION ---
+    public func calcularEstadisticas() {
+        self.estadisticasColeccion.calcularEstadisticasColeccion(elementos, totalArchivos: self.coleccion.totalArchivos, totalSubColecciones: self.coleccion.totalColecciones)
+    }
+    
     
 }
 

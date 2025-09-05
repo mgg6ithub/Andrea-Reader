@@ -23,6 +23,8 @@ struct CantidadArchivos: View {
     
     @EnvironmentObject var ap: AppEstado
     
+    @ObservedObject var estadisticasColeccion: EstadisticasColeccion
+    
     private var const: Constantes { ap.constantes }
     private var tema: EnumTemas { ap.temaResuelto }
     private var esOscuro: Bool { tema == .dark }
@@ -31,7 +33,15 @@ struct CantidadArchivos: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Cantidad de archivos")
                 .font(.headline)
-            Text("140 en total")
+            Text("\(estadisticasColeccion.totalElementos) en total")
+                .font(.footnote)
+                .foregroundColor(.secondary)
+            
+            Text("\(estadisticasColeccion.totalArchivos) archivos")
+                .font(.footnote)
+                .foregroundColor(.secondary)
+            
+            Text("\(estadisticasColeccion.totalSubColecciones) subcolecciones")
                 .font(.footnote)
                 .foregroundColor(.secondary)
             

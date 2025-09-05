@@ -52,10 +52,6 @@ struct TituloYAjustesColeccion: View {
                             Image(uiImage: imgIcono)
                                 .resizable()
                                 .font(.system(size: ap.constantes.iconSize * 0.8))
-                                .onAppear {
-                                    print("URL ICONO: ", urlIcono)
-                                    print("Mostrando imagne: ", imgIcono)
-                                }
                         }
                     } else {
                         VStack(alignment: .center, spacing: 1) {
