@@ -1,6 +1,7 @@
 
 
 import SwiftUI
+import Foundation
 import UniformTypeIdentifiers
 
 class SistemaArchivosUtilidades {
@@ -82,11 +83,84 @@ class SistemaArchivosUtilidades {
     
 
     public func getFileSize(fileURL: URL) -> Int {
-        
-        let fileSize = (try? FileManager.default.attributesOfItem(atPath: fileURL.path)[.size] as? Int) ?? 0
-        
-        return fileSize
+        if self.isDirectory(elementURL: fileURL) {
+            // 📂 Es carpeta → sumar recursivamente
+            guard let enumerator = fm.enumerator(
+                at: fileURL,
+                includingPropertiesForKeys: [.fileSizeKey],
+                options: [],
+                errorHandler: nil
+            ) else {
+                return 0
+            }
+
+            var totalSize = 0
+            for case let file as URL in enumerator {
+                if let fileSize = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize {
+                    totalSize += fileSize
+                }
+            }
+
+            return totalSize
+
+        } else {
+            // 📄 Es archivo → devolver tamaño directo
+            let attributes = try? fm.attributesOfItem(atPath: fileURL.path)
+            return attributes?[.size] as? Int ?? 0
+        }
     }
+    
+    // Tamaño lógico real
+    public func getLogicalSize(fileURL: URL) -> Int {
+        if isDirectory(elementURL: fileURL) {
+            guard let enumerator = fm.enumerator(
+                at: fileURL,
+                includingPropertiesForKeys: [.fileSizeKey],
+                options: [],
+                errorHandler: nil
+            ) else { return 0 }
+            
+            var total = 0
+            for case let file as URL in enumerator {
+                if let fileSize = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize {
+                    total += fileSize
+                }
+            }
+            return total
+        } else {
+            let attributes = try? fm.attributesOfItem(atPath: fileURL.path)
+            return attributes?[.size] as? Int ?? 0
+        }
+    }
+
+    // Tamaño asignado en disco (redondeado a bloques)
+    public func getAllocatedSize(fileURL: URL) -> Int {
+        let blockSize = 4096 // tamaño típico de bloque APFS
+        
+        if isDirectory(elementURL: fileURL) {
+            guard let enumerator = fm.enumerator(
+                at: fileURL,
+                includingPropertiesForKeys: [.fileSizeKey],
+                options: [],
+                errorHandler: nil
+            ) else { return 0 }
+            
+            var total = 0
+            for case let file as URL in enumerator {
+                if let fileSize = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize {
+                    // redondeo manual a múltiplos de blockSize
+                    let blocks = (fileSize + blockSize - 1) / blockSize
+                    total += blocks * blockSize
+                }
+            }
+            return total
+        } else {
+            let logicalSize = getLogicalSize(fileURL: fileURL)
+            let blocks = (logicalSize + blockSize - 1) / blockSize
+            return blocks * blockSize
+        }
+    }
+
     
     /**
      Metodo para obtener el mimeType del archvio

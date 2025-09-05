@@ -132,13 +132,13 @@ struct MasInformacionColeccion: View {
                         
                         if ap.resolucionLogica == .small {
                             VStack {
-                                CantidadArchivos(estadisticasColeccion: vm.estadisticasColeccion)
+                                CantidadArchivos(vm: vm, estadisticasColeccion: vm.estadisticasColeccion)
                             }
                             
                             .padding()
                         } else {
                             HStack {
-                                CantidadArchivos(estadisticasColeccion: vm.estadisticasColeccion)
+                                CantidadArchivos(vm: vm, estadisticasColeccion: vm.estadisticasColeccion)
                             }
                             .padding()
                         }

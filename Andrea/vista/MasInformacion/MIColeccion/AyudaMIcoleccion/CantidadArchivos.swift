@@ -19,99 +19,264 @@ private struct pMIcoleccion: View {
     }
 }
 
+enum SeleccionTipo: String {
+    case archivos
+    case colecciones
+}
+
+struct PickerArchivosColecciones: View {
+    @Binding var seleccion: SeleccionTipo
+    
+    let vm: ModeloColeccion
+    let estadisticasColeccion: EstadisticasColeccion
+    
+    let iconS: CGFloat
+    let subtitleS: CGFloat
+    let subtitleC: Color
+    
+    @State private var archivos: Int = 0
+    @State private var subcolecciones: Int = 0
+    
+    var body: some View {
+        HStack(alignment: .bottom, spacing: 8) {
+            
+            Button {
+                seleccion = .archivos
+                print("👉 Selección: archivos")
+            } label: {
+                HStack(alignment: .bottom, spacing: 2) {
+                    Image(systemName: "text.document")
+                        .font(.system(size: iconS))
+                        .foregroundColor(vm.color)
+                    
+                    Text("\(archivos) archivos")
+                        .font(.system(size: subtitleS))
+                        .foregroundColor(subtitleC)
+                }
+                .opacity(seleccion == .archivos ? 1 : 0.35)
+            }
+            .buttonStyle(.plain)
+            
+            Divider()
+                .frame(height: 16)
+                .padding(.horizontal, 3)
+            
+            Button {
+                seleccion = .colecciones
+                print("👉 Selección: colecciones")
+            } label: {
+                HStack(alignment: .bottom, spacing: 3) {
+                    Image(systemName: "folder")
+                        .font(.system(size: iconS))
+                        .foregroundColor(vm.color)
+                    
+                    Text("\(subcolecciones) subcolecciones")
+                        .font(.system(size: subtitleS))
+                        .foregroundColor(subtitleC)
+                }
+                .opacity(seleccion == .colecciones ? 1 : 0.35)
+            }
+            .buttonStyle(.plain)
+        }
+        // 🔥 sincronizas aquí
+        .onReceive(estadisticasColeccion.$totalArchivos) { archivos = $0 }
+        .onReceive(estadisticasColeccion.$totalSubColecciones) { subcolecciones = $0 }
+    }
+}
+
+
+struct InfoRow: View {
+    
+    let text: String
+    var nombre: String? = nil
+    let dato: Int
+    
+    @State private var mostrarPO: Bool = false
+    
+    var body: some View {
+        Button(action: {
+            mostrarPO.toggle()
+        }) {
+            HStack(spacing: 2) {
+                
+                Text(text)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                
+                Text(ManipulacionSizes().formatearSize(dato))
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                
+            }
+            .popover(isPresented: $mostrarPO) {
+                if let nombre = nombre {
+                    Text(nombre)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .padding()
+                }
+            }
+        }
+    }
+}
+
+
+struct EstadisticasPesoVista: View {
+    @ObservedObject var estadisticas: EstadisticasColeccion
+    let tipo: SeleccionTipo
+    
+    // Estados locales
+    @State private var pesoPromedio: Int = 0
+    @State private var masPesado: (String, Int) = ("", 0)
+    @State private var menosPesado: (String, Int) = ("", 0)
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+//            if estadisticas.isCalculando {
+//                Spacer()
+//                ProgressView()
+//                Spacer()
+//            } else {
+//
+//            }
+            
+            InfoRow(
+                text: "Tamaño promedio",
+                dato: pesoPromedio
+            )
+            
+            InfoRow(
+                text: "Más grande",
+                nombre: masPesado.0,
+                dato: masPesado.1
+            )
+            
+            InfoRow(
+                text: "Más pequeño",
+                nombre: menosPesado.0,
+                dato: menosPesado.1
+            )
+            
+        }
+        .onAppear {
+            sincronizar() // inicial
+        }
+        .onChange(of: tipo) {
+            sincronizar() // cuando cambie el picker
+        }
+        // 📌 Suscripciones reactivas según el tipo
+        .onReceive(estadisticas.$pesoPromedioArchivos) { nuevo in
+            if tipo == .archivos { pesoPromedio = nuevo }
+        }
+        .onReceive(estadisticas.$archivoMasPesado.combineLatest(estadisticas.$sizeArchivoMasPesado)) { (nombre, size) in
+            if tipo == .archivos { masPesado = (nombre, size) }
+        }
+        .onReceive(estadisticas.$archivoMenosPesado.combineLatest(estadisticas.$sizeArchivoMenosPesado)) { (nombre, size) in
+            if tipo == .archivos { menosPesado = (nombre, size) }
+        }
+        .onReceive(estadisticas.$pesoPromedioColecciones) { nuevo in
+            if tipo == .colecciones { pesoPromedio = nuevo }
+        }
+        .onReceive(estadisticas.$coleccionMasPesada.combineLatest(estadisticas.$sizeColeccionMasPesada)) { (nombre, size) in
+            if tipo == .colecciones { masPesado = (nombre, size) }
+        }
+        .onReceive(estadisticas.$coleccionMenosPesada.combineLatest(estadisticas.$sizeColeccionMenosPesada)) { (nombre, size) in
+            if tipo == .colecciones { menosPesado = (nombre, size) }
+        }
+    }
+    
+    private func sincronizar() {
+        switch tipo {
+        case .archivos:
+            pesoPromedio = estadisticas.pesoPromedioArchivos
+            masPesado = (estadisticas.archivoMasPesado, estadisticas.sizeArchivoMasPesado)
+            menosPesado = (estadisticas.archivoMenosPesado, estadisticas.sizeArchivoMenosPesado)
+            
+        case .colecciones:
+            pesoPromedio = estadisticas.pesoPromedioColecciones
+            masPesado = (estadisticas.coleccionMasPesada, estadisticas.sizeColeccionMasPesada)
+            menosPesado = (estadisticas.coleccionMenosPesada, estadisticas.sizeColeccionMenosPesada)
+        }
+    }
+}
+
+
+
 struct CantidadArchivos: View {
     
     @EnvironmentObject var ap: AppEstado
     
+    @ObservedObject var vm: ModeloColeccion
     @ObservedObject var estadisticasColeccion: EstadisticasColeccion
     
     private var const: Constantes { ap.constantes }
     private var tema: EnumTemas { ap.temaResuelto }
     private var esOscuro: Bool { tema == .dark }
     
+    private var iconS: CGFloat { const.iconSize * 0.7 }
+    private var subtitleS: CGFloat { const.subTitleSize * 0.7 }
+    private var subtitleC: Color { tema.secondaryText }
+    
+    @State private var seleccion: SeleccionTipo = .archivos
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Cantidad de archivos")
                 .font(.headline)
-            Text("\(estadisticasColeccion.totalElementos) en total")
-                .font(.footnote)
-                .foregroundColor(.secondary)
+            HStack(alignment: .bottom, spacing: 3) {
+                
+                Image(systemName: "shippingbox.fill")
+                    .font(.system(size: iconS))
+                    .foregroundColor(vm.color)
+                
+                Text("\(estadisticasColeccion.totalElementos) en total")
+                    .font(.system(size: const.subTitleSize))
+                    .foregroundColor(tema.colorContrario)
+            }
             
-            Text("\(estadisticasColeccion.totalArchivos) archivos")
-                .font(.footnote)
-                .foregroundColor(.secondary)
-            
-            Text("\(estadisticasColeccion.totalSubColecciones) subcolecciones")
-                .font(.footnote)
-                .foregroundColor(.secondary)
+            PickerArchivosColecciones(seleccion: $seleccion, vm: vm, estadisticasColeccion: estadisticasColeccion, iconS: iconS, subtitleS: subtitleS, subtitleC: subtitleC)
             
             Rectangle()
                 .fill(Color.secondary.opacity(0.15))
                 .frame(width: 220, height: 1)
                 .padding(.vertical, 4)
+            
+            if seleccion == .archivos {
+                EstadisticasPesoVista(estadisticas: estadisticasColeccion, tipo: .archivos)
+                    .onAppear {
+                        if !vm.elementos.isEmpty {
+                            estadisticasColeccion.calcularPesoArchivo(vm.elementos)
+                        }
+                    }
+                    .onChange(of: vm.elementos) { _, elementos in
+                        if !elementos.isEmpty {
+                            estadisticasColeccion.calcularPesoArchivo(elementos)
+                        }
+                    }
+            } else {
+                EstadisticasPesoVista(estadisticas: estadisticasColeccion, tipo: .colecciones)
+                    .onAppear {
+                        if !vm.elementos.isEmpty {
+                            estadisticasColeccion.calcularPesoSubcolecciones(vm.elementos)
+                        }
+                    }
+                    .onChange(of: vm.elementos) { _, elementos in
+                        if !elementos.isEmpty {
+                            estadisticasColeccion.calcularPesoSubcolecciones(elementos)
+                        }
+                    }
+            }
 
-            
-            // Tamaño promedio
-            HStack(spacing: 2) {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: const.iconSize * 0.45))
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.blue, .black)
-                    .frame(width: 20, height: 20)
-                Text("Tamaño promedio: 7 MB")
-                    .font(.system(size: const.subTitleSize * 0.9))
-                    .foregroundColor(tema.secondaryText)
-            }
-            
-            // Archivo más grande
-            HStack(spacing: 2) {
-                Image(systemName: "arrow.up")
-                    .font(.system(size: const.iconSize * 0.45))
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.blue, .white)
-                    .frame(width: 20, height: 20)
-                Text("Más grande: 320 MB")
-                    .font(.system(size: const.subTitleSize * 0.9))
-                    .foregroundColor(tema.secondaryText)
-            }
-            
-            // Archivo más pequeño
-            HStack(spacing: 2) {
-                Image(systemName: "arrow.down")
-                    .font(.system(size: const.iconSize * 0.45))
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.blue, .white)
-                    .frame(width: 20, height: 20)
-                Text("Más pequeño: 450 KB")
-                    .font(.system(size: const.subTitleSize * 0.9))
-                    .foregroundColor(tema.secondaryText)
-            }
-            
-            Rectangle()
-                .fill(Color.secondary.opacity(0.15))
-                .frame(width: 220, height: 1)
-                .padding(.vertical, 4)
 
-            
-            // Salud del almacenamiento
-            HStack(spacing: 6) {
-                Image(systemName: "cross.case.fill")
-                    .font(.system(size: const.iconSize * 0.7))
-                    .foregroundColor(.red)
-                Text("Salud: estable (fragmentación baja)")
-                    .font(.system(size: const.subTitleSize * 0.9))
-                    .foregroundColor(tema.secondaryText)
-            }
         }
-        .frame(width: 280)
         
         Spacer()
         
         VStack(alignment: .center, spacing: 15) {
             ProgresoCircular(
                 titulo: "tamaño",
-                progreso: 56,
-                progresoDouble: 0.56,
+                progreso: estadisticasColeccion.porcentajePesoTotal,
+                progresoDouble: estadisticasColeccion.porcentajePesoTotalDouble,
                 color: .red,
                 anchuraLinea: 12,
                 radio: 120
@@ -131,13 +296,13 @@ struct CantidadArchivos: View {
                     Text("Ocupa")
                         .font(.system(size: const.subTitleSize * 0.65))
                         .foregroundColor(tema.secondaryText.opacity(0.8))
-                    Text("1.5 GB")
+                    Text(ManipulacionSizes().formatearSize(estadisticasColeccion.pesoTotalArchivos))
                         .font(.system(size: const.subTitleSize * 0.75))
                         .foregroundColor(tema.secondaryText)
                     Text("de")
                         .font(.system(size: const.subTitleSize * 0.65))
                         .foregroundColor(tema.secondaryText.opacity(0.8))
-                    Text("2 GB")
+                    Text(ManipulacionSizes().formatearSize(estadisticasColeccion.ALMACENAMIENTOTALPROGRAMA))
                         .font(.system(size: const.subTitleSize * 0.75))
                         .foregroundColor(tema.secondaryText)
                 }
