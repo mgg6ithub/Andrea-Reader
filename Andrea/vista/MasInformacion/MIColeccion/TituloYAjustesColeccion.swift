@@ -33,6 +33,13 @@ struct TituloYAjustesColeccion: View {
     @State private var mostrarPopoverPersonalizado: Bool = false
     @Binding var mostrarDocumentPicker: Bool
     
+    init(vm: ModeloColeccion, pantallaCompleta: Binding<Bool>, mostrarDocumentPicker: Binding<Bool>) {
+        _vm = ObservedObject(initialValue: vm)
+        _pantallaCompleta = pantallaCompleta
+        _tituloElemento = State(initialValue: vm.coleccion.nombre)
+        _mostrarDocumentPicker = mostrarDocumentPicker
+    }
+    
     var body: some View {
         HStack(alignment: .top) {
             HStack(spacing: 4) {
@@ -41,9 +48,14 @@ struct TituloYAjustesColeccion: View {
                 }) {
                     if let urlIcono = vm.coleccion.icono {
                         if let imgIcono = ModeloMiniatura.modeloMiniatura.obtenerMiniaturaPersonalizada(archivo: Archivo(), color: vm.color, urlMiniatura: urlIcono) {
+                            
                             Image(uiImage: imgIcono)
                                 .resizable()
                                 .font(.system(size: ap.constantes.iconSize * 0.8))
+                                .onAppear {
+                                    print("URL ICONO: ", urlIcono)
+                                    print("Mostrando imagne: ", imgIcono)
+                                }
                         }
                     } else {
                         VStack(alignment: .center, spacing: 1) {

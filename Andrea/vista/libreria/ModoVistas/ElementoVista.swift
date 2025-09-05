@@ -189,8 +189,8 @@ struct ContextMenuContenido: View {
                 if let _ = elemento as? Archivo {
                     ap.elementoSeleccionado = elemento
                     withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacion = true }
-                } else {
-                    ap.coleccionseleccionada = PilaColecciones.pilaColecciones.getColeccionActual()
+                } else if let coleccion = elemento as? Coleccion {
+                    ap.coleccionseleccionada = ModeloColeccion(coleccion)
                     withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacionColeccion = true }
                 }
             }) {

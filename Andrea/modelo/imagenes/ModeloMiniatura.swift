@@ -147,7 +147,6 @@ class ModeloMiniatura {
     
     // OBTIENE LA PRIMERA MINIATURA
     func obtenerMiniaturaPrimera(archivo: Archivo, color: Color) -> UIImage? {
-        print("Obteniendo la primera imagen...")
         let imagenBase = self.imagenBase(tipoArchivo: archivo.fileType, color: color)
         // Intentar sacar la primera página del archivo
         guard let primeraPagina = archivo.obtenerPrimeraPagina(),
@@ -196,7 +195,7 @@ class ModeloMiniatura {
             return downsampler(data: data, archivo: archivo) ?? imagenBase
             
         } catch {
-            print("❌ Error cargando imagen personalizada:", error)
+//            print("❌ Error cargando imagen personalizada:", error)
             return imagenBase
         }
     }

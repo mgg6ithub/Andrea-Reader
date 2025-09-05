@@ -7,7 +7,7 @@ struct ListaColeccion: View {
     @EnvironmentObject var me: MenuEstado
     
     @ObservedObject var coleccion: Coleccion
-    @ObservedObject var coleccionVM: ModeloColeccion
+    var altura: CGFloat
     
     private var const: Constantes { ap.constantes }
     private var escala: CGFloat { const.scaleFactor }
@@ -15,7 +15,7 @@ struct ListaColeccion: View {
     
     var body: some View {
             HStack(spacing: 15) {
-                let anchoMiniatura = coleccionVM.altura * escala
+                let anchoMiniatura = altura * escala
                 Button(action: {
                     coleccion.meterColeccion()
                 }) {
@@ -23,70 +23,12 @@ struct ListaColeccion: View {
 
                         CheckerEncimaDelElemento(elementoURL: coleccion.url, topPadding: false)
                         
-                        if coleccion.tipoMiniatura == .carpeta {
-                            Image("CARPETA-ATRAS")
-                                .resizable()
-                                .frame(width: coleccionVM.altura * 0.599 * escala,
-                                       height: coleccionVM.altura * 0.599 * escala)
-                                .aspectRatio(contentMode: .fit)
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(coleccion.color.gradient, coleccion.color.darken(by: 0.2).gradient)
-                                .zIndex(1)
-                        } else if coleccion.tipoMiniatura == .abanico {
-                            ZStack {
-                                let direccionAbanico: EnumDireccionAbanico = coleccion.direccionAbanico
-
-                                // Configuración base
-                                let baseXStep: CGFloat = 8
-                                let yStep: CGFloat = 6
-                                let baseAngleStep: Double = 4
-                                let scaleStep: CGFloat = 0.02
-
-                                // Ajuste según dirección
-                                let xStep = direccionAbanico == .izquierda ? -baseXStep : baseXStep
-                                let angleStep = direccionAbanico == .izquierda ? -baseAngleStep : baseAngleStep
-                                let rotationAnchor: UnitPoint = direccionAbanico == .izquierda ? .topLeading : .topTrailing
-
-                                ForEach(Array(coleccion.miniaturasBandeja.enumerated()), id: \.offset) { index, img in
-                                    Image(uiImage: img)
-                                        .resizable()
-                                        .frame(width: coleccionVM.altura * 0.45 * escala,
-                                               height: coleccionVM.altura * 0.65 * escala)
-                                        .aspectRatio(contentMode: .fit)
-                                        .cornerRadius(4)
-                                        .shadow(radius: 1.5)
-                                        .scaleEffect(index == 0 ? 1.0 : 1.0 - CGFloat(index) * scaleStep)
-                                        .rotationEffect(
-                                            .degrees(index == 0 ? 0 : Double(index) * angleStep),
-                                            anchor: rotationAnchor
-                                        )
-                                        .offset(
-                                            x: index == 0 ? 0 : CGFloat(index) * xStep,
-                                            y: index == 0 ? 0 : -CGFloat(index) * yStep
-                                        )
-                                        .zIndex(index == 0 ? Double(coleccion.miniaturasBandeja.count + 1) : Double(coleccion.miniaturasBandeja.count - index))
-                                }
-                            }
-                            .offset(y: 15)
-                        }
+                        MiniaturaColeccionView(coleccion: coleccion, width: altura * 0.599 * escala, height: altura * 0.599 * escala)
+                        
                     }
                 }
                 .disabled(me.seleccionMultiplePresionada)
-                .frame(width: anchoMiniatura * 0.651 , height: coleccionVM.altura * escala)
-                .onAppear {
-                    if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {
-                        coleccion.precargarMiniaturas()
-                    }
-                }
-                .onChange(of: coleccion.tipoMiniatura) {
-                    if coleccion.tipoMiniatura == .abanico && coleccion.miniaturasBandeja.isEmpty {
-                        coleccion.precargarMiniaturas()
-                    }
-                }
-                
-//                Divider()
-//                    .background(Color.gray)
-//                    .padding(.horizontal)
+                .frame(width: anchoMiniatura * 0.651 , height: altura * escala)
                 
                 VStack(alignment: .leading, spacing: 5) {
                     // ---- Información básica ----
@@ -132,7 +74,7 @@ struct ListaColeccion: View {
             }
             .padding(.vertical, 20 * escala)
             .padding(.horizontal, 5 * escala)
-            .frame(height: coleccionVM.altura * escala * 0.8)
+            .frame(height: altura * escala * 0.8)
             .background(tema.cardColorFixed)
             .cornerRadius(8, corners: [.topLeft, .bottomLeft])
     }

@@ -360,11 +360,12 @@ struct ImagenColeccion: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 8) { // separación entre imagen y texto
+            Spacer()
             // 🔹 Imagen arriba
             if col.tipoMiniatura == .carpeta {
                 Image("CARPETA-ATRAS")
                     .resizable()
-                    .frame(width: 220, height: 270 * ap.constantes.scaleFactor, alignment: .top)
+                    .frame(width: 210 * ap.constantes.scaleFactor, height: 230 * ap.constantes.scaleFactor, alignment: .top)
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(
                         vm.color.gradient,
@@ -385,6 +386,7 @@ struct ImagenColeccion: View {
                         .foregroundColor(.gray)
                 }
             }
+            .padding(.bottom, 20)
             
         }
         .frame(width: 220, height: 340 * ap.constantes.scaleFactor, alignment: .top)
@@ -422,7 +424,7 @@ struct SelectorColor: View {
                         .frame(width: 25, height: 25)
                 }
                 
-                Text("Color de colección")
+                Text("Color de la colección")
                     .font(.system(size: ap.constantes.titleSize * 0.8))
                     .bold()
                     .foregroundColor(ap.temaResuelto.tituloColor)
@@ -445,6 +447,7 @@ struct SelectorColor: View {
                         withAnimation {
                             colorActual = color
                             vm.color = color
+                            vm.coleccion.color = color
                         }
                         PersistenciaDatos().guardarDatoArchivo(
                             valor: color,
@@ -459,9 +462,7 @@ struct SelectorColor: View {
                     }
                 }
             }
-            .frame(maxWidth: 200) // 👈 limita ancho total del grid para que quede centrado
-
-
+            .frame(maxWidth: 200 * ap.constantes.scaleFactor) // 👈 limita ancho total del grid para que quede centrado
             
             // 🔹 Opción más colores
             Button {

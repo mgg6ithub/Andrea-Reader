@@ -39,7 +39,7 @@ struct ListaVista: View {
                                 ListaArchivo(archivo: archivo, estadisticas: archivo.estadisticas, coleccionVM: vm)
                                     .contentShape(ContentShapeKinds.contextMenuPreview, RoundedCorner(radius: 8, corners: [.topLeft, .bottomLeft]))
                             } else if let coleccion = elemento as? Coleccion {
-                                ListaColeccion(coleccion: coleccion, coleccionVM: vm)
+                                ListaColeccion(coleccion: coleccion, altura: vm.altura)
                             }
                         }
 //                        .shadow(color: ap.temaActual == .dark ? .black.opacity(0.5) : .black.opacity(0.1), radius: 2.5, x: 0, y: 2)

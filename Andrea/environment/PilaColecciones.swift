@@ -77,7 +77,7 @@ class PilaColecciones: ObservableObject {
         let homeURLStripped = self.homeURL.deletingLastPathComponent()
         
         if let pilaGuardada = pd.obtenerAjusteGeneral(key: ClavesPersistenciaAjustesGenerales().pilaGuardada, default: AjustesGeneralesPredeterminados().pilaGuardada) {
-            print("Pila guardada: ", pilaGuardada)
+            
             let coleccionesGuardadas: [URL] = pilaGuardada.compactMap { col in
                 let absolutaURL = homeURLStripped.appendingPathComponent(col)
                 return ManipulacionCadenas().agregarPrivate(absolutaURL)

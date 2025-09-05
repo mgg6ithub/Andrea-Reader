@@ -79,6 +79,8 @@ class Coleccion: ElementoSistemaArchivos {
     
     public func precargarMiniaturas() {
         
+        print("Cargando miniatuyra abanico para URL: ", self.url)
+        
         let allURLs = SistemaArchivos.sa.obtenerURLSDirectorio(coleccionURL: self.url)
         let filteredURLs = allURLs.filter { url in
             SistemaArchivosUtilidades.sau.filtrosIndexado.allSatisfy {
@@ -87,7 +89,7 @@ class Coleccion: ElementoSistemaArchivos {
         }
         
         let primeros4 = Array(filteredURLs.prefix(4))
-
+        print("Primeras 4 imagenes seleccioandas: ", primeros4)
             var nuevasMiniaturas: [UIImage?] = Array(repeating: nil, count: primeros4.count)
             let group = DispatchGroup()
 

@@ -171,8 +171,6 @@ class CBZArchivo: Archivo, ProtocoloComic {
                 let lowercased = entry.path.lowercased()
                 return lowercased.hasSuffix(".jpg") || lowercased.hasSuffix(".jpeg") || lowercased.hasSuffix(".png")
             }) {
-                print("Primera miniatura entrada: ", entry)
-                print()
                 return entry.path
             }
 
