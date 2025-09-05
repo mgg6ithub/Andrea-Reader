@@ -36,11 +36,11 @@ struct TiposArchivos: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Tipos de archivo")
                 .font(.headline)
-            Text("3 formatos distintos")
+            Text("\(vm.estadisticasColeccion.distribucionTipos.count) formatos diferentes")
                 .font(.footnote)
                 .foregroundColor(.secondary)
             
-            GraficoGithubStyle()
+            GraficoGithubStyle(estadisticas: vm.estadisticasColeccion)
             //ocupe el 55% porciento del width de la pantalla
         }
         .frame(width: 400)

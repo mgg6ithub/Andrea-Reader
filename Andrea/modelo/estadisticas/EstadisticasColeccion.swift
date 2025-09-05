@@ -41,6 +41,8 @@ final class EstadisticasColeccion: ObservableObject {
     
     @Published var ALMACENAMIENTOTALPROGRAMA: Int = 0
     
+    @Published var descripcion: String = ""
+    
     //archivos totales
     @Published var totalElementos: Int = 10
     @Published var totalArchivos: Int = 0
@@ -68,6 +70,11 @@ final class EstadisticasColeccion: ObservableObject {
    @Published var sizeColeccionMasPesada: Int = 0
    @Published var coleccionMenosPesada: String = ""
    @Published var sizeColeccionMenosPesada: Int = 0
+    
+    
+    //tipos de archivos
+    @Published var distribucionTipos: [(String, Int, Color)] = []
+
     
     public func calcularEstadisticasColeccion(_ elementos: [ElementoSistemaArchivos], totalArchivos: Int, totalSubColecciones: Int) {
         
@@ -100,6 +107,26 @@ final class EstadisticasColeccion: ObservableObject {
        
         
         //Calcular porcentajs de tipos de archivos
+        var conteo: [String: Int] = [:]
+        for archivo in archivos {
+            let ext = archivo.url.pathExtension.uppercased()
+            conteo[ext, default: 0] += 1
+        }
+        
+        // 🎨 Colores por extensión
+        let colores: [String: Color] = [
+            "CBZ": .blue,
+            "CBR": .green,
+            "PDF": .orange,
+            "TXT": .purple,
+            "EPUB": .red
+        ]
+        
+        // Generar datos en el mismo formato que espera tu gráfico
+        distribucionTipos = conteo.map { (ext, cantidad) in
+            let color = colores[ext] ?? .gray
+            return (ext, cantidad, color)
+        }
         
     }
     
