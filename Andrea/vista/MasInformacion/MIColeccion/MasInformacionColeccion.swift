@@ -230,9 +230,8 @@ struct ContenidoColeccion: View {
                     
                     HStack {
 //                        Spacer()
-                        EditableStarRating(vm: vm, url: vm.coleccion.url, puntuacion: $puntucacion)
+                        EditableStarRating(vm: vm, url: vm.coleccion.url, puntuacion: $puntucacion, isEditable: false)
                             .opacity(vm.elementos.isEmpty ? 0.25 : 1.0)
-                            .disabled(vm.elementos.isEmpty)
                         Spacer()
                     }
                     .padding(.bottom, 20)

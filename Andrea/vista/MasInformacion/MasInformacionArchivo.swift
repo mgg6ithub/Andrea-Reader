@@ -290,9 +290,9 @@ struct Contenido: View {
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
                     Spacer()
-                    EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion)
-                        .opacity(archivo.fechaPrimeraVezEntrado != nil ? 0.25 : 1.0)
-                        .disabled(archivo.fechaPrimeraVezEntrado != nil)
+                    EditableStarRating(vm: vm, url: archivo.url, puntuacion: $archivo.puntuacion, isEditable: true)
+                        .opacity(archivo.fechaPrimeraVezEntrado == nil ? 0.25 : 1.0)
+                        .disabled(archivo.fechaPrimeraVezEntrado == nil)
                     
                     Spacer()
                 }
@@ -635,6 +635,7 @@ struct EditableStarRating: View {
     
     let url: URL
     @Binding var puntuacion: Double // permite valores como 3.5
+    let isEditable: Bool
     let maxRating: Int = 5
     private var iz: CGFloat { ap.constantes.iconSize }
     
@@ -653,35 +654,46 @@ struct EditableStarRating: View {
                         .foregroundColor(vm.color)
                         .scaleEffect(puntuacion.rounded() == Double(index) ? 1.2 : 1.0) // efecto extra
                         .animation(.spring(response: 0.25, dampingFraction: 0.7), value: puntuacion)
-                        .onTapGesture {
-                            withAnimation(.linear(duration: 0.1)) {
-                                // Si ya está en media estrella, pasa a estrella completa; si está completa, baja a media
-                                if puntuacion == Double(index) {
-                                    puntuacion = Double(index) - 0.5
-                                } else {
-                                    puntuacion = Double(index)
+                        .if(isEditable) { view in
+                            view.onTapGesture {
+                                withAnimation(.linear(duration: 0.1)) {
+                                    if puntuacion == Double(index) {
+                                        puntuacion = Double(index) - 0.5
+                                    } else {
+                                        puntuacion = Double(index)
+                                    }
                                 }
+                                PersistenciaDatos().guardarDatoArchivo(
+                                    valor: puntuacion,
+                                    elementoURL: url,
+                                    key: ClavesPersistenciaElementos().puntuacion
+                                )
                             }
-                            PersistenciaDatos().guardarDatoArchivo(valor: puntuacion, elementoURL: url, key: ClavesPersistenciaElementos().puntuacion)
                         }
                 }
                 
             }
-            .gesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { value in
-                        let totalWidth = CGFloat(maxRating) * (iz + 4) - 4
-                        let clampedX = min(max(value.location.x, 0), totalWidth)
-                        let rawStars = Double(clampedX / (totalWidth / CGFloat(maxRating)))
-                        
-                        // Redondear a media estrella
-                        let halfStep = (rawStars * 2).rounded() / 2
-                        withAnimation(.linear(duration: 0.1)) { puntuacion = min(Double(maxRating), max(0.5, halfStep)) }
-                    }
-                    .onEnded { _ in
-                        PersistenciaDatos().guardarDatoArchivo(valor: puntuacion, elementoURL: url, key: ClavesPersistenciaElementos().puntuacion)
-                    }
-            )
+            .if(isEditable) { view in
+                view.gesture(
+                    DragGesture(minimumDistance: 0)
+                        .onChanged { value in
+                            let totalWidth = CGFloat(maxRating) * (iz + 4) - 4
+                            let clampedX = min(max(value.location.x, 0), totalWidth)
+                            let rawStars = Double(clampedX / (totalWidth / CGFloat(maxRating)))
+                            let halfStep = (rawStars * 2).rounded() / 2
+                            withAnimation(.linear(duration: 0.1)) {
+                                puntuacion = min(Double(maxRating), max(0.5, halfStep))
+                            }
+                        }
+                        .onEnded { _ in
+                            PersistenciaDatos().guardarDatoArchivo(
+                                valor: puntuacion,
+                                elementoURL: url,
+                                key: ClavesPersistenciaElementos().puntuacion
+                            )
+                        }
+                )
+            }
 //        }
     }
     
