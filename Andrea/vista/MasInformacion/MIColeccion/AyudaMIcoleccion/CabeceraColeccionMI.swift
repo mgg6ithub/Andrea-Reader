@@ -44,9 +44,11 @@ struct CabeceraColeccionMI: View {
     @State private var isPressed: Bool = false
     
     init(vm: ModeloColeccion, pantallaCompleta: Binding<Bool>, escala: CGFloat) {
+        
         self.vm = vm
         _pantallaCompleta = pantallaCompleta
         self.escala = escala
+        
     }
     
     var body: some View {
@@ -77,9 +79,9 @@ struct CabeceraColeccionMI: View {
                     }
                 }
                 .pickerStyle(.segmented)
-
+                .scaleEffect(1.1)
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 40)
             
             Spacer()
             
@@ -104,7 +106,7 @@ struct CabeceraColeccionMI: View {
                         .animation(nil, value: pantallaCompleta)
                     
                 }
-                .padding(6 * ap.constantes.scaleFactor)
+                .padding(7 * ap.constantes.scaleFactor)
                 .background(pantallaCompleta ? Color.red : Color.gray.opacity(0.15))
                 .cornerRadius(8)
                 

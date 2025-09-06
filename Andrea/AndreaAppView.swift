@@ -108,6 +108,19 @@ struct AndreaAppView: View {
                 
             }
         }
+        //Modificamos picker globalmente
+        .onAppear {
+            UISegmentedControl.appearance().backgroundColor = UIColor(.gray.opacity(0.08))
+            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(temaResuelto.backgroundColor)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(temaResuelto.colorContrario)], for: .normal)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(temaResuelto.colorContrario)], for: .selected)
+        }
+        .onChange(of: temaResuelto) {
+            UISegmentedControl.appearance().backgroundColor = UIColor(.gray.opacity(0.08))
+            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(temaResuelto.backgroundColor)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(temaResuelto.colorContrario)], for: .normal)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(temaResuelto.colorContrario)], for: .selected)
+        }
         .onChange(of: ap.temaActual) {
             ap.temaResuelto = ap.temaActual.resolved(for: systemScheme)
         }

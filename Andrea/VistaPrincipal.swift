@@ -19,6 +19,8 @@ struct VistaPrincipal: View {
     
     @State private var isPresented = false
     
+    @State private var idCol: UUID = UUID()
+    
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -77,6 +79,10 @@ struct VistaPrincipal: View {
             // --- MAS INFORMACION DE UNA COLECCION ---
             if ap.masInformacionColeccion, let coleccionseleccionada = ap.coleccionseleccionada {
                 MasInfoCol(pantallaCompleta: $ap.pantallaCompleta, vm: coleccionseleccionada)
+                    .id(idCol)
+                    .onChange(of: coleccionseleccionada.coleccion) {
+                        idCol = UUID()
+                    }
                     .ignoresSafeArea()
                     .zIndex(1)
             }
