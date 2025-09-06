@@ -62,18 +62,28 @@ struct Libreria: View {
                 }
             }
             else {
-                switch vm.modoVista {
-                case .cuadricula:
-                    CuadriculaVista(vm: vm, namespace: animationNamespace, elementos: elementosFiltrados)
-                        .transition(.opacity.combined(with: .scale))
-
-                case .lista:
-                    ListaVista(vm: vm, namespace: animationNamespace, elementos: visibles)
-                        .transition(.opacity.combined(with: .scale))
-
-                default:
-                    AnyView(Text("Vista desconocida"))
+                
+                if ap.sistemaArchivos == .arbol, elementosFiltrados.isEmpty {
+                    if ap.temaResuelto == .dark {
+                        ImagenLibreriaVacia(imagen: "logo-new-colored-01", texto: "", anchura: 500, altura: 500)
+                    } else {
+                        ImagenLibreriaVacia(imagen: "logo-new-colored-02(w)-01", texto: "", anchura: 500, altura: 500)
+                    }
+                } else {
+                    switch vm.modoVista {
+                    case .cuadricula:
+                        CuadriculaVista(vm: vm, namespace: animationNamespace, elementos: elementosFiltrados)
+                            .transition(.opacity.combined(with: .scale))
+                        
+                    case .lista:
+                        ListaVista(vm: vm, namespace: animationNamespace, elementos: visibles)
+                            .transition(.opacity.combined(with: .scale))
+                        
+                    default:
+                        AnyView(Text("Vista desconocida"))
+                    }
                 }
+                
             }
         }
         .animation(.easeInOut(duration: 0.3), value: vm.modoVista)

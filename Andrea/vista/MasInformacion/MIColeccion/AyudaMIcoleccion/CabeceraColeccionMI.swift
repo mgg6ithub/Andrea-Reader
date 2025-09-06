@@ -106,7 +106,7 @@ struct CabeceraColeccionMI: View {
                         .animation(nil, value: pantallaCompleta)
                     
                 }
-                .padding(7 * ap.constantes.scaleFactor)
+                .padding(6.5 * ap.constantes.scaleFactor)
                 .background(pantallaCompleta ? Color.red : Color.gray.opacity(0.15))
                 .cornerRadius(8)
                 
