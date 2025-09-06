@@ -178,15 +178,15 @@ struct MasInformacionColeccion: View {
                 }
                 .padding(.horizontal, 15)
                 .padding(.bottom, 10)
-//                
-//                ZStack {
-//                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-//                        .fill(tema.backgroundGradient)
-//                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
-//                    InformacionAvanzada(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
-//                }
-//                .padding(.horizontal, 15)
-//                .padding(.bottom, 15)
+             
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(tema.backgroundGradient)
+                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                    InformacionAvanzadaColeccion(vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+                }
+                .padding(.horizontal, 15)
+                .padding(.bottom, 15)
                     
                 }
             }

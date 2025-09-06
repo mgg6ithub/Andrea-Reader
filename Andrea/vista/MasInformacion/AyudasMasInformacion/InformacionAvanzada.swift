@@ -64,6 +64,9 @@ struct InformacionAvanzadaFechas: View {
                 
                 GrupoDatoAvanzadoSoloLectura(nombre: "Última modificación", valor: Fechas().formatDate1(SistemaArchivosUtilidades.sau.getElementModificationDate(elementURL: archivo.url)))
                 
+                GrupoDatoAvanzadoSoloLectura(nombre: "Fecha de importación del sistema", valor: "\(Fechas().formatDate1(SistemaArchivosUtilidades.sau.obtenerFechaImportacionSistema(elementURL: archivo.url)))")
+                GrupoDatoAvanzadoSoloLectura(nombre: "Fecha de importación al programa", valor: "\(Fechas().formatDate1(archivo.fechaImportacion))")
+                
             }
             .padding()
         }
@@ -95,7 +98,7 @@ struct InformacionAvanzadaFechasColeccion: View {
                         .font(.system(size: titleS))
                 }
                 
-                GrupoDatoAvanzadoEditable(nombre: "Fecha de creación", valor: Fechas().formatDate1(SistemaArchivosUtilidades.sau.obtenerFechaImportacionSistema(elementURL: vm.coleccion.url)))
+                GrupoDatoAvanzadoSoloLectura(nombre: "Fecha de creación", valor: Fechas().formatDate1(SistemaArchivosUtilidades.sau.obtenerFechaImportacionSistema(elementURL: vm.coleccion.url)))
                 
                 if let fechaInicio = vm.coleccion.fechaPrimeraVezEntrado {
                     GrupoDatoAvanzadoSoloLectura(nombre: "Primera entrada", valor: Fechas().formatDate1(fechaInicio))
@@ -172,11 +175,6 @@ struct InformacionAvanzada: View {
                         GrupoDatoAvanzadoEditable(nombre: "Editorial", valor: archivo.editorial ?? "desconocido")
                         GrupoDatoAvanzadoEditable(nombre: "Formato de escaneo", valor: archivo.formatoEscaneo ?? "desconocido")
                         GrupoDatoAvanzadoEditable(nombre: "Entidad del escaneador", valor: archivo.entidadEscaneo ?? "desconocido")
-                        GrupoDatoAvanzadoSoloLectura(nombre: "Fecha de importación del sistema", valor: "\(Fechas().formatDate1(SistemaArchivosUtilidades.sau.obtenerFechaImportacionSistema(elementURL: archivo.url)))")
-                        GrupoDatoAvanzadoSoloLectura(nombre: "Fecha de importación al programa", valor: "\(Fechas().formatDate1(archivo.fechaImportacion))")
-                        GrupoDatoAvanzadoSoloLectura(nombre: "Primera lectura", valor: "fechaCreacion")
-                        GrupoDatoAvanzadoSoloLectura(nombre: "Última lectura", valor: "ultimaLectura")
-                        GrupoDatoAvanzadoSoloLectura(nombre: "Última modificación", valor: "ultimaLectura")
                         GrupoDatoAvanzadoSoloLectura(nombre: "ID único", valor: "\(archivo.id)")
                         GrupoDatoAvanzadoSoloLectura(nombre: "Ruta absoluta", valor: "\(archivo.url.path)")
                         GrupoDatoAvanzadoSoloLectura(nombre: "Ruta relativa", valor: "\(archivo.relativeURL)")
@@ -187,6 +185,69 @@ struct InformacionAvanzada: View {
         }
     }
 }
+
+
+struct InformacionAvanzadaColeccion: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
+    @ObservedObject var vm: ModeloColeccion
+       
+    let opacidad: CGFloat
+    @Binding var masInfoPresionado: Bool
+    private var const: Constantes { ap.constantes }
+    private var titleS: CGFloat { const.titleSize }
+    
+    var body: some View {
+        ZStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .firstTextBaseline, spacing: 2) {
+                    Image(systemName: "info.square")
+                        .font(.system(size: ap.constantes.iconSize * 0.8))
+                    
+                    Text("Información avanzada")
+                        .bold()
+                        .font(.system(size: titleS))
+                }
+                
+                GrupoDatoAvanzadoSoloLectura(nombre: "ID único", valor: "\(vm.coleccion.id)")
+                GrupoDatoAvanzadoSoloLectura(nombre: "Ruta absoluta", valor: "\(vm.coleccion.url.path)")
+                GrupoDatoAvanzadoSoloLectura(nombre: "Ruta relativa", valor: "\(vm.coleccion.relativeURL)")
+                
+//                Rectangle()
+//                    .frame(height: 1)
+//                    .foregroundColor(.gray.opacity(0.25))
+                
+//                Button(action: {
+//                    withAnimation { masInfoPresionado.toggle() }
+//                }) {
+//                    HStack(spacing: 5) {
+//                        Text(masInfoPresionado ? "Menos información" : "Más información")
+//                            .font(.system(size: titleS))
+//                            .bold()
+//                            .padding(.bottom, 5)
+//                        
+//                        Image(systemName: "chevron.forward")
+//                            .font(.system(size: ap.constantes.iconSize * 0.7))
+//                            .rotationEffect(.degrees(masInfoPresionado ? -90 : 90))
+//                            .offset(y: -2)
+//                    }
+//                }
+//                .buttonStyle(.plain)
+//                
+//                if masInfoPresionado {
+//                    VStack(alignment: .leading, spacing: 10) {
+//                        GrupoDatoAvanzadoSoloLectura(nombre: "ID único", valor: "\(vm.coleccion.id)")
+//                        GrupoDatoAvanzadoSoloLectura(nombre: "Ruta absoluta", valor: "\(vm.coleccion.url.path)")
+//                        GrupoDatoAvanzadoSoloLectura(nombre: "Ruta relativa", valor: "\(vm.coleccion.relativeURL)")
+//                    }
+//                }
+            }
+            .padding()
+        }
+    }
+}
+
 
 struct GrupoDatoAvanzadoSoloLectura: View {
     
