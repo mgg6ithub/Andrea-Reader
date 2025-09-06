@@ -20,33 +20,32 @@ private struct pMIcoleccion5: View {
 }
 
 struct TiposArchivos: View {
-    
     @EnvironmentObject var ap: AppEstado
-    
     @ObservedObject var vm: ModeloColeccion
+    
+    @State private var formatosDiferentes: Int = 0
     
     private var const: Constantes { ap.constantes }
     private var tema: EnumTemas { ap.temaResuelto }
-    private var esOscuro: Bool { tema == .dark }
-    private var sombraCarta: Color { esOscuro ? .black.opacity(0.4) : .black.opacity(0.1) }
-//        .font(.system(size: const.titleSize * 0.9))
-//        .foregroundColor(tema.secondaryText)
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Tipos de archivo")
                 .font(.headline)
-            Text("\(vm.estadisticasColeccion.distribucionTipos.count) formatos diferentes")
+            
+            Text("\(formatosDiferentes) formatos diferentes")
                 .font(.footnote)
                 .foregroundColor(.secondary)
             
             GraficoGithubStyle(estadisticas: vm.estadisticasColeccion)
-            //ocupe el 55% porciento del width de la pantalla
+        }
+        .onReceive(vm.estadisticasColeccion.$distribucionTipos) { nuevosTipos in
+            formatosDiferentes = nuevosTipos.count
         }
         .frame(width: 400)
-            
+        
         Spacer()
-            
+        
         VStack(alignment: .center, spacing: 8) {
             Text("Última importación")
                 .font(.caption)
@@ -62,11 +61,9 @@ struct TiposArchivos: View {
             Text("One Piece Vol. 1")
                 .font(.subheadline)
                 .foregroundColor(.primary)
-                .multilineTextAlignment(.center) // 🔹 permite varias líneas
+                .multilineTextAlignment(.center)
             
-            Button(action: {
-                
-            }) {
+            Button(action: { }) {
                 HStack(spacing: 6) {
                     Image(systemName: "book.fill")
                     Text("Leer ahora")
@@ -75,7 +72,7 @@ struct TiposArchivos: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
                 .background(
-                    RoundedRectangle(cornerRadius: 6, style: .continuous) // 🔹 menos radius
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
                         .fill(vm.color.opacity(0.2))
                 )
             }
@@ -84,3 +81,4 @@ struct TiposArchivos: View {
         .padding(.trailing, 55)
     }
 }
+

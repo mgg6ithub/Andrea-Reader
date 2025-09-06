@@ -78,6 +78,10 @@ final class EstadisticasColeccion: ObservableObject {
     
     public func calcularEstadisticasColeccion(_ elementos: [ElementoSistemaArchivos], totalArchivos: Int, totalSubColecciones: Int) {
         
+        self.descripcion = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.descripcion, default: p.descripcion)
+        
+        print("Descripcion guardada: ", descripcion)
+        
         let sau = SistemaArchivosUtilidades.sau
         
 //        print("Calculando estadisticas del PROGRAMA: ", sau.getFileSize(fileURL: sau.home))

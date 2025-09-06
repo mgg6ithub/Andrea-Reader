@@ -213,6 +213,12 @@ struct ContenidoColeccion: View {
     @State private var descripcionTexto: String = ""
     @State private var mostrarDescripcionCompleta: Bool = false
     
+    init(vm: ModeloColeccion, estadisticasColeccion: EstadisticasColeccion) {
+        self.vm = vm
+        self.estadisticasColeccion = estadisticasColeccion
+        _descripcionTexto = State(initialValue: estadisticasColeccion.descripcion)
+    }
+    
     var body: some View {
         ImagenColeccion(vm: vm)
             .if(ap.resolucionLogica == .small) { v in
@@ -298,7 +304,7 @@ struct ContenidoColeccion: View {
                                         vm.coleccion.descripcion = descripcionTexto
                                         
                                         //persitencia
-                                        //                                    pd.guardarDatoArchivo(valor: descripcionTexto, elementoURL: vm.coleccion.url, key: cpe.descripcion)
+                                        PersistenciaDatos().guardarDatoArchivo(valor: descripcionTexto, elementoURL: vm.coleccion.url, key: ClavesPersistenciaElementos().descripcion)
                                         
                                         withAnimation { isEditingDescripcion = false }
                                         print("Nueva descripción: \(descripcionTexto)")
