@@ -415,19 +415,15 @@ struct SelectorColor: View {
     
     @ObservedObject var vm: ModeloColeccion
     
-    @State private var colorActual: Color = .blue
     @State private var mostrarColorPicker = false
     
     private var escala: CGFloat { ap.constantes.scaleFactor }
     
     // 🎨 Paleta de colores (mínimo 18 para llenar 2x9)
     let colores: [Color] = [.blue, .green, .orange, .pink, .purple, .red, .yellow, .teal, .indigo, .mint, .cyan, .brown, .gray, .black, .white, .primary, .secondary, .accentColor]
-
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            // 🔹 Título
-            
             HStack(alignment: .bottom, spacing: 5) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
@@ -458,10 +454,9 @@ struct SelectorColor: View {
                 spacing: 8 * escala
             ) {
                 ForEach(colores.prefix(10), id: \.self) { color in   // 👈 solo mostramos los 8 primeros
-                    let current = color == colorActual
+                    let current = colorsEqual(vm.color, color)
                     Button {
                         withAnimation {
-                            colorActual = color
                             vm.color = color
                             vm.coleccion.color = color
                         }
@@ -481,7 +476,6 @@ struct SelectorColor: View {
             }
             .frame(maxWidth: 230 * escala) // 👈 limita ancho total del grid para que quede centrado
             
-            // 🔹 Opción más colores
             Button {
                 mostrarColorPicker.toggle()
             } label: {
@@ -499,7 +493,22 @@ struct SelectorColor: View {
                         .font(.headline)
                         .padding()
                     
-                    ColorPicker("Elige un color", selection: $colorActual, supportsOpacity: false)
+                    ColorPicker("Elige un color",
+                            selection: Binding(
+                                get: { vm.color },
+                                set: { nuevo in
+                                    vm.color = nuevo
+                                    vm.coleccion.color = nuevo
+                                    PersistenciaDatos().guardarDatoArchivo(
+                                        valor: nuevo,
+                                        elementoURL: vm.coleccion.url,
+                                        key: ClavesPersistenciaElementos().colorGuardado
+                                    )
+                                }
+                            ),
+                            supportsOpacity: false
+                    )
+
                         .padding()
                     
                     Spacer()
@@ -507,7 +516,10 @@ struct SelectorColor: View {
                 .presentationDetents([.medium])
             }
         }
-        
+        .onAppear {
+            // Aseguras que vm.color está seteado correctamente
+            vm.color = vm.coleccion.color
+        }
         
         
     }

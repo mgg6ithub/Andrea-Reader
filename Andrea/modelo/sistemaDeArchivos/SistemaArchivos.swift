@@ -448,6 +448,9 @@ class SistemaArchivos: ObservableObject {
             // 3. Construimos la nueva URL
             let nuevoArchivoURL = coleccionDestinoURL.appendingPathComponent(nombreArchivo)
             
+            print("Coleccion pasda: ", coleccionDestinoURL)
+            print("Se esta creando la imagen en: ", nuevoArchivoURL)
+            
             // --- Agregamos el archivo a la carpeta Andrea para la persistencia ---
             if !self.sau.fileExists(elementURL: nuevoArchivoURL) {
                 
@@ -563,7 +566,7 @@ class SistemaArchivos: ObservableObject {
         let coleccionImagenesOculta = self.homeURL.appendingPathComponent(".imagenes", isDirectory: true)
         
         //Copia la imagen desde local -> /Andrea/Documents/.imagenes
-        self.crearArchivo(archivoURL: urlImagen, coleccionDestino: coleccionImagenesOculta)
+        self.copiarArchivo(url: urlImagen, coleccionDestino: coleccionImagenesOculta)
         
         let nombreImagen = urlImagen.lastPathComponent
         
@@ -582,5 +585,36 @@ class SistemaArchivos: ObservableObject {
         }
 
     }
+    
+    public func copiarArchivo(url: URL, coleccionDestino: URL) {
+        fileQueue.async {
+            
+            // 1. Obtenenmos el nombre de la url
+            let nombreArchivo: String = url.lastPathComponent
+            let coleccionDestinoURL = coleccionDestino
+            
+            // 3. Construimos la nueva URL
+            let nuevoArchivoURL = coleccionDestinoURL.appendingPathComponent(nombreArchivo)
+            
+            // --- Agregamos el archivo a la carpeta Andrea para la persistencia ---
+            if !self.sau.fileExists(elementURL: nuevoArchivoURL) {
+                
+                do {
+                    guard url.startAccessingSecurityScopedResource() else {
+                        print("No se pudo acceder al archivo de manera segura.")
+                        return
+                    }
+                    defer { url.stopAccessingSecurityScopedResource() }
+                    
+                    try self.fm.copyItem(at: url, to: nuevoArchivoURL)
+                } catch {
+                    print("Error a la hora de crear el archivo -> ", nombreArchivo)
+                }
+                
+                return
+            }
+        }
+    }
+    
     
 }

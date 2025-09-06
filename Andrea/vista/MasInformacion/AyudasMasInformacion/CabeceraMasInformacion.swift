@@ -143,9 +143,9 @@ struct CabeceraMasInformacion: View {
                         .animation(nil, value: pantallaCompleta)
                     
                 }
-                .padding(4 * ap.constantes.scaleFactor)
-                .background(pantallaCompleta ? Color.red : Color(UIColor.systemGray3))
-                .cornerRadius(4)
+                .padding(6 * ap.constantes.scaleFactor)
+                .background(pantallaCompleta ? Color.red.opacity(0.8) : Color.gray.opacity(0.15))
+                .cornerRadius(8)
                 
             }
         }

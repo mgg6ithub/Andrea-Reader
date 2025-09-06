@@ -24,7 +24,7 @@ struct MasInfoCol: View {
     @Binding var pantallaCompleta: Bool
     @ObservedObject var vm: ModeloColeccion
     
-    @State private var seleccionColeccion: EnumSeccionColeccion = .coleccion
+//    @State private var seleccionColeccion: EnumSeccionColeccion = .coleccion
     @State private var show: Bool = true
     
     @State private var mostrarDocumentPicker: Bool = false
@@ -54,14 +54,14 @@ struct MasInfoCol: View {
                 
                 VStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .center, spacing: 0) {
-                        CabeceraColeccionMI(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala, seleccionColeccion: $seleccionColeccion)
+                        CabeceraColeccionMI(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
                             .padding(.bottom, 5)
                             .padding(.horizontal, 15)
                         
                         TituloYAjustesColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, mostrarDocumentPicker: $mostrarDocumentPicker)
                             .padding(.horizontal, 15)
                         // Aquí el contenido según la selección
-                        switch seleccionColeccion {
+                        switch vm.seleccionColeccion {
                             case .coleccion:
                             MasInformacionColeccion(vm: vm, pantallaCompleta: $pantallaCompleta, escala: escala)
                             case .progreso:

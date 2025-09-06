@@ -127,19 +127,31 @@ struct HistorialColecciones: View {
                     withAnimation(.easeInOut(duration: 0.3)) { ap.masInformacionColeccion = true }
                 }) {
                     HStack(spacing: 6) {
-                        Image("custom-folder-lupa")
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(tema.secondaryText)
-                            .font(.system(size: 16))
-                            .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
-                            .offset(y: 1.5)
+                        let colActual = pc.getColeccionActual()
+                        if let urlIcono = colActual.coleccion.icono {
+                            if let imgIcono = ModeloMiniatura.modeloMiniatura.obtenerMiniaturaPersonalizada(archivo: Archivo(), color: colActual.color, urlMiniatura: urlIcono) {
+                                
+                                Image(uiImage: imgIcono)
+                                    .resizable()
+                                    .frame(width: 35, height: 35)
+                                
+                            }
+                        } else {
+                            Image("custom-folder-lupa")
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(tema.colorContrario)
+                                .font(.system(size: 18))
+                                .scaleEffect(esVerColeccionPresionado ? 1.1 : 0.8)
+                                .offset(y: 1.5)
+                        }
                         
-                        Text("Ver")
+//                        Text("Ver")
+                        Image(systemName: "info.circle")
                             .font(.system(size: 16))
                             .foregroundColor(tema.secondaryText)
                             .scaleEffect(esVerColeccionPresionado ? 1.1 : 1.0)
                     }
-                    .fondoBoton(pH: ConstantesPorDefecto().horizontalPadding, pV: 7, isActive: false, color: .gray, borde: false)
+                    .fondoBoton(pH: 7.5, pV: 1.5, isActive: false, color: .gray, borde: false)
                     .aparicionStiffness(show: $show)
                 }
                 .padding(.trailing, 2.5)

@@ -8,6 +8,8 @@ import SwiftUI
 
 struct ProgresoCircular: View {
     
+    @EnvironmentObject var ap: AppEstado
+    
     var titulo: String
     var progreso: Int // 0–100
     var progresoDouble: Double // 0.0–1.0
@@ -43,7 +45,7 @@ struct ProgresoCircular: View {
                 
                 Text(titulo)
                     .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(ap.temaResuelto.secondaryText)
             }
         }
         .frame(width: radio, height: radio)

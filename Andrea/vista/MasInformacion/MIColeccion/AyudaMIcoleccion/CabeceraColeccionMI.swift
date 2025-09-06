@@ -36,19 +36,17 @@ struct CabeceraColeccionMI: View {
     @Binding var pantallaCompleta: Bool
     let escala: CGFloat
     
-    @Binding var seleccionColeccion: EnumSeccionColeccion
-    
-    var cDinamico: Color { ap.temaResuelto.colorContrario }
+    var tema: EnumTemas { ap.temaResuelto }
+    var cDinamico: Color { tema.colorContrario }
     var padding: CGFloat { pantallaCompleta ? 20 : 10 }
     private let constantes = ConstantesPorDefecto()
     
     @State private var isPressed: Bool = false
     
-    init(vm: ModeloColeccion, pantallaCompleta: Binding<Bool>, escala: CGFloat, seleccionColeccion: Binding<EnumSeccionColeccion>) {
+    init(vm: ModeloColeccion, pantallaCompleta: Binding<Bool>, escala: CGFloat) {
         self.vm = vm
         _pantallaCompleta = pantallaCompleta
         self.escala = escala
-        _seleccionColeccion = seleccionColeccion
     }
     
     var body: some View {
@@ -73,16 +71,13 @@ struct CabeceraColeccionMI: View {
             }
             
             ZStack {
-                Picker("Sección", selection: $seleccionColeccion) {
+                Picker("Sección", selection: $vm.seleccionColeccion) {
                     ForEach(EnumSeccionColeccion.allCases) { seccion in
                         Text(seccion.rawValue).tag(seccion)
                     }
                 }
                 .pickerStyle(.segmented)
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.gray.opacity(0.2))
-                )
+
             }
             .padding(.horizontal, 20)
             
@@ -109,9 +104,9 @@ struct CabeceraColeccionMI: View {
                         .animation(nil, value: pantallaCompleta)
                     
                 }
-                .padding(4 * ap.constantes.scaleFactor)
-                .background(pantallaCompleta ? Color.red : Color(UIColor.systemGray3))
-                .cornerRadius(4)
+                .padding(6 * ap.constantes.scaleFactor)
+                .background(pantallaCompleta ? Color.red : Color.gray.opacity(0.15))
+                .cornerRadius(8)
                 
             }
         }

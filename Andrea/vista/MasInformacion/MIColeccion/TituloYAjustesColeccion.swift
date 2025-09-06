@@ -52,6 +52,8 @@ struct TituloYAjustesColeccion: View {
                             Image(uiImage: imgIcono)
                                 .resizable()
                                 .font(.system(size: ap.constantes.iconSize * 0.8))
+                                .frame(width: 60, height: 60)
+                            
                         }
                     } else {
                         VStack(alignment: .center, spacing: 1) {
@@ -62,10 +64,10 @@ struct TituloYAjustesColeccion: View {
                                 .font(.system(size: ap.constantes.subTitleSize * 0.65))
                                 .foregroundColor(ap.temaResuelto.secondaryText)
                         }
+                        .frame(width: 40, height: 40)
                     }
                 }
                 .buttonStyle(.plain)
-                .frame(width: 40, height: 40)
                 .popover(isPresented: $mostrarPopoverPersonalizado) {
                     ImportacionPersonalizada(mostrarDocumentPicker: $mostrarDocumentPicker, color: vm.color) // aquí puedes pasar también el archivo si lo necesitas
                 }
@@ -134,6 +136,6 @@ struct TituloYAjustesColeccion: View {
                 SelectorAjustesLectura(vm: vm)
             }
         }
-        .frame(height: 70)
+        .frame(height: 70 * ap.constantes.scaleFactor)
     }
 }

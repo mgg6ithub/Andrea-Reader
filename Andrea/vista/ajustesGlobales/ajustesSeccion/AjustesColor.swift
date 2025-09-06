@@ -77,8 +77,9 @@ struct AjustesColor: View {
                             } label: {
                                 Circle()
                                     .fill(color.gradient)
-                                    .opacity(current ? 1 : 0.3)
+                                    .opacity(current ? 1 : 0.2)
                                     .frame(width: circleSize, height: circleSize)
+                                    .shadow(color: color.opacity(0.8), radius: current ? 2.5 : 0)
                             }
                             .buttonStyle(.plain)
                         }

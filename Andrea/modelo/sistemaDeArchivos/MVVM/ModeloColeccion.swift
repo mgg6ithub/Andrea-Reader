@@ -31,6 +31,8 @@ class ModeloColeccion: ObservableObject {
     @ObservedObject var estadisticasColeccion: EstadisticasColeccion
     
     let coleccion: Coleccion
+    
+    @Published var seleccionColeccion: EnumSeccionColeccion = .coleccion // <- para mas info col
 
     @Published var elementos: [ElementoSistemaArchivos] = []
     @Published var isLoading = false
