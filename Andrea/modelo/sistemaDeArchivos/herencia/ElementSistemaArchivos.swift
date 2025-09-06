@@ -17,6 +17,7 @@ class ElementoSistemaArchivos: ElementoSistemaArchivosProtocolo, Equatable, Obse
     var fechaImportacion: Date
     var fechaModificacion: Date
     var fechaPrimeraVezEntrado: Date?
+    var fechaUltimaVezEntrado: Date?
     var fechaCompletado: Date?
     var vecesEntrado: Int = 0
     

@@ -36,6 +36,11 @@ class Coleccion: ElementoSistemaArchivos {
     
     @State private var showIconAlert = false
     
+    override var fechaPrimeraVezEntrado: Date? { didSet { pd.guardarDatoArchivo(valor: fechaPrimeraVezEntrado as Any, elementoURL: url, key: cpe.fechaPrimeraVezEntrado) } }
+    
+    override var fechaUltimaVezEntrado: Date? { didSet { pd.guardarDatoArchivo(valor: fechaPrimeraVezEntrado as Any, elementoURL: url, key: cpe.fechaUltimaVezEntrado) } }
+    
+    
     //--- CONSTRUCTOR DUMMY ---
     init(directoryName: String, directoryURL: URL, fechaImportacion: Date, fechaModificacion: Date, favorito: Bool, protegido: Bool) {
         

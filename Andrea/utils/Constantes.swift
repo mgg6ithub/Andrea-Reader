@@ -68,6 +68,7 @@ struct ClavesPersistenciaElementos {
     //al importar
     public let fechaImportacion: String = "fechaImportacion"
     public let fechaPrimeraVezEntrado: String = "fechaPrimeraVezEntrado"
+    public let fechaUltimaVezEntrado: String = "fechaUltimaVezEntrado"
     public let nombreOriginal: String = "nombreOriginal"
     
     //Datos basicos
@@ -121,6 +122,7 @@ struct ClavesPersistenciaElementos {
             [
                 fechaImportacion,
                 fechaPrimeraVezEntrado,
+                fechaUltimaVezEntrado,
                 nombreOriginal,
                 
                 autor,
@@ -160,6 +162,7 @@ struct ValoresElementoPredeterminados {
     
     //Primera vez que se entra a leer el archivo
     public let fechaPrimeraVezEntrado: Date? = nil
+    public let fechaUltimaVezEntrado: Date? = nil
     public let nombreOriginal: String? = nil
     
     //Datos basicos

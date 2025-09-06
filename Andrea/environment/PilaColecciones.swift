@@ -197,6 +197,13 @@ class PilaColecciones: ObservableObject {
         colecciones.append(vm)
         actualizarColeccionActual()
         guardarPila()
+        
+        //Actualizamos la fecha de la coleccion introducida
+        if coleccion.fechaPrimeraVezEntrado == nil {
+            coleccion.fechaPrimeraVezEntrado = Date()
+        }
+        coleccion.fechaUltimaVezEntrado = Date()
+        
     }
 
 

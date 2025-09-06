@@ -41,7 +41,7 @@ struct TituloYAjustesColeccion: View {
     }
     
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .bottom) {
             HStack(spacing: 4) {
                 Button(action: {
                     mostrarPopoverPersonalizado.toggle()
@@ -62,7 +62,6 @@ struct TituloYAjustesColeccion: View {
                                 .font(.system(size: ap.constantes.subTitleSize * 0.65))
                                 .foregroundColor(ap.temaResuelto.secondaryText)
                         }
-                        .offset(y: 5)
                     }
                 }
                 .buttonStyle(.plain)
@@ -118,7 +117,7 @@ struct TituloYAjustesColeccion: View {
                                 .font(.system(size: ap.constantes.iconSize * 0.7))
                                 .foregroundColor(ap.temaResuelto.secondaryText)
                         }
-                        .frame(height: 40, alignment: .topLeading)
+                        .frame(height: 40, alignment: .leading)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             withAnimation {
@@ -129,10 +128,11 @@ struct TituloYAjustesColeccion: View {
                 }
                 .padding(.horizontal, pantallaCompleta ? 15 : 0)
             }
-            .offset(y: 4)
             
             Spacer()
-            SelectorAjustesLectura(vm: vm)
+            if ap.resolucionLogica != .small {
+                SelectorAjustesLectura(vm: vm)
+            }
         }
         .frame(height: 70)
     }

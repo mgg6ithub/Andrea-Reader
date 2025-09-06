@@ -78,14 +78,13 @@ final class EstadisticasColeccion: ObservableObject {
     
     public func calcularEstadisticasColeccion(_ elementos: [ElementoSistemaArchivos], totalArchivos: Int, totalSubColecciones: Int) {
         
+        //Fecha primera vez entrado
+        
+        //Fecha ultima vez entrado
+        
         self.descripcion = pd.recuperarDatoElemento(elementoURL: self.url, key: cpe.descripcion, default: p.descripcion)
-        
-        print("Descripcion guardada: ", descripcion)
-        
         let sau = SistemaArchivosUtilidades.sau
-        
-//        print("Calculando estadisticas del PROGRAMA: ", sau.getFileSize(fileURL: sau.home))
-//        print("Calculando estadisticas del PROGRAMA: ", ManipulacionSizes().formatearSize(sau.getFileSize(fileURL: sau.home)))
+    
         ALMACENAMIENTOTALPROGRAMA = sau.getFileSize(fileURL: sau.home)
         
         self.totalArchivos = totalArchivos
@@ -99,9 +98,7 @@ final class EstadisticasColeccion: ObservableObject {
         //peso
         pesoTotalArchivos = archivos.compactMap { $0.fileSize }.sum()
         if ALMACENAMIENTOTALPROGRAMA > 0 {
-            print("entra")
            let porcentajeDouble = (Double(pesoTotalArchivos) / Double(ALMACENAMIENTOTALPROGRAMA)) * 100
-            print(porcentajeDouble)
            porcentajePesoTotal = Int(porcentajeDouble.rounded()) // si quieres entero redondeado
            porcentajePesoTotalDouble = porcentajeDouble / 100.0  // 0.56 en vez de 56
        } else {
@@ -121,9 +118,9 @@ final class EstadisticasColeccion: ObservableObject {
         let colores: [String: Color] = [
             "CBZ": .blue,
             "CBR": .green,
-            "PDF": .orange,
-            "TXT": .purple,
-            "EPUB": .red
+            "PDF": .red,
+            "TXT": .blue.opacity(0.4),
+            "EPUB": .orange
         ]
         
         // Generar datos en el mismo formato que espera tu gráfico

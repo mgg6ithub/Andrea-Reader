@@ -49,7 +49,8 @@ struct InformacionAvanzadaFechas: View {
                 
                 GrupoDatoAvanzadoEditable(nombre: "Fecha de publicación", valor: archivo.yearPublicion != nil ? "\(archivo.yearPublicion!)" : "Desconocido")
                 
-                if let fechaInicio = archivo.estadisticas.sesionesLectura.first?.inicio {
+//                if let fechaInicio = archivo.estadisticas.sesionesLectura.first?.inicio {
+                if let fechaInicio = archivo.fechaPrimeraVezEntrado {
                     GrupoDatoAvanzadoSoloLectura(nombre: "Primera lectura", valor: Fechas().formatDate1(fechaInicio))
                 } else {
                     GrupoDatoAvanzadoSoloLectura(nombre: "Primera lectura", valor: "desconocida")
@@ -63,8 +64,52 @@ struct InformacionAvanzadaFechas: View {
                 
                 GrupoDatoAvanzadoSoloLectura(nombre: "Última modificación", valor: Fechas().formatDate1(SistemaArchivosUtilidades.sau.getElementModificationDate(elementURL: archivo.url)))
                 
-                GrupoDatoAvanzadoSoloLectura(nombre: "Fecha de importación del sistema", valor: "\(Fechas().formatDate1(SistemaArchivosUtilidades.sau.obtenerFechaImportacionSistema(elementURL: archivo.url)))")
-                GrupoDatoAvanzadoSoloLectura(nombre: "Fecha de importación al programa", valor: "\(Fechas().formatDate1(archivo.fechaImportacion))")
+            }
+            .padding()
+        }
+    }
+}
+
+
+struct InformacionAvanzadaFechasColeccion: View {
+    
+    @EnvironmentObject var ap: AppEstado
+    
+    @ObservedObject var vm: ModeloColeccion
+       
+    let opacidad: CGFloat
+    @Binding var masInfoPresionado: Bool
+    
+    private var const: Constantes { ap.constantes }
+    private var titleS: CGFloat { const.titleSize }
+    
+    var body: some View {
+        ZStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .firstTextBaseline, spacing: 2) {
+                    Image(systemName: "calendar")
+                        .font(.system(size: ap.constantes.iconSize * 0.8))
+
+                    Text("Fechas")
+                        .bold()
+                        .font(.system(size: titleS))
+                }
+                
+                GrupoDatoAvanzadoEditable(nombre: "Fecha de creación", valor: Fechas().formatDate1(SistemaArchivosUtilidades.sau.obtenerFechaImportacionSistema(elementURL: vm.coleccion.url)))
+                
+                if let fechaInicio = vm.coleccion.fechaPrimeraVezEntrado {
+                    GrupoDatoAvanzadoSoloLectura(nombre: "Primera entrada", valor: Fechas().formatDate1(fechaInicio))
+                } else {
+                    GrupoDatoAvanzadoSoloLectura(nombre: "Primera entrada", valor: "desconocida")
+                }
+                
+                if let fechaFin = vm.coleccion.fechaUltimaVezEntrado {
+                    GrupoDatoAvanzadoSoloLectura(nombre: "Última entrada", valor: Fechas().formatDate1(fechaFin))
+                } else {
+                    GrupoDatoAvanzadoSoloLectura(nombre: "Última entrada", valor: "desconocida")
+                }
+                
+                GrupoDatoAvanzadoSoloLectura(nombre: "Última modificación", valor: Fechas().formatDate1(SistemaArchivosUtilidades.sau.getElementModificationDate(elementURL: vm.coleccion.url)))
                 
             }
             .padding()
@@ -96,7 +141,6 @@ struct InformacionAvanzada: View {
                         .bold()
                         .font(.system(size: titleS))
                 }
-                
                 
                 GrupoDatoAvanzadoSoloLectura(nombre: "Nombre original", valor:  archivo.nombreOriginal ?? "desconocido")
                 GrupoDatoAvanzadoEditable(nombre: "Número de la colección", valor: archivo.numeroDeLaColeccion != nil ? "\(archivo.numeroDeLaColeccion!)" : "Desconocido")

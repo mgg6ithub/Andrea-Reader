@@ -14,8 +14,8 @@ private struct pMIcoleccion5: View {
             pantallaCompleta: $pantallaCompleta, vm: ModeloColeccion()
         )
 //                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
     }
 }
 
@@ -42,7 +42,7 @@ struct TiposArchivos: View {
         .onReceive(vm.estadisticasColeccion.$distribucionTipos) { nuevosTipos in
             formatosDiferentes = nuevosTipos.count
         }
-        .frame(width: 400)
+//        .frame(width: 400)
         
         Spacer()
         

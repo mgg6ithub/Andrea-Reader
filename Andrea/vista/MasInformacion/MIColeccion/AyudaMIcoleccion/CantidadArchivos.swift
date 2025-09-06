@@ -14,8 +14,8 @@ private struct pMIcoleccion: View {
             pantallaCompleta: $pantallaCompleta, vm: ModeloColeccion()
         )
 //                .environmentObject(AppEstado(screenWidth: 375, screenHeight: 667)) // Mock o real
-//                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
-                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
+                .environmentObject(AppEstado(screenWidth: 393, screenHeight: 852)) // Mock o real
+//                .environmentObject(AppEstado(screenWidth: 820, screenHeight: 1180))
     }
 }
 
@@ -78,7 +78,6 @@ struct PickerArchivosColecciones: View {
             }
             .buttonStyle(.plain)
         }
-        // 🔥 sincronizas aquí
         .onReceive(estadisticasColeccion.$totalArchivos) { archivos = $0 }
         .onReceive(estadisticasColeccion.$totalSubColecciones) { subcolecciones = $0 }
     }
@@ -87,11 +86,18 @@ struct PickerArchivosColecciones: View {
 
 struct InfoRow: View {
     
+    @EnvironmentObject var ap: AppEstado
+    
     let text: String
     var nombre: String? = nil
     let dato: Int
     
     @State private var mostrarPO: Bool = false
+    
+    private var subtitleS: CGFloat { ap.constantes.subTitleSize * 0.8 }
+    private var subtitleC: Color { ap.temaResuelto.secondaryText }
+    
+    private var anchura: CGFloat { ap.resolucionLogica == .small ? .infinity : 230 }
     
     var body: some View {
         Button(action: {
@@ -100,19 +106,22 @@ struct InfoRow: View {
             HStack(spacing: 2) {
                 
                 Text(text)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .font(.system(size: subtitleS))
+                    .foregroundColor(subtitleC)
+                
+                Spacer()
                 
                 Text(ManipulacionSizes().formatearSize(dato))
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .font(.system(size: subtitleS))
+                    .foregroundColor(subtitleC)
                 
             }
+            .frame(width: anchura)
             .popover(isPresented: $mostrarPO) {
                 if let nombre = nombre {
                     Text(nombre)
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
+                        .font(.system(size: subtitleS))
+                        .foregroundColor(subtitleC)
                         .padding()
                 }
             }
@@ -132,14 +141,6 @@ struct EstadisticasPesoVista: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-//            if estadisticas.isCalculando {
-//                Spacer()
-//                ProgressView()
-//                Spacer()
-//            } else {
-//
-//            }
-            
             InfoRow(
                 text: "Tamaño promedio",
                 dato: pesoPromedio
@@ -201,7 +202,6 @@ struct EstadisticasPesoVista: View {
 }
 
 
-
 struct CantidadArchivos: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -214,15 +214,20 @@ struct CantidadArchivos: View {
     private var esOscuro: Bool { tema == .dark }
     
     private var iconS: CGFloat { const.iconSize * 0.7 }
-    private var subtitleS: CGFloat { const.subTitleSize * 0.7 }
+    private var subtitleS: CGFloat { const.subTitleSize * 0.85 }
     private var subtitleC: Color { tema.secondaryText }
     
     @State private var seleccion: SeleccionTipo = .archivos
+    private var anchura: CGFloat { ap.resolucionLogica == .small ? .infinity : 230 }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            
             Text("Cantidad de archivos")
-                .font(.headline)
+                .font(.system(size: ap.constantes.titleSize * 0.9))
+                .bold()
+                .foregroundColor(tema.tituloColor)
+            
             HStack(alignment: .bottom, spacing: 3) {
                 
                 Image(systemName: "shippingbox.fill")
@@ -233,12 +238,13 @@ struct CantidadArchivos: View {
                     .font(.system(size: const.subTitleSize))
                     .foregroundColor(tema.colorContrario)
             }
+            .padding(.bottom, 15)
             
             PickerArchivosColecciones(seleccion: $seleccion, vm: vm, estadisticasColeccion: estadisticasColeccion, iconS: iconS, subtitleS: subtitleS, subtitleC: subtitleC)
             
             Rectangle()
                 .fill(Color.secondary.opacity(0.15))
-                .frame(width: 220, height: 1)
+                .frame(width: anchura, height: 1)
                 .padding(.vertical, 4)
             
             if seleccion == .archivos {
@@ -267,7 +273,7 @@ struct CantidadArchivos: View {
                     }
             }
 
-
+            Spacer()
         }
         
         Spacer()
@@ -308,7 +314,7 @@ struct CantidadArchivos: View {
                 }
             }
         }
-        .padding(.top, 15)
+        .padding(.top, 10)
         .padding(.trailing, 45)
 
     }

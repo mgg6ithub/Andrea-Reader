@@ -13,6 +13,7 @@ protocol ElementoSistemaArchivosProtocolo: Transferable, Hashable, Identifiable 
     var fechaImportacion: Date { get }
     var fechaModificacion: Date { get set}
     var fechaPrimeraVezEntrado: Date? { get set }
+    var fechaUltimaVezEntrado: Date? { get set }
     var fechaCompletado: Date? { get set }
     var vecesEntrado: Int { get set }
     

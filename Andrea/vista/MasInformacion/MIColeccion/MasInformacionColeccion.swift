@@ -33,6 +33,7 @@ struct MasInformacionColeccion: View {
     private var esOscuro: Bool { tema == .dark }
     private var sombraCarta: Color { esOscuro ? .black.opacity(0.4) : .black.opacity(0.1) }
     private var scale: CGFloat { const.scaleFactor }
+//    private var resSmall: CGFloat { const.resLog == .small }
     
     private let opacidad: CGFloat = 0.15
     @State private var masInfoPresionado: Bool = false
@@ -47,6 +48,7 @@ struct MasInformacionColeccion: View {
                     if ap.resolucionLogica == .small {
                         ContenidoColeccion(vm: vm, estadisticasColeccion: vm.estadisticasColeccion)
                             .padding(.bottom, 15)
+                            .padding(.leading, 15)
                     } else {
                         HStack {
                             ContenidoColeccion(vm: vm, estadisticasColeccion: vm.estadisticasColeccion)
@@ -54,7 +56,7 @@ struct MasInformacionColeccion: View {
                         .padding(.bottom, 15)
                     }
                     
-                //si la coleccion esta vacia no hay datos
+//                //si la coleccion esta vacia no hay datos
                 if vm.elementos.isEmpty {
                     ZStack {
                         RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -168,14 +170,14 @@ struct MasInformacionColeccion: View {
                     .padding(.bottom, 15)
                 }
                
-//                ZStack {
-//                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-//                        .fill(tema.backgroundGradient)
-//                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
-//                    InformacionAvanzadaFechas(archivo: Archivo(), vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
-//                }
-//                .padding(.horizontal, 15)
-//                .padding(.bottom, 10)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(tema.backgroundGradient)
+                        .shadow(color: esOscuro ? .black.opacity(0.4) : .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                    InformacionAvanzadaFechasColeccion(vm: vm, opacidad: opacidad, masInfoPresionado: $masInfoPresionado)
+                }
+                .padding(.horizontal, 15)
+                .padding(.bottom, 10)
 //                
 //                ZStack {
 //                    RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -220,12 +222,24 @@ struct ContenidoColeccion: View {
     }
     
     var body: some View {
+        
+        if ap.resolucionLogica == .small {
+            HStack {
+                Spacer()
+                
+                SelectorAjustesLectura(vm: vm)
+                    .padding(.top, 20)
+                
+                Spacer()
+            }
+        }
+        
         ImagenColeccion(vm: vm)
             .if(ap.resolucionLogica == .small) { v in
                 v.frame(maxWidth: .infinity, alignment: .center)
             }
             .padding(.leading, 15)
-            .padding(.top, 15)
+            .padding(.top, ap.resolucionLogica == .small ? 0 : 15)
 //        Spacer()
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -247,13 +261,8 @@ struct ContenidoColeccion: View {
                         Spacer()
                     }
                     .padding(.bottom, 20)
-                    
-//                    HStack(alignment: .top, spacing: 40) {
-//                        Spacer()
-                        SelectorColor(vm: vm)
-                    
-//                        Spacer()
-//                    }
+
+                    SelectorColor(vm: vm)
                     
                     Spacer()
                     
@@ -284,7 +293,6 @@ struct ContenidoColeccion: View {
                                 TextEditor(text: $descripcionTexto)
                                     .bold()
                                     .font(.system(size: titleS))
-                                //                                .frame(height: 105 * ap.constantes.scaleFactor)
                                     .focused($isEditingDescriptionFocused)
                                     .clipShape(RoundedRectangle(cornerRadius: 8))
                                     .overlay(
@@ -360,6 +368,9 @@ struct ContenidoColeccion: View {
         }
         .padding(.trailing, 15)
         .padding(.top, 15)
+        .onReceive(estadisticasColeccion.$descripcion) { nuevaDescripcion in
+            descripcionTexto = nuevaDescripcion
+        }
     }
 }
 
@@ -398,7 +409,6 @@ struct ImagenColeccion: View {
     }
 }
 
-
 struct SelectorColor: View {
     
     @EnvironmentObject var ap: AppEstado
@@ -407,6 +417,8 @@ struct SelectorColor: View {
     
     @State private var colorActual: Color = .blue
     @State private var mostrarColorPicker = false
+    
+    private var escala: CGFloat { ap.constantes.scaleFactor }
     
     // 🎨 Paleta de colores (mínimo 18 para llenar 2x9)
     let colores: [Color] = [.blue, .green, .orange, .pink, .purple, .red, .yellow, .teal, .indigo, .mint, .cyan, .brown, .gray, .black, .white, .primary, .secondary, .accentColor]
@@ -429,7 +441,7 @@ struct SelectorColor: View {
                 }
                 
                 Text("Color de la colección")
-                    .font(.system(size: ap.constantes.titleSize * 0.8))
+                    .font(.system(size: ap.constantes.titleSize * 0.9))
                     .bold()
                     .foregroundColor(ap.temaResuelto.tituloColor)
             }
@@ -442,8 +454,8 @@ struct SelectorColor: View {
             
             // 🔹 Grid más compacto: 6 columnas en vez de 9
             LazyVGrid(
-                columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 5),
-                spacing: 8
+                columns: Array(repeating: GridItem(.flexible(), spacing: 8 * escala), count: 5),
+                spacing: 8 * escala
             ) {
                 ForEach(colores.prefix(10), id: \.self) { color in   // 👈 solo mostramos los 8 primeros
                     let current = color == colorActual
@@ -461,12 +473,13 @@ struct SelectorColor: View {
                     } label: {
                         Circle()
                             .fill(color.gradient)
-                            .opacity(current ? 1 : 0.3)
+                            .opacity(current ? 1 : 0.2)
                             .frame(width: circleSize, height: circleSize)
+                            .shadow(color: color.opacity(0.8), radius: current ? 2.5 : 0)
                     }
                 }
             }
-            .frame(maxWidth: 200 * ap.constantes.scaleFactor) // 👈 limita ancho total del grid para que quede centrado
+            .frame(maxWidth: 230 * escala) // 👈 limita ancho total del grid para que quede centrado
             
             // 🔹 Opción más colores
             Button {
