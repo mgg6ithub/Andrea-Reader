@@ -101,7 +101,6 @@ struct VistaPrincipal: View {
                     .ignoresSafeArea()
                     .zIndex(5)
             }
-            
         }
         .fullScreenCover(item: $ap.archivoEnLectura) { archivo in
             ContenedorLector(archivo: archivo, vm: pc.getColeccionActual())

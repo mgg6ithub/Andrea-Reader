@@ -154,23 +154,27 @@ class ModeloColeccion: ObservableObject {
             let ordenacion = await MainActor.run { self.ordenacion }
             let indices = Algoritmos().generarIndicesDesdeCentro(centro, total: urls.count)
 
-            var todosLosElementos: [(Int, ElementoSistemaArchivos)] = []
-
-            for (_, idx) in indices.enumerated() {
+            let todosLosElementos: [(Int, ElementoSistemaArchivos)] = indices.map { idx in
                 let url = urls[idx]
                 let elemento = SistemaArchivos.sa.crearInstancia(elementoURL: url)
-                todosLosElementos.append((idx, elemento))
+                return (idx, elemento)
             }
+
+//            for (_, idx) in indices.enumerated() {
+//                let url = urls[idx]
+//                let elemento = SistemaArchivos.sa.crearInstancia(elementoURL: url)
+//                todosLosElementos.append((idx, elemento))
+//            }
             
             // Ordenar todos los elementos (sin importar el orden de entrada)
-            let elementosOrdenados = await Algoritmos().ordenarElementos(todosLosElementos.map { $0.1 }, por: ordenacion, esInvertido: self.esInvertido, coleccionURL: self.coleccion.url)
+//            let elementosOrdenados = await Algoritmos().ordenarElementos(todosLosElementos.map { $0.1 }, por: ordenacion, esInvertido: self.esInvertido, coleccionURL: self.coleccion.url)
             
             await MainActor.run {
                 
-                self.elementos = elementosOrdenados
+                self.elementos = todosLosElementos.map { $0.1 }
                 
                 //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
-                ConsejoImportarElementos.coleccionVacia = self.elementos.isEmpty
+//                ConsejoImportarElementos.coleccionVacia = self.elementos.isEmpty
                 
                 self.isLoading = false
                 self.elementosCargados = true
