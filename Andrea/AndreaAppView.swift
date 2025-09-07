@@ -93,54 +93,54 @@ struct AndreaAppView: View {
             }
                 
             // 👉 Menú siempre en el árbol
-//            HStack {
-//                SideMenu()
-//                    .frame(width: 300)
-//                    .offset(x: (ap.sideMenuVisible ? 0 : -300) + dragOffset)
-//                Spacer()
-//            }
+            HStack {
+                SideMenu()
+                    .frame(width: 300)
+                    .offset(x: (ap.sideMenuVisible ? 0 : -300) + dragOffset)
+                Spacer()
+            }
 
-            // Fondo oscuro proporcional al arrastre
-//            if ap.sideMenuVisible || dragOffset > 0 {
-//                Color.black
-//                    .opacity(0.3 * Double(((ap.sideMenuVisible ? 300 : 0) + dragOffset) / 300))
-//                    .ignoresSafeArea()
-//                    .onTapGesture {
-//                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-//                            ap.sideMenuVisible = false
-//                            dragOffset = 0
-//                        }
-//                    }
-//            }
+             //Fondo oscuro proporcional al arrastre
+            if ap.sideMenuVisible || dragOffset > 0 {
+                Color.black
+                    .opacity(0.3 * Double(((ap.sideMenuVisible ? 300 : 0) + dragOffset) / 300))
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                            ap.sideMenuVisible = false
+                            dragOffset = 0
+                        }
+                    }
+            }
             
-//            if !ap.sideMenuVisible {
-//                VStack {
-//                    Spacer()
-//                }
-//                .frame(maxWidth: .infinity, maxHeight: .infinity) // ocupa toda la pantalla
-//                .background(
-//                    Color.clear
-//                        .frame(width: 30) // ancho del área activa
-//                        .contentShape(Rectangle())
-//                        .frame(maxWidth: .infinity, alignment: .leading) // 👈 pegado al borde izquierdo
-//                        .gesture(
-//                            DragGesture()
-//                                .onChanged { value in
-//                                    let translation = value.translation.width
-//                                    if translation > 0 {
-//                                        dragOffset = min(300, translation)
-//                                    }
-//                                }
-//                                .onEnded { value in
-//                                    let translation = value.translation.width
-//                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-//                                        ap.sideMenuVisible = translation > 100
-//                                        dragOffset = 0
-//                                    }
-//                                }
-//                        )
-//                )
-//            }
+            if !ap.sideMenuVisible {
+                VStack {
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity) // ocupa toda la pantalla
+                .background(
+                    Color.clear
+                        .frame(width: 30) // ancho del área activa
+                        .contentShape(Rectangle())
+                        .frame(maxWidth: .infinity, alignment: .leading) // 👈 pegado al borde izquierdo
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    let translation = value.translation.width
+                                    if translation > 0 {
+                                        dragOffset = min(300, translation)
+                                    }
+                                }
+                                .onEnded { value in
+                                    let translation = value.translation.width
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        ap.sideMenuVisible = translation > 100
+                                        dragOffset = 0
+                                    }
+                                }
+                        )
+                )
+            }
         }
         .gesture(
             DragGesture()

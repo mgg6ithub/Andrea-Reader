@@ -106,8 +106,11 @@ struct ListaColeccionMenu: View {
                 
                 VStack(spacing: 0) {
                     Button(action: {
-                        col.meterColeccion()
-                        onSeleccionColeccion?()
+                        
+                        onSeleccionColeccion?() // priemro cerrar
+                        
+                        col.meterColeccion() // despues actualizar
+
                     }) {
                         HStack {
                             ZStack {
