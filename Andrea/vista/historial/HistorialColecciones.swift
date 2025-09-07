@@ -123,7 +123,7 @@ struct HistorialColecciones: View {
                         ))
                     }
                 }
-                .animation(.easeInOut(duration: 0.15), value: pc.historialItems.map(\.id))
+                .animation(.easeOut(duration: 0.15), value: pc.historialItems.map(\.id))
             }
             .padding(.leading, 3.5)
             
