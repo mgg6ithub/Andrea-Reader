@@ -97,9 +97,9 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .fixedSize()
             .layoutPriority(1)
             .fondoHistorial(estilo: ap.historialEstilo, pH: pH, isActive: isActive, color: color)
-            .if(isActive) { view in
-                view.aparicionStiffness(show: $show)
-            }
+//            .if(isActive) { view in
+//                view.aparicionStiffness(show: $show)
+//            }
     }
 }
 

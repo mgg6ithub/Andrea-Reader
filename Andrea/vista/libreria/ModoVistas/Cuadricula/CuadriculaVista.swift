@@ -62,9 +62,12 @@ struct CuadriculaVista: View {
                                 ElementoVista(vm: vm, elemento: elemento, scrollIndex: index) {
                                     if let placeholder = elemento as? ElementoPlaceholder {
                                         PlaceholderCuadricula(placeholder: placeholder, width: itemWidth, height: itemHeight)
+                                            .transition(.opacity)
                                     } else if let archivo = elemento as? Archivo {
                                         CuadriculaArchivo(archivo: archivo, estadisticas: archivo.estadisticas, coleccionVM: vm, width: itemWidth, height: itemHeight)
                                             .contentShape(ContentShapeKinds.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
+//                                            .transition(.opacity.combined(with: .scale))
+                                            .transition(.opacity)
                                     } else if let coleccion = elemento as? Coleccion {
                                         CuadriculaColeccion(coleccion: coleccion, width: itemWidth, height: itemHeight)
                                     }

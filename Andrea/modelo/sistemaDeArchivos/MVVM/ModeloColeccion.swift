@@ -168,7 +168,7 @@ class ModeloColeccion: ObservableObject {
 
             await MainActor.run {
                 
-                self.elementos = elementosOrdenados
+                withAnimation(.easeInOut(duration: 0.1)) { self.elementos = elementosOrdenados }
                 
                 //MARK: - --- CONSEJO IMPORTAR ELEMENTOS COLECCION VACIA ---
 //                ConsejoImportarElementos.coleccionVacia = self.elementos.isEmpty

@@ -118,7 +118,7 @@ struct HistorialColecciones: View {
                             }
                         }
                         .transition(.asymmetric(
-                            insertion: .opacity.combined(with: .scale(scale: 1.00)),
+                            insertion: .opacity.combined(with: .scale(scale: 1.05)),
                             removal: .opacity.combined(with: .scale(scale: 1.05))
                         ))
                     }

@@ -19,7 +19,6 @@ struct PlaceholderCuadricula: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .clipShape(RoundedCorner(radius: 18, corners: [.topLeft, .topRight]))
                 .frame(width: width)
-//                .shimmering()
 
             // Parte inferior: título + metadatos
             VStack {
@@ -27,28 +26,24 @@ struct PlaceholderCuadricula: View {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(Color.gray.opacity(0.5))
                     .frame(height: 16)
-//                    .shimmering()
 
                 // Simulación de metadatos
                 HStack {
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
                     
                     Spacer()
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
                     
                     Spacer()
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 25, height: 14)
-//                        .shimmering()
                 }
             }
             .frame(height: 30)

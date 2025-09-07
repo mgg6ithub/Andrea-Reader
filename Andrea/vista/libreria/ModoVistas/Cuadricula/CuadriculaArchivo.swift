@@ -52,6 +52,7 @@ struct CuadriculaArchivo: View {
                                 Spacer()
                                 
                                 ProgressView()
+                                    .foregroundColor(.gray)
                                     .zIndex(1)
                                 
                                 Spacer()
