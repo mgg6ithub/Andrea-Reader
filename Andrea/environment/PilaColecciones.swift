@@ -82,6 +82,9 @@ class PilaColecciones: ObservableObject {
         
         //Siempre metemos documents por defecto para que la pila no este vacia
         let cache = sa.cacheColecciones
+        
+        print("CACHE DISPONIBLE: ", cache)
+        
         self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
         if let home = cache[self.homeURL] {
             self.colecciones.append(ModeloColeccion(home.coleccion))
@@ -106,7 +109,7 @@ class PilaColecciones: ObservableObject {
                 }
             }
 
-            self.colecciones = vistaModelos
+            self.colecciones.append(contentsOf: vistaModelos) //Importante para cargar bien la pila. 1. home 2. persistencia
         }
     }
 
