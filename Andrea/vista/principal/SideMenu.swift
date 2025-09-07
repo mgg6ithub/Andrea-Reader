@@ -57,7 +57,7 @@ struct SideMenu: View {
         }
         .frame(maxWidth: 300, alignment: .leading)
         .foregroundColor(.white)
-        .shadow(color: .black.opacity(0.4), radius: 10, x: 6, y:0)
+//        .shadow(color: .black.opacity(0.4), radius: 10, x: 6, y:0)
     }
     
 }
