@@ -15,6 +15,12 @@ extension PilaColecciones {
     }
 }
 
+struct HistorialItem: Identifiable, Equatable {
+    let id: UUID
+    let nombre: String
+    let color: Color
+}
+
 
 
 @MainActor
@@ -52,6 +58,14 @@ class PilaColecciones: ObservableObject {
 
     @Published var colecciones: [ModeloColeccion] = []
     @Published var coleccionActualVM: ModeloColeccion?
+    
+    var historialItems: [HistorialItem] {
+        colecciones.map { vm in
+            HistorialItem(id: vm.coleccion.id,
+                          nombre: vm.coleccion.nombre,
+                          color: vm.color)
+        }
+    }
 
     private(set) var homeURL: URL = SistemaArchivosUtilidades.sau.home
     private var sa: SistemaArchivos!
@@ -82,8 +96,6 @@ class PilaColecciones: ObservableObject {
         
         //Siempre metemos documents por defecto para que la pila no este vacia
         let cache = sa.cacheColecciones
-        
-        print("CACHE DISPONIBLE: ", cache)
         
         self.homeURL = ManipulacionCadenas().agregarPrivate(self.homeURL)
         if let home = cache[self.homeURL] {
@@ -173,9 +185,12 @@ class PilaColecciones: ObservableObject {
         // 3. Resetea su estado de carga y vuelve a cargar
         nuevaVM.reiniciarCarga()          // elementosCargados = false
         nuevaVM.elementos = []            // limpia placeholders anteriores si quieres
-        Task {                            // asegúrate de llamar en MainActor
-            nuevaVM.cargarElementos()
+        DispatchQueue.main.async {
+            Task {
+                nuevaVM.cargarElementos()
+            }
         }
+
     }
 
 

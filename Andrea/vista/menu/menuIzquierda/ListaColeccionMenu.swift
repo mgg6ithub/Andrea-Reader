@@ -38,13 +38,15 @@ struct ListaColeccionMenu: View {
                             ColeccionRectanguloAvanzado(
                                 textoSize: 14,
                                 colorPrimario: tema.textColor,
-                                vm: pc.getColeccionActual(),
+                                nombre: coleccionPrincipal.nombre,
+                                color: coleccionPrincipal.color, // asumiendo que tu Coleccion tiene color
                                 isActive: pc.getColeccionActual().coleccion == coleccionPrincipal,
                                 pH: 7,
                                 animationDelay: 0
                             ) {
                                 Image(systemName: "house").opacity(0.75)
                             }
+
                             
                             VStack(alignment: .leading, spacing: 5) {
                                 Text(coleccionPrincipal.nombre)

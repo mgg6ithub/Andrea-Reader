@@ -77,20 +77,18 @@ extension View {
 }
 
 struct ColeccionRectanguloAvanzado<Content: View>: View {
-    
     @EnvironmentObject var ap: AppEstado
     
     let textoSize: CGFloat
     let colorPrimario: Color
-    @ObservedObject var vm: ModeloColeccion
+    let nombre: String
+    let color: Color
     let isActive: Bool
     let pH: CGFloat
     let animationDelay: Double
     let content: () -> Content
     
-    @EnvironmentObject var appEstado: AppEstado
     @State private var show: Bool = false
-    @State private var scale: CGFloat = 0.88
 
     var body: some View {
         content()
@@ -98,16 +96,16 @@ struct ColeccionRectanguloAvanzado<Content: View>: View {
             .foregroundColor(colorPrimario)
             .fixedSize()
             .layoutPriority(1)
-//            .fondoBoton(pH: pH, pV: 7, isActive: isActive, color: color, borde: true)
-//            .fondoBoton1(pH: pH, pV: 7, isActive: isActive, color: color)
-            .fondoHistorial(estilo: ap.historialEstilo, pH: pH, isActive: isActive, color: vm.color)
+            .fondoHistorial(estilo: ap.historialEstilo, pH: pH, isActive: isActive, color: color)
             .if(isActive) { view in
                 view.aparicionStiffness(show: $show)
             }
-            .aparicionSuave(show: $show)
-            .animacionDesvanecer(vm.color)
+//            .aparicionSuave(show: $show)
+//            .animacionDesvanecer(color)
     }
 }
+
+
 
 // Estilo de botón personalizado para mejor interacción
 struct ColeccionButtonStyle: ButtonStyle {

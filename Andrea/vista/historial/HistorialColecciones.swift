@@ -26,18 +26,19 @@ struct HistorialColecciones: View {
 
     var body: some View {
         HStack(spacing: 0) {
+            // --- HOME ---
             if pc.getColeccionActual().coleccion.nombre == "HOME" {
                 ColeccionRectanguloAvanzado(
                     textoSize: grande,
                     colorPrimario: tema.textColor,
-                    vm: ModeloColeccion(),
+                    nombre: "Home",
+                    color: .gray, // o el color que quieras para Home
                     isActive: true,
                     pH: paddingScalado,
                     animationDelay: delay(0)
                 ) {
                     HStack(spacing: 10) {
                         Image(systemName: "house")
-                        
                         Text("Home")
                             .font(.system(size: (variable - 1) * ap.constantes.scaleFactor))
                             .bold()
@@ -45,12 +46,13 @@ struct HistorialColecciones: View {
                 }
             } else {
                 Button(action: {
-                   pc.conservarSoloHome()
+                    pc.conservarSoloHome()
                 }) {
                     ColeccionRectanguloAvanzado(
                         textoSize: peke,
                         colorPrimario: tema.textColor,
-                        vm: ModeloColeccion(),
+                        nombre: "Home",
+                        color: .gray,
                         isActive: false,
                         pH: paddingScalado,
                         animationDelay: delay(0)
@@ -60,12 +62,13 @@ struct HistorialColecciones: View {
                 }
             }
             
+            // --- RESTO DE COLECCIONES ---
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
-                    let coleccionesFiltradas = pc.colecciones.filter { $0.coleccion.nombre != "HOME" }
-                    ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.coleccion.url) { index, vm in
+                    let coleccionesFiltradas = pc.historialItems.filter { $0.nombre != "HOME" }
+                    ForEach(Array(coleccionesFiltradas.enumerated()), id: \.element.id) { index, item in
                         Group {
-                            if pc.esColeccionActual(coleccion: vm.coleccion) {
+                            if pc.getColeccionActual().coleccion.id == item.id {
                                 HStack(spacing: spacioG) {
                                     ChevronAnimado(
                                         isActive: true,
@@ -75,17 +78,21 @@ struct HistorialColecciones: View {
                                     ColeccionRectanguloAvanzado(
                                         textoSize: grande,
                                         colorPrimario: tema.textColor,
-                                        vm: vm,
+                                        nombre: item.nombre,
+                                        color: item.color,
                                         isActive: true,
                                         pH: paddingScalado,
                                         animationDelay: delay(Double(index))
                                     ) {
-                                        Text(vm.coleccion.nombre)
+                                        Text(item.nombre)
                                     }
                                 }
                             } else {
                                 Button(action: {
-                                    pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
+                                    // buscar el ModeloColeccion real a partir del id
+                                    if let vm = pc.colecciones.first(where: { $0.coleccion.id == item.id }) {
+                                        pc.sacarHastaEncontrarColeccion(coleccion: vm.coleccion)
+                                    }
                                 }) {
                                     HStack(spacing: spacioP) {
                                         ChevronAnimado(
@@ -96,12 +103,13 @@ struct HistorialColecciones: View {
                                         ColeccionRectanguloAvanzado(
                                             textoSize: peke,
                                             colorPrimario: tema.secondaryText,
-                                            vm: vm,
+                                            nombre: item.nombre,
+                                            color: item.color,
                                             isActive: false,
                                             pH: paddingScalado,
                                             animationDelay: delay(Double(index))
                                         ) {
-                                            Text(vm.coleccion.nombre)
+                                            Text(item.nombre)
                                         }
                                     }
                                     .padding(.trailing, spacioP)
@@ -110,17 +118,18 @@ struct HistorialColecciones: View {
                             }
                         }
                         .transition(.asymmetric(
-                            insertion: .opacity.combined(with: .scale(scale: 0.95)),
+                            insertion: .opacity.combined(with: .scale(scale: 1.00)),
                             removal: .opacity.combined(with: .scale(scale: 1.05))
                         ))
                     }
                 }
-                .animation(.easeInOut(duration: 0.15), value: pc.colecciones.map(\.coleccion.id))
+                .animation(.easeInOut(duration: 0.15), value: pc.historialItems.map(\.id))
             }
             .padding(.leading, 3.5)
             
             Spacer()
 
+            // --- BOTÓN INFO DE COLECCIÓN ACTUAL ---
             if pc.getColeccionActual().coleccion.nombre != "HOME" {
                 Button(action: {
                     ap.coleccionseleccionada = pc.getColeccionActual()
@@ -129,12 +138,14 @@ struct HistorialColecciones: View {
                     HStack(spacing: 6) {
                         let colActual = pc.getColeccionActual()
                         if let urlIcono = colActual.coleccion.icono {
-                            if let imgIcono = ModeloMiniatura.modeloMiniatura.obtenerMiniaturaPersonalizada(archivo: Archivo(), color: colActual.color, urlMiniatura: urlIcono) {
-                                
+                            if let imgIcono = ModeloMiniatura.modeloMiniatura.obtenerMiniaturaPersonalizada(
+                                archivo: Archivo(),
+                                color: colActual.color,
+                                urlMiniatura: urlIcono
+                            ) {
                                 Image(uiImage: imgIcono)
                                     .resizable()
                                     .frame(width: 35, height: 35)
-                                
                             }
                         } else {
                             Image("custom-folder-lupa")
@@ -145,7 +156,6 @@ struct HistorialColecciones: View {
                                 .offset(y: 1.5)
                         }
                         
-//                        Text("Ver")
                         Image(systemName: "info.circle")
                             .font(.system(size: 16))
                             .foregroundColor(tema.secondaryText)
@@ -158,7 +168,6 @@ struct HistorialColecciones: View {
             }
         }
         .onAppear {
-            // Desactivamos primeraCarga luego de un breve delay para evitar lag inicial
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 withAnimation(.linear(duration: 0.1)) {
                     primeraCarga = false
@@ -173,3 +182,4 @@ struct HistorialColecciones: View {
         return ap.animaciones && hayMasDeUna ? index * 0.25 : 0
     }
 }
+
